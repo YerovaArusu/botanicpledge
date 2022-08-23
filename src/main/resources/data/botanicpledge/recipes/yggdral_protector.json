@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S#S",
+    "#G#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    "G": {
+      "item": "botanicpledge:gaia_protector"
+    },
+    "S": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:yggdral_protector"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S#S",
+    "#G#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "botania:terrasteel_ingot"
+    },
+    "G": {
+      "item": "botanicpledge:mana_protector"
+    },
+    "S": {
+      "item": "botania:manasteel_ingot"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:terra_protector"
+  }
+}

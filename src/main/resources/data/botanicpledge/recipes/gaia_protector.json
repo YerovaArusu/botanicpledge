@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S#S",
+    "#G#",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "botania:gaia_ingot"
+    },
+    "G": {
+      "item": "botanicpledge:terra_protector"
+    },
+    "S": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:gaia_protector"
+  }
+}

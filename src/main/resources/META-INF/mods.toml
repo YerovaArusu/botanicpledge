@@ -1,0 +1,45 @@
+
+modLoader = "javafml"
+loaderVersion = "[40,)"
+license = "All Rights Reserved"
+[[mods]]
+modId = "botanicpledge"
+version = "${file.jarVersion}"
+displayName = "botanicpledge"
+authors = "Yerova"
+description = '''
+
+'''
+[[dependencies.botanicpledge]]
+modId = "forge"
+mandatory = true
+versionRange = "[40,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.botanicpledge]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.18.2,1.19)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.botanicpledge]]
+modId = "botania"
+mandatory = true
+versionRange = "[1.18.2-435]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.botanicpledge]]
+modId = "curios"
+mandatory = true
+versionRange = "[1.18.2-5.0.7.1]"
+ordering = "NONE"
+side = "BOTH"
+[[dependencies.botanicpledge]]
+modId = "patchouli"
+mandatory = true
+versionRange = "[1.18.2-71.1]"
+ordering = "NONE"
+side = "BOTH"

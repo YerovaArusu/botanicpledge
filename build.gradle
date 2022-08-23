@@ -1,0 +1,144 @@
+plugins {
+    id 'net.minecraftforge.gradle' version '5.1.+'
+}
+
+
+group = 'yerova'
+version = '0.1'
+
+java {
+    archivesBaseName = 'botanicpledge'
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.18.2'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'botanicpledge'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
+            mods {
+                botanicpledge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'botanicpledge'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
+            mods {
+                botanicpledge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            property 'forge.enabledGameTestNamespaces', 'botanicpledge'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
+
+            mods {
+                botanicpledge {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+
+            property 'forge.logging.console.level', 'debug'
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
+
+            args '--mod', 'botanicpledge', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+
+            mods {
+                botanicpledge {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+
+    //botania and patchouli
+    maven { url "https://maven.blamejared.com" }
+
+    //curios
+    maven { url = "https://maven.theillusivec4.top/" }
+
+    //geckolib
+    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
+    //botania
+    implementation fg.deobf("vazkii.botania:Botania:1.18.2-435")
+
+    //curios
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")
+
+    //patchouli
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
+
+    //geckolib
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.29')
+}
+
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "botanicpledge",
+                "Specification-Vendor"    : "Yerova",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "Yerova",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

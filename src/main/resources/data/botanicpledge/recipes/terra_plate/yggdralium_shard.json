@@ -1,0 +1,12 @@
+{
+  "type": "botania:terra_plate",
+  "mana": 1000000,
+  "ingredients": [
+    {"item": "botania:terrasteel_ingot"},
+    {"item": "botania:gaia_ingot"},
+    {"item": "minecraft:diamond_block"},
+    {"item": "minecraft:lapis_block"},
+    {"item": "botania:manasteel_ingot"},
+    {"item": "minecraft:nether_star"}],
+  "result": {"item": "botanicpledge:yggdralium_shard"}
+}

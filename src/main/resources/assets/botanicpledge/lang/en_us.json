@@ -1,0 +1,12 @@
+{
+  "item.botanicpledge.mana_protector": "Mana Protector",
+  "item.botanicpledge.terra_protector": "Terra Protector",
+  "item.botanicpledge.gaia_protector": "Gaia Protector",
+  "item.botanicpledge.yggdral_protector": "Yggdral Protector",
+  "item.botanicpledge.yggdralium_ingot": "Yggdralium Ingot",
+  "item.botanicpledge.yggdralium_shard": "Yggdralium Shard",
+  "item.botanicpledge.yggdral_scepter": "Yggdral Scepter",
+
+  "itemGroup.botanicpledge": "Botanic Pledge"
+
+}
