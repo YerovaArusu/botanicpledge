@@ -5,7 +5,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -16,11 +15,12 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import yerova.botanicpledge.common.entitites.EntityInit;
-import yerova.botanicpledge.common.items.ItemInit;
 
 public class ManaSlashEntity extends ThrowableProjectile implements IAnimatable {
 
     private final AnimationFactory factory = new AnimationFactory(this);
+
+
 
 
     public ManaSlashEntity(double x, double y, double z, Level level) {
@@ -33,8 +33,10 @@ public class ManaSlashEntity extends ThrowableProjectile implements IAnimatable 
         super(EntityInit.MANA_SLASH.get(), shooter, level);
     }
 
+
     public ManaSlashEntity(EntityType<ManaSlashEntity> entityEntityType, Level level) {
         super(entityEntityType, level);
+
     }
 
 

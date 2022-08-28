@@ -25,7 +25,7 @@ public class ManaSlashRenderer extends GeoProjectilesRenderer<ManaSlashEntity> {
     public RenderType getRenderType(ManaSlashEntity animatable, float partialTicks, PoseStack stack,
                                     MultiBufferSource renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn,
                                     ResourceLocation textureLocation) {
-        stack.scale(4F, 4F, 4F);
+        stack.scale(8F, 4F, 8F);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }

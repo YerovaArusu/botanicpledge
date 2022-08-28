@@ -1,10 +1,8 @@
 package yerova.botanicpledge.common.items;
 
 
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.item.ItemStack;
 
 public class ModItemGroup {
     public static final CreativeModeTab BOTANIC_PLEDGE_TAB = new CreativeModeTab( "botanicpledge") {

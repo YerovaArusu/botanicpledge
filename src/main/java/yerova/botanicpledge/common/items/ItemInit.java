@@ -11,6 +11,8 @@ import yerova.botanicpledge.common.items.protectors.GaiaProtector;
 import yerova.botanicpledge.common.items.protectors.ManaProtector;
 import yerova.botanicpledge.common.items.protectors.TerraProtector;
 import yerova.botanicpledge.common.items.protectors.YggdralProtector;
+import yerova.botanicpledge.common.items.relic.MariasCore;
+import yerova.botanicpledge.common.items.relic.MarinasCore;
 
 public class ItemInit {
     //Custom Rarity
@@ -35,6 +37,16 @@ public class ItemInit {
     //weapon
     public static final RegistryObject<Item> YGGDRASIL_SCEPTER = ITEMS.register("yggdral_scepter", () -> new YggdralScepter(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+
+
+    //cores
+    public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("marias_core", () -> new MariasCore(
+            new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+
+    public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
+            new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+
+
 
 
     //Items

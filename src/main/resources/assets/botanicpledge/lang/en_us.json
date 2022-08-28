@@ -6,7 +6,10 @@
   "item.botanicpledge.yggdralium_ingot": "Yggdralium Ingot",
   "item.botanicpledge.yggdralium_shard": "Yggdralium Shard",
   "item.botanicpledge.yggdral_scepter": "Yggdral Scepter",
+  "item.botanicpledge.marias_core": "Marias Core",
+  "item.botanicpledge.marinas_core": "Marinas Core",
 
-  "itemGroup.botanicpledge": "Botanic Pledge"
+  "itemGroup.botanicpledge": "Botanic Pledge",
+  "curios.identifier.divine_core": "Divine Core"
 
 }

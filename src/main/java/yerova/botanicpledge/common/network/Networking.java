@@ -31,6 +31,13 @@ public class Networking {
                 .consumer(YggdralScepterLeftClick::handle)
                 .add();
 
+
+        net.messageBuilder(SyncProtector.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncProtector::new)
+                .encoder(SyncProtector::encode)
+                .consumer(SyncProtector::handle)
+                .add();
+
     }
 
 
