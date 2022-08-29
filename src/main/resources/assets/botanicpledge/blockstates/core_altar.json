@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model": "botanicpledge:block/core_altar"},
+    "facing=east": {"model": "botanicpledge:block/core_altar" , "y":  90},
+    "facing=south": {"model": "botanicpledge:block/core_altar","y":  180},
+    "facing=west": {"model": "botanicpledge:block/core_altar","y":  270}
+  }
+}

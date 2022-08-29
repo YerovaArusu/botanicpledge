@@ -1,6 +1,9 @@
 package yerova.botanicpledge;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -16,10 +19,14 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.render.entities.ManaSlashRenderer;
+import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.gui.ProtectorHUD;
+import yerova.botanicpledge.client.screen.CoreAltarScreen;
+import yerova.botanicpledge.client.screen.MenuTypesInit;
+import yerova.botanicpledge.common.blocks.BlockInit;
+import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.items.ItemInit;
@@ -43,6 +50,9 @@ public class BotanicPledge {
 
         ItemInit.ITEMS.register(forgeBus);
         EntityInit.ENTITY.register(forgeBus);
+        BlockInit.BLOCKS.register(forgeBus);
+        BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
+        MenuTypesInit.MENUS.register(forgeBus);
 
         forgeBus.addListener(this::setup);
         forgeBus.addListener(this::enqueueIMC);
@@ -72,8 +82,13 @@ public class BotanicPledge {
     }
     private void doClientStuff(final FMLClientSetupEvent event) {
         EntityRenderers.register(EntityInit.MANA_SLASH.get(), ManaSlashRenderer::new);
+        EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
+
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.CORE_ALTAR.get(), RenderType.translucent());
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);
+
+        MenuScreens.register(MenuTypesInit.CORE_ALTAR_MENU.get(), CoreAltarScreen::new);
     }
 
 

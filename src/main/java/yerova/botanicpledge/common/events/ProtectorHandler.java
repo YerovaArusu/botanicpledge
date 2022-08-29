@@ -4,10 +4,13 @@ package yerova.botanicpledge.common.events;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -25,11 +28,10 @@ public class ProtectorHandler {
     public static void handleDamage(LivingAttackEvent e) {
         if (!e.getEntityLiving().level.isClientSide) {
 
-            if (e.getEntityLiving() instanceof Player) {
-                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntityLiving(), "necklace")) {
+            if (e.getEntityLiving() instanceof Player player) {
+                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntityLiving(), "necklace" , "divine_core")) {
 
                     ItemStack stack = result.stack();
-
 
                     if (!e.isCanceled() && stack.hasTag() && stack.getTag().contains(BotanicPledge.MOD_ID + ".shield")) {
 
@@ -41,16 +43,15 @@ public class ProtectorHandler {
                         if (def <= 0) {
                             break;
                         } else {
-                            e.getEntityLiving().level.playSound(null,
-                                    e.getEntityLiving().getX(),
-                                    e.getEntityLiving().getY(),
-                                    e.getEntityLiving().getZ(),
-                                    ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
+                            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
 
                             e.setCanceled(true);
                         }
                     }
+
                 }
+
+
             }
         }
     }
@@ -67,7 +68,7 @@ public class ProtectorHandler {
 
                 if (player instanceof ServerPlayer serverPlayer) {
                     boolean success = false;
-                    for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer, "necklace")) {
+                    for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer, "necklace" , "divine_core")) {
                         if (result.stack().hasTag() && result.stack().getTag().contains(BotanicPledge.MOD_ID + ".shield")) {
 
                             CompoundTag shield = result.stack().getOrCreateTagElement(BotanicPledge.MOD_ID + ".shield");

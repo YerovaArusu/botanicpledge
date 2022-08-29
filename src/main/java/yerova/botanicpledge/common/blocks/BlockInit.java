@@ -1,0 +1,71 @@
+package yerova.botanicpledge.common.blocks;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import vazkii.botania.common.block.ModBlocks;
+import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.common.items.ModItemGroup;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Supplier;
+
+public class BlockInit {
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
+
+    public static final RegistryObject<Block> CORE_ALTAR = registerBlock("core_altar",
+            ()-> new CoreAltarBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar)), ModItemGroup.BOTANIC_PLEDGE_TAB);
+
+
+
+
+
+
+
+
+
+
+
+
+    private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
+        return BLOCKS.register(name, block);
+    }
+
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block,
+                                                                     CreativeModeTab tab, String tooltipKey) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn, tab, tooltipKey);
+        return toReturn;
+    }
+
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
+                                                                            CreativeModeTab tab, String tooltipKey) {
+        return ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(tab)) {
+            @Override
+            public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+                pTooltip.add(new TranslatableComponent(tooltipKey));
+            }
+        });
+    }
+
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn, tab);
+        return toReturn;
+    }
+
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
+                                                                            CreativeModeTab tab) {
+        return ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties().tab(tab)));
+    }
+}
