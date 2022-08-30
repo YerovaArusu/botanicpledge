@@ -1,0 +1,19 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:yggdralium_shard"},
+
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:marias_core"},
+    {"item": "botanicpledge:yggdralium_shard"},
+  
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:yggdralium_shard"}
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  }
+}

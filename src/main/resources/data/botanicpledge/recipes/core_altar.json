@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    " G ",
+    "   "
+  ],
+  "key": {
+    "#": {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    "G": {
+      "item": "botania:rune_altar"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:mana_protector"
+  }
+}

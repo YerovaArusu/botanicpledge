@@ -31,6 +31,7 @@ import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.network.Networking;
+import yerova.botanicpledge.common.recipes.RecipesInit;
 
 import static net.minecraftforge.client.gui.ForgeIngameGui.HOTBAR_ELEMENT;
 
@@ -53,6 +54,7 @@ public class BotanicPledge {
         BlockInit.BLOCKS.register(forgeBus);
         BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
         MenuTypesInit.MENUS.register(forgeBus);
+        RecipesInit.SERIALIZERS.register(forgeBus);
 
         forgeBus.addListener(this::setup);
         forgeBus.addListener(this::enqueueIMC);

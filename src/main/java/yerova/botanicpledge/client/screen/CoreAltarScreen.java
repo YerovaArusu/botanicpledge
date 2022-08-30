@@ -27,6 +27,10 @@ public class CoreAltarScreen extends AbstractContainerScreen<CoreAltarMenu> {
         int y = (height - imageWidth)/2 + 7;
 
         this.blit(poseStack, x, y, 0,0, imageWidth, imageHeight);
+
+        if(menu.isCrafting()){
+            blit(poseStack,x + 108, y +40, 178, 0, menu.getScaledProgress(), 4);
+        }
     }
 
     @Override

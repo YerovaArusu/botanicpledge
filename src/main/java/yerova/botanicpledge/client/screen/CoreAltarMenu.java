@@ -1,11 +1,10 @@
 package yerova.botanicpledge.client.screen;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerLevelAccess;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -18,17 +17,19 @@ import yerova.botanicpledge.common.blocks.block_entities.CoreAltarBlockEntity;
 public class CoreAltarMenu extends AbstractContainerMenu {
     private final CoreAltarBlockEntity blockEntity;
     private final Level level;
+    private final ContainerData data;
 
     public CoreAltarMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()));
+        this(containerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
     }
 
-    public CoreAltarMenu(int containerId, Inventory inv, BlockEntity entity) {
+    public CoreAltarMenu(int containerId, Inventory inv, BlockEntity entity, ContainerData data) {
         super(MenuTypesInit.CORE_ALTAR_MENU.get(), containerId);
 
         checkContainerSize(inv, CoreAltarBlockEntity.slotCount);
         blockEntity = ((CoreAltarBlockEntity) entity);
         this.level = inv.player.level;
+        this.data = data;
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -49,6 +50,20 @@ public class CoreAltarMenu extends AbstractContainerMenu {
 
             this.addSlot(new ModResultSlot(handler, 9, 138, 37));
         });
+
+        addDataSlots(data);
+    }
+
+    public boolean isCrafting() {
+        return data.get(0) > 0;
+    }
+
+    public int getScaledProgress() {
+        int progress = this.data.get(0);
+        int maxProgress = this.data.get(1);
+        int ProgressSize = 30;
+
+        return  maxProgress != 0 && progress != 0 ? progress * ProgressSize/maxProgress : 0;
     }
 
     @Override

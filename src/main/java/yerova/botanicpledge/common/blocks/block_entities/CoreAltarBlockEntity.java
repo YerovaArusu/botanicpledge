@@ -11,10 +11,8 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,25 +24,48 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.client.screen.CoreAltarMenu;
-import yerova.botanicpledge.common.items.ItemInit;
-import yerova.botanicpledge.common.recipes.CoreAltarRecipes;
+import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
 
 import javax.annotation.Nonnull;
+import java.util.Optional;
 
 public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
     public static final int slotCount = 10;
-    public final ItemStackHandler itemHandler = new ItemStackHandler(slotCount) {
+    public final ItemStackHandler itemHandler = new ItemStackHandler(10) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
-
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
 
-    public CoreAltarBlockEntity( BlockPos blockPos, BlockState blockState) {
+    protected final ContainerData data;
+    private int progress = 0;
+    private int maxProgress = 128;
+
+    public CoreAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityInit.CORE_ALTER_BLOCK_ENTITY.get(), blockPos, blockState);
+
+        this.data = new ContainerData() {
+            public int get(int index) {
+                switch (index) {
+                    case 0: return CoreAltarBlockEntity.this.progress;
+                    case 1: return CoreAltarBlockEntity.this.maxProgress;
+                    default: return 0;
+                }
+            }
+
+            public void set(int index, int value) {
+                switch (index) {
+                    case 0: CoreAltarBlockEntity.this.progress = value; break;
+                    case 1: CoreAltarBlockEntity.this.maxProgress = value; break;
+                }
+            }
+
+            public int getCount() { return 2; }
+        };
+
     }
 
     @Override
@@ -56,7 +77,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     @Nullable
     @Override
     public AbstractContainerMenu createMenu(int containerID, Inventory inv, Player player) {
-        return new CoreAltarMenu(containerID, inv, this);
+        return new CoreAltarMenu(containerID, inv, this, this.data);
     }
 
     @Nonnull
@@ -76,7 +97,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     }
 
     @Override
-    public void invalidateCaps()  {
+    public void invalidateCaps() {
         super.invalidateCaps();
         lazyItemHandler.invalidate();
     }
@@ -84,6 +105,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
+        tag.putInt("core_altar.progress", progress);
         super.saveAdditional(tag);
     }
 
@@ -91,6 +113,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     public void load(CompoundTag nbt) {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
+        progress = nbt.getInt("core_altar.progress");
     }
 
     public void drops() {
@@ -103,40 +126,72 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     }
 
 
-    public static void  tick(Level pLevel, BlockPos pPos, BlockState pState, CoreAltarBlockEntity pBlockEntity) {
-/*        if(hasRecipe(pBlockEntity) && hasNotReachedStackLimit(pBlockEntity)) {
-            craftItem(pBlockEntity);
-        }*/
 
-        CoreAltarRecipes.recipeForMariasCore(pBlockEntity);
-    }
-
-    private static void craftItem(CoreAltarBlockEntity entity) {
-        //entity.itemHandler.getStackInSlot(2).hurt(1, new Random(), null);
-
-        entity.itemHandler.setStackInSlot(9, new ItemStack(ItemInit.MARIAS_CORE.get(),
-                entity.itemHandler.getStackInSlot(9).getCount()+1));
-
-        if(entity.itemHandler.getStackInSlot(9).isEmpty()){
-            entity.itemHandler.extractItem(0, 1, false);
-            entity.itemHandler.extractItem(1, 1, false);
-            entity.itemHandler.extractItem(2, 1, false);
-            entity.itemHandler.extractItem(3, 1, false);
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CoreAltarBlockEntity pBlockEntity) {
+        if(hasRecipe(pBlockEntity)) {
+            pBlockEntity.progress++;
+            setChanged(pLevel, pPos, pState);
+            if(pBlockEntity.progress > pBlockEntity.maxProgress) {
+                craftItem(pBlockEntity);
+            }
+        } else {
+            pBlockEntity.resetProgress();
+            setChanged(pLevel, pPos, pState);
         }
     }
 
     private static boolean hasRecipe(CoreAltarBlockEntity entity) {
-        boolean hasItemInWaterSlot = PotionUtils.getPotion(entity.itemHandler.getStackInSlot(0)) == Potions.WATER;
-        boolean hasItemInFirstSlot = entity.itemHandler.getStackInSlot(1).getItem() == ItemInit.MARINAS_CORE.get();
-        boolean hasItemInSecondSlot = entity.itemHandler.getStackInSlot(2).getItem() == Items.DIAMOND_PICKAXE;
-        boolean hasItemInThirdSlot = entity.itemHandler.getStackInSlot(3).getItem() == Items.DIAMOND_PICKAXE;
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
 
-        return hasItemInWaterSlot && hasItemInFirstSlot && hasItemInSecondSlot && hasItemInThirdSlot;
+        Optional<CoreAltarRecipe> match = level.getRecipeManager()
+                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
+
+        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
     }
 
-    private static boolean hasNotReachedStackLimit(CoreAltarBlockEntity entity) {
-        return entity.itemHandler.getStackInSlot(9).getCount() < entity.itemHandler.getStackInSlot(3).getMaxStackSize();
+
+    private static void craftItem(CoreAltarBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+
+        Optional<CoreAltarRecipe> match = level.getRecipeManager()
+                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
+
+        if(match.isPresent()) {
+            entity.itemHandler.extractItem(0,1, false);
+            entity.itemHandler.extractItem(1,1, false);
+            entity.itemHandler.extractItem(2,1, false);
+            entity.itemHandler.extractItem(3,1, false);
+            entity.itemHandler.extractItem(4,1, false);
+            entity.itemHandler.extractItem(5,1, false);
+            entity.itemHandler.extractItem(6,1, false);
+            entity.itemHandler.extractItem(7,1, false);
+            entity.itemHandler.extractItem(8,1, false);
+
+            entity.itemHandler.setStackInSlot(9, new ItemStack(match.get().getResultItem().getItem(),
+                    entity.itemHandler.getStackInSlot(9).getCount() + 1));
+
+            entity.resetProgress();
+        }
     }
 
+    private void resetProgress() {
+        this.progress = 0;
+    }
 
+    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+        return inventory.getItem(9).getItem() == output.getItem() || inventory.getItem(9).isEmpty();
+    }
+
+    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
+        return inventory.getItem(9).getMaxStackSize() > inventory.getItem(9).getCount();
+    }
 }
