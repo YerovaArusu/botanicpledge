@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -15,15 +16,18 @@ import yerova.botanicpledge.BotanicPledge;
 import javax.annotation.Nullable;
 
 public class CoreAltarRecipe implements Recipe<SimpleContainer> {
-
     private final ResourceLocation id;
     private final ItemStack output;
     private final NonNullList<Ingredient> recipeItems;
+    public final CompoundTag extraNBT;
 
-    public CoreAltarRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems) {
+    public CoreAltarRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, CompoundTag extraNBT) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
+        this.extraNBT = extraNBT;
+
+
         //TODO: ADD another Value to be read out from json, so I can manipulate the itemstacks with NBT or Attributes
         //TODO: DO IT...
         //TODO TOMORROW!!!!!!!!
@@ -45,6 +49,7 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
     @Override
     public ItemStack assemble(SimpleContainer p_44001_) {
         return output;
+
     }
 
     @Override
@@ -87,8 +92,11 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
 
         @Override
         public CoreAltarRecipe fromJson(ResourceLocation id, JsonObject json) {
+
+            //Output read
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
 
+            //Ingredients read
             JsonArray ingredients = GsonHelper.getAsJsonArray(json, "ingredients");
             NonNullList<Ingredient> inputs = NonNullList.withSize(9, Ingredient.EMPTY);
 
@@ -96,7 +104,16 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
                 inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            return new CoreAltarRecipe(id, output, inputs);
+            //NBT read
+            String nbtName = GsonHelper.getAsString(json,"nbtName");
+            int nbtValue = GsonHelper.getAsInt(json,"nbtValue");
+
+            CompoundTag nbt = output.getOrCreateTagElement(BotanicPledge.MOD_ID + ".extra");
+
+            nbt.putInt(nbtName, nbtValue);
+
+
+            return new CoreAltarRecipe(id, output, inputs, nbt);
         }
 
         @Override
@@ -108,16 +125,24 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
             }
 
             ItemStack output = buf.readItem();
-            return new CoreAltarRecipe(id, output, inputs);
+            CompoundTag extraNBT = buf.readNbt();
+
+            return new CoreAltarRecipe(id, output, inputs, extraNBT);
         }
 
         @Override
         public void toNetwork(FriendlyByteBuf buf, CoreAltarRecipe recipe) {
-            buf.writeInt(recipe.getIngredients().size());
+            //Ingredients to Network
+            buf.writeInt(recipe.getIngredients().size()); //Ingredients length
             for (Ingredient ing : recipe.getIngredients()) {
                 ing.toNetwork(buf);
             }
+            recipe.getResultItem().setTag(recipe.extraNBT);
+            //Output To Network
             buf.writeItemStack(recipe.getResultItem(), false);
+
+            //NBT to Network
+            buf.writeNbt(recipe.extraNBT);
         }
 
         @Override

@@ -10,10 +10,10 @@
       "item": "botanicpledge:yggdralium_ingot"
     },
     "G": {
-      "item": "botania:rune_altar"
+      "item": "botania:runic_altar"
     }
   },
   "result": {
-    "item": "botanicpledge:mana_protector"
+    "item": "botanicpledge:core_altar"
   }
 }

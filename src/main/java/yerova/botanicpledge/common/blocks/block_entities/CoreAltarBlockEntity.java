@@ -23,6 +23,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yerova.botanicpledge.BotanicPledge;
 import yerova.botanicpledge.client.screen.CoreAltarMenu;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
 
@@ -30,6 +31,8 @@ import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
+
+    public static int dataContainerSize = 3;
 
     public static final int slotCount = 10;
     public final ItemStackHandler itemHandler = new ItemStackHandler(10) {
@@ -43,6 +46,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 128;
+    private CompoundTag savedItemNBT;
 
     public CoreAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityInit.CORE_ALTER_BLOCK_ENTITY.get(), blockPos, blockState);
@@ -56,6 +60,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
                 }
             }
 
+
             public void set(int index, int value) {
                 switch (index) {
                     case 0: CoreAltarBlockEntity.this.progress = value; break;
@@ -63,7 +68,22 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
                 }
             }
 
-            public int getCount() { return 2; }
+
+            //Tags for Items
+            public CompoundTag getTags(int index) {
+                switch (index) {
+                    case 2: return CoreAltarBlockEntity.this.savedItemNBT;
+                    default: return null;
+                }
+            }
+
+            public void setTags(int index,CompoundTag tag){
+                switch (index) {
+                    case 2: CoreAltarBlockEntity.this.savedItemNBT = tag; break;
+                }
+            }
+
+            public int getCount() { return  CoreAltarBlockEntity.dataContainerSize = 3; }
         };
 
     }
@@ -106,6 +126,10 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("core_altar.progress", progress);
+        if(savedItemNBT != null) {
+            tag.put("item_saved_nbt", savedItemNBT);
+        }
+
         super.saveAdditional(tag);
     }
 
@@ -114,6 +138,9 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("core_altar.progress");
+        if(nbt.contains("item_saved_nbt")){
+            savedItemNBT = nbt.getCompound("item_saved_nbt");
+        }
     }
 
     public void drops() {
@@ -133,8 +160,10 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
             setChanged(pLevel, pPos, pState);
             if(pBlockEntity.progress > pBlockEntity.maxProgress) {
                 craftItem(pBlockEntity);
+
             }
         } else {
+            pBlockEntity.resetNBT();
             pBlockEntity.resetProgress();
             setChanged(pLevel, pPos, pState);
         }
@@ -150,8 +179,9 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         Optional<CoreAltarRecipe> match = level.getRecipeManager()
                 .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
 
+
         return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem());
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem()) && entity.transportedNBT(match);
     }
 
 
@@ -166,6 +196,11 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
                 .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
 
         if(match.isPresent()) {
+
+            CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTag();
+            combinedTag.merge(entity.savedItemNBT);
+
+
             entity.itemHandler.extractItem(0,1, false);
             entity.itemHandler.extractItem(1,1, false);
             entity.itemHandler.extractItem(2,1, false);
@@ -176,9 +211,13 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
             entity.itemHandler.extractItem(7,1, false);
             entity.itemHandler.extractItem(8,1, false);
 
-            entity.itemHandler.setStackInSlot(9, new ItemStack(match.get().getResultItem().getItem(),
-                    entity.itemHandler.getStackInSlot(9).getCount() + 1));
 
+
+
+            ItemStack stack = new ItemStack(match.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(9).getCount() + 1);
+            stack.setTag(combinedTag);
+
+            entity.itemHandler.insertItem(9, stack, false);
             entity.resetProgress();
         }
     }
@@ -193,5 +232,18 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
     private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
         return inventory.getItem(9).getMaxStackSize() > inventory.getItem(9).getCount();
+    }
+
+    private boolean transportedNBT(Optional<CoreAltarRecipe> match){
+        this.savedItemNBT = match.get().extraNBT;
+        if (savedItemNBT.equals(match.get().extraNBT)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void resetNBT() {
+        this.savedItemNBT = null;
     }
 }

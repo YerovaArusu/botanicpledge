@@ -1,7 +1,6 @@
 package yerova.botanicpledge.client.screen;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -19,8 +18,9 @@ public class CoreAltarMenu extends AbstractContainerMenu {
     private final Level level;
     private final ContainerData data;
 
+
     public CoreAltarMenu(int containerId, Inventory inv, FriendlyByteBuf extraData) {
-        this(containerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(2));
+        this(containerId, inv, inv.player.level.getBlockEntity(extraData.readBlockPos()), new SimpleContainerData(CoreAltarBlockEntity.dataContainerSize));
     }
 
     public CoreAltarMenu(int containerId, Inventory inv, BlockEntity entity, ContainerData data) {
@@ -45,7 +45,7 @@ public class CoreAltarMenu extends AbstractContainerMenu {
             this.addSlot(new SlotItemHandler(handler, 5, 90, 37));
 
             this.addSlot(new SlotItemHandler(handler, 6, 39, 60));
-            this.addSlot(new SlotItemHandler(handler, 7, 64, 65));
+            this.addSlot(new SlotItemHandler(handler, 7, 62, 65));
             this.addSlot(new SlotItemHandler(handler, 8, 85, 60));
 
             this.addSlot(new ModResultSlot(handler, 9, 138, 37));

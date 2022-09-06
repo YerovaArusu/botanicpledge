@@ -35,4 +35,5 @@ public class ProtectorUtils {
         }
         shield.putInt("Charge", charge);
     }
+
 }

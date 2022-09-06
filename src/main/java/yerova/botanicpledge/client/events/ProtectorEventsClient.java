@@ -28,15 +28,15 @@ public class ProtectorEventsClient {
 
 
         if (stack.hasTag()) {
-            CompoundTag shield = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".shield");
+            CompoundTag shield = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
             if (shield.contains("Charge")) {
                 ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt("Charge"), shield.getInt("MaxCharge"),
                         tooltipX, tooltipY, width, height, 0.52F);
             }
 
 
-            if (shield.contains("Defense")) {
-                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt("Defense"), shield.getInt("MaxDefense"),
+            if (shield.contains("Shield")) {
+                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt("Shield"), shield.getInt("MaxShield"),
                         tooltipX, tooltipY - height, width, height, 0.754F);
             }
         }
