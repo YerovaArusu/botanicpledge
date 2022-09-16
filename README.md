@@ -2,7 +2,7 @@
 This is an Addon for the wellknown Botania mod:
 
 
-It 4 Protectors of diefferent Tiers.
+- It 4 Protectors of diefferent Tiers.
 
 1. Mana Protector
     Weak... very weak
@@ -16,18 +16,19 @@ It 4 Protectors of diefferent Tiers.
 4. Yggdral Protector
     So far the best one.
 
-and one Weapon...
-
-- Yggdral Scepter not yet Craftable... but very soon
-
+- and more:
++ Yggdral Scepter not yet Craftable... but very soon
++ The Core Altar(A new unqiue way of Crafting and Upgrading or Altering certain Items).
++ Divine Core Items(Marias and Marinas Core): A new Type of Upgradable Curio. Capable of Surpassing thw protectos):
+        - These Cores aim to create a method to counter even the most Powerful Armors in the entire Minecraft Modpack Community... the draconic Armor...
 
 
 What have I planned?
 - more weapons & Armor
 - more blocks
 - more funtionality for Yggdral Sceptar
-- magic Damage
-- a new Boss called Yggdrasils Guardian
+- magic Damage attribute for every weapon.
+- a new Boss called Marina Arusu(If you are wondering... yes she is from DAL)
 
 
 
