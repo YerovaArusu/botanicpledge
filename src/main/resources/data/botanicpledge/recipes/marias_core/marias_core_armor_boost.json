@@ -1,21 +1,22 @@
 {
   "type": "botanicpledge:core_altering",
   "ingredients": [
+    {"item": "minecraft:diamond_chestplate"},
     {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:diamond_chestplate"},
 
     {"item": "botanicpledge:yggdralium_shard"},
     {"item": "botanicpledge:marias_core"},
     {"item": "botanicpledge:yggdralium_shard"},
   
+    {"item": "minecraft:diamond_chestplate"},
     {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:yggdralium_shard"}
+    {"item": "minecraft:diamond_chestplate"}
   ],
   "output": {
     "item": "botanicpledge:marias_core"
   },
-  "nbtName" : "Test",
-  "nbtValue" : 2000
+  "statName" : "armor",
+  "statValue" : 10.0
 }
+

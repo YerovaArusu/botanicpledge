@@ -197,8 +197,8 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
         if(match.isPresent()) {
 
-            CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTag();
-            combinedTag.merge(entity.savedItemNBT);
+            CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
+
 
 
             entity.itemHandler.extractItem(0,1, false);
@@ -211,11 +211,18 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
             entity.itemHandler.extractItem(7,1, false);
             entity.itemHandler.extractItem(8,1, false);
 
-
-
-
             ItemStack stack = new ItemStack(match.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(9).getCount() + 1);
-            stack.setTag(combinedTag);
+
+            for (String tagKey: entity.savedItemNBT.getAllKeys()) {
+                if(combinedTag.contains(tagKey)){
+                    combinedTag.putDouble(tagKey, combinedTag.getDouble(tagKey) + entity.savedItemNBT.getDouble(tagKey));
+                } else {
+                    combinedTag.putDouble(tagKey, entity.savedItemNBT.getDouble(tagKey));
+                }
+            }
+
+            stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").merge(combinedTag);
+
 
             entity.itemHandler.insertItem(9, stack, false);
             entity.resetProgress();

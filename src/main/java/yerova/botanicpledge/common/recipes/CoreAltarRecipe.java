@@ -105,12 +105,13 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
             }
 
             //NBT read
-            String nbtName = GsonHelper.getAsString(json,"nbtName");
-            int nbtValue = GsonHelper.getAsInt(json,"nbtValue");
 
-            CompoundTag nbt = output.getOrCreateTagElement(BotanicPledge.MOD_ID + ".extra");
+            String statName = GsonHelper.getAsString(json,"statName");
+            double statValue = GsonHelper.getAsDouble(json,"statValue");
 
-            nbt.putInt(nbtName, nbtValue);
+            CompoundTag nbt = output.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
+
+            nbt.putDouble(statName, statValue);
 
 
             return new CoreAltarRecipe(id, output, inputs, nbt);

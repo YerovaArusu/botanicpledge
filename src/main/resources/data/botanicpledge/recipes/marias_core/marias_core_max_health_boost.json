@@ -1,0 +1,22 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "minecraft:golden_apple"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:golden_apple"},
+
+    {"item": "minecraft:golden_apple"},
+    {"item": "botanicpledge:marias_core"},
+    {"item": "minecraft:golden_apple"},
+  
+    {"item": "minecraft:golden_apple"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:golden_apple"}
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName" : "max_health",
+  "statValue" : 1.0
+}
+

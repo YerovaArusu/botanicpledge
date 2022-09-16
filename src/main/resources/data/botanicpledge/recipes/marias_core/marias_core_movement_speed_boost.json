@@ -6,7 +6,7 @@
     {"item": "botanicpledge:yggdralium_shard"},
 
     {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:marinas_core"},
+    {"item": "botanicpledge:marias_core"},
     {"item": "botanicpledge:yggdralium_shard"},
   
     {"item": "botanicpledge:yggdralium_shard"},
@@ -14,8 +14,9 @@
     {"item": "botanicpledge:yggdralium_shard"}
   ],
   "output": {
-    "item": "botanicpledge:marinas_core"
+    "item": "botanicpledge:marias_core"
   },
-  "statName" : "attack_damage",
-  "statValue" : 1.0
+  "statName" : "movement_speed",
+  "statValue" : 0.1
 }
+

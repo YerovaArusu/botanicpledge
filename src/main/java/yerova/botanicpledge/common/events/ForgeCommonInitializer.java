@@ -8,6 +8,7 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
 
@@ -31,7 +32,7 @@ public class ForgeCommonInitializer {
     }
 
     private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
-            ItemInit.MARIAS_CORE.get(), MariasCore::makeRelic,
-            ItemInit.MARINAS_CORE.get(), MarinasCore::makeRelic
+            ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
+            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic
     ));
 }

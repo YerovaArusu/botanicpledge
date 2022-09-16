@@ -38,12 +38,6 @@ public class Networking {
                 .consumer(SyncProtector::handle)
                 .add();
 
-        net.messageBuilder(PacketSyncDCPLayerStatsToClient.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(PacketSyncDCPLayerStatsToClient::new)
-                .encoder(PacketSyncDCPLayerStatsToClient::encode)
-                .consumer(PacketSyncDCPLayerStatsToClient::handle)
-                .add();
-
     }
 
 

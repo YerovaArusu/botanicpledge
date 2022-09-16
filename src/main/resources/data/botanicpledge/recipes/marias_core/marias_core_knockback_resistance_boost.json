@@ -1,0 +1,22 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "minecraft:netherite_ingot"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:netherite_ingot"},
+
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:marias_core"},
+    {"item": "botanicpledge:yggdralium_shard"},
+
+    {"item": "minecraft:netherite_ingot"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:netherite_ingot"}
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName" : "knockback_resistance",
+  "statValue" : 0.1
+}
+
