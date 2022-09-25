@@ -1,28 +1,34 @@
 package yerova.botanicpledge.common.items.relic;
 
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
-import yerova.botanicpledge.BotanicPledge;
-import yerova.botanicpledge.common.utils.divine_core_utils.IDivineCoreAttributes;
-
+import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DivineCoreItem extends ItemRelic implements ICurioItem {
-
-    private static ArrayList<Attribute> attributeList() {
+    public static ArrayList<Attribute> attributeList() {
         ArrayList<Attribute> list = new ArrayList<Attribute>();
         list.add(Attributes.ARMOR);
         list.add(Attributes.ARMOR_TOUGHNESS);
@@ -36,7 +42,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return list;
     }
 
-    private static ArrayList<String> attributeNameList() {
+    public static ArrayList<String> attributeNameList() {
         ArrayList<String> list = new ArrayList<String>();
         list.add("armor");
         list.add("armor_toughness");
@@ -53,48 +59,53 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return new RelicImpl(stack, null);
     }
 
+    private static final String TAG_CORE_UUID = "coreUUID";
+
+    public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
 
     public DivineCoreItem(Properties props) {
         super(props);
     }
 
-    //TODO: Do that thing
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
-        if (prevStack.getEquipmentSlot() == stack.getEquipmentSlot()) {
-            return;
-        }
         for (int i = 0; i < attributeList().size(); i++) {
+            double addValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+            AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
 
-            double baseValue = slotContext.entity().getAttribute(attributeList().get(i)).getBaseValue();
-            double addValue = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").getInt(attributeNameList().get(i));
-
-            slotContext.entity().getAttribute(attributeList().get(i)).setBaseValue(baseValue + addValue);
+            if (!slotContext.entity().getAttribute(attributeList().get(i)).hasModifier(statModifier)) {
+                slotContext.entity().getAttribute(attributeList().get(i)).addPermanentModifier(statModifier);
+            }
         }
 
-        ICurioItem.super.onEquip(slotContext, prevStack, stack);
     }
 
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
-        for (int i = 0; i < attributeList().size(); i++) {
-            double currentValue = slotContext.entity().getAttribute(attributeList().get(i)).getBaseValue();
-            double reducerValue = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").getInt(attributeNameList().get(i));
+        if (newStack.getItem() != stack.getItem()) {
+            for (int i = 0; i < attributeList().size(); i++) {
 
-            if (currentValue >= reducerValue) {
-                slotContext.entity().getAttribute(attributeList().get(i)).setBaseValue(currentValue - reducerValue);
-            }
+                double reducerValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                LivingEntity entity = slotContext.entity();
+                AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
+                AttributeInstance statAttribute = entity.getAttribute(attributeList().get(i));
 
-            if (attributeNameList().get(i).equals(attributeNameList().get(2))) {
-                slotContext.entity().hurt(new DamageSource(""), (float) reducerValue);
+                if (statAttribute.hasModifier(statModifier)) {
+                    statAttribute.removeModifier(statModifier);
+
+                    if (attributeNameList().get(i).equals(attributeNameList().get(2))) {
+
+                        if (entity.getHealth() > slotContext.entity().getMaxHealth()) {
+                            entity.hurt(HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+                        }
+                    }
+                }
             }
         }
-
-
-        ICurioItem.super.onUnequip(slotContext, newStack, stack);
+        //ICurioItem.super.onUnequip(slotContext, newStack, stack);
     }
 
     @Override
@@ -112,5 +123,41 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return true;
     }
 
+    public static UUID getCoreUUID(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
 
+        // Legacy handling
+        String tagCoreUuidMostLegacy = "coreUUIDMost";
+        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
+        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
+            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
+            tag.putUUID(TAG_CORE_UUID, uuid);
+        }
+
+        if (!tag.hasUUID(TAG_CORE_UUID)) {
+            UUID uuid = UUID.randomUUID();
+            tag.putUUID(TAG_CORE_UUID, uuid);
+        }
+
+        return tag.getUUID(TAG_CORE_UUID);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
+        if(Screen.hasShiftDown()) {
+            CompoundTag statsTag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+            for (String s: statsTag.getAllKeys()) {
+                if (attributeNameList().contains(s)) {
+                    tooltip.add(new TextComponent( "+" + statsTag.getDouble(s) + " "+ new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
+
+                }
+            }
+        } else {
+            tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
+        }
+
+
+
+        super.appendHoverText(stack, world, tooltip, flags);
+    }
 }

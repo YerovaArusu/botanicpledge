@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.screen.slot;
+package yerova.botanicpledge.client.render.screen.slot;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;

@@ -1,0 +1,22 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "minecraft:diamond_sword"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:diamond_sword"},
+
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:marinas_core"},
+    {"item": "botanicpledge:yggdralium_shard"},
+  
+    {"item": "minecraft:diamond_sword"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:diamond_sword"}
+  ],
+  "output": {
+    "item": "botanicpledge:marinas_core"
+  },
+  "statName" : "attack_damage",
+  "statValue" : 1.0
+}
+

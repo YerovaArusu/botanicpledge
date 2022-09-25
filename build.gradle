@@ -105,10 +105,18 @@ repositories {
     //geckolib
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 
+    //just enough Items
+    maven {name = "Progwml6 maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.80'
     //botania
     implementation fg.deobf("vazkii.botania:Botania:1.18.2-435")
 
@@ -120,6 +128,14 @@ dependencies {
 
     //geckolib
     implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.29')
+
+
+    //just enough items
+    // compile against the JEI API but do not include it at runtime
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
+    // at runtime, use the full JEI jar
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+
 }
 
 

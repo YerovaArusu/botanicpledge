@@ -1,0 +1,22 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "minecraft:gold_block"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:gold_block"},
+
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:marinas_core"},
+    {"item": "botanicpledge:yggdralium_shard"},
+  
+    {"item": "minecraft:gold_block"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:gold_block"}
+  ],
+  "output": {
+    "item": "botanicpledge:marinas_core"
+  },
+  "statName" : "attack_speed",
+  "statValue" : 0.1
+}
+

@@ -24,8 +24,11 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.BotanicPledge;
-import yerova.botanicpledge.client.screen.CoreAltarMenu;
+import yerova.botanicpledge.client.render.screen.CoreAltarMenu;
+import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
+import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 import javax.annotation.Nonnull;
 import java.util.Optional;
@@ -46,6 +49,9 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 128;
+
+    private int hasReachedMaxStat = 0;
+    private int maxedStat = -1;
     private CompoundTag savedItemNBT;
 
     public CoreAltarBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -54,36 +60,40 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         this.data = new ContainerData() {
             public int get(int index) {
                 switch (index) {
-                    case 0: return CoreAltarBlockEntity.this.progress;
-                    case 1: return CoreAltarBlockEntity.this.maxProgress;
-                    default: return 0;
+                    case 0:
+                        return CoreAltarBlockEntity.this.progress;
+                    case 1:
+                        return CoreAltarBlockEntity.this.maxProgress;
+                    case 2:
+                        return CoreAltarBlockEntity.this.hasReachedMaxStat;
+                    case 3:
+                        return CoreAltarBlockEntity.this.maxedStat;
+                    default:
+                        return 0;
                 }
             }
 
 
             public void set(int index, int value) {
                 switch (index) {
-                    case 0: CoreAltarBlockEntity.this.progress = value; break;
-                    case 1: CoreAltarBlockEntity.this.maxProgress = value; break;
+                    case 0:
+                        CoreAltarBlockEntity.this.progress = value;
+                        break;
+                    case 1:
+                        CoreAltarBlockEntity.this.maxProgress = value;
+                        break;
+                    case 2:
+                        CoreAltarBlockEntity.this.hasReachedMaxStat = value;
+                    case 3:
+                        CoreAltarBlockEntity.this.maxedStat = value;
                 }
             }
 
 
-            //Tags for Items
-            public CompoundTag getTags(int index) {
-                switch (index) {
-                    case 2: return CoreAltarBlockEntity.this.savedItemNBT;
-                    default: return null;
-                }
-            }
 
-            public void setTags(int index,CompoundTag tag){
-                switch (index) {
-                    case 2: CoreAltarBlockEntity.this.savedItemNBT = tag; break;
-                }
+            public int getCount() {
+                return CoreAltarBlockEntity.dataContainerSize = 4;
             }
-
-            public int getCount() { return  CoreAltarBlockEntity.dataContainerSize = 3; }
         };
 
     }
@@ -126,7 +136,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     protected void saveAdditional(@NotNull CompoundTag tag) {
         tag.put("inventory", itemHandler.serializeNBT());
         tag.putInt("core_altar.progress", progress);
-        if(savedItemNBT != null) {
+        if (savedItemNBT != null) {
             tag.put("item_saved_nbt", savedItemNBT);
         }
 
@@ -138,7 +148,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         super.load(nbt);
         itemHandler.deserializeNBT(nbt.getCompound("inventory"));
         progress = nbt.getInt("core_altar.progress");
-        if(nbt.contains("item_saved_nbt")){
+        if (nbt.contains("item_saved_nbt")) {
             savedItemNBT = nbt.getCompound("item_saved_nbt");
         }
     }
@@ -153,12 +163,11 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
     }
 
 
-
     public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CoreAltarBlockEntity pBlockEntity) {
-        if(hasRecipe(pBlockEntity)) {
+        if (hasRecipe(pBlockEntity)) {
             pBlockEntity.progress++;
             setChanged(pLevel, pPos, pState);
-            if(pBlockEntity.progress > pBlockEntity.maxProgress) {
+            if (pBlockEntity.progress > pBlockEntity.maxProgress) {
                 craftItem(pBlockEntity);
 
             }
@@ -180,8 +189,11 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
                 .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
 
 
-        return match.isPresent() && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem()) && entity.transportedNBT(match);
+        return match.isPresent()
+                && canInsertAmountIntoOutputSlot(inventory)
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
+                && entity.transportedNBT(match)
+                && validAttributeChange(entity);
     }
 
 
@@ -195,26 +207,19 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         Optional<CoreAltarRecipe> match = level.getRecipeManager()
                 .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
 
-        if(match.isPresent()) {
+        if (match.isPresent()) {
 
             CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
 
+            /*
+            TODO:Integrate the Value from the config
+             */
 
-
-            entity.itemHandler.extractItem(0,1, false);
-            entity.itemHandler.extractItem(1,1, false);
-            entity.itemHandler.extractItem(2,1, false);
-            entity.itemHandler.extractItem(3,1, false);
-            entity.itemHandler.extractItem(4,1, false);
-            entity.itemHandler.extractItem(5,1, false);
-            entity.itemHandler.extractItem(6,1, false);
-            entity.itemHandler.extractItem(7,1, false);
-            entity.itemHandler.extractItem(8,1, false);
 
             ItemStack stack = new ItemStack(match.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(9).getCount() + 1);
 
-            for (String tagKey: entity.savedItemNBT.getAllKeys()) {
-                if(combinedTag.contains(tagKey)){
+            for (String tagKey : entity.savedItemNBT.getAllKeys()) {
+                if (combinedTag.contains(tagKey)) {
                     combinedTag.putDouble(tagKey, combinedTag.getDouble(tagKey) + entity.savedItemNBT.getDouble(tagKey));
                 } else {
                     combinedTag.putDouble(tagKey, entity.savedItemNBT.getDouble(tagKey));
@@ -222,6 +227,16 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
             }
 
             stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").merge(combinedTag);
+
+            entity.itemHandler.extractItem(0, 1, false);
+            entity.itemHandler.extractItem(1, 1, false);
+            entity.itemHandler.extractItem(2, 1, false);
+            entity.itemHandler.extractItem(3, 1, false);
+            entity.itemHandler.extractItem(4, 1, false);
+            entity.itemHandler.extractItem(5, 1, false);
+            entity.itemHandler.extractItem(6, 1, false);
+            entity.itemHandler.extractItem(7, 1, false);
+            entity.itemHandler.extractItem(8, 1, false);
 
 
             entity.itemHandler.insertItem(9, stack, false);
@@ -241,7 +256,7 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         return inventory.getItem(9).getMaxStackSize() > inventory.getItem(9).getCount();
     }
 
-    private boolean transportedNBT(Optional<CoreAltarRecipe> match){
+    private boolean transportedNBT(Optional<CoreAltarRecipe> match) {
         this.savedItemNBT = match.get().extraNBT;
         if (savedItemNBT.equals(match.get().extraNBT)) {
             return true;
@@ -252,5 +267,26 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
     private void resetNBT() {
         this.savedItemNBT = null;
+    }
+
+    private static boolean validAttributeChange(CoreAltarBlockEntity entity) {
+        CompoundTag statsTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+        boolean tmpBoolean = true;
+        for (String s : statsTag.getAllKeys()) {
+            //BotanicPledge.LOGGER.info(s);
+            if (DivineCoreItem.attributeNameList().contains(s)) {
+                if (!(statsTag.getDouble(s) < BotanicPledgeCommonConfigs.DivineCoreMaxValuesFromConfig().get(s))) {
+                    entity.hasReachedMaxStat = 1;
+                    entity.maxedStat = DivineCoreItem.attributeNameList().indexOf(s);
+                    tmpBoolean = false;
+                    break;
+                } else {
+                    entity.hasReachedMaxStat = 0;
+                    entity.maxedStat = -1;
+                }
+            }
+        }
+
+        return tmpBoolean;
     }
 }

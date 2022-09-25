@@ -6,7 +6,7 @@
     {"item": "minecraft:diamond_chestplate"},
 
     {"item": "botanicpledge:yggdralium_shard"},
-    {"item": "botanicpledge:marias_core"},
+    {"item": "botanicpledge:marinas_core"},
     {"item": "botanicpledge:yggdralium_shard"},
   
     {"item": "minecraft:diamond_chestplate"},
@@ -14,9 +14,9 @@
     {"item": "minecraft:diamond_chestplate"}
   ],
   "output": {
-    "item": "botanicpledge:marias_core"
+    "item": "botanicpledge:marinas_core"
   },
   "statName" : "armor",
-  "statValue" : 10.0
+  "statValue" : 1.0
 }
 

@@ -9,6 +9,16 @@
   "item.botanicpledge.marias_core": "Marias Core",
   "item.botanicpledge.marinas_core": "Marinas Core",
 
+  "armor": "Armor",
+  "armor_toughness": "Armor Toughness",
+  "max_health": "Max Health",
+  "attack_damage": "Attack Damage",
+  "knockback_resistance": "Knockback Resistance",
+  "movement_speed": "Movement_speed",
+  "attack_speed": "Attack Speed",
+
+  "show_tooltip_stats": "Press %1$s to show Stats",
+
   "block.botanicpledge.core_altar": "Core Altar",
 
   "itemGroup.botanicpledge": "Botanic Pledge",

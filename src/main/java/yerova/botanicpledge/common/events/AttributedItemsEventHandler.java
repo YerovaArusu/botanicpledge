@@ -14,7 +14,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
 import yerova.botanicpledge.BotanicPledge;
-import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)

@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.screen;
+package yerova.botanicpledge.client.render.screen;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
-import yerova.botanicpledge.client.screen.slot.ModResultSlot;
+import yerova.botanicpledge.client.render.screen.slot.ModResultSlot;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.block_entities.CoreAltarBlockEntity;
 
@@ -56,6 +56,14 @@ public class CoreAltarMenu extends AbstractContainerMenu {
 
     public boolean isCrafting() {
         return data.get(0) > 0;
+    }
+
+    public boolean stackHasMaxStats() {
+        return data.get(2) > 0;
+    }
+
+    public int indexOfMaxedItem() {
+        return data.get(3);
     }
 
     public int getScaledProgress() {

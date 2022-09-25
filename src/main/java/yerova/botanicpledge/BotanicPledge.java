@@ -11,7 +11,9 @@ import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -20,13 +22,15 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
+import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.render.entities.ManaSlashRenderer;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
-import yerova.botanicpledge.client.render.gui.ProtectorHUD;
-import yerova.botanicpledge.client.screen.CoreAltarScreen;
-import yerova.botanicpledge.client.screen.MenuTypesInit;
+import yerova.botanicpledge.client.render.screen.CoreAltarScreen;
+import yerova.botanicpledge.client.render.screen.MenuTypesInit;
+import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.items.ItemInit;
@@ -61,6 +65,8 @@ public class BotanicPledge {
         forgeBus.addListener(this::processIMC);
         forgeBus.addListener(this::doClientStuff);
 
+        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BotanicPledgeClientConfigs.SPEC, BotanicPledge.MOD_ID + "-client.toml");
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BotanicPledgeCommonConfigs.SPEC, BotanicPledge.MOD_ID + "-common.toml");
 
         GeckoLib.initialize();
         MinecraftForge.EVENT_BUS.register(this);

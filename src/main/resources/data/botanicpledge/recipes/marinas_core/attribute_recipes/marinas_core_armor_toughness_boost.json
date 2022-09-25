@@ -1,0 +1,22 @@
+{
+  "type": "botanicpledge:core_altering",
+  "ingredients": [
+    {"item": "minecraft:iron_block"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:iron_block"},
+
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "botanicpledge:marinas_core"},
+    {"item": "botanicpledge:yggdralium_shard"},
+  
+    {"item": "minecraft:iron_block"},
+    {"item": "botanicpledge:yggdralium_shard"},
+    {"item": "minecraft:iron_block"}
+  ],
+  "output": {
+    "item": "botanicpledge:marinas_core"
+  },
+  "statName" : "armor_toughness",
+  "statValue" : 0.5
+}
+

@@ -9,8 +9,6 @@ import vazkii.botania.api.item.IRelic;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
-import yerova.botanicpledge.common.items.relic.MariasCore;
-import yerova.botanicpledge.common.items.relic.MarinasCore;
 
 import java.util.Map;
 import java.util.function.Function;

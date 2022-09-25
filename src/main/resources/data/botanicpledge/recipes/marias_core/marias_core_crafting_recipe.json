@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S#S",
+    "#G#",
+    "S#S"
+  ],
+  "key": {
+    "#": {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    "G": {
+      "item": "minecraft:white_dye"
+    },
+    "S": {
+      "item": "botanicpledge:yggdralium_shard"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:marias_core"
+  }
+}

@@ -7,7 +7,7 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.BotanicPledge;
-import yerova.botanicpledge.client.render.gui.ProtectorHUD;
+import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ProtectorEventsClient {

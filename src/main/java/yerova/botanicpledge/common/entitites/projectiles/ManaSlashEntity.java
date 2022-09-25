@@ -15,7 +15,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import yerova.botanicpledge.common.entitites.EntityInit;
-import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 
 public class ManaSlashEntity extends ThrowableProjectile implements IAnimatable {
 

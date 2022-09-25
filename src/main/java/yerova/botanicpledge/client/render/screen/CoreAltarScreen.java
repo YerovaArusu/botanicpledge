@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.screen;
+package yerova.botanicpledge.client.render.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -8,10 +8,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 
 public class CoreAltarScreen extends AbstractContainerScreen<CoreAltarMenu> {
 
-    private static final ResourceLocation TEXTURE = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/core_altar_inventory.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/core_altar/core_altar_inventory.png");
 
     public CoreAltarScreen(CoreAltarMenu menu, Inventory inv, Component title) {
         super(menu, inv, title);
@@ -29,7 +30,12 @@ public class CoreAltarScreen extends AbstractContainerScreen<CoreAltarMenu> {
         this.blit(poseStack, x, y, 0,0, imageWidth, imageHeight);
 
         if(menu.isCrafting()){
-            blit(poseStack,x + 108, y +40, 178, 0, menu.getScaledProgress(), 4);
+            blit(poseStack,x + 108, y +40, 178, 0, menu.getScaledProgress(), 6);
+        }
+
+        if(menu.stackHasMaxStats()){
+            blit(poseStack, x + 104, y + 60, 178, 12, 68, 16);
+            drawString(poseStack,font, DivineCoreItem.attributeNameList().get(menu.indexOfMaxedItem()) + " is maxed", x + 108, y+40, 255);
         }
     }
 

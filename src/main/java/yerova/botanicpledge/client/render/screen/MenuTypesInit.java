@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.screen;
+package yerova.botanicpledge.client.render.screen;
 
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;

@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.render.gui;
+package yerova.botanicpledge.client.render.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
