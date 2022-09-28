@@ -13,7 +13,10 @@ public class Networking {
     private static SimpleChannel INSTANCE;
 
     private static int packetId = 0;
-    private static int id() { return  packetId++;};
+
+    private static int id() {
+        return packetId++;
+    }
 
     public static void register() {
         SimpleChannel net = NetworkRegistry.ChannelBuilder

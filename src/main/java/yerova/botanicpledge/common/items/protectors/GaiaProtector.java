@@ -7,13 +7,12 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 public class GaiaProtector extends Item implements ICurioItem {
-    public GaiaProtector(Properties properties) {
-        super(properties);
-    }
-
     private static final int maxShield = 200;
     private static final int defRegenPerTick = 30;
     private static final int maxCharge = 500_000;
+    public GaiaProtector(Properties properties) {
+        super(properties);
+    }
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {

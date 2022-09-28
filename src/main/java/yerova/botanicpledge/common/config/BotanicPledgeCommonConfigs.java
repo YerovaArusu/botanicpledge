@@ -16,18 +16,6 @@ public class BotanicPledgeCommonConfigs {
     public static final ForgeConfigSpec.ConfigValue<Integer> MOVEMENT_SPEED_MAX_VALUE;
     public static final ForgeConfigSpec.ConfigValue<Integer> ATTACK_SPEED_MAX_VALUE;
 
-    public static HashMap<String, Integer> DivineCoreMaxValuesFromConfig() {
-        HashMap<String, Integer> map = new HashMap<String, Integer>();
-        map.put("armor", ARMOR_MAX_VALUE.get());
-        map.put("armor_toughness", ARMOR_TOUGHNESS_MAX_VALUE.get());
-        map.put("max_health", MAX_HEALTH_MAX_VALUE.get());
-        map.put("attack_damage", ATTACK_DAMAGE_MAX_VALUE.get());
-        map.put("knockback_resistance", KNOCKBACK_RESISTANCE_MAX_VALUE.get());
-        map.put("movement_speed", MOVEMENT_SPEED_MAX_VALUE.get());
-        map.put("attack_speed", ATTACK_SPEED_MAX_VALUE.get());
-        return map;
-    }
-
     static {
         BUILDER.push("Configs for BotanicPledge");
 
@@ -43,5 +31,17 @@ public class BotanicPledgeCommonConfigs {
 
         BUILDER.pop();
         SPEC = BUILDER.build();
+    }
+
+    public static HashMap<String, Integer> DivineCoreMaxValuesFromConfig() {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        map.put("armor", ARMOR_MAX_VALUE.get());
+        map.put("armor_toughness", ARMOR_TOUGHNESS_MAX_VALUE.get());
+        map.put("max_health", MAX_HEALTH_MAX_VALUE.get());
+        map.put("attack_damage", ATTACK_DAMAGE_MAX_VALUE.get());
+        map.put("knockback_resistance", KNOCKBACK_RESISTANCE_MAX_VALUE.get());
+        map.put("movement_speed", MOVEMENT_SPEED_MAX_VALUE.get());
+        map.put("attack_speed", ATTACK_SPEED_MAX_VALUE.get());
+        return map;
     }
 }

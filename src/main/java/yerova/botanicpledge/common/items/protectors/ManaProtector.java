@@ -8,11 +8,12 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 
-public class ManaProtector extends Item implements ICurioItem  {
+public class ManaProtector extends Item implements ICurioItem {
 
     private static final int maxShield = 10;
     private static final int defRegenPerTick = 1;
     private static final int maxCharge = 125_000;
+
     public ManaProtector(Item.Properties properties) {
         super(properties);
     }

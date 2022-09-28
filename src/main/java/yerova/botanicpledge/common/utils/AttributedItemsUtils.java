@@ -27,7 +27,6 @@ public class AttributedItemsUtils {
         CompoundTag stats = stack.getOrCreateTagElement(TAG_STATS_SUBSTAT);
 
 
-
         //Normal Stats
         stats.putInt(MAX_SHIELD_TAG_NAME, maxShield);
         stats.putInt(MAX_CHARGE_TAG_NAME, maxCharge);

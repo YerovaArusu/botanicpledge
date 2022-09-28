@@ -7,6 +7,8 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.common.blocks.BlockInit;
+import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 import yerova.botanicpledge.common.items.protectors.GaiaProtector;
 import yerova.botanicpledge.common.items.protectors.ManaProtector;
 import yerova.botanicpledge.common.items.protectors.TerraProtector;
@@ -31,6 +33,7 @@ public class ItemInit {
 
     public static final RegistryObject<Item> GAIA_PROTECTOR = ITEMS.register("gaia_protector", () -> new GaiaProtector(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
+
     public static final RegistryObject<Item> YGGDRAL_PROTECTOR = ITEMS.register("yggdral_protector", () -> new YggdralProtector(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
 
@@ -47,15 +50,14 @@ public class ItemInit {
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
 
 
-
-
     //Items
     public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new Item(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
-
+    //BlockItems
+    public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer_block_item",
+            () -> new ManaYggdralBufferBlockItem(BlockInit.MANA_YGGDRAL_BUFFER.get(), new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant()));
     public static RegistryObject<Item> YGGSRALIUM_SHARD = ITEMS.register("yggdralium_shard", () -> new Item(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
-
 
 
 }

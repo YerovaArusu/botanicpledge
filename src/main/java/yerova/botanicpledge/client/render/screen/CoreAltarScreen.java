@@ -21,21 +21,21 @@ public class CoreAltarScreen extends AbstractContainerScreen<CoreAltarMenu> {
     @Override
     protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F,1.0F, 1.0F);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        int x = (width - imageWidth)/2;
-        int y = (height - imageWidth)/2 + 7;
+        int x = (width - imageWidth) / 2;
+        int y = (height - imageWidth) / 2 + 7;
 
-        this.blit(poseStack, x, y, 0,0, imageWidth, imageHeight);
+        this.blit(poseStack, x, y, 0, 0, imageWidth, imageHeight);
 
-        if(menu.isCrafting()){
-            blit(poseStack,x + 108, y +40, 178, 0, menu.getScaledProgress(), 6);
+        if (menu.isCrafting()) {
+            blit(poseStack, x + 108, y + 40, 178, 0, menu.getScaledProgress(), 6);
         }
 
-        if(menu.stackHasMaxStats()){
+        if (menu.stackHasMaxStats()) {
             blit(poseStack, x + 104, y + 60, 178, 12, 68, 16);
-            drawString(poseStack,font, DivineCoreItem.attributeNameList().get(menu.indexOfMaxedItem()) + " is maxed", x + 108, y+40, 255);
+            drawString(poseStack, font, DivineCoreItem.attributeNameList().get(menu.indexOfMaxedItem()) + " is maxed", x + 108, y + 40, 255);
         }
     }
 

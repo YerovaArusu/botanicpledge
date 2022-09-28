@@ -8,7 +8,10 @@ import java.util.function.Supplier;
 
 public class SyncProtector {
 
-    private int charge, maxCharge, defense, maxDefense;
+    private final int charge;
+    private final int maxCharge;
+    private final int defense;
+    private final int maxDefense;
 
     public SyncProtector(int charge, int maxCharge, int defense, int maxDefense) {
         this.charge = charge;
@@ -23,7 +26,6 @@ public class SyncProtector {
         this.defense = buffer.readInt();
         this.maxDefense = buffer.readInt();
     }
-
 
 
     public void encode(FriendlyByteBuf buffer) {

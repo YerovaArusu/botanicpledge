@@ -19,18 +19,17 @@ public class ProtectorHUD {
     private static final ResourceLocation FULL_DEFENSE_BAR = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/protector_hud/full_defense_bar.png");
 
     public static final IIngameOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
-        int x = width /3;
+        int x = width / 3;
         int y = height;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
-        if(ClientSyncedProtector.getDefense() > 0 && ClientSyncedProtector.getCharge() > 0) {
+        if (ClientSyncedProtector.getDefense() > 0 && ClientSyncedProtector.getCharge() > 0) {
 
 
-
-            int chargeBarWidth  = (int) Math.ceil(100 * (((1/(double) ClientSyncedProtector.getMaxCharge()) * (double) ClientSyncedProtector.getCharge())));
-            int defenseBarWidth  = (int) Math.ceil(100 * (((1/(double) ClientSyncedProtector.getMaxDefense()) * (double) ClientSyncedProtector.getDefense())));
+            int chargeBarWidth = (int) Math.ceil(100 * (((1 / (double) ClientSyncedProtector.getMaxCharge()) * (double) ClientSyncedProtector.getCharge())));
+            int defenseBarWidth = (int) Math.ceil(100 * (((1 / (double) ClientSyncedProtector.getMaxDefense()) * (double) ClientSyncedProtector.getDefense())));
 
             RenderSystem.setShaderTexture(0, EMPTY_BAR);
             for (int i = 0; i <= 100; i++) {
@@ -40,15 +39,15 @@ public class ProtectorHUD {
 
             RenderSystem.setShaderTexture(0, FULL_CHARGE_BAR);
             for (int i = 0; i <= 100; i++) {
-                if(chargeBarWidth>i) {
-                    GuiComponent.blit(poseStack, x -98 +i, y-20, 1, 0, 1, 8, 1,8);
+                if (chargeBarWidth > i) {
+                    GuiComponent.blit(poseStack, x - 98 + i, y - 20, 1, 0, 1, 8, 1, 8);
                 }
             }
 
             RenderSystem.setShaderTexture(0, FULL_DEFENSE_BAR);
             for (int i = 0; i <= 100; i++) {
-                if(defenseBarWidth>i) {
-                    GuiComponent.blit(poseStack, x -98 +i, y-10, 1, 0, 1, 8, 1,8);
+                if (defenseBarWidth > i) {
+                    GuiComponent.blit(poseStack, x - 98 + i, y - 10, 1, 0, 1, 8, 1, 8);
                 }
             }
         } else {

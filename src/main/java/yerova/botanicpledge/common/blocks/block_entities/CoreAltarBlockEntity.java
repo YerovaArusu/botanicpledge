@@ -35,18 +35,16 @@ import java.util.Optional;
 
 public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
-    public static int dataContainerSize = 3;
-
     public static final int slotCount = 10;
+    public static int dataContainerSize = 3;
     public final ItemStackHandler itemHandler = new ItemStackHandler(10) {
         @Override
         protected void onContentsChanged(int slot) {
             setChanged();
         }
     };
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
-
     protected final ContainerData data;
+    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private int progress = 0;
     private int maxProgress = 128;
 
@@ -90,7 +88,6 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
             }
 
 
-
             public int getCount() {
                 return CoreAltarBlockEntity.dataContainerSize = 4;
             }
@@ -98,11 +95,119 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
 
     }
 
+    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CoreAltarBlockEntity pBlockEntity) {
+        if (hasRecipe(pBlockEntity)) {
+            pBlockEntity.progress++;
+            setChanged(pLevel, pPos, pState);
+            if (pBlockEntity.progress > pBlockEntity.maxProgress) {
+                craftItem(pBlockEntity);
+
+            }
+        } else {
+            pBlockEntity.resetNBT();
+            pBlockEntity.resetProgress();
+            setChanged(pLevel, pPos, pState);
+        }
+    }
+
+    private static boolean hasRecipe(CoreAltarBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+
+        Optional<CoreAltarRecipe> match = level.getRecipeManager()
+                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
+
+
+        return match.isPresent()
+                && canInsertAmountIntoOutputSlot(inventory)
+                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
+                && entity.transportedNBT(match)
+                && validAttributeChange(entity);
+    }
+
+    private static void craftItem(CoreAltarBlockEntity entity) {
+        Level level = entity.level;
+        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
+        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
+            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
+        }
+
+        Optional<CoreAltarRecipe> match = level.getRecipeManager()
+                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
+
+        if (match.isPresent()) {
+
+            CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
+
+            /*
+            TODO:Integrate the Value from the config
+             */
+
+
+            ItemStack stack = new ItemStack(match.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(9).getCount() + 1);
+
+            for (String tagKey : entity.savedItemNBT.getAllKeys()) {
+                if (combinedTag.contains(tagKey)) {
+                    combinedTag.putDouble(tagKey, combinedTag.getDouble(tagKey) + entity.savedItemNBT.getDouble(tagKey));
+                } else {
+                    combinedTag.putDouble(tagKey, entity.savedItemNBT.getDouble(tagKey));
+                }
+            }
+
+            stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").merge(combinedTag);
+
+            entity.itemHandler.extractItem(0, 1, false);
+            entity.itemHandler.extractItem(1, 1, false);
+            entity.itemHandler.extractItem(2, 1, false);
+            entity.itemHandler.extractItem(3, 1, false);
+            entity.itemHandler.extractItem(4, 1, false);
+            entity.itemHandler.extractItem(5, 1, false);
+            entity.itemHandler.extractItem(6, 1, false);
+            entity.itemHandler.extractItem(7, 1, false);
+            entity.itemHandler.extractItem(8, 1, false);
+
+
+            entity.itemHandler.insertItem(9, stack, false);
+            entity.resetProgress();
+        }
+    }
+
+    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
+        return inventory.getItem(9).getItem() == output.getItem() || inventory.getItem(9).isEmpty();
+    }
+
+    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
+        return inventory.getItem(9).getMaxStackSize() > inventory.getItem(9).getCount();
+    }
+
+    private static boolean validAttributeChange(CoreAltarBlockEntity entity) {
+        CompoundTag statsTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+        boolean tmpBoolean = true;
+        for (String s : statsTag.getAllKeys()) {
+            //BotanicPledge.LOGGER.info(s);
+            if (DivineCoreItem.attributeNameList().contains(s)) {
+                if (!(statsTag.getDouble(s) < BotanicPledgeCommonConfigs.DivineCoreMaxValuesFromConfig().get(s))) {
+                    entity.hasReachedMaxStat = 1;
+                    entity.maxedStat = DivineCoreItem.attributeNameList().indexOf(s);
+                    tmpBoolean = false;
+                    break;
+                } else {
+                    entity.hasReachedMaxStat = 0;
+                    entity.maxedStat = -1;
+                }
+            }
+        }
+
+        return tmpBoolean;
+    }
+
     @Override
     public Component getDisplayName() {
         return new TextComponent("Core Altar");
     }
-
 
     @Nullable
     @Override
@@ -162,131 +267,16 @@ public class CoreAltarBlockEntity extends BlockEntity implements MenuProvider {
         Containers.dropContents(this.level, this.worldPosition, inventory);
     }
 
-
-    public static void tick(Level pLevel, BlockPos pPos, BlockState pState, CoreAltarBlockEntity pBlockEntity) {
-        if (hasRecipe(pBlockEntity)) {
-            pBlockEntity.progress++;
-            setChanged(pLevel, pPos, pState);
-            if (pBlockEntity.progress > pBlockEntity.maxProgress) {
-                craftItem(pBlockEntity);
-
-            }
-        } else {
-            pBlockEntity.resetNBT();
-            pBlockEntity.resetProgress();
-            setChanged(pLevel, pPos, pState);
-        }
-    }
-
-    private static boolean hasRecipe(CoreAltarBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        Optional<CoreAltarRecipe> match = level.getRecipeManager()
-                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
-
-
-        return match.isPresent()
-                && canInsertAmountIntoOutputSlot(inventory)
-                && canInsertItemIntoOutputSlot(inventory, match.get().getResultItem())
-                && entity.transportedNBT(match)
-                && validAttributeChange(entity);
-    }
-
-
-    private static void craftItem(CoreAltarBlockEntity entity) {
-        Level level = entity.level;
-        SimpleContainer inventory = new SimpleContainer(entity.itemHandler.getSlots());
-        for (int i = 0; i < entity.itemHandler.getSlots(); i++) {
-            inventory.setItem(i, entity.itemHandler.getStackInSlot(i));
-        }
-
-        Optional<CoreAltarRecipe> match = level.getRecipeManager()
-                .getRecipeFor(CoreAltarRecipe.Type.INSTANCE, inventory, level);
-
-        if (match.isPresent()) {
-
-            CompoundTag combinedTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
-
-            /*
-            TODO:Integrate the Value from the config
-             */
-
-
-            ItemStack stack = new ItemStack(match.get().getResultItem().getItem(), entity.itemHandler.getStackInSlot(9).getCount() + 1);
-
-            for (String tagKey : entity.savedItemNBT.getAllKeys()) {
-                if (combinedTag.contains(tagKey)) {
-                    combinedTag.putDouble(tagKey, combinedTag.getDouble(tagKey) + entity.savedItemNBT.getDouble(tagKey));
-                } else {
-                    combinedTag.putDouble(tagKey, entity.savedItemNBT.getDouble(tagKey));
-                }
-            }
-
-            stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").merge(combinedTag);
-
-            entity.itemHandler.extractItem(0, 1, false);
-            entity.itemHandler.extractItem(1, 1, false);
-            entity.itemHandler.extractItem(2, 1, false);
-            entity.itemHandler.extractItem(3, 1, false);
-            entity.itemHandler.extractItem(4, 1, false);
-            entity.itemHandler.extractItem(5, 1, false);
-            entity.itemHandler.extractItem(6, 1, false);
-            entity.itemHandler.extractItem(7, 1, false);
-            entity.itemHandler.extractItem(8, 1, false);
-
-
-            entity.itemHandler.insertItem(9, stack, false);
-            entity.resetProgress();
-        }
-    }
-
     private void resetProgress() {
         this.progress = 0;
     }
 
-    private static boolean canInsertItemIntoOutputSlot(SimpleContainer inventory, ItemStack output) {
-        return inventory.getItem(9).getItem() == output.getItem() || inventory.getItem(9).isEmpty();
-    }
-
-    private static boolean canInsertAmountIntoOutputSlot(SimpleContainer inventory) {
-        return inventory.getItem(9).getMaxStackSize() > inventory.getItem(9).getCount();
-    }
-
     private boolean transportedNBT(Optional<CoreAltarRecipe> match) {
         this.savedItemNBT = match.get().extraNBT;
-        if (savedItemNBT.equals(match.get().extraNBT)) {
-            return true;
-        } else {
-            return false;
-        }
+        return savedItemNBT.equals(match.get().extraNBT);
     }
 
     private void resetNBT() {
         this.savedItemNBT = null;
-    }
-
-    private static boolean validAttributeChange(CoreAltarBlockEntity entity) {
-        CompoundTag statsTag = entity.itemHandler.getStackInSlot(4).getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
-        boolean tmpBoolean = true;
-        for (String s : statsTag.getAllKeys()) {
-            //BotanicPledge.LOGGER.info(s);
-            if (DivineCoreItem.attributeNameList().contains(s)) {
-                if (!(statsTag.getDouble(s) < BotanicPledgeCommonConfigs.DivineCoreMaxValuesFromConfig().get(s))) {
-                    entity.hasReachedMaxStat = 1;
-                    entity.maxedStat = DivineCoreItem.attributeNameList().indexOf(s);
-                    tmpBoolean = false;
-                    break;
-                } else {
-                    entity.hasReachedMaxStat = 0;
-                    entity.maxedStat = -1;
-                }
-            }
-        }
-
-        return tmpBoolean;
     }
 }

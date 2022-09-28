@@ -28,6 +28,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class DivineCoreItem extends ItemRelic implements ICurioItem {
+    public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
+    private static final String TAG_CORE_UUID = "coreUUID";
+
+    public DivineCoreItem(Properties props) {
+        super(props);
+    }
+
     public static ArrayList<Attribute> attributeList() {
         ArrayList<Attribute> list = new ArrayList<Attribute>();
         list.add(Attributes.ARMOR);
@@ -59,12 +66,23 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return new RelicImpl(stack, null);
     }
 
-    private static final String TAG_CORE_UUID = "coreUUID";
+    public static UUID getCoreUUID(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
 
-    public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
+        // Legacy handling
+        String tagCoreUuidMostLegacy = "coreUUIDMost";
+        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
+        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
+            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
+            tag.putUUID(TAG_CORE_UUID, uuid);
+        }
 
-    public DivineCoreItem(Properties props) {
-        super(props);
+        if (!tag.hasUUID(TAG_CORE_UUID)) {
+            UUID uuid = UUID.randomUUID();
+            tag.putUUID(TAG_CORE_UUID, uuid);
+        }
+
+        return tag.getUUID(TAG_CORE_UUID);
     }
 
     @Override
@@ -80,7 +98,6 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         }
 
     }
-
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
@@ -123,39 +140,19 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return true;
     }
 
-    public static UUID getCoreUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
-
-        // Legacy handling
-        String tagCoreUuidMostLegacy = "coreUUIDMost";
-        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
-        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
-            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
-            tag.putUUID(TAG_CORE_UUID, uuid);
-        }
-
-        if (!tag.hasUUID(TAG_CORE_UUID)) {
-            UUID uuid = UUID.randomUUID();
-            tag.putUUID(TAG_CORE_UUID, uuid);
-        }
-
-        return tag.getUUID(TAG_CORE_UUID);
-    }
-
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
-        if(Screen.hasShiftDown()) {
+        if (Screen.hasShiftDown()) {
             CompoundTag statsTag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
-            for (String s: statsTag.getAllKeys()) {
+            for (String s : statsTag.getAllKeys()) {
                 if (attributeNameList().contains(s)) {
-                    tooltip.add(new TextComponent( "+" + statsTag.getDouble(s) + " "+ new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
 
                 }
             }
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
         }
-
 
 
         super.appendHoverText(stack, world, tooltip, flags);

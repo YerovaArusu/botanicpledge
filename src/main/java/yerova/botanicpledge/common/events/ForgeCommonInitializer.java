@@ -18,6 +18,11 @@ import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 public class ForgeCommonInitializer {
 
+    private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
+            ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
+            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic
+    ));
+
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
         var stack = e.getObject();
 
@@ -28,9 +33,4 @@ public class ForgeCommonInitializer {
                     CapabilityUtil.makeProvider(BotaniaForgeCapabilities.RELIC, makeRelic.apply(stack)));
         }
     }
-
-    private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
-            ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
-            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic
-    ));
 }

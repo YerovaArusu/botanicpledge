@@ -6,11 +6,12 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
-public class YggdralProtector extends Item implements ICurioItem{
+public class YggdralProtector extends Item implements ICurioItem {
 
     private static final int maxShield = 2_000;
     private static final int defRegenPerTick = 20;
     private static final int maxCharge = 1_000_000;
+
     public YggdralProtector(Properties properties) {
         super(properties);
     }

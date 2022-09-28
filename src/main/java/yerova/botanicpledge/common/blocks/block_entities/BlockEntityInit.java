@@ -14,5 +14,9 @@ public class BlockEntityInit {
             BLOCK_ENTITIES.register("core_alter_block_entity", () ->
                     BlockEntityType.Builder.of(CoreAltarBlockEntity::new, BlockInit.CORE_ALTAR.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<ManaYggdralBufferBlockEntity>> MANA_YGGDRAL_BUFFER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("mana_yggdral_buffer_block_entity", () ->
+                    BlockEntityType.Builder.of(ManaYggdralBufferBlockEntity::new, BlockInit.MANA_YGGDRAL_BUFFER.get()).build(null));
+
 
 }

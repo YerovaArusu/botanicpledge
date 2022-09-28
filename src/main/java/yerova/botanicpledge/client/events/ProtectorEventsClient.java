@@ -16,12 +16,11 @@ public class ProtectorEventsClient {
     public static void onToolTipRender(RenderTooltipEvent.Pre evt) {
 
 
-
         if (evt.getItemStack().isEmpty()) return;
 
 
         ItemStack stack = evt.getItemStack();
-        int width = evt.getScreenWidth()/10;
+        int width = evt.getScreenWidth() / 10;
         int height = 4;
         int tooltipX = evt.getX() + 10;
         int tooltipY = evt.getY() - 15;
