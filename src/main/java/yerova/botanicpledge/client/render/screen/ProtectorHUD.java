@@ -10,6 +10,7 @@ import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 
 public class ProtectorHUD {
@@ -19,7 +20,9 @@ public class ProtectorHUD {
     private static final ResourceLocation FULL_DEFENSE_BAR = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/protector_hud/full_defense_bar.png");
 
     public static final IIngameOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
-        int x = width / 3;
+
+
+        int x = width/3;
         int y = height;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);

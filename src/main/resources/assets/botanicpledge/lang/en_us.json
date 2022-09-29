@@ -20,6 +20,10 @@
   "show_tooltip_stats": "Press %1$s to show Stats",
 
   "block.botanicpledge.core_altar": "Core Altar",
+  "block.botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
+
+  "entity.botanicpledge.marina_arusu": "Marina Arusu",
+  "entity.botanicpledge.maria_arusu": "Maria Arusu",
 
   "itemGroup.botanicpledge": "Botanic Pledge",
   "curios.identifier.divine_core": "Divine Core"

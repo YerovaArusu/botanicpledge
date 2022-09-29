@@ -16,7 +16,7 @@ public class PlayerLeftClick {
     @SubscribeEvent
     public static void PlayerLeftClickEvent(PlayerInteractEvent.LeftClickEmpty evt) {
         if (evt.getPlayer().getMainHandItem().getItem() instanceof YggdralScepter) {
-            if (ManaItemHandler.instance().requestManaExact(evt.getItemStack(), evt.getPlayer(), 400, true)) {
+            if (ManaItemHandler.instance().requestManaExact(evt.getItemStack(), evt.getPlayer(), 10000, true)) {
                 Networking.sendToServer(new YggdralScepterLeftClick());
             }
         }

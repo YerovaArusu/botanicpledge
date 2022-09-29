@@ -51,13 +51,17 @@ public class ItemInit {
 
 
     //Items
-    public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new Item(
+    public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new YggdraliumIngot(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> YGGSRALIUM_SHARD = ITEMS.register("yggdralium_shard", () -> new Item(
+            new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
     //BlockItems
     public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer_block_item",
             () -> new ManaYggdralBufferBlockItem(BlockInit.MANA_YGGDRAL_BUFFER.get(), new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant()));
-    public static RegistryObject<Item> YGGSRALIUM_SHARD = ITEMS.register("yggdralium_shard", () -> new Item(
-            new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+
 
 
 }
