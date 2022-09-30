@@ -66,7 +66,7 @@ public class YggdralScepter extends Item implements IAnimatable {
     public static void summonCorruptMissile(ServerPlayer player) {
         Random random = new Random();
 
-        EntityCorruptMagicMissile missile = new EntityCorruptMagicMissile(player, true, 40);
+        EntityCorruptMagicMissile missile = new EntityCorruptMagicMissile(player, false, 40);
         missile.setPos(player.getX() + (random.nextDouble(0+4)-2), player.getY() + (random.nextDouble(2-1)+1), player.getZ() + (random.nextDouble(0+4)-2));
         if (missile.findTarget()) {
             player.playSound(ModSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);

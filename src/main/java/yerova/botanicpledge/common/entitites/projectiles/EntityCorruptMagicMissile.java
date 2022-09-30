@@ -141,7 +141,7 @@ public class EntityCorruptMagicMissile extends ThrowableProjectile {
             if (targetList.contains(target)) {
                 Entity owner = getOwner();
                 if (owner instanceof LivingEntity livingOwner) {
-                    target.hurt(owner instanceof Player playerOwner ? DamageSource.playerAttack(playerOwner) : DamageSource.mobAttack(livingOwner), evil ? 12 : 7);
+                    target.hurt(owner instanceof Player playerOwner ? DamageSource.playerAttack(playerOwner) : DamageSource.mobAttack(livingOwner), damage);
                 } else {
                     target.hurt(DamageSource.GENERIC, damage);
                 }
@@ -214,7 +214,9 @@ public class EntityCorruptMagicMissile extends ThrowableProjectile {
         }
 
         // ...but other mobs die
-        return e instanceof Enemy;
+
+        //TODO: Do stuff here
+        return e instanceof Mob;
     }
 
     public static boolean isHostile(Entity owner, Entity attackTarget) {

@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
+import yerova.botanicpledge.client.keyinput.KeyBindsInit;
 import yerova.botanicpledge.client.render.blocks.ManaYggdralBufferBlockRenderer;
 import yerova.botanicpledge.client.render.entities.ManaSlashRenderer;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
@@ -91,6 +92,9 @@ public class BotanicPledge {
 
     }
     private void doClientStuff(final FMLClientSetupEvent event) {
+
+        KeyBindsInit.register(event);
+
         EntityRenderers.register(EntityInit.MANA_SLASH.get(), ManaSlashRenderer::new);
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
 

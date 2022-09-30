@@ -41,6 +41,12 @@ public class Networking {
                 .consumer(SyncProtector::handle)
                 .add();
 
+        net.messageBuilder(YggdralScepterSwitchSkills.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(YggdralScepterSwitchSkills::new)
+                .encoder(YggdralScepterSwitchSkills::encode)
+                .consumer(YggdralScepterSwitchSkills::handle)
+                .add();
+
     }
 
 
