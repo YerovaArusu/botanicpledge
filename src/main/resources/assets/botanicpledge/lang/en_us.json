@@ -22,8 +22,8 @@
   "block.botanicpledge.core_altar": "Core Altar",
   "block.botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
 
-  "entity.botanicpledge.marina_arusu": "Marina Arusu",
-  "entity.botanicpledge.maria_arusu": "Maria Arusu",
+  "entity.botanicpledge.marina": "Marina Arusu",
+  "entity.botanicpledge.maria": "Maria Arusu",
 
   "itemGroup.botanicpledge": "Botanic Pledge",
   "curios.identifier.divine_core": "Divine Core"

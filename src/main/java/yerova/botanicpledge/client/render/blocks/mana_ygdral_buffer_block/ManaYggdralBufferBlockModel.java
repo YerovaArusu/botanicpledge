@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.render.blocks;
+package yerova.botanicpledge.client.render.blocks.mana_ygdral_buffer_block;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;

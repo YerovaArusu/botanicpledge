@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.render.blocks;
+package yerova.botanicpledge.client.render.blocks.mana_ygdral_buffer_block;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

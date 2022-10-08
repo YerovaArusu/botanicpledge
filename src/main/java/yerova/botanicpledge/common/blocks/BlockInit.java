@@ -29,6 +29,13 @@ public class BlockInit {
             () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
 
 
+    //Ritual Blocks
+    public static final RegistryObject<Block> RITUAL_CENTER = registerBlockWithoutBlockItem("ritual_center",
+            () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+
+    public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlockWithoutBlockItem("ritual_pedestal",
+            () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);
     }

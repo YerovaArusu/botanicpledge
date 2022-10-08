@@ -11,7 +11,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import yerova.botanicpledge.client.render.items.ManaYggdralBufferBlockItemRenderer;
+import yerova.botanicpledge.client.render.items.mana_yggdral_buffer_block_item.ManaYggdralBufferBlockItemRenderer;
 
 import java.util.function.Consumer;
 

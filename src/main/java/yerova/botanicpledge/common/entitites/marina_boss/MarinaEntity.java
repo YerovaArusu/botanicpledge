@@ -79,6 +79,7 @@ import vazkii.botania.network.clientbound.PacketSpawnDoppleganger;
 import vazkii.botania.xplat.IXplatAbstractions;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.PatchouliAPI;
+import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.entitites.projectiles.EntityCorruptMagicMissile;
 
@@ -119,7 +120,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
 
     public static AttributeSupplier setAttributes() {
         return Animal.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 400.0D)
+                .add(Attributes.MAX_HEALTH, 1600.0D)
                 .add(Attributes.ATTACK_DAMAGE, 60.0f)
                 .add(Attributes.ATTACK_SPEED, 1.0f)
                 .add(Attributes.MOVEMENT_SPEED, 0.1f).build();
@@ -160,40 +161,67 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
         return PatchouliAPI.get().makeMultiblock(
                 new String[][]{
                         {
-                                "P_______P",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "P_______P",
+                                "_____________",
+                                "_C_________C_",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_C_________C_",
+                                "_____________",
                         },
                         {
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "____B____",
-                                "_________",
-                                "_________",
-                                "_________",
-                                "_________",
+                                "_____________",
+                                "_C_________C_",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_C_________C_",
+                                "_____________",
                         },
                         {
-                                "_________",
-                                "_________",
-                                "_________",
-                                "___III___",
-                                "___I0I___",
-                                "___III___",
-                                "_________",
-                                "_________",
-                                "_________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "______B______",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                        },
+                        {
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____III_____",
+                                "_____I0I_____",
+                                "_____III_____",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
+                                "_____________",
                         }
                 },
-                'P', ModBlocks.gaiaPylon,
+                'C', BlockInit.MANA_YGGDRAL_BUFFER,
                 'B', Blocks.BEACON,
                 'I', beaconBase,
                 '0', beaconBase

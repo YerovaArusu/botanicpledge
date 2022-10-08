@@ -12,6 +12,8 @@ import yerova.botanicpledge.BotanicPledge;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
+import yerova.botanicpledge.common.recipes.RecipesInit;
+import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
@@ -30,6 +32,7 @@ public class ModEventBusEvents {
     @SubscribeEvent
     public static void registerRecipeTypes(final RegistryEvent.Register<RecipeSerializer<?>> event) {
         Registry.register(Registry.RECIPE_TYPE, CoreAltarRecipe.Type.ID, CoreAltarRecipe.Type.INSTANCE);
+        Registry.register(Registry.RECIPE_TYPE, BotanicRitualRecipe.Type.ID, BotanicRitualRecipe.Type.INSTANCE);
 
     }
 

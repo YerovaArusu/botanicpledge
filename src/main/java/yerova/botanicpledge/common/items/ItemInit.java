@@ -9,6 +9,8 @@ import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.BotanicPledge;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
+import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
+import yerova.botanicpledge.common.items.block_items.RitualPedestalBlockItem;
 import yerova.botanicpledge.common.items.protectors.GaiaProtector;
 import yerova.botanicpledge.common.items.protectors.ManaProtector;
 import yerova.botanicpledge.common.items.protectors.TerraProtector;
@@ -54,14 +56,16 @@ public class ItemInit {
     public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new YggdraliumIngot(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
-    public static RegistryObject<Item> YGGSRALIUM_SHARD = ITEMS.register("yggdralium_shard", () -> new Item(
+    public static RegistryObject<Item> YGGDRALIUM_SHARD = ITEMS.register("yggdralium_shard", () -> new Item(
             new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
     //BlockItems
     public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer_block_item",
             () -> new ManaYggdralBufferBlockItem(BlockInit.MANA_YGGDRAL_BUFFER.get(), new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant()));
 
+    public static final RegistryObject<Item> RITUAL_CORE_BLOCK_ITEM = ITEMS.register("ritual_center_block_item",
+            () -> new RitualCenterBlockItem(BlockInit.RITUAL_CENTER.get(), new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant()));
 
-
-
+    public static final RegistryObject<Item> RITUAL_PEDESTAL_BLOCK_ITEM = ITEMS.register("ritual_pedestal_block_item",
+            () -> new RitualPedestalBlockItem(BlockInit.RITUAL_PEDESTAL.get(), new Item.Properties().tab(ModItemGroup.BOTANIC_PLEDGE_TAB).fireResistant()));
 }

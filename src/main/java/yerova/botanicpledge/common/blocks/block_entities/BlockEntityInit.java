@@ -18,5 +18,12 @@ public class BlockEntityInit {
             BLOCK_ENTITIES.register("mana_yggdral_buffer_block_entity", () ->
                     BlockEntityType.Builder.of(ManaYggdralBufferBlockEntity::new, BlockInit.MANA_YGGDRAL_BUFFER.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<RitualCenterBlockEntity>> RITUAL_CENTER_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("ritual_center_block_entity", () ->
+                    BlockEntityType.Builder.of(RitualCenterBlockEntity::new, BlockInit.RITUAL_CENTER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<RitualPedestalBlockEntity>> RITUAL_PEDESTAL_BLOCK_ENTITY =
+            BLOCK_ENTITIES.register("ritual_pedestal_block_entity", () ->
+                    BlockEntityType.Builder.of(RitualPedestalBlockEntity::new, BlockInit.RITUAL_PEDESTAL.get()).build(null));
 
 }
