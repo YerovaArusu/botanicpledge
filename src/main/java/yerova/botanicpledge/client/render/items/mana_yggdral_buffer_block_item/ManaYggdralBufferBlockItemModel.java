@@ -2,7 +2,7 @@ package yerova.botanicpledge.client.render.items.mana_yggdral_buffer_block_item;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 
 public class ManaYggdralBufferBlockItemModel extends AnimatedGeoModel<ManaYggdralBufferBlockItem> {

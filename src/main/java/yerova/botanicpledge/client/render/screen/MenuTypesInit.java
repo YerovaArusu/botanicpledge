@@ -7,7 +7,7 @@ import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class MenuTypesInit {
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(ForgeRegistries.CONTAINERS, BotanicPledge.MOD_ID);

@@ -12,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoBlockRenderer;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 
 public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBlockEntity> {
 
@@ -35,11 +34,11 @@ public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBloc
         double y = tileEntityIn.getBlockPos().getY();
         double z = tileEntityIn.getBlockPos().getZ();
 
-        if(tileEntityIn.getStack() == null)
+        if(tileEntityIn.getHeldStack() == null)
             return;
 
-        if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getStack())) {
-            tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getStack());
+        if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
+            tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getHeldStack());
         }
 
         ItemEntity entityItem = tileEntityIn.entity;

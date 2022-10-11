@@ -9,8 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.IIngameOverlay;
 import vazkii.botania.client.core.handler.ClientTickHandler;
-import yerova.botanicpledge.BotanicPledge;
-import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
+import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 
 public class ProtectorHUD {

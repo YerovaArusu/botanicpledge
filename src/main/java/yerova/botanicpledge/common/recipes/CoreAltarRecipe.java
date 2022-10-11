@@ -11,7 +11,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
 
@@ -20,6 +20,8 @@ public class CoreAltarRecipe implements Recipe<SimpleContainer> {
     private final ItemStack output;
     private final NonNullList<Ingredient> recipeItems;
     public final CompoundTag extraNBT;
+
+    public static final String RECIPE_ID = "core_altering";
 
     public CoreAltarRecipe(ResourceLocation id, ItemStack output, NonNullList<Ingredient> recipeItems, CompoundTag extraNBT) {
         this.id = id;

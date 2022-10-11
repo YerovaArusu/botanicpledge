@@ -2,7 +2,7 @@ package yerova.botanicpledge.client.render.items;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.items.YggdralScepter;
 
 public class YggdralScepterModel extends AnimatedGeoModel<YggdralScepter> {

@@ -6,7 +6,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;

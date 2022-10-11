@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.recipes.ritual;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -15,13 +16,11 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import org.jetbrains.annotations.Nullable;
-import yerova.botanicpledge.BotanicPledge;
+import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
-import yerova.botanicpledge.common.recipes.RecipesInit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,7 +115,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
     @Override
     public String toString() {
         return "BotanicRitualRecipe{" +
-                "catalyst=" + reagent +
+                "reagent=" + reagent +
                 ", result=" + result +
                 ", pedestalItems=" + pedestalItems +
                 '}';
@@ -163,11 +162,11 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
 
     @Override
     public boolean matches(RitualCenterBlockEntity tile, Level worldIn) {
-        return isMatch(tile.getPedestalItems(), tile.catalystItem, tile, null);
+        return isMatch(tile.getPedestalItems(), tile.heldStack, tile, null);
     }
 
     public boolean matches(RitualCenterBlockEntity tile, Level worldIn, @Nullable Player playerEntity) {
-        return isMatch(tile.getPedestalItems(), tile.catalystItem, tile, playerEntity);
+        return isMatch(tile.getPedestalItems(), tile.heldStack, tile, playerEntity);
     }
 
     @Override
@@ -216,14 +215,39 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
 
         @Override
         public BotanicRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
-            Ingredient reagent = Ingredient.fromJson(GsonHelper.getAsJsonArray(json, "reagent"));
-            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
-            int cost = json.has("manaCost") ? GsonHelper.getAsInt(json, "manaCost") : 0;
-            boolean keepNbtOfReagent = json.has("keepNbtOfReagent") && GsonHelper.getAsBoolean(json, "keepNbtOfReagent");
-            JsonArray pedestalItems = GsonHelper.getAsJsonArray(json,"pedestalItems");
-            List<Ingredient> stacks = new ArrayList<>();
 
-            for(JsonElement e : pedestalItems){
+
+            //Center Piece
+            Ingredient reagent = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "reagent"));
+
+            //output item
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "output"));
+
+            //Mana Cost
+            int cost = json.has("manaCost") ? GsonHelper.getAsInt(json, "manaCost") : 0;
+
+            //keepNBT
+            boolean keepNbtOfReagent = json.has("keepNbtOfReagent") && GsonHelper.getAsBoolean(json, "keepNbtOfReagent");
+
+            //Pedestal Items
+            JsonArray pedestalItems = GsonHelper.getAsJsonArray(json,"pedestalItems");
+            NonNullList<Ingredient> stacks = NonNullList.withSize(pedestalItems.size(), Ingredient.EMPTY);
+
+            for (int i = 0; i< pedestalItems.size(); i++) {
+                stacks.set(i, Ingredient.fromJson(pedestalItems.get(i)));
+                for (ItemStack stack: Ingredient.fromJson(pedestalItems.get(i)).getItems()) {
+                    BotanicPledge.LOGGER.info(stack.getItem().toString());
+                }
+
+            }
+
+            for (ItemStack stack: reagent.getItems()){
+                BotanicPledge.LOGGER.info(stack.getItem().toString());
+            }
+
+
+
+            /*for(JsonElement e : pedestalItems){
                 JsonObject obj = e.getAsJsonObject();
                 Ingredient input = null;
                 if(GsonHelper.isArrayNode(obj, "item")){
@@ -232,7 +256,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
                     input = Ingredient.fromJson(GsonHelper.getAsJsonObject(obj, "item"));
                 }
                 stacks.add(input);
-            }
+            }*/
             return new BotanicRitualRecipe(recipeId, stacks, reagent, output, cost, keepNbtOfReagent);
         }
 

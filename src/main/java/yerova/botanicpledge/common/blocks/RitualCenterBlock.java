@@ -11,6 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -18,8 +20,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ItemTwigWand;
-import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.HashMap;
 
@@ -37,10 +40,8 @@ public class RitualCenterBlock extends BaseEntityBlock {
         blockList.put(new BlockPos(-1, 1, -1), ModBlocks.gaiaPylon);
 
 
-
         return blockList;
     }
-
     public static final HashMap<BlockPos, Block> ritualPedestals() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
@@ -56,8 +57,6 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
         return blockList;
     }
-
-
     public static final HashMap<BlockPos, Block> manaPools() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
@@ -68,11 +67,9 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
         return blockList;
     }
-
     public RitualCenterBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
-
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -85,33 +82,40 @@ public class RitualCenterBlock extends BaseEntityBlock {
             return InteractionResult.PASS;
         if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
 
-            if (!(player.getItemInHand(handIn).getItem() instanceof ItemTwigWand)) {
-                if (tile.getStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                    if (world.getBlockState(pos.above()).getMaterial() != Material.AIR)
-                        return InteractionResult.SUCCESS;
-                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getStack());
-                    world.addFreshEntity(item);
-                    tile.setStack(ItemStack.EMPTY);
-                } else if (!player.getInventory().getSelected().isEmpty()) {
-                    if (tile.getStack() != null) {
-                        ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getStack());
-                        world.addFreshEntity(item);
-                    }
 
-                    tile.setStack(player.getInventory().removeItem(player.getInventory().selected, 1));
-
+            if(completedStructure(player, pos,world, handIn)) {
+                if(tile.attemptCraft(tile.getHeldStack(), player)) {
+                    BotanicPledge.LOGGER.info("is crafting!");
                 }
-                world.sendBlockUpdated(pos, state, state, 2);
-            } else if (checkForCompletedStructure(player, pos, world, handIn)) {
-                //TODO:do stuff: check for matching recipe and activate if matching
 
             }
 
+            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
+                if (world.getBlockState(pos.above()).getMaterial() != Material.AIR)
+                    return InteractionResult.SUCCESS;
+                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                world.addFreshEntity(item);
+                tile.setHeldStack(ItemStack.EMPTY);
+            } else if (!player.getInventory().getSelected().isEmpty()
+            && !(player.getItemInHand(handIn).getItem() instanceof ItemTwigWand)) {
+                if (tile.getHeldStack() != null) {
+                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                    world.addFreshEntity(item);
+                }
+
+                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
+
+            }
+            world.sendBlockUpdated(pos, state, state, 1);
+
+
         }
         return InteractionResult.SUCCESS;
+
     }
 
-    public static boolean checkForCompletedStructure(Player player, BlockPos blockPos, Level level, InteractionHand interactionHand) {
+
+    public static boolean completedStructure(Player player, BlockPos blockPos, Level level, InteractionHand interactionHand) {
         boolean allChecked = true;
         if (player.getItemInHand(interactionHand).getItem() instanceof ItemTwigWand) {
             for (BlockPos s : ritualBlocks().keySet()) {
@@ -128,4 +132,13 @@ public class RitualCenterBlock extends BaseEntityBlock {
         }
         return allChecked;
     }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return createTickerHelper(type, BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(),
+                RitualCenterBlockEntity::tick);
+    }
+
+
 }

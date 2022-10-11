@@ -1,55 +1,37 @@
 {
   "type": "botanicpledge:botanic_ritual",
-  "reagent": [
-    {
-      "item": "minecraft:nether_star"
-    }
-  ],
+  "reagent": {
+    "item": "minecraft:nether_star"
+  },
   "pedestalItems": [
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": {
-        "tag": "forge:ingots/iron"
-      }
+      "item": "botanicpledge:yggdralium_shard"
     }
   ],
   "output": {
     "item": "botanicpledge:marias_core"
   },
-  "manaCost": 0,
+  "manaCost": 400000,
   "keepNbtOfReagent": false
 }

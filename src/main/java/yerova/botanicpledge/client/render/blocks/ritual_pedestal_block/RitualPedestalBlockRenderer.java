@@ -33,11 +33,11 @@ public class RitualPedestalBlockRenderer extends GeoBlockRenderer<RitualPedestal
         double y = tileEntityIn.getBlockPos().getY();
         double z = tileEntityIn.getBlockPos().getZ();
 
-        if(tileEntityIn.getStack() == null)
+        if(tileEntityIn.getHeldStack() == null)
             return;
 
-        if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getStack())) {
-            tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getStack());
+        if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
+            tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getHeldStack());
         }
 
         ItemEntity entityItem = tileEntityIn.entity;

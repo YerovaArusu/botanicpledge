@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -23,6 +24,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import yerova.botanicpledge.api.BotanicPledgeAPI;
 import yerova.botanicpledge.api.utils.ManaUtils;
+import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
 
@@ -36,15 +38,13 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     protected final ContainerData data;
-    private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
     private int progress = 0;
     private int maxProgress = 128;
 
     private int hasReachedMaxStat = 0;
     private int maxedStat = -1;
-    private CompoundTag savedItemNBT;
+    private int counter = 0;
 
-    public ItemStack catalystItem = ItemStack.EMPTY;
     boolean isCrafting = false;
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
@@ -111,10 +111,52 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     }
 
 
+    public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {
+
+        if (level.isClientSide) {
+            if (entity.isCrafting) {
+                ParticleUtils.spawnYggdralParticleSphere(level, pos);
+
+/*                for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
+                    BlockPos tmpPos = pos;
+                    ParticleUtils.spawnYggdralParticleSphere(level, tmpPos.offset(blockPos));
+                }*/
+
+            }
+            return;
+        }
+
+
+        int craftingLength = 210;
+        if (entity.isCrafting) {
+            if (entity.getRecipe(entity.heldStack, null) == null)
+                entity.isCrafting = false;
+            entity.counter += 1;
+        }
+
+        if (entity.counter > craftingLength) {
+            entity.counter = 1;
+
+            if (entity.isCrafting) {
+                IBotanicRitualRecipe recipe = entity.getRecipe(entity.heldStack, null);
+                List<ItemStack> pedestalItems = entity.getPedestalItems();
+                if (recipe != null) {
+                    pedestalItems.forEach(i -> i = null);
+                    entity.heldStack = recipe.getResult(pedestalItems, entity.heldStack, entity);
+                    entity.clearItems(entity);
+
+                }
+
+                entity.isCrafting = false;
+            }
+            entity.updateBlock();
+        }
+    }
+
     public void clearItems(BlockEntity entity) {
         for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
-            if (level.getBlockEntity(entity.getBlockPos().offset(blockPos)) instanceof RitualPedestalBlockEntity tile && tile.getStack() != null) {
-                tile.setStack(tile.getStack().getContainerItem());
+            if (level.getBlockEntity(entity.getBlockPos().offset(blockPos)) instanceof RitualPedestalBlockEntity tile && tile.getHeldStack() != null) {
+                tile.setHeldStack(tile.getHeldStack().getContainerItem());
                 BlockState state = level.getBlockState(blockPos);
                 level.sendBlockUpdated(blockPos, state, state, 3);
             }
@@ -134,16 +176,17 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
             return false;
         }
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
-        if (recipe.consumesMana()) ManaUtils.takeManaNearby(worldPosition, level, 10, recipe.getManaCost());
+        if (recipe.consumesMana()) ManaUtils.takeManaNearby(worldPosition, level, 2, recipe.getManaCost());
         this.isCrafting = true;
         updateBlock();
         return true;
     }
 
     public boolean craftingPossible(ItemStack stack, Player playerEntity) {
-        if (isCrafting || stack.isEmpty())
-            return false;
+        if (stack.isEmpty()) return false;
         IBotanicRitualRecipe recipe = this.getRecipe(stack, playerEntity);
+        //TODO:Later remove
+
 
         return recipe != null && (!recipe.consumesMana() || (recipe.consumesMana() && ManaUtils.hasManaNearby(worldPosition, level, 10, recipe.getManaCost())));
     }
@@ -151,7 +194,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
     @Override
     public void load(CompoundTag compound) {
-        catalystItem = ItemStack.of((CompoundTag) compound.get("itemStack"));
+        heldStack = ItemStack.of((CompoundTag) compound.get("itemStack"));
         isCrafting = compound.getBoolean("is_crafting");
         super.load(compound);
     }
@@ -159,9 +202,9 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        if (catalystItem != null) {
+        if (heldStack != null) {
             CompoundTag reagentTag = new CompoundTag();
-            catalystItem.save(reagentTag);
+            heldStack.save(reagentTag);
             tag.put("itemStack", reagentTag);
         }
         tag.putBoolean("is_crafting", isCrafting);
@@ -184,48 +227,57 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
     @Override
     public boolean isEmpty() {
-        return catalystItem.isEmpty();
+        return heldStack.isEmpty();
     }
 
     @Override
     public ItemStack getItem(int index) {
-        if (isCrafting)
-            return ItemStack.EMPTY;
-        return catalystItem;
+        if (isCrafting) return ItemStack.EMPTY;
+        return heldStack;
     }
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
         if (isCrafting || stack.isEmpty())
             return false;
-        return catalystItem.isEmpty() && craftingPossible(stack, null);
+        return heldStack.isEmpty() && craftingPossible(stack, null);
     }
 
     @Override
     public ItemStack removeItem(int index, int count) {
         if (isCrafting)
             return ItemStack.EMPTY;
-        ItemStack stack = catalystItem.copy().split(count);
-        catalystItem.shrink(count);
+        ItemStack stack = heldStack.copy().split(2);
+        heldStack.shrink(count);
         updateBlock();
         return stack;
+
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
         if (isCrafting)
             return ItemStack.EMPTY;
-        return catalystItem;
+        return heldStack;
     }
 
     @Override
     public void setItem(int index, ItemStack stack) {
         if (isCrafting)
             return;
-        this.catalystItem = stack;
+        this.heldStack = stack;
         updateBlock();
-        attemptCraft(this.catalystItem, null);
+
     }
+
+    @Override
+    public void setHeldStack(ItemStack heldStack) {
+        if (isCrafting)
+            return;
+        this.heldStack = heldStack;
+        updateBlock();
+    }
+
 
     @Override
     public int getMaxStackSize() {
@@ -239,7 +291,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
     @Override
     public void clearContent() {
-        this.catalystItem = ItemStack.EMPTY;
+        this.heldStack = ItemStack.EMPTY;
     }
 
     @Nonnull
@@ -257,23 +309,12 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         super.invalidateCaps();
     }
 
-    private <E extends BlockEntity & IAnimatable> PlayState idlePredicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("floating", true));
-
-        return PlayState.CONTINUE;
-    }
-
-    private <E extends BlockEntity & IAnimatable> PlayState craftPredicate(AnimationEvent<E> event) {
-        if (!this.isCrafting)
-            return PlayState.STOP;
-        return PlayState.CONTINUE;
-    }
-
     public List<ItemStack> getPedestalItems() {
         ArrayList<ItemStack> pedestalItems = new ArrayList<>();
         for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
-            if (level.getBlockEntity(worldPosition.offset(blockPos)) instanceof RitualPedestalBlockEntity tile && tile.getStack() != null && !tile.getStack().isEmpty()) {
-                pedestalItems.add(tile.getStack());
+            BlockPos tmpPos = worldPosition;
+            if (level.getBlockEntity(tmpPos.offset(blockPos)) instanceof RitualPedestalBlockEntity tile && tile.getHeldStack() != null && !tile.getHeldStack().isEmpty()) {
+                pedestalItems.add(tile.getHeldStack());
             }
         }
         return pedestalItems;

@@ -35,19 +35,19 @@ public class RitualPedestalBlock extends BaseEntityBlock {
         if(handIn != InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
         if(!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
-            if (tile.getStack() != null && player.getItemInHand(handIn).isEmpty()) {
+            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
                 if(world.getBlockState(pos.above()).getMaterial() != Material.AIR)
                     return InteractionResult.SUCCESS;
-                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getStack());
+                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                 world.addFreshEntity(item);
-                tile.setStack(ItemStack.EMPTY);
+                tile.setHeldStack(ItemStack.EMPTY);
             } else if (!player.getInventory().getSelected().isEmpty()) {
-                if(tile.getStack() != null){
-                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getStack());
+                if(tile.getHeldStack() != null){
+                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                     world.addFreshEntity(item);
                 }
 
-                tile.setStack(player.getInventory().removeItem(player.getInventory().selected, 1));
+                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
 
             }
             world.sendBlockUpdated(pos, state, state, 2);

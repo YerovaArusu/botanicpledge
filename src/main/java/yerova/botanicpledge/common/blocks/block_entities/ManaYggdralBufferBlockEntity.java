@@ -21,7 +21,6 @@ import vazkii.botania.api.mana.spark.IManaSpark;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.common.block.tile.mana.IThrottledPacket;
 import vazkii.botania.common.block.tile.mana.TilePool;
-import yerova.botanicpledge.BotanicPledge;
 
 import java.util.List;
 

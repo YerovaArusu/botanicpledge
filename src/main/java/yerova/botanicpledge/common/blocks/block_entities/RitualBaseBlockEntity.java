@@ -11,7 +11,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -24,7 +23,7 @@ import javax.annotation.Nullable;
 
 public class RitualBaseBlockEntity extends BlockEntity implements Container {
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
-    protected ItemStack stack = ItemStack.EMPTY;
+    public ItemStack heldStack = ItemStack.EMPTY;
     public ItemEntity entity;
     public float frames;
 
@@ -37,15 +36,15 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        stack = compound.contains("itemStack") ? ItemStack.of((CompoundTag)compound.get("itemStack")) : ItemStack.EMPTY;
+        heldStack = compound.contains("itemStack") ? ItemStack.of((CompoundTag)compound.get("itemStack")) : ItemStack.EMPTY;
     }
 
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        if(stack != null) {
+        if(heldStack != null) {
             CompoundTag reagentTag = new CompoundTag();
-            stack.save(reagentTag);
+            heldStack.save(reagentTag);
             tag.put("itemStack", reagentTag);
         }
     }
@@ -62,35 +61,35 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
 
     @Override
     public boolean isEmpty() {
-        return stack == null || stack.isEmpty();
+        return heldStack == null || heldStack.isEmpty();
     }
 
     @Override
     public ItemStack getItem(int slot) {
-        return stack == null ? ItemStack.EMPTY : stack;
+        return heldStack == null ? ItemStack.EMPTY : heldStack;
     }
 
     @Override
     public ItemStack removeItem(int index, int count) {
         ItemStack toReturn = getItem(0).copy().split(count);
-        stack.shrink(1);
+        heldStack.setCount(0);
         updateBlock();
         return toReturn;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int index) {
-        return stack;
+        return heldStack;
     }
 
     @Override
     public boolean canPlaceItem(int index, ItemStack s) {
-        return stack == null || stack.isEmpty();
+        return heldStack == null || heldStack.isEmpty();
     }
 
     @Override
     public void setItem(int index, ItemStack s) {
-        stack = s;
+        heldStack = s;
         updateBlock();
     }
 
@@ -102,7 +101,7 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
 
     @Override
     public void clearContent() {
-        this.stack = ItemStack.EMPTY;
+        this.heldStack = ItemStack.EMPTY;
     }
 
 
@@ -121,12 +120,13 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
         super.invalidateCaps();
     }
 
-    public ItemStack getStack() {
-        return stack;
+    public ItemStack getHeldStack() {
+        return heldStack;
     }
 
-    public void setStack(ItemStack stack) {
-        this.stack = stack;
+    public void setHeldStack(ItemStack heldStack) {
+        this.heldStack = heldStack;
+
         updateBlock();
     }
 

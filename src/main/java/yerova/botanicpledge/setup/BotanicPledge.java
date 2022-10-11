@@ -1,4 +1,4 @@
-package yerova.botanicpledge;
+package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -24,6 +24,7 @@ import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.keyinput.KeyBindsInit;
+import yerova.botanicpledge.client.particle.ParticleInit;
 import yerova.botanicpledge.client.render.entities.ManaSlashRenderer;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.screen.CoreAltarScreen;
@@ -54,12 +55,15 @@ public class BotanicPledge {
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
 
+        APIRegistry.setup();
+
         ItemInit.ITEMS.register(forgeBus);
         EntityInit.ENTITY.register(forgeBus);
         BlockInit.BLOCKS.register(forgeBus);
         BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
         MenuTypesInit.MENUS.register(forgeBus);
         RecipesInit.SERIALIZERS.register(forgeBus);
+        ParticleInit.PARTICLE_TYPES.register(forgeBus);
 
         forgeBus.addListener(this::setup);
         forgeBus.addListener(this::enqueueIMC);
