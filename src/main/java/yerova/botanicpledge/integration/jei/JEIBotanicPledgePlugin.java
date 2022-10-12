@@ -8,8 +8,8 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 import java.util.Objects;

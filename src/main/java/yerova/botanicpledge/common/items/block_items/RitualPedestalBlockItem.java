@@ -7,7 +7,6 @@ import net.minecraftforge.client.IItemRenderProperties;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import yerova.botanicpledge.client.render.items.ritual_center_block_item.RitualCenterBlockItemRenderer;
 import yerova.botanicpledge.client.render.items.ritual_pedestal_block_item.RitualPedestalBlockItemRenderer;
 
 import java.util.function.Consumer;

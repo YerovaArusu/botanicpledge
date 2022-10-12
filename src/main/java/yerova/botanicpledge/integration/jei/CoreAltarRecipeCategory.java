@@ -11,9 +11,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 

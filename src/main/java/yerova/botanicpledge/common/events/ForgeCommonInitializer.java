@@ -25,8 +25,6 @@ public class ForgeCommonInitializer {
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
         var stack = e.getObject();
-
-
         var makeRelic = RELIC.get().get(stack.getItem());
         if (makeRelic != null) {
             e.addCapability(prefix("relic"),

@@ -10,9 +10,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.ModBlocks;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.items.ModItemGroup;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
 import java.util.List;

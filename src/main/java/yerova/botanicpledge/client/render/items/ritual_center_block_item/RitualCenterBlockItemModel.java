@@ -2,8 +2,8 @@ package yerova.botanicpledge.client.render.items.ritual_center_block_item;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class RitualCenterBlockItemModel extends AnimatedGeoModel<RitualCenterBlockItem> {
     @Override

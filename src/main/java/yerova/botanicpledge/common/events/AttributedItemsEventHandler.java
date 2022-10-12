@@ -13,8 +13,8 @@ import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AttributedItemsEventHandler {

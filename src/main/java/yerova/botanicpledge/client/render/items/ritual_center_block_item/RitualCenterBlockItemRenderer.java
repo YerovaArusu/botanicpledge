@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.renderers.geo.GeoItemRenderer;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
-import yerova.botanicpledge.common.items.block_items.RitualPedestalBlockItem;
 
 public class RitualCenterBlockItemRenderer extends GeoItemRenderer<RitualCenterBlockItem> {
 

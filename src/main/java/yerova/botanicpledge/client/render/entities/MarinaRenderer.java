@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class MarinaRenderer extends GeoEntityRenderer<MarinaEntity> {
     public MarinaRenderer(EntityRendererProvider.Context renderManager) {

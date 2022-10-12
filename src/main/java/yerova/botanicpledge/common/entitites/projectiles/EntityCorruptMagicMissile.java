@@ -8,7 +8,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
@@ -20,10 +19,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.client.fx.SparkleParticleData;
-import vazkii.botania.common.entity.EntityMagicMissile;
 import vazkii.botania.common.entity.ModEntities;
 import vazkii.botania.common.helper.VecHelper;
-import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 
 import javax.annotation.Nonnull;
 import java.util.List;

@@ -7,12 +7,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.mana.ManaItemHandler;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.client.keyinput.KeyBindsInit;
 import yerova.botanicpledge.common.items.YggdralScepter;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.YggdralScepterLeftClick;
 import yerova.botanicpledge.common.network.YggdralScepterSwitchSkills;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class PlayerInputEvents {

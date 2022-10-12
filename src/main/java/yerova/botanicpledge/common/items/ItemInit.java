@@ -6,7 +6,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
@@ -17,6 +16,7 @@ import yerova.botanicpledge.common.items.protectors.TerraProtector;
 import yerova.botanicpledge.common.items.protectors.YggdralProtector;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class ItemInit {
     //Custom Rarity

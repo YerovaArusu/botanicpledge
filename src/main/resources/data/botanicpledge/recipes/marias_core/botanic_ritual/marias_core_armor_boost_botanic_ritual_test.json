@@ -1,0 +1,40 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:marias_core"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:diamond_chestplate"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:diamond_chestplate"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:diamond_chestplate"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:diamond_chestplate"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName": "armor",
+  "statValue": 1.0,
+  "manaCost": 400000,
+  "keepNbtOfReagent": true
+}
+

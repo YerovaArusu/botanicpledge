@@ -2,8 +2,8 @@ package yerova.botanicpledge.client.render.entities;
 
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.entitites.projectiles.ManaSlashEntity;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class ManaSlashModel extends AnimatedGeoModel<ManaSlashEntity> {
     @Override

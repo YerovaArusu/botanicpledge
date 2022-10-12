@@ -7,10 +7,10 @@ import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 import yerova.botanicpledge.common.entitites.projectiles.EntityCorruptMagicMissile;
 import yerova.botanicpledge.common.entitites.projectiles.ManaSlashEntity;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class EntityInit {
     public static final DeferredRegister<EntityType<?>> ENTITY = DeferredRegister.create(ForgeRegistries.ENTITIES, BotanicPledge.MOD_ID);

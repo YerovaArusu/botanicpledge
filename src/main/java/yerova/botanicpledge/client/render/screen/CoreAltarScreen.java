@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class CoreAltarScreen extends AbstractContainerScreen<CoreAltarMenu> {
 

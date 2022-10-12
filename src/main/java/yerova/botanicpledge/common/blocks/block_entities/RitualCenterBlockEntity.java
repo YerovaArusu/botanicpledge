@@ -24,13 +24,16 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import yerova.botanicpledge.api.BotanicPledgeAPI;
 import yerova.botanicpledge.api.utils.ManaUtils;
+import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
+import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -115,16 +118,26 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
         if (level.isClientSide) {
             if (entity.isCrafting) {
-                ParticleUtils.spawnYggdralParticleSphere(level, pos);
 
-/*                for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
-                    BlockPos tmpPos = pos;
-                    ParticleUtils.spawnYggdralParticleSphere(level, tmpPos.offset(blockPos));
-                }*/
-
+                for (BlockPos bPos : RitualCenterBlock.ritualPedestals().keySet()) {
+                    BlockPos p = pos.offset(bPos);
+                    if (level.getBlockEntity(p) instanceof RitualPedestalBlockEntity pedestalTile && pedestalTile.getHeldStack() != null && !pedestalTile.getHeldStack().isEmpty())
+                        level.addParticle(
+                                YggdralParticleData.createData(new ParticleColor(19, 237, 237)),
+                                p.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2), p.getY() + 1.5 + ParticleUtils.inRange(-0.3, 0.3), p.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                                0, 0, 0);
+                }
+                if(!entity.heldStack.isEmpty()){
+                    level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+                            pos.getX()+0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            pos.getY()+1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            pos.getZ()+0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            0,0,0);
+                }
             }
             return;
         }
+
 
 
         int craftingLength = 210;
@@ -185,9 +198,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     public boolean craftingPossible(ItemStack stack, Player playerEntity) {
         if (stack.isEmpty()) return false;
         IBotanicRitualRecipe recipe = this.getRecipe(stack, playerEntity);
-        //TODO:Later remove
-
-
         return recipe != null && (!recipe.consumesMana() || (recipe.consumesMana() && ManaUtils.hasManaNearby(worldPosition, level, 10, recipe.getManaCost())));
     }
 
