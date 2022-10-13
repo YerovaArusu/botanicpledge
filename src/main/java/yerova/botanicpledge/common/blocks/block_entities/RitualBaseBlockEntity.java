@@ -36,13 +36,13 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        heldStack = compound.contains("itemStack") ? ItemStack.of((CompoundTag)compound.get("itemStack")) : ItemStack.EMPTY;
+        heldStack = compound.contains("itemStack") ? ItemStack.of((CompoundTag) compound.get("itemStack")) : ItemStack.EMPTY;
     }
 
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        if(heldStack != null) {
+        if (heldStack != null) {
             CompoundTag reagentTag = new CompoundTag();
             heldStack.save(reagentTag);
             tag.put("itemStack", reagentTag);
@@ -131,7 +131,7 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     }
 
     public boolean updateBlock() {
-        if(level != null) {
+        if (level != null) {
             BlockState state = level.getBlockState(worldPosition);
             level.sendBlockUpdated(worldPosition, state, state, 3);
             setChanged();

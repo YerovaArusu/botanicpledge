@@ -992,7 +992,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
 
     private void spawnMissile() {
         EntityMagicMissile missile = new EntityMagicMissile(this, true);
-        missile.setPos(getX() + (random.nextDouble(0+4)-2), getY() + (random.nextDouble(2-1)+1), getZ() + (random.nextDouble(0+4)-2));
+        missile.setPos(getX() + (random.nextDouble(0 + 4) - 2), getY() + (random.nextDouble(2 - 1) + 1), getZ() + (random.nextDouble(0 + 4) - 2));
         if (missile.findTarget()) {
             playSound(ModSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
             level.addFreshEntity(missile);
@@ -1001,7 +1001,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
 
     private void spawnCorruptedMissile() {
         EntityCorruptMagicMissile missile = new EntityCorruptMagicMissile(this, true, 20);
-        missile.setPos(getX() + (random.nextDouble(0+4)-2), getY() + (random.nextDouble(2-1)+1), getZ() + (random.nextDouble(0+4)-2));
+        missile.setPos(getX() + (random.nextDouble(0 + 4) - 2), getY() + (random.nextDouble(2 - 1) + 1), getZ() + (random.nextDouble(0 + 4) - 2));
         if (missile.findTarget()) {
             playSound(ModSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
             level.addFreshEntity(missile);

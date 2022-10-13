@@ -11,7 +11,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.ModBlocks;
 import yerova.botanicpledge.common.items.ItemInit;
-import yerova.botanicpledge.common.items.ModItemGroup;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
@@ -20,9 +19,6 @@ import java.util.function.Supplier;
 
 public class BlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
-
-    public static final RegistryObject<Block> CORE_ALTAR = registerBlock("core_altar",
-            () -> new CoreAltarBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar)), ModItemGroup.BOTANIC_PLEDGE_TAB);
 
 
     public static final RegistryObject<Block> MANA_YGGDRAL_BUFFER = registerBlockWithoutBlockItem("mana_yggdral_buffer",

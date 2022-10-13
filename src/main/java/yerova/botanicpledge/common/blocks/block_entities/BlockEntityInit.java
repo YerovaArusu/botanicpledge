@@ -10,9 +10,6 @@ import yerova.botanicpledge.setup.BotanicPledge;
 public class BlockEntityInit {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BotanicPledge.MOD_ID);
 
-    public static final RegistryObject<BlockEntityType<CoreAltarBlockEntity>> CORE_ALTER_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("core_alter_block_entity", () ->
-                    BlockEntityType.Builder.of(CoreAltarBlockEntity::new, BlockInit.CORE_ALTAR.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<ManaYggdralBufferBlockEntity>> MANA_YGGDRAL_BUFFER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("mana_yggdral_buffer_block_entity", () ->

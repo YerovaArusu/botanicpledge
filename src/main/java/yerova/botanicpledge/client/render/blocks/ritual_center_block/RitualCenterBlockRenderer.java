@@ -34,7 +34,7 @@ public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBloc
         double y = tileEntityIn.getBlockPos().getY();
         double z = tileEntityIn.getBlockPos().getZ();
 
-        if(tileEntityIn.getHeldStack() == null)
+        if (tileEntityIn.getHeldStack() == null)
             return;
 
         if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
@@ -46,20 +46,20 @@ public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBloc
         tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
         entityItem.setYHeadRot(tileEntityIn.frames);
         //entityItem.age = (int) tileEntityIn.frames;
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5,1,0.5, entityItem.getYRot(), 2.0f,matrixStack, bufferIn,packedLightIn);
+        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, entityItem.getYRot(), 2.0f, matrixStack, bufferIn, packedLightIn);
 
         matrixStack.popPose();
 
         super.render(tileEntityIn, partialTicks, matrixStack, bufferIn, packedLightIn);
     }
 
-    public void renderFloatingItem(RitualCenterBlockEntity tileEntityIn, ItemEntity entityItem, double x, double y, double z, PoseStack stack, MultiBufferSource iRenderTypeBuffer){
+    public void renderFloatingItem(RitualCenterBlockEntity tileEntityIn, ItemEntity entityItem, double x, double y, double z, PoseStack stack, MultiBufferSource iRenderTypeBuffer) {
         stack.pushPose();
 
         tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
         entityItem.setYHeadRot(tileEntityIn.frames);
         //entityItem.age = (int) tileEntityIn.frames;
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5,1,0.5, entityItem.getYRot(), 2.0f,stack, iRenderTypeBuffer,15728880);
+        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, entityItem.getYRot(), 2.0f, stack, iRenderTypeBuffer, 15728880);
 
         stack.popPose();
     }

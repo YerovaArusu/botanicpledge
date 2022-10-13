@@ -29,27 +29,27 @@ public class YggdralScepterSwitchSkills {
 
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
 
-        NetworkEvent.Context ctx =contextSupplier.get();
+        NetworkEvent.Context ctx = contextSupplier.get();
         ServerPlayer player = ctx.getSender();
         ctx.enqueueWork(() -> {
             ItemStack stack = player.getMainHandItem();
 
-            if(stack.getItem() instanceof YggdralScepter) {
+            if (stack.getItem() instanceof YggdralScepter) {
                 CompoundTag tag = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
                 int setValue = tag.getInt("set_skill");
                 int tmp = setValue;
                 if (operation == 0 && setValue > 0) {
-                    setValue-=1;
-                } else if(operation == 0) {
+                    setValue -= 1;
+                } else if (operation == 0) {
                     setValue = 4;
-                } else if(operation == 1 && setValue < 4) {
-                    setValue+=1;
-                } else if(operation == 1) {
+                } else if (operation == 1 && setValue < 4) {
+                    setValue += 1;
+                } else if (operation == 1) {
                     setValue = 4;
                 }
-                if(setValue != tmp) {
+                if (setValue != tmp) {
                     tag.putInt("set_skill", setValue);
-                    player.displayClientMessage(new TextComponent("Switched to" + setValue +". skill"), true);
+                    player.displayClientMessage(new TextComponent("Switched to" + setValue + ". skill"), true);
                 }
 
 

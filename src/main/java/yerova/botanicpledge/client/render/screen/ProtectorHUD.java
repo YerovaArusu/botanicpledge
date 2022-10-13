@@ -21,7 +21,7 @@ public class ProtectorHUD {
     public static final IIngameOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
 
 
-        int x = width/3;
+        int x = width / 3;
         int y = height;
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);

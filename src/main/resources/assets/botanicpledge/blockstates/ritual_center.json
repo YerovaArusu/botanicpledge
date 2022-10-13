@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": {"model": "botanicpledge:block/ritual_center"}
+    "": {
+      "model": "botanicpledge:block/ritual_center"
+    }
   }
 }

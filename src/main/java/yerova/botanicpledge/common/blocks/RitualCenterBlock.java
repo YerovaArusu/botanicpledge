@@ -42,6 +42,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
         return blockList;
     }
+
     public static final HashMap<BlockPos, Block> ritualPedestals() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
@@ -57,6 +58,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
         return blockList;
     }
+
     public static final HashMap<BlockPos, Block> manaPools() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
@@ -67,9 +69,11 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
         return blockList;
     }
+
     public RitualCenterBlock(BlockBehaviour.Properties properties) {
         super(properties);
     }
+
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
@@ -83,10 +87,8 @@ public class RitualCenterBlock extends BaseEntityBlock {
         if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
 
 
-            if(completedStructure(player, pos,world, handIn)) {
-                if(tile.attemptCraft(tile.getHeldStack(), player)) {
-                    BotanicPledge.LOGGER.info("is crafting!");
-                }
+            if (completedStructure(player, pos, world, handIn)) {
+                tile.attemptCraft(tile.getHeldStack(), player);
 
             }
 
@@ -97,7 +99,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
                 world.addFreshEntity(item);
                 tile.setHeldStack(ItemStack.EMPTY);
             } else if (!player.getInventory().getSelected().isEmpty()
-            && !(player.getItemInHand(handIn).getItem() instanceof ItemTwigWand)) {
+                    && !(player.getItemInHand(handIn).getItem() instanceof ItemTwigWand)) {
                 if (tile.getHeldStack() != null) {
                     ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                     world.addFreshEntity(item);

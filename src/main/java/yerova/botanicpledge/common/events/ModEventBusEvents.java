@@ -10,7 +10,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
-import yerova.botanicpledge.common.recipes.CoreAltarRecipe;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -29,12 +28,9 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerRecipeTypes(final RegistryEvent.Register<RecipeSerializer<?>> event) {
-        Registry.register(Registry.RECIPE_TYPE, CoreAltarRecipe.Type.ID, CoreAltarRecipe.Type.INSTANCE);
         Registry.register(Registry.RECIPE_TYPE, BotanicRitualRecipe.Type.ID, BotanicRitualRecipe.Type.INSTANCE);
 
     }
-
-
 
 
     @SubscribeEvent

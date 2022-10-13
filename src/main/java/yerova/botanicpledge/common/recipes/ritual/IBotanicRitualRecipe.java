@@ -1,5 +1,6 @@
 package yerova.botanicpledge.common.recipes.ritual;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -17,9 +18,11 @@ public interface IBotanicRitualRecipe extends Recipe<RitualCenterBlockEntity> {
      */
     ItemStack getResult(List<ItemStack> pedestalItems, ItemStack reagent, RitualBaseBlockEntity ritualBaseBlockEntity);
 
-    default boolean consumesMana(){
+    default boolean consumesMana() {
         return getManaCost() > 0;
     }
 
     int getManaCost();
+
+    CompoundTag getAdditionalNBT();
 }

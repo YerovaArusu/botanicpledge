@@ -30,6 +30,7 @@ public class EntityCorruptMagicMissile extends ThrowableProjectile {
     public EntityCorruptMagicMissile(EntityType<? extends ThrowableProjectile> type, Level level) {
         super(type, level);
     }
+
     private static final String TAG_TIME = "time";
     private static final EntityDataAccessor<Boolean> EVIL = SynchedEntityData.defineId(EntityCorruptMagicMissile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> TARGET = SynchedEntityData.defineId(EntityCorruptMagicMissile.class, EntityDataSerializers.INT);
@@ -48,9 +49,7 @@ public class EntityCorruptMagicMissile extends ThrowableProjectile {
     }
 
 
-
     private int damage;
-
 
 
     public void setDamage(int damage) {

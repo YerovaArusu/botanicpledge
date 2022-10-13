@@ -1,9 +1,9 @@
 {
-	"format_version": "1.8.0",
-	"animations": {
-		"animation.ritual_core.idle": {
-			"loop": true
-		}
-	},
-	"geckolib_format_version": 2
+  "format_version": "1.8.0",
+  "animations": {
+    "animation.ritual_core.idle": {
+      "loop": true
+    }
+  },
+  "geckolib_format_version": 2
 }

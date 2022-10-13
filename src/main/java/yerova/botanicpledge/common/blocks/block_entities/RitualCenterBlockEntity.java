@@ -28,70 +28,25 @@ import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
+import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
     private final AnimationFactory factory = new AnimationFactory(this);
 
 
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
-    protected final ContainerData data;
-    private int progress = 0;
-    private int maxProgress = 128;
-
-    private int hasReachedMaxStat = 0;
-    private int maxedStat = -1;
     private int counter = 0;
 
     boolean isCrafting = false;
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
-
-        this.data = new ContainerData() {
-            public int get(int index) {
-                switch (index) {
-                    case 0:
-                        return RitualCenterBlockEntity.this.progress;
-                    case 1:
-                        return RitualCenterBlockEntity.this.maxProgress;
-                    case 2:
-                        return RitualCenterBlockEntity.this.hasReachedMaxStat;
-                    case 3:
-                        return RitualCenterBlockEntity.this.maxedStat;
-                    default:
-                        return 0;
-                }
-            }
-
-
-            public void set(int index, int value) {
-                switch (index) {
-                    case 0:
-                        RitualCenterBlockEntity.this.progress = value;
-                        break;
-                    case 1:
-                        RitualCenterBlockEntity.this.maxProgress = value;
-                        break;
-                    case 2:
-                        RitualCenterBlockEntity.this.hasReachedMaxStat = value;
-                        break;
-                    case 3:
-                        RitualCenterBlockEntity.this.maxedStat = value;
-                        break;
-                }
-            }
-
-
-            public int getCount() {
-                return CoreAltarBlockEntity.dataContainerSize = 4;
-            }
-        };
 
 
     }
@@ -127,17 +82,16 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                                 p.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2), p.getY() + 1.5 + ParticleUtils.inRange(-0.3, 0.3), p.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                                 0, 0, 0);
                 }
-                if(!entity.heldStack.isEmpty()){
+                if (!entity.heldStack.isEmpty()) {
                     level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
-                            pos.getX()+0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                            pos.getY()+1.5 + ParticleUtils.inRange(-0.2, 0.2),
-                            pos.getZ()+0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                            0,0,0);
+                            pos.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            pos.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            pos.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                            0, 0, 0);
                 }
             }
             return;
         }
-
 
 
         int craftingLength = 210;
@@ -156,6 +110,21 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                 if (recipe != null) {
                     pedestalItems.forEach(i -> i = null);
                     entity.heldStack = recipe.getResult(pedestalItems, entity.heldStack, entity);
+
+                    //NBT handling
+                    if (entity.heldStack.getItem() instanceof DivineCoreItem) {
+                        if (recipe.getAdditionalNBT() != null) {
+                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+                            for (String s : recipe.getAdditionalNBT().getAllKeys()) {
+                                if (combinedTag.contains(s)) {
+                                    combinedTag.putDouble(s, combinedTag.getDouble(s) + recipe.getAdditionalNBT().getDouble(s));
+                                } else {
+                                    combinedTag.putDouble(s, recipe.getAdditionalNBT().getDouble(s));
+                                }
+                                entity.heldStack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).merge(combinedTag);
+                            }
+                        }
+                    }
                     entity.clearItems(entity);
 
                 }

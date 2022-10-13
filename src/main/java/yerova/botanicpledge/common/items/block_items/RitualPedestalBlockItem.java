@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 public class RitualPedestalBlockItem extends BlockItem implements IAnimatable {
     public AnimationFactory factory = new AnimationFactory(this);
+
     public RitualPedestalBlockItem(Block block, Properties properties) {
         super(block, properties);
     }

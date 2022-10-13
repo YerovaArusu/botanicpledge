@@ -24,7 +24,7 @@ public class YggdralScepterLeftClick {
 
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
 
-        NetworkEvent.Context ctx =contextSupplier.get();
+        NetworkEvent.Context ctx = contextSupplier.get();
         ServerPlayer player = ctx.getSender();
         ctx.enqueueWork(() -> {
             YggdralScepter.summonCorruptMissile(player);

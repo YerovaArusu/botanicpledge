@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": {"model": "botanicpledge:block/mana_yggdral_buffer"}
+    "": {
+      "model": "botanicpledge:block/mana_yggdral_buffer"
+    }
   }
 }

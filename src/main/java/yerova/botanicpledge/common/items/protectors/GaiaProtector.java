@@ -10,6 +10,7 @@ public class GaiaProtector extends Item implements ICurioItem {
     private static final int maxShield = 200;
     private static final int defRegenPerTick = 30;
     private static final int maxCharge = 500_000;
+
     public GaiaProtector(Properties properties) {
         super(properties);
     }

@@ -15,13 +15,14 @@ import yerova.botanicpledge.client.particle.custom.YggdralParticlesType;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ParticleSetup {
-    @ObjectHolder(BotanicPledge.MOD_ID + ":" + YggdralParticleData.NAME) public static ParticleType<ColorParticleTypeData> YGGDRAL_TYPE;
+    @ObjectHolder(BotanicPledge.MOD_ID + ":" + YggdralParticleData.NAME)
+    public static ParticleType<ColorParticleTypeData> YGGDRAL_TYPE;
 
     @SubscribeEvent
     public static void registerParticles(RegistryEvent.Register<ParticleType<?>> event) {
         IForgeRegistry<ParticleType<?>> r = event.getRegistry();
 
-        r.register( new YggdralParticlesType().setRegistryName(YggdralParticleData.NAME));
+        r.register(new YggdralParticlesType().setRegistryName(YggdralParticleData.NAME));
 
 
     }

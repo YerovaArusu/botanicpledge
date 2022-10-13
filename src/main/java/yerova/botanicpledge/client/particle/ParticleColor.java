@@ -1,7 +1,6 @@
 package yerova.botanicpledge.client.particle;
 
 
-
 import javax.annotation.Nonnull;
 import java.util.Random;
 
@@ -19,26 +18,28 @@ public class ParticleColor implements Cloneable {
     }
 
     public ParticleColor(double red, double green, double blue) {
-        this((int)red,(int) green,(int) blue);
+        this((int) red, (int) green, (int) blue);
     }
 
-    public static ParticleColor makeRandomColor(int r, int g, int b, Random random){
+    public static ParticleColor makeRandomColor(int r, int g, int b, Random random) {
         return new ParticleColor(random.nextInt(r), random.nextInt(g), random.nextInt(b));
     }
 
-    public ParticleColor(float r, float g, float b){
-        this((int)r,(int) g,(int) b);
+    public ParticleColor(float r, float g, float b) {
+        this((int) r, (int) g, (int) b);
     }
 
 
-    public static ParticleColor fromInt(int color){
+    public static ParticleColor fromInt(int color) {
         int r = (color >> 16) & 0xFF;
         int g = (color >> 8) & 0xFF;
         int b = (color) & 0xFF;
-        return new ParticleColor(r,g,b);
+        return new ParticleColor(r, g, b);
     }
 
-    public float getRed(){return r;}
+    public float getRed() {
+        return r;
+    }
 
     public float getGreen() {
         return g;
@@ -52,16 +53,16 @@ public class ParticleColor implements Cloneable {
         return color;
     }
 
-    public String serialize(){
-        return "" + this.r + "," + this.g +","+this.b;
+    public String serialize() {
+        return "" + this.r + "," + this.g + "," + this.b;
     }
 
-    public IntWrapper toWrapper(){
+    public IntWrapper toWrapper() {
         return new IntWrapper(this);
     }
 
-    public static ParticleColor deserialize(String string){
-        if(string == null || string.isEmpty())
+    public static ParticleColor deserialize(String string) {
+        if (string == null || string.isEmpty())
             return ParticleUtils.defaultParticleColor();
         String[] arr = string.split(",");
         return new ParticleColor(Integer.parseInt(arr[0].trim()), Integer.parseInt(arr[1].trim()), Integer.parseInt(arr[2].trim()));
@@ -77,49 +78,50 @@ public class ParticleColor implements Cloneable {
         }
     }
 
-    public static class IntWrapper implements Cloneable{
+    public static class IntWrapper implements Cloneable {
         public int r;
         public int g;
         public int b;
 
-        public IntWrapper(int r, int g, int b){
+        public IntWrapper(int r, int g, int b) {
             this.r = r;
             this.g = g;
             this.b = b;
         }
 
-        public IntWrapper(ParticleColor color){
+        public IntWrapper(ParticleColor color) {
             this.r = (int) (color.getRed() * 255.0);
             this.g = (int) (color.getGreen() * 255.0);
             this.b = (int) (color.getBlue() * 255.0);
         }
 
-        public ParticleColor toParticleColor(){
-            return new ParticleColor(r,g,b);
+        public ParticleColor toParticleColor() {
+            return new ParticleColor(r, g, b);
         }
 
-        public String serialize(){
-            return "" + this.r + "," + this.g +","+this.b;
+        public String serialize() {
+            return "" + this.r + "," + this.g + "," + this.b;
         }
 
-        public void makeVisible(){
-            if(r + g + b < 20){
+        public void makeVisible() {
+            if (r + g + b < 20) {
                 b += 10;
                 g += 10;
                 r += 10;
             }
         }
 
-        public static @Nonnull ParticleColor.IntWrapper deserialize(String string){
+        public static @Nonnull ParticleColor.IntWrapper deserialize(String string) {
             ParticleColor.IntWrapper color = ParticleUtils.defaultParticleColorWrapper();
-            if(string == null || string.isEmpty())
+            if (string == null || string.isEmpty())
                 return color;
 
-            try{
+            try {
                 String[] arr = string.split(",");
                 color = new ParticleColor.IntWrapper(Integer.parseInt(arr[0].trim()), Integer.parseInt(arr[1].trim()), Integer.parseInt(arr[2].trim()));
                 return color;
-            }catch (Exception ignored){ }
+            } catch (Exception ignored) {
+            }
             return color;
         }
 

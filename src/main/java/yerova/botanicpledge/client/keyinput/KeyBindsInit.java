@@ -19,7 +19,6 @@ public class KeyBindsInit {
     public static void register(final FMLClientSetupEvent event) {
 
 
-
         switchSkillForwards = create("switch_skill_forwards", KeyEvent.VK_V);
         ClientRegistry.registerKeyBinding(switchSkillForwards);
 

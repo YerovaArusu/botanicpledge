@@ -1,9 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -24,10 +21,7 @@ import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.keyinput.KeyBindsInit;
-import yerova.botanicpledge.client.render.entities.ManaSlashRenderer;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
-import yerova.botanicpledge.client.render.screen.CoreAltarScreen;
-import yerova.botanicpledge.client.render.screen.MenuTypesInit;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
@@ -59,8 +53,6 @@ public class BotanicPledge {
         EntityInit.ENTITY.register(forgeBus);
         BlockInit.BLOCKS.register(forgeBus);
         BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
-        MenuTypesInit.MENUS.register(forgeBus);
-
 
 
         forgeBus.addListener(this::setup);
@@ -91,18 +83,16 @@ public class BotanicPledge {
     private void processIMC(final InterModProcessEvent event) {
 
     }
+
     private void doClientStuff(final FMLClientSetupEvent event) {
 
         KeyBindsInit.register(event);
 
-        EntityRenderers.register(EntityInit.MANA_SLASH.get(), ManaSlashRenderer::new);
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
-
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.CORE_ALTAR.get(), RenderType.translucent());
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);
 
-        MenuScreens.register(MenuTypesInit.CORE_ALTAR_MENU.get(), CoreAltarScreen::new);
+
     }
 
 

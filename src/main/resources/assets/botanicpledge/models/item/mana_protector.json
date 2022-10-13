@@ -1,4 +1,6 @@
 {
-	"parent": "item/generated",
-	"textures": { "layer0": "botanicpledge:items/mana_protector" }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "botanicpledge:items/mana_protector"
+  }
 }

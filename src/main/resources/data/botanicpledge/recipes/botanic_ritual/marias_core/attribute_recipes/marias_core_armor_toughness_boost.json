@@ -1,0 +1,40 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:marias_core"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:iron_block"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:iron_block"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName": "armor_toughness",
+  "statValue": 0.1,
+  "manaCost": 250000,
+  "keepNbtOfReagent": true
+}
+

@@ -28,21 +28,19 @@ public class RitualPedestalBlock extends BaseEntityBlock {
     }
 
 
-
-
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(handIn != InteractionHand.MAIN_HAND)
+        if (handIn != InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
-        if(!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
+        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
             if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                if(world.getBlockState(pos.above()).getMaterial() != Material.AIR)
+                if (world.getBlockState(pos.above()).getMaterial() != Material.AIR)
                     return InteractionResult.SUCCESS;
                 ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                 world.addFreshEntity(item);
                 tile.setHeldStack(ItemStack.EMPTY);
             } else if (!player.getInventory().getSelected().isEmpty()) {
-                if(tile.getHeldStack() != null){
+                if (tile.getHeldStack() != null) {
                     ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                     world.addFreshEntity(item);
                 }
@@ -52,7 +50,7 @@ public class RitualPedestalBlock extends BaseEntityBlock {
             }
             world.sendBlockUpdated(pos, state, state, 2);
         }
-        return  InteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
 }

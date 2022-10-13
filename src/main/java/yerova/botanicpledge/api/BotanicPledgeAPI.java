@@ -15,7 +15,8 @@ public class BotanicPledgeAPI {
     private List<IBotanicRitualRecipe> botanicRitualRecipes = new ArrayList<>();
     private Set<RecipeType<? extends IBotanicRitualRecipe>> botanicRitualRecipeTypes = ConcurrentHashMap.newKeySet();
 
-    private BotanicPledgeAPI(){}
+    private BotanicPledgeAPI() {
+    }
 
     public static BotanicPledgeAPI getInstance() {
         return BOTANIC_PLEDGE_API;
@@ -26,13 +27,11 @@ public class BotanicPledgeAPI {
     }
 
 
-
-
     public List<IBotanicRitualRecipe> getBotanicRitualRecipes(Level world) {
         List<IBotanicRitualRecipe> recipes = new ArrayList<>(botanicRitualRecipes);
         RecipeManager manager = world.getRecipeManager();
         List<IBotanicRitualRecipe> recipesByType = new ArrayList<>(); // todo lazy init enchanting types
-        for(RecipeType<? extends IBotanicRitualRecipe> type : botanicRitualRecipeTypes){
+        for (RecipeType<? extends IBotanicRitualRecipe> type : botanicRitualRecipeTypes) {
             recipesByType.addAll(manager.getAllRecipesFor(type));
         }
         recipes.addAll(recipesByType);

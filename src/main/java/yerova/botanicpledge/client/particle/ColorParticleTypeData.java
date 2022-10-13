@@ -16,7 +16,7 @@ public class ColorParticleTypeData implements ParticleOptions {
                     Codec.FLOAT.fieldOf("r").forGetter(d -> d.color.getRed()),
                     Codec.FLOAT.fieldOf("g").forGetter(d -> d.color.getGreen()),
                     Codec.FLOAT.fieldOf("b").forGetter(d -> d.color.getBlue()),
-                    Codec.BOOL.fieldOf("disableDepthTest").forGetter(d-> d.disableDepthTest),
+                    Codec.BOOL.fieldOf("disableDepthTest").forGetter(d -> d.disableDepthTest),
                     Codec.FLOAT.fieldOf("size").forGetter(d -> d.size),
                     Codec.FLOAT.fieldOf("alpha").forGetter(d -> d.alpha),
                     Codec.INT.fieldOf("age").forGetter(d -> d.age)
@@ -42,18 +42,20 @@ public class ColorParticleTypeData implements ParticleOptions {
         }
     };
 
-    public ColorParticleTypeData(float r, float g, float b,  boolean disableDepthTest, float size, float alpha, int age){
-        this(ParticleSetup.YGGDRAL_TYPE, new ParticleColor(r,g,b), disableDepthTest, size, alpha, age);
+    public ColorParticleTypeData(float r, float g, float b, boolean disableDepthTest, float size, float alpha, int age) {
+        this(ParticleSetup.YGGDRAL_TYPE, new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
     }
-    public ColorParticleTypeData(ParticleColor color,  boolean disableDepthTest, float size, float alpha, int age){
+
+    public ColorParticleTypeData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
         this(ParticleSetup.YGGDRAL_TYPE, color, disableDepthTest, size, alpha, age);
     }
 
-    public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest){
+    public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest) {
         this(particleTypeData, color, disableDepthTest, 0.25f, 1.0f, 36);
     }
-    public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest, float size, float alpha, int age){
-        this.type =   particleTypeData;
+
+    public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
+        this.type = particleTypeData;
         this.color = color;
         this.disableDepthTest = disableDepthTest;
         this.size = size;
