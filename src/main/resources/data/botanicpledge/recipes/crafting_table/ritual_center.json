@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SYS",
+    "SSS"
+  ],
+  "key": {
+    "Y": {
+      "item": "botanicpledge:ritual_pedestal_block_item"
+    },
+    "S": {
+      "item": "botania:livingrock"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:ritual_center_block_item"
+  }
+}

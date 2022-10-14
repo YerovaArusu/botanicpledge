@@ -6,19 +6,19 @@
       "item": "botania:terrasteel_ingot"
     },
     {
-      "item": "botania:gaia_ingot"
+      "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "minecraft:diamond_block"
+      "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "minecraft:lapis_block"
+      "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "botania:manasteel_ingot"
+      "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "minecraft:nether_star"
+      "item": "botania:terrasteel_ingot"
     }
   ],
   "result": {

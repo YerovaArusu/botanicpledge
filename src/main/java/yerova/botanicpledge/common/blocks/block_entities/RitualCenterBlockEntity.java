@@ -1,5 +1,6 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -22,11 +23,16 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.patchouli.api.IMultiblock;
+import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.api.BotanicPledgeAPI;
 import yerova.botanicpledge.api.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
+import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
@@ -35,8 +41,42 @@ import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
+
+    public static final Supplier<IMultiblock> MULTIBLOCK = Suppliers.memoize(() -> PatchouliAPI.get().makeMultiblock(
+            new String[][] {
+                    {
+                            "----P----",
+                            "-P-----P-",
+                            "---------",
+                            "---M-M---",
+                            "P---C---P",
+                            "---M-M---",
+                            "---------",
+                            "-P-----P-",
+                            "----P----",
+                    },
+                    {
+                            "---------",
+                            "---------",
+                            "---------",
+                            "---K-K---",
+                            "---------",
+                            "---K-K---",
+                            "---------",
+                            "---------",
+                            "---------",
+                    },
+            },
+            'P', BlockInit.RITUAL_PEDESTAL.get(),
+            'M', ModBlocks.manaPool,
+            'C', BlockInit.RITUAL_CENTER.get(),
+            'K', ModBlocks.gaiaPylon
+    ));
+
+
     private final AnimationFactory factory = new AnimationFactory(this);
 
 

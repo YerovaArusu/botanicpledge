@@ -5,11 +5,14 @@ import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.item.ModItems;
+import yerova.botanicpledge.common.items.BotanicPledgeTab;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -19,7 +22,6 @@ import java.util.function.Supplier;
 
 public class BlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
-
 
     public static final RegistryObject<Block> MANA_YGGDRAL_BUFFER = registerBlockWithoutBlockItem("mana_yggdral_buffer",
             () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
@@ -31,6 +33,10 @@ public class BlockInit {
 
     public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlockWithoutBlockItem("ritual_pedestal",
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+
+    public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
+            ()-> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
+            BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

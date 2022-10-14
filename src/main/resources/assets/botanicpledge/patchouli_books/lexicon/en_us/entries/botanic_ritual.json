@@ -1,0 +1,56 @@
+{
+  "name": "botanicpledge.botanic_ritual",
+  "category": "botanicpledge:botanicpledge",
+  "icon": "botanicpledge:ritual_center_block_item",
+  "priority": true,
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.botanic_ritual"
+    },
+    {
+      "type": "botania:terrasteel",
+      "recipe": "botanicpledge:terra_plate/yggdralium_shard",
+      "text": "botanicpledge.page.botanic_ritual1"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "botanicpledge.multiblock.botanic_ritual",
+      "multiblock": {
+        "mapping": {
+          "P": "botanicpledge:ritual_pedestal",
+          "M": "botania:mana_pool",
+          "0": "botanicpledge:ritual_center",
+          "K": "botania:gaia_pylon"
+        },
+        "pattern": [
+          [
+            "         ",
+            "         ",
+            "         ",
+            "   K K   ",
+            "         ",
+            "   K K   ",
+            "         ",
+            "         ",
+            "         "
+          ],
+          [
+            "    P    ",
+            " P     P ",
+            "         ",
+            "   M M   ",
+            "P   0   P",
+            "   M M   ",
+            "         ",
+            " P     P ",
+            "    P    "
+          ]
+        ],
+        "symmetrical": true
+      },
+      "text": "botanicpledge.page.botanic_ritual2"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "botanicpledge.start",
+  "category": "botanicpledge:botanicpledge",
+  "icon": "botanicpledge:marias_core",
+  "priority": true,
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.introduction"
+    }
+  ]
+}

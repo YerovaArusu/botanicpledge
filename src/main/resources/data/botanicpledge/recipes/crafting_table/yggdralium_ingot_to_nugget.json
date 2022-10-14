@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "N  ",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "N": {
+      "item": "botanicpledge:yggdralium_ingot"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:yggdralium_nugget",
+    "count": 9
+  }
+}

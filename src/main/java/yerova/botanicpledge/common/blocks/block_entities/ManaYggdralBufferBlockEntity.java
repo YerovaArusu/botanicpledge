@@ -25,7 +25,7 @@ import vazkii.botania.common.block.tile.mana.TilePool;
 import java.util.List;
 
 public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, IManaReceiver, ISparkAttachable, IThrottledPacket {
-    public static final int MAX_MANA = 264000000;
+    public static final int MAX_MANA = 264_000_000;
     public static final int TRANSFER_SPEED = 16000;
     private static final BlockPos[] POOL_LOCATIONS = {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1),
             new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(0, -1, 0)};

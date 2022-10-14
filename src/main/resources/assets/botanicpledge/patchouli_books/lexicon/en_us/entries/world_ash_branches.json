@@ -1,0 +1,18 @@
+{
+  "name": "botanicpledge.world_ash_branches",
+  "category": "botanicpledge:botanicpledge",
+  "icon": "botanicpledge:world_ash_branch",
+  "priority": true,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.world_ash_branch"
+    },
+    {
+      "type": "botania:elven_trade",
+      "text": "botanicpledge.page.world_ash_branch1",
+      "recipes": ["botanicpledge:elven_trade/world_ash_branch"]
+    }
+  ]
+}

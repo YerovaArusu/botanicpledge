@@ -1,19 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " # ",
-    " G ",
-    "   "
+    "NNN",
+    "NNN",
+    "NNN"
   ],
   "key": {
-    "#": {
+    "N": {
       "item": "botanicpledge:yggdralium_ingot"
-    },
-    "G": {
-      "item": "botania:runic_altar"
     }
   },
   "result": {
-    "item": "botanicpledge:core_altar"
+    "item": "botanicpledge:yggdralium_block"
   }
 }
