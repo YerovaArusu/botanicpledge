@@ -9,9 +9,11 @@ import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.mana.ManaItemHandler;
 import yerova.botanicpledge.client.keyinput.KeyBindsInit;
 import yerova.botanicpledge.common.items.YggdralScepter;
+import yerova.botanicpledge.common.network.LeftClick;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.YggdralScepterLeftClick;
 import yerova.botanicpledge.common.network.YggdralScepterSwitchSkills;
+import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -19,11 +21,16 @@ public class PlayerInputEvents {
 
     @SubscribeEvent
     public static void PlayerLeftClickEvent(PlayerInteractEvent.LeftClickEmpty evt) {
-        if (evt.getPlayer().getMainHandItem().getItem() instanceof YggdralScepter) {
+        if(evt.getItemStack().getItem() instanceof LeftClickable) {
+            Networking.sendToServer(new LeftClick(evt.getItemStack()));
+        }
+
+
+/*        if (evt.getPlayer().getMainHandItem().getItem() instanceof YggdralScepter) {
             if (ManaItemHandler.instance().requestManaExact(evt.getItemStack(), evt.getPlayer(), 10000, true)) {
                 Networking.sendToServer(new YggdralScepterLeftClick());
             }
-        }
+        }*/
     }
 
     @SubscribeEvent

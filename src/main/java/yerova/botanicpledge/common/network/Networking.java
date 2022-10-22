@@ -47,6 +47,12 @@ public class Networking {
                 .consumer(YggdralScepterSwitchSkills::handle)
                 .add();
 
+        net.messageBuilder(LeftClick.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LeftClick::new)
+                .encoder(LeftClick::encode)
+                .consumer(LeftClick::handle)
+                .add();
+
     }
 
 

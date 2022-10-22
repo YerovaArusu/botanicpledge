@@ -8,11 +8,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
+import yerova.botanicpledge.common.network.LeftClick;
+import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -63,6 +66,7 @@ public class AttributedItemsEventHandler {
 
                     AttributedItemsUtils.SyncShieldValuesToClient(serverPlayer);
 
+
                 }
             }
         }
@@ -70,5 +74,4 @@ public class AttributedItemsEventHandler {
 
         }
     }
-
 }
