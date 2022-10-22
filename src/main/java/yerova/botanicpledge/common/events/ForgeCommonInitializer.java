@@ -8,6 +8,7 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 
 import java.util.Map;
@@ -20,7 +21,8 @@ public class ForgeCommonInitializer {
 
     private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
             ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
-            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic
+            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
+            ItemInit.YGGD_RAMUS.get(), YggdRamus::makeRelic
     ));
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {

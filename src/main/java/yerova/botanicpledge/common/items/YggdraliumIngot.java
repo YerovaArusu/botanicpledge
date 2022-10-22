@@ -4,4 +4,6 @@ public class YggdraliumIngot extends BotanicPledgeItemManaResource {
     public YggdraliumIngot(Properties p) {
         super(p);
     }
+
+
 }

@@ -16,6 +16,7 @@ import yerova.botanicpledge.common.items.protectors.TerraProtector;
 import yerova.botanicpledge.common.items.protectors.YggdralProtector;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
+import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class ItemInit {
@@ -41,6 +42,9 @@ public class ItemInit {
 
     //weapon
     public static final RegistryObject<Item> YGGDRASIL_SCEPTER = ITEMS.register("yggdral_scepter", () -> new YggdralScepter(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+
+    public static final RegistryObject<Item> YGGD_RAMUS = ITEMS.register("yggd_ramus", () -> new YggdRamus(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
 
 
