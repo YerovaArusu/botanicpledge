@@ -1,0 +1,40 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:marias_core"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "minecraft:feather"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName": "may_fly",
+  "statValue": 1.0,
+  "manaCost": 500000,
+  "keepNbtOfReagent": true
+}
+

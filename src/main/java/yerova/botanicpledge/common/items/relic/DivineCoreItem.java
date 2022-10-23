@@ -8,11 +8,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -88,41 +88,61 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
-        for (int i = 0; i < attributeList().size(); i++) {
-            double addValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
-            AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
 
-            if (!slotContext.entity().getAttribute(attributeList().get(i)).hasModifier(statModifier)) {
-                slotContext.entity().getAttribute(attributeList().get(i)).addPermanentModifier(statModifier);
+        if (slotContext.entity() instanceof Player) {
+            Player player = ((Player) slotContext.entity());
+
+            for (int i = 0; i < attributeList().size(); i++) {
+                double addValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
+
+                if (!player.getAttribute(attributeList().get(i)).hasModifier(statModifier)) {
+                    player.getAttribute(attributeList().get(i)).addPermanentModifier(statModifier);
+                }
+            }
+
+            if (stack.getTag().contains(AttributedItemsUtils.TAG_STATS_SUBSTAT)
+                    && stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).contains("may_fly")) {
+
+                this.startFlying(player);
+
             }
         }
-
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
-        if (newStack.getItem() != stack.getItem()) {
-            for (int i = 0; i < attributeList().size(); i++) {
+        if (slotContext.entity() instanceof Player) {
+            Player player = ((Player) slotContext.entity());
 
-                double reducerValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
-                LivingEntity entity = slotContext.entity();
-                AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
-                AttributeInstance statAttribute = entity.getAttribute(attributeList().get(i));
+            if (newStack.getItem() != stack.getItem()) {
+                for (int i = 0; i < attributeList().size(); i++) {
 
-                if (statAttribute.hasModifier(statModifier)) {
-                    statAttribute.removeModifier(statModifier);
+                    double reducerValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                    AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
+                    AttributeInstance statAttribute = player.getAttribute(attributeList().get(i));
 
-                    if (attributeNameList().get(i).equals(attributeNameList().get(2))) {
+                    if (statAttribute.hasModifier(statModifier)) {
+                        statAttribute.removeModifier(statModifier);
 
-                        if (entity.getHealth() > slotContext.entity().getMaxHealth()) {
-                            entity.hurt(HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+                        if (attributeNameList().get(i).equals(attributeNameList().get(2))) {
+
+                            if (player.getHealth() > slotContext.entity().getMaxHealth()) {
+                                player.hurt(HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+                            }
                         }
                     }
                 }
+
+                if (stack.getTag().contains(AttributedItemsUtils.TAG_STATS_SUBSTAT)
+                        && stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).contains("may_fly")) {
+
+                    this.stopFlying(player);
+
+                }
             }
         }
-        //ICurioItem.super.onUnequip(slotContext, newStack, stack);
     }
 
     @Override
@@ -147,8 +167,14 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
             for (String s : statsTag.getAllKeys()) {
                 if (attributeNameList().contains(s)) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
-
                 }
+                if(s.equals("jump_height")) {
+                    tooltip.add(new TextComponent("+" + statsTag.getDouble("jump_height") + " " + new TranslatableComponent("jump_height").getString()).withStyle(ChatFormatting.BLUE));
+                }
+                if(s.equals("may_fly")) {
+                    tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
+                }
+
             }
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
@@ -156,5 +182,16 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
 
         super.appendHoverText(stack, world, tooltip, flags);
+    }
+
+    private void startFlying(Player player) {
+        player.getAbilities().mayfly = true;
+        player.onUpdateAbilities();
+    }
+
+    private void stopFlying(Player player) {
+        player.getAbilities().flying = false;
+        player.getAbilities().mayfly = false;
+        player.onUpdateAbilities();
     }
 }

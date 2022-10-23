@@ -10,6 +10,7 @@
   "item.botanicpledge.marinas_core": "Marinas Core",
   "item.botanicpledge.world_ash_branch": "World Ash Branch",
   "item.botanicpledge.yggdralium_nugget": "Yggdralium Nugget",
+  "item.botanicpledge.yggd_ramus": "Yggd Ramus",
 
   "block.botanicpledge.ritual_pedestal": "Ritual Pedestal",
   "block.botanicpledge.ritual_center": "Ritual Center",
@@ -22,6 +23,8 @@
   "knockback_resistance": "Knockback Resistance",
   "movement_speed": "Movement_speed",
   "attack_speed": "Attack Speed",
+  "jump_height": "Jump Height",
+  "may_fly": "May Fly",
 
   "show_tooltip_stats": "Press %1$s to show Stats",
 

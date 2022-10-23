@@ -25,12 +25,6 @@ public class PlayerInputEvents {
             Networking.sendToServer(new LeftClick(evt.getItemStack()));
         }
 
-
-/*        if (evt.getPlayer().getMainHandItem().getItem() instanceof YggdralScepter) {
-            if (ManaItemHandler.instance().requestManaExact(evt.getItemStack(), evt.getPlayer(), 10000, true)) {
-                Networking.sendToServer(new YggdralScepterLeftClick());
-            }
-        }*/
     }
 
     @SubscribeEvent

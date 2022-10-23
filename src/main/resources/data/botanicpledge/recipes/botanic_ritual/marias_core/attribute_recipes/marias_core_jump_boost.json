@@ -1,0 +1,40 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:marias_core"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+    "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "minecraft:rabbit_foot"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "statName": "jump_height",
+  "statValue": 0.125,
+  "manaCost": 500000,
+  "keepNbtOfReagent": true
+}
+

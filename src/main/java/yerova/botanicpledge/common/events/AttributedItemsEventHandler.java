@@ -4,18 +4,19 @@ package yerova.botanicpledge.common.events;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
-import yerova.botanicpledge.common.network.LeftClick;
-import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -51,6 +52,30 @@ public class AttributedItemsEventHandler {
 
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void handleDivineCoreJumps(LivingEvent.LivingJumpEvent evt) {
+
+        LivingEntity entity = evt.getEntityLiving();
+        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(evt.getEntityLiving(), "divine_core")) {
+            ItemStack stack = result.stack();
+
+            if (!evt.isCanceled() && stack.hasTag() && stack.getTag().contains(BotanicPledge.MOD_ID + ".stats")) {
+                Vec3 vec3 = entity.getDeltaMovement();
+
+                double additionalJumpHeight = vec3.y +  stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").getDouble("jump_height");
+
+
+                entity.setDeltaMovement(vec3.x, additionalJumpHeight, vec3.z);
+                if (entity.isSprinting()) {
+                    float f = entity.getYRot() * ((float) Math.PI / 180F);
+                    entity.setDeltaMovement(entity.getDeltaMovement().add((double) (-Mth.sin(f) * 0.2F), 0.0D, (double) (Mth.cos(f) * 0.2F)));
+                }
+            }
+        }
+
+
     }
 
     @SubscribeEvent
