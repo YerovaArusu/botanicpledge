@@ -174,7 +174,6 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                 if(s.equals("may_fly")) {
                     tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
-
             }
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
