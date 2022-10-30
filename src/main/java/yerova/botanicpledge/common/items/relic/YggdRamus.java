@@ -5,12 +5,10 @@ import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,17 +21,21 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
+import vazkii.botania.common.entity.EntityManaBurst;
+import vazkii.botania.common.helper.VecHelper;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
-import yerova.botanicpledge.client.particle.ParticleColor;
-import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
+import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.LeftClickable;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
+import java.util.Random;
+
+import static vazkii.botania.common.item.equipment.tool.ToolCommons.raytraceFromEntity;
 
 public class YggdRamus extends ItemRelic implements LeftClickable {
 
@@ -56,7 +58,6 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
         if (player.isShiftKeyDown()) {
             if (player.isOnGround()) {
                 for (LivingEntity entity : YggdRamus.getEntitiesAround(player.getOnPos(), 6, level)) {
@@ -72,18 +73,7 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
                             level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0.12F * j, 0);
                     }
             }
-        } else {
-/*            Vec3 targetVec = player.position().add(player.getLookAngle().scale(6));
-
-            BlockHitResult result = new BlockHitResult(player.getLookAngle(), player.getDirection(), new BlockPos(targetVec), true);
-
-
-            Sheep sheep = new Sheep(EntityType.SHEEP, level);
-            sheep.setPos(Vec3.atCenterOf(result.getBlockPos().offset(0, 1, 0)));
-            level.addFreshEntity(sheep);*/
-        }
-
-
+        } else attackEntity(player, null);
         return super.use(level, player, hand);
     }
 
@@ -92,12 +82,13 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
         Player player = pContext.getPlayer();
 
         Vec3 targetPos = player.position().add(player.getLookAngle().scale(5D));
-        YggdFocus fvoid = new YggdFocus(pContext.getLevel(), player);
-        fvoid.setPos(targetPos.x, targetPos.y+2, targetPos.z);
-        if(!pContext.getLevel().isClientSide)
-            pContext.getLevel().addFreshEntity(fvoid);
+        YggdFocus focus = new YggdFocus(pContext.getLevel(), player);
+        focus.setPos(targetPos.x, targetPos.y + 2, targetPos.z);
+        if (!pContext.getLevel().isClientSide)
+            pContext.getLevel().addFreshEntity(focus);
         player.getCooldowns().addCooldown(this, 40);
         return InteractionResult.SUCCESS;
+
     }
 
     public static IRelic makeRelic(ItemStack stack) {
@@ -111,37 +102,14 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        this.sweepAttack(player.getLevel(), player, 0.4F);
+
         return super.onLeftClickEntity(stack, player, entity);
-    }
-
-    @NotNull
-    public AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
-        return player.getBoundingBox().inflate(3.0D, 1D, 3.0D);
-    }
-
-    public void sweepAttack(Level level, Player player, double knockbackStrength) {
-
-        for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
-            if (livingentity != player && player.canHit(livingentity, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
-                livingentity.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
-                livingentity.hurt(DamageSource.playerAttack(player), 10);
-
-            }
-        }
-
-        double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
-        double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-        if (level instanceof ServerLevel) {
-            ((ServerLevel) level).sendParticles(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)), player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
-        }
-
     }
 
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-        this.sweepAttack(level, player, 0.4F);
+
     }
 
     public static List<LivingEntity> getEntitiesAround(BlockPos source, float range, Level world) {
@@ -149,4 +117,38 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
                 new AABB(source.getX() + 0.5 - range, source.getY() + 0.5 - range, source.getZ() + 0.5 - range,
                         source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
     }
+
+    public void attackEntity(LivingEntity player, Entity target) {
+        BlockPos targetpos = target == null ? raytraceFromEntity(player, 80F, true).getBlockPos().offset(0, 1, 0) : new BlockPos(target.getX(), target.getY(), target.getZ()).offset(0, 1, 0);
+
+        double range = 4D;
+        double j = -Math.PI + 2 * Math.PI * Math.random();
+        double k;
+        double x, y, z;
+        for (int i = 0; i < 3; i++) {
+            YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos);
+            //sword.setDelay(5 + 5 * i);
+            k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+            x = player.getX() + range * Math.sin(k) * Math.cos(j);
+            y = player.getY() + range * Math.cos(k);
+            z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+            j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
+            sword.setPos(x, y, z);
+            sword.faceTarget(1.0F);
+
+            sword.setColor(0x08e8de);
+            sword.setStartingMana(40000);
+            sword.setMinManaLoss(1);
+            sword.setManaLossPerTick(1F);
+            sword.setMana(40000);
+            sword.setGravity(0F);
+            sword.setDeltaMovement(sword.getDeltaMovement().scale(8));
+
+            sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
+
+            player.level.addFreshEntity(sword);
+
+        }
+    }
+
 }

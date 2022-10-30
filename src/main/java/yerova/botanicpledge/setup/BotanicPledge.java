@@ -23,6 +23,7 @@ import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.keyinput.KeyBindsInit;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
+import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
@@ -91,6 +92,7 @@ public class BotanicPledge {
 
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
+        EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);
 

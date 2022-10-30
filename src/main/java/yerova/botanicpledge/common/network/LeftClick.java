@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public class LeftClick {
 
-    private ItemStack leftClickedItem = null;
+    private ItemStack leftClickedItem = ItemStack.EMPTY;
 
     public LeftClick(ItemStack item) {
         this.leftClickedItem = item;
@@ -34,7 +34,6 @@ public class LeftClick {
             if(leftClickedItem.getItem() instanceof LeftClickable) {
                 ((LeftClickable) leftClickedItem.getItem()).LeftClick(player.level, player, leftClickedItem);
             }
-
         });
         return ctx.getPacketHandled();
     }
