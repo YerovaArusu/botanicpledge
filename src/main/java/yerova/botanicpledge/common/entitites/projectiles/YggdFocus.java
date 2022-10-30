@@ -91,7 +91,7 @@ public class YggdFocus extends Entity {
             //damageAllAround(damage);
         }
 
-        if (this.tickCount >= 40)
+        if (this.tickCount >= 80)
             remove(RemovalReason.KILLED);
     }
 

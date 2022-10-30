@@ -58,6 +58,30 @@ public class ItemInit {
     public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
 
+    //crystals
+    public static RegistryObject<Item> RED_CRYSTAL = ITEMS.register("red_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> BLUE_CRYSTAL = ITEMS.register("blue_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> GREEN_CRYSTAL = ITEMS.register("green_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> BLACK_CRYSTAL = ITEMS.register("black_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> WHITE_CRYSTAL = ITEMS.register("white_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> YELLOW_CRYSTAL = ITEMS.register("yellow_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> ORANGE_CRYSTAL = ITEMS.register("orange_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> TURQUOISE_CRYSTAL = ITEMS.register("turquoise_crystal", () -> new Item(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
     //Items
     public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new YggdraliumIngot(

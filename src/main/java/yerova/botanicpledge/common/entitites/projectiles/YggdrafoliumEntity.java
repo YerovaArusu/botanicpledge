@@ -16,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
@@ -182,7 +183,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             lens.updateBurst(this, getSourceLens());
         }
 
-        int mana = getMana();
+/*        int mana = getMana();
         if (getTicksExisted() >= getMinManaLoss()) {
             accumulatedManaLoss += getManaLossPerTick();
             int loss = (int) accumulatedManaLoss;
@@ -192,6 +193,10 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             if (getMana() <= 0) {
                 discard();
             }
+        }*/
+
+        if(this.getTicksExisted() >= 80) {
+            discard();
         }
 
         particles();
@@ -534,7 +539,12 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
                 level.addParticle(data, getX(), getY(), getZ(), 0, 0, 0);
             }
 
-            discard();
+            if (hit.getType().equals(HitResult.Type.ENTITY)) {
+                if(((EntityHitResult)hit).getEntity() == getOwner()) {
+                    return;
+                }
+            }
+            explodeAndDie();
         }
     }
 
@@ -826,4 +836,14 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         }
     }
 
+    @Override
+    public boolean ignoreExplosion() {
+        return true;
+    }
+    private void explodeAndDie() {
+        if (!level.isClientSide) {
+            level.explode(this, getX(), getY(), getZ(), 2F, Explosion.BlockInteraction.NONE);
+            discard();
+        }
+    }
 }

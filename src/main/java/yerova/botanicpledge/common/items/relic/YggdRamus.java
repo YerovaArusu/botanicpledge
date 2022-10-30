@@ -5,7 +5,6 @@ import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -23,21 +22,22 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
-import vazkii.botania.common.entity.EntityManaBurst;
-import vazkii.botania.common.helper.VecHelper;
+import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.LeftClickable;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
-import java.util.Random;
 
 import static vazkii.botania.common.item.equipment.tool.ToolCommons.raytraceFromEntity;
 
 public class YggdRamus extends ItemRelic implements LeftClickable {
+
+    public final int MANA_COST_PER_SHOT = 4000;
+    public final int SUMMON_AMOUNT_PER_CLICK = 4;
+
 
     private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
@@ -125,29 +125,29 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
         double j = -Math.PI + 2 * Math.PI * Math.random();
         double k;
         double x, y, z;
-        for (int i = 0; i < 3; i++) {
-            YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos);
-            //sword.setDelay(5 + 5 * i);
-            k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
-            x = player.getX() + range * Math.sin(k) * Math.cos(j);
-            y = player.getY() + range * Math.cos(k);
-            z = player.getZ() + range * Math.sin(k) * Math.sin(j);
-            j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
-            sword.setPos(x, y, z);
-            sword.faceTarget(1.0F);
+        for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK -1; i++) {
+            if(ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos);
+                k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+                x = player.getX() + range * Math.sin(k) * Math.cos(j);
+                y = player.getY() + range * Math.cos(k);
+                z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+                j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
+                sword.setPos(x, y, z);
+                sword.faceTarget(1.0F);
 
-            sword.setColor(0x08e8de);
-            sword.setStartingMana(40000);
-            sword.setMinManaLoss(1);
-            sword.setManaLossPerTick(1F);
-            sword.setMana(40000);
-            sword.setGravity(0F);
-            sword.setDeltaMovement(sword.getDeltaMovement().scale(8));
+                sword.setColor(0x08e8de);
+                sword.setStartingMana(MANA_COST_PER_SHOT);
+                sword.setMinManaLoss(1);
+                sword.setManaLossPerTick(1F);
+                sword.setMana(MANA_COST_PER_SHOT);
+                sword.setGravity(0F);
+                sword.setDeltaMovement(sword.getDeltaMovement().scale(0.8));
 
-            sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
+                sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
 
-            player.level.addFreshEntity(sword);
-
+                player.level.addFreshEntity(sword);
+            }
         }
     }
 
