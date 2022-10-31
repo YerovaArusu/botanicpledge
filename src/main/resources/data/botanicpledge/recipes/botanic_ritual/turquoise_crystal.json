@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "minecraft:diamond"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:turquoise_crystal"
+  },
+  "manaCost": 10000,
+  "keepNbtOfReagent": false
+}

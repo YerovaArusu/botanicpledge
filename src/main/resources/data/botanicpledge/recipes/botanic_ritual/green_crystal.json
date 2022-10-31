@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "minecraft:emerald"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "item": "minecraft:emerald"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:green_crystal"
+  },
+  "manaCost": 10000,
+  "keepNbtOfReagent": false
+}

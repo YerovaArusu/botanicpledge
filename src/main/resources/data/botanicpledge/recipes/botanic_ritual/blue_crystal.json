@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "minecraft:lapis_lazuli"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:lapis_lazuli"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    },
+    {
+      "item": "minecraft:lapis_lazuli"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:blue_crystal"
+  },
+  "manaCost": 10000,
+  "keepNbtOfReagent": false
+}

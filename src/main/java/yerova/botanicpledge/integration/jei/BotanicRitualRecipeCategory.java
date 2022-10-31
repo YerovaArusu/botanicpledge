@@ -11,11 +11,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitualRecipe> {
     public final static ResourceLocation UID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
@@ -59,19 +63,59 @@ public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitua
 
     @Override
     public void setRecipe(@Nonnull IRecipeLayoutBuilder builder, @Nonnull BotanicRitualRecipe recipe, @Nonnull IFocusGroup focusGroup) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 39, 13).addIngredients(recipe.pedestalItems.get(0));
-        builder.addSlot(RecipeIngredientRole.INPUT, 62, 7).addIngredients(recipe.pedestalItems.get(1));
-        builder.addSlot(RecipeIngredientRole.INPUT, 85, 13).addIngredients(recipe.pedestalItems.get(2));
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 34, 35).addIngredients(recipe.pedestalItems.get(3));
-        builder.addSlot(RecipeIngredientRole.INPUT, 62, 35).addIngredients(recipe.reagent);
-        builder.addSlot(RecipeIngredientRole.INPUT, 90, 35).addIngredients(recipe.pedestalItems.get(4));
+        for (Point p : RecipeSlots().get(RecipeIngredientRole.INPUT)) {
+            int indexOfPoint = RecipeSlots().get(RecipeIngredientRole.INPUT).indexOf(p);
 
-        builder.addSlot(RecipeIngredientRole.INPUT, 39, 58).addIngredients(recipe.pedestalItems.get(5));
-        builder.addSlot(RecipeIngredientRole.INPUT, 62, 63).addIngredients(recipe.pedestalItems.get(6));
-        builder.addSlot(RecipeIngredientRole.INPUT, 85, 58).addIngredients(recipe.pedestalItems.get(7));
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 138, 35).addItemStack(recipe.getResultItem());
+            BotanicPledge.LOGGER.info(indexOfPoint + "");
+            if (indexOfPoint != 8) {
+                Ingredient recipeItem = Ingredient.EMPTY;
+
+                if (recipe.pedestalItems.size() -1 >= indexOfPoint) {
+                    recipeItem = recipe.pedestalItems.get(indexOfPoint);
+                }
+                builder.addSlot(RecipeIngredientRole.INPUT, p.x, p.y).addIngredients(recipeItem);
+            } else {
+                builder.addSlot(RecipeIngredientRole.INPUT, p.x, p.y).addIngredients(recipe.reagent);
+            }
+
+
+
+        }
+        for (Point p : RecipeSlots().get(RecipeIngredientRole.OUTPUT)) {
+            builder.addSlot(RecipeIngredientRole.OUTPUT, p.x, p.y).addItemStack(recipe.getResultItem());
+        }
+
+
     }
+
+    public final HashMap<RecipeIngredientRole, ArrayList<Point>> RecipeSlots() {
+        HashMap<RecipeIngredientRole, ArrayList<Point>> slots = new HashMap<>();
+
+        ArrayList<Point> InputPoints = new ArrayList<>();
+        InputPoints.add(new Point(39, 13));
+        InputPoints.add(new Point(63, 7));
+        InputPoints.add(new Point(85, 13));
+
+        InputPoints.add(new Point(34, 35));
+        InputPoints.add(new Point(90, 35));
+
+        InputPoints.add(new Point(39, 58));
+        InputPoints.add(new Point(62, 63));
+        InputPoints.add(new Point(85, 58));
+
+        InputPoints.add(new Point(62, 35)); // reagent/center
+
+
+        ArrayList<Point> OutputPoints = new ArrayList<>();
+        OutputPoints.add(new Point(138, 35));
+
+        slots.put(RecipeIngredientRole.INPUT, InputPoints);
+        slots.put(RecipeIngredientRole.OUTPUT, OutputPoints);
+
+        return slots;
+    }
+
 
 }
