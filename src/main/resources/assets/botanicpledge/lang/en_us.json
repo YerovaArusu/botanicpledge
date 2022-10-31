@@ -5,7 +5,6 @@
   "item.botanicpledge.yggdral_protector": "Yggdral Protector",
   "item.botanicpledge.yggdralium_ingot": "Yggdralium Ingot",
   "item.botanicpledge.yggdralium_shard": "Yggdralium Shard",
-  "item.botanicpledge.yggdral_scepter": "Yggdral Scepter",
   "item.botanicpledge.marias_core": "Marias Core",
   "item.botanicpledge.marinas_core": "Marinas Core",
   "item.botanicpledge.world_ash_branch": "World Ash Branch",
@@ -19,11 +18,9 @@
   "item.botanicpledge.orange_crystal": "Orange Crystal",
   "item.botanicpledge.yellow_crystal": "Yellow Crystal",
   "item.botanicpledge.turquoise_crystal": "Turquoise Crystal",
-
   "block.botanicpledge.ritual_pedestal": "Ritual Pedestal",
   "block.botanicpledge.ritual_center": "Ritual Center",
   "block.botanicpledge.yggdralium_block": "Yggdralium Block",
-
   "armor": "Armor",
   "armor_toughness": "Armor Toughness",
   "max_health": "Max Health",
@@ -33,20 +30,13 @@
   "attack_speed": "Attack Speed",
   "jump_height": "Jump Height",
   "may_fly": "May Fly",
-
   "show_tooltip_stats": "Press %1$s to show Stats",
-
   "block.botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
-
   "entity.botanicpledge.marina": "Marina Arusu",
   "entity.botanicpledge.maria": "Maria Arusu",
-
   "itemGroup.botanicpledge": "Botanic Pledge",
-
   "curios.identifier.divine_core": "Divine Core",
-
   "lexicon.botanicpledge.title": "Botanic Pledge",
-
   "botanicpledge.page.introduction": "Ever wondered about the secrets of Asgard? As the Nordic Legends describe it, Asgard is said to be only a small part of the World Ash also known as Yggdrasil. As far as  We know, the elves in Asgard should be able to help us, if we give them the required Resources. We should check out, what they have to offer",
   "botanicpledge.page.world_ash_branch": "As it seems we need to acquire wood from Yggdrasil, but the elves only trade in their branches. Hopefully these branches are already enough for our uses!",
   "botanicpledge.page.botanic_ritual": "As told by the elves, it is possible to build a ritual, that can be used to craft even stronger Items than outperform anything we know so far. But there is a catch: To build this Ritual Ritual there are some of the most Powerful Ingots Required... Before Crafting them, you need to craft Yggdralium Shards",
@@ -58,8 +48,5 @@
   "botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
   "botanicpledge.page.mana_yggdral_buffer": "Ever Since we used Botanic Ritual we ran into one problem: where do we store the generated Mana. After asking the elves they told us about the 'Mana Yggdral Buffer'. They say it can store 264x more mana than a usual mana pool. But the Recipe... is expensive...",
   "botanicpledge.page.mana_yggdral_buffer1": "It even requires a fully working Botanic Ritual. You use about 1 full Mana Pool... Lets hope it is worth the price",
-
-
   "botanicpledge.multiblock.botanic_ritual": "Botanic Ritual"
-
 }

@@ -22,7 +22,6 @@ import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ItemTwigWand;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.HashMap;
 

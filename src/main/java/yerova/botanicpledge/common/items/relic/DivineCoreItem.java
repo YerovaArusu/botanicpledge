@@ -168,10 +168,10 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                 if (attributeNameList().contains(s)) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
                 }
-                if(s.equals("jump_height")) {
+                if (s.equals("jump_height")) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble("jump_height") + " " + new TranslatableComponent("jump_height").getString()).withStyle(ChatFormatting.BLUE));
                 }
-                if(s.equals("may_fly")) {
+                if (s.equals("may_fly")) {
                     tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
             }

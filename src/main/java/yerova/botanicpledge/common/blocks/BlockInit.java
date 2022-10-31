@@ -11,7 +11,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.item.ModItems;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -35,7 +34,7 @@ public class BlockInit {
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
-            ()-> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
             BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {

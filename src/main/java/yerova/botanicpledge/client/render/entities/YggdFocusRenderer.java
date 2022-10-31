@@ -26,7 +26,6 @@ public class YggdFocusRenderer extends EntityRenderer<YggdFocus> {
     }
 
 
-
     @Override
     public ResourceLocation getTextureLocation(YggdFocus pEntity) {
         return TextureAtlas.LOCATION_BLOCKS;

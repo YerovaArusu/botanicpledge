@@ -8,8 +8,8 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.items.ItemInit;
-import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
+import yerova.botanicpledge.common.items.relic.YggdRamus;
 
 import java.util.Map;
 import java.util.function.Function;

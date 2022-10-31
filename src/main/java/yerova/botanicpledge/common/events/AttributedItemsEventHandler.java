@@ -64,7 +64,7 @@ public class AttributedItemsEventHandler {
             if (!evt.isCanceled() && stack.hasTag() && stack.getTag().contains(BotanicPledge.MOD_ID + ".stats")) {
                 Vec3 vec3 = entity.getDeltaMovement();
 
-                double additionalJumpHeight = vec3.y +  stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").getDouble("jump_height");
+                double additionalJumpHeight = vec3.y + stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats").getDouble("jump_height");
 
 
                 entity.setDeltaMovement(vec3.x, additionalJumpHeight, vec3.z);

@@ -1,11 +1,8 @@
 package yerova.botanicpledge.common.items;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -43,9 +40,7 @@ public class ItemInit {
     public static final RegistryObject<Item> YGGDRAL_PROTECTOR = ITEMS.register("yggdral_protector", () -> new YggdralProtector(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
 
-    //weapon
-    public static final RegistryObject<Item> YGGDRASIL_SCEPTER = ITEMS.register("yggdral_scepter", () -> new YggdralScepter(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+    //weapons
 
     public static final RegistryObject<Item> YGGD_RAMUS = ITEMS.register("yggd_ramus", () -> new YggdRamus(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));

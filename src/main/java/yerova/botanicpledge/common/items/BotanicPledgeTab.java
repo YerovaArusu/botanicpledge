@@ -3,9 +3,8 @@ package yerova.botanicpledge.common.items;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import vazkii.botania.client.lib.LibResources;
 
-public class BotanicPledgeTab extends CreativeModeTab{
+public class BotanicPledgeTab extends CreativeModeTab {
 
     public static final BotanicPledgeTab BOTANIC_PLEDGE_TAB = new BotanicPledgeTab("botanicpledge");
 

@@ -14,7 +14,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -195,7 +194,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             }
         }*/
 
-        if(this.getTicksExisted() >= 80) {
+        if (this.getTicksExisted() >= 80) {
             discard();
         }
 
@@ -540,7 +539,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             }
 
             if (hit.getType().equals(HitResult.Type.ENTITY)) {
-                if(((EntityHitResult)hit).getEntity() == getOwner()) {
+                if (((EntityHitResult) hit).getEntity() == getOwner()) {
                     return;
                 }
             }
@@ -840,6 +839,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     public boolean ignoreExplosion() {
         return true;
     }
+
     private void explodeAndDie() {
         if (!level.isClientSide) {
             level.explode(this, getX(), getY(), getZ(), 2F, Explosion.BlockInteraction.NONE);

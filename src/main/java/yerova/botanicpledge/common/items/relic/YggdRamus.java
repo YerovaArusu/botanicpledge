@@ -125,8 +125,8 @@ public class YggdRamus extends ItemRelic implements LeftClickable {
         double j = -Math.PI + 2 * Math.PI * Math.random();
         double k;
         double x, y, z;
-        for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK -1; i++) {
-            if(ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
+        for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
+            if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
                 YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);

@@ -5,7 +5,6 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
-import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.client.particle.ColorParticleTypeData;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.setup.ParticleSetup;

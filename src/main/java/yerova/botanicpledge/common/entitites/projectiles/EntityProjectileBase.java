@@ -217,6 +217,4 @@ public class EntityProjectileBase extends ThrowableProjectile {
     }
 
 
-
-
 }

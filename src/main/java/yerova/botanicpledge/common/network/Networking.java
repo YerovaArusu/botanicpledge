@@ -28,23 +28,10 @@ public class Networking {
 
         INSTANCE = net;
 
-        net.messageBuilder(YggdralScepterLeftClick.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(YggdralScepterLeftClick::new)
-                .encoder(YggdralScepterLeftClick::encode)
-                .consumer(YggdralScepterLeftClick::handle)
-                .add();
-
-
         net.messageBuilder(SyncProtector.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SyncProtector::new)
                 .encoder(SyncProtector::encode)
                 .consumer(SyncProtector::handle)
-                .add();
-
-        net.messageBuilder(YggdralScepterSwitchSkills.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(YggdralScepterSwitchSkills::new)
-                .encoder(YggdralScepterSwitchSkills::encode)
-                .consumer(YggdralScepterSwitchSkills::handle)
                 .add();
 
         net.messageBuilder(LeftClick.class, id(), NetworkDirection.PLAY_TO_SERVER)

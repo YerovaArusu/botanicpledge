@@ -12,7 +12,9 @@
     {
       "type": "botania:elven_trade",
       "text": "botanicpledge.page.world_ash_branch1",
-      "recipes": ["botanicpledge:elven_trade/world_ash_branch"]
+      "recipes": [
+        "botanicpledge:elven_trade/world_ash_branch"
+      ]
     }
   ]
 }

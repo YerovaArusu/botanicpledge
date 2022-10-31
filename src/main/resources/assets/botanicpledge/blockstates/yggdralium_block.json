@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model":  "botanicpledge:block/yggdralium_block"}
+    "": {
+      "model": "botanicpledge:block/yggdralium_block"
+    }
   }
 }

@@ -4,9 +4,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.particle.TextureSheetParticle;
-import yerova.botanicpledge.client.particle.ParticleRenderTypes;
-
-import java.util.Random;
 
 public class ManaSweepParticle extends TextureSheetParticle {
     public float colorR = 0;
@@ -39,7 +36,7 @@ public class ManaSweepParticle extends TextureSheetParticle {
         this.sprites = sprite;
         this.lifetime = 4;
         float f = this.random.nextFloat() * 0.6F + 0.4F;
-        this.quadSize = 1.0F - (float)scale * 0.5F;
+        this.quadSize = 1.0F - (float) scale * 0.5F;
         this.setSpriteFromAge(sprite);
     }
 

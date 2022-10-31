@@ -67,20 +67,16 @@ public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitua
         for (Point p : RecipeSlots().get(RecipeIngredientRole.INPUT)) {
             int indexOfPoint = RecipeSlots().get(RecipeIngredientRole.INPUT).indexOf(p);
 
-
-            BotanicPledge.LOGGER.info(indexOfPoint + "");
             if (indexOfPoint != 8) {
                 Ingredient recipeItem = Ingredient.EMPTY;
 
-                if (recipe.pedestalItems.size() -1 >= indexOfPoint) {
+                if (recipe.pedestalItems.size() - 1 >= indexOfPoint) {
                     recipeItem = recipe.pedestalItems.get(indexOfPoint);
                 }
                 builder.addSlot(RecipeIngredientRole.INPUT, p.x, p.y).addIngredients(recipeItem);
             } else {
                 builder.addSlot(RecipeIngredientRole.INPUT, p.x, p.y).addIngredients(recipe.reagent);
             }
-
-
 
         }
         for (Point p : RecipeSlots().get(RecipeIngredientRole.OUTPUT)) {

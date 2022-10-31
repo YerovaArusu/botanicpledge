@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import yerova.botanicpledge.common.utils.LeftClickable;
@@ -31,7 +30,7 @@ public class LeftClick {
         ServerPlayer player = ctx.getSender();
         ctx.enqueueWork(() -> {
 
-            if(leftClickedItem.getItem() instanceof LeftClickable) {
+            if (leftClickedItem.getItem() instanceof LeftClickable) {
                 ((LeftClickable) leftClickedItem.getItem()).LeftClick(player.level, player, leftClickedItem);
             }
         });
