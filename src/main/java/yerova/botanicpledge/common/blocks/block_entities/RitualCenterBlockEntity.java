@@ -1,9 +1,12 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
 import com.google.common.base.Suppliers;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -34,6 +37,7 @@ import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
+import yerova.botanicpledge.common.utils.AttributedConstants;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 import javax.annotation.Nonnull;
@@ -42,37 +46,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
-
-    public static final Supplier<IMultiblock> MULTIBLOCK = Suppliers.memoize(() -> PatchouliAPI.get().makeMultiblock(
-            new String[][]{
-                    {
-                            "----P----",
-                            "-P-----P-",
-                            "---------",
-                            "---M-M---",
-                            "P---C---P",
-                            "---M-M---",
-                            "---------",
-                            "-P-----P-",
-                            "----P----",
-                    },
-                    {
-                            "---------",
-                            "---------",
-                            "---------",
-                            "---K-K---",
-                            "---------",
-                            "---K-K---",
-                            "---------",
-                            "---------",
-                            "---------",
-                    },
-            },
-            'P', BlockInit.RITUAL_PEDESTAL.get(),
-            'M', ModBlocks.manaPool,
-            'C', BlockInit.RITUAL_CENTER.get(),
-            'K', ModBlocks.gaiaPylon
-    ));
 
 
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -152,14 +125,14 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                     //NBT handling
                     if (entity.heldStack.getItem() instanceof DivineCoreItem) {
                         if (recipe.getAdditionalNBT() != null) {
-                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
                             for (String s : recipe.getAdditionalNBT().getAllKeys()) {
                                 if (combinedTag.contains(s)) {
                                     combinedTag.putDouble(s, combinedTag.getDouble(s) + recipe.getAdditionalNBT().getDouble(s));
                                 } else {
                                     combinedTag.putDouble(s, recipe.getAdditionalNBT().getDouble(s));
                                 }
-                                entity.heldStack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).merge(combinedTag);
+                                entity.heldStack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).merge(combinedTag);
                             }
                         }
                     }
@@ -190,12 +163,37 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     }
 
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
+        IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
+
+/*        if(catalyst.hasTag() && catalyst.getTag().contains(AttributedConstants.TAG_STATS_SUBSTAT) && recipe != null && recipe.getAdditionalNBT() !=null) {
+            CompoundTag tag = catalyst.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
+
+            for (String str: recipe.getAdditionalNBT().getAllKeys()){
+                if(tag.getAllKeys().contains(str)) {
+
+                    if(!(tag.getDouble(str) < AttributedConstants.ATTRIBUTED_STATS().get(str))) {
+                        return false;
+                    }
+
+                    if (tag.contains("may_fly")) {
+                        return false;
+
+                    }
+
+                    if (tag.contains("jump_height")){
+                        return false;
+                    }
+                }
+            }
+        }*/
+
+
         if (isCrafting)
             return false;
         if (!craftingPossible(catalyst, playerEntity)) {
             return false;
         }
-        IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
+
         if (recipe.consumesMana()) ManaUtils.takeManaNearby(worldPosition, level, 2, recipe.getManaCost());
         this.isCrafting = true;
         updateBlock();

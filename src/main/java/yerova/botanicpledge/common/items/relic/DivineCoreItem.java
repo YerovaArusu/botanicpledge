@@ -21,6 +21,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
+import yerova.botanicpledge.common.utils.AttributedConstants;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 
 import java.util.ArrayList;
@@ -67,7 +68,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     }
 
     public static UUID getCoreUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+        CompoundTag tag = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
 
         // Legacy handling
         String tagCoreUuidMostLegacy = "coreUUIDMost";
@@ -93,7 +94,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
             Player player = ((Player) slotContext.entity());
 
             for (int i = 0; i < attributeList().size(); i++) {
-                double addValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                double addValue = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
                 AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
 
                 if (!player.getAttribute(attributeList().get(i)).hasModifier(statModifier)) {
@@ -101,8 +102,8 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                 }
             }
 
-            if (stack.getTag().contains(AttributedItemsUtils.TAG_STATS_SUBSTAT)
-                    && stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).contains("may_fly")) {
+            if (stack.getTag().contains(AttributedConstants.TAG_STATS_SUBSTAT)
+                    && stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).contains("may_fly")) {
 
                 this.startFlying(player);
 
@@ -119,7 +120,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
             if (newStack.getItem() != stack.getItem()) {
                 for (int i = 0; i < attributeList().size(); i++) {
 
-                    double reducerValue = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                    double reducerValue = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
                     AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
                     AttributeInstance statAttribute = player.getAttribute(attributeList().get(i));
 
@@ -135,8 +136,8 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                     }
                 }
 
-                if (stack.getTag().contains(AttributedItemsUtils.TAG_STATS_SUBSTAT)
-                        && stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT).contains("may_fly")) {
+                if (stack.getTag().contains(AttributedConstants.TAG_STATS_SUBSTAT)
+                        && stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).contains("may_fly")) {
 
                     this.stopFlying(player);
 
@@ -163,7 +164,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         if (Screen.hasShiftDown()) {
-            CompoundTag statsTag = stack.getOrCreateTagElement(AttributedItemsUtils.TAG_STATS_SUBSTAT);
+            CompoundTag statsTag = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
             for (String s : statsTag.getAllKeys()) {
                 if (attributeNameList().contains(s)) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));

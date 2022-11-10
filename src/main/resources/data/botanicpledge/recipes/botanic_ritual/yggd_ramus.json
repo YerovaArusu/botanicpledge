@@ -1,36 +1,36 @@
 {
   "type": "botanicpledge:botanic_ritual",
   "reagent": {
-    "item": "botania:mana_pool"
+    "item": "botanicpledge:marias_core"
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_ingot"
-    },
-    {
-      "item": "botania:mana_diamond"
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdralium_ingot"
     },
     {
-      "item": "botania:mana_diamond"
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdralium_ingot"
     },
     {
-      "item": "botania:mana_diamond"
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdralium_ingot"
     },
     {
-      "item": "botania:mana_diamond"
+      "item": "botania:terra_sword"
     }
   ],
   "output": {
-    "item": "botanicpledge:mana_yggdral_buffer_block_item"
+    "item": "botanicpledge:yggd_ramus"
   },
   "manaCost": 1000000,
   "keepNbtOfReagent": false
