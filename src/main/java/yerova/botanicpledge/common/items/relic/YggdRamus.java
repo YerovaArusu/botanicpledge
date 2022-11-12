@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,45 +17,52 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
+import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.common.items.TierInit;
 import yerova.botanicpledge.common.utils.LeftClickable;
 
 import java.util.List;
 
 import static vazkii.botania.common.item.equipment.tool.ToolCommons.raytraceFromEntity;
 
-public class YggdRamus extends ItemRelic implements LeftClickable {
+public class YggdRamus extends SwordItem implements LeftClickable {
 
     public final int MANA_COST_PER_SHOT = 4000;
     public final int SUMMON_AMOUNT_PER_CLICK = 4;
 
-
-    private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-
-    public YggdRamus(Properties p) {
-        super(p);
-
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-        builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 8.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double) -2.9F, AttributeModifier.Operation.ADDITION));
-        this.defaultModifiers = builder.build();
+    public YggdRamus(Properties pProperties) {
+        super(TierInit.YGGDRALIUM_TIER, 0, 0, pProperties);
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
-        return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
+        if (!world.isClientSide && entity instanceof Player player) {
+            var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
+            if (relic != null) {
+                relic.tickBinding(player);
+            }
+        }
     }
 
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
+        RelicImpl.addDefaultTooltip(stack, tooltip);
+    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {

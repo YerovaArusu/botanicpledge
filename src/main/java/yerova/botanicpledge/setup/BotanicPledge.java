@@ -1,6 +1,7 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -90,6 +91,7 @@ public class BotanicPledge {
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
+
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);
 
