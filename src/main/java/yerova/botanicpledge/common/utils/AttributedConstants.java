@@ -13,6 +13,8 @@ public class AttributedConstants {
     public static final String CHARGE_TAG_NAME = "Charge";
     public static final String MAX_CHARGE_TAG_NAME = "MaxCharge";
 
+    public static final String TAG_RANGED_MODE = "ranged_mode";
+
 
 
     public static final HashMap<String, Integer> ATTRIBUTED_STATS(){

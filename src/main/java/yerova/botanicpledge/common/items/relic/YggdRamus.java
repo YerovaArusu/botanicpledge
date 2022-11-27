@@ -1,39 +1,38 @@
 package yerova.botanicpledge.common.items.relic;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.ManaItemHandler;
+import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.IXplatAbstractions;
+import yerova.botanicpledge.client.particle.ParticleColor;
+import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
-import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.items.TierInit;
+import yerova.botanicpledge.common.utils.AttributedConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
 
 import java.util.List;
@@ -45,8 +44,9 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public final int MANA_COST_PER_SHOT = 4000;
     public final int SUMMON_AMOUNT_PER_CLICK = 4;
 
+
     public YggdRamus(Properties pProperties) {
-        super(TierInit.YGGDRALIUM_TIER, 0, 0, pProperties);
+        super(TierInit.YGGDRALIUM_TIER, -4, 0, pProperties);
     }
 
     @Override
@@ -64,24 +64,36 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         RelicImpl.addDefaultTooltip(stack, tooltip);
     }
 
+    @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (player.isShiftKeyDown()) {
-            if (player.isOnGround()) {
-                for (LivingEntity entity : YggdRamus.getEntitiesAround(player.getOnPos(), 6, level)) {
-                    entity.setDeltaMovement(entity.getDeltaMovement().add(0, 1D, 0));
-                }
-                if (!level.isClientSide)
-                    for (int i = 0; i < 360; i += 30) {
-                        double r = 3D;
-                        double x = player.getX() + r * Math.cos(Math.toRadians(i));
-                        double y = player.getY() + 0.5D;
-                        double z = player.getZ() + r * Math.sin(Math.toRadians(i));
-                        for (int j = 0; j < 6; j++)
-                            level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0.12F * j, 0);
+
+        if(YggdRamus.isRanged(player.getMainHandItem())) {
+            //Do stuff if on ranged mode
+
+            shootProjectiles(player, null);
+        } else {
+            //Do stuff if not on ranged mode
+
+            if (player.isShiftKeyDown()) {
+                if (player.isOnGround()) {
+                    for (LivingEntity entity : YggdRamus.getEntitiesAround(player.getOnPos(), 6, level)) {
+                        entity.setDeltaMovement(entity.getDeltaMovement().add(0, 1D, 0));
                     }
+                    if (!level.isClientSide)
+                        for (int i = 0; i < 360; i += 30) {
+                            double r = 3D;
+                            double x = player.getX() + r * Math.cos(Math.toRadians(i));
+                            double y = player.getY() + 0.5D;
+                            double z = player.getZ() + r * Math.sin(Math.toRadians(i));
+                            for (int j = 0; j < 6; j++)
+                                level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0.12F * j, 0);
+                        }
+                }
             }
-        } else attackEntity(player, null);
+        }
+
+
         return super.use(level, player, hand);
     }
 
@@ -110,6 +122,11 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+        if(YggdRamus.isRanged(player.getMainHandItem())) {
+            //TODO: do something on Ranged Mode
+        } else {
+            this.sweepAttack(player.getLevel(), player, 0.4F);
+        }
 
         return super.onLeftClickEntity(stack, player, entity);
     }
@@ -117,7 +134,11 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-
+        if(YggdRamus.isRanged(player.getMainHandItem())) {
+            //TODO: do something on Ranged Mode
+        } else {
+            this.sweepAttack(player.getLevel(), player, 0.4F);
+        }
     }
 
     public static List<LivingEntity> getEntitiesAround(BlockPos source, float range, Level world) {
@@ -126,8 +147,8 @@ public class YggdRamus extends SwordItem implements LeftClickable {
                         source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
     }
 
-    public void attackEntity(LivingEntity player, Entity target) {
-        BlockPos targetpos = target == null ? raytraceFromEntity(player, 80F, true).getBlockPos().offset(0, 1, 0) : new BlockPos(target.getX(), target.getY(), target.getZ()).offset(0, 1, 0);
+    public void shootProjectiles(LivingEntity player, Entity target) {
+        BlockPos targetpos = target == null ? raytraceFromEntity(player, 16F, true).getBlockPos().offset(0, 1, 0) : new BlockPos(target.getX(), target.getY(), target.getZ()).offset(0, 1, 0);
 
         double range = 4D;
         double j = -Math.PI + 2 * Math.PI * Math.random();
@@ -135,7 +156,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage()/8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -158,5 +179,50 @@ public class YggdRamus extends SwordItem implements LeftClickable {
             }
         }
     }
+
+    public void sweepAttack(Level level, Player player, double knockbackStrength) {
+
+        for (LivingEntity livingentity : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
+            if (livingentity != player && player.canHit(livingentity, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
+                livingentity.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
+                livingentity.hurt(DamageSource.playerAttack(player), this.getDamage());
+
+            }
+        }
+        double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
+        double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
+        if (level instanceof ServerLevel) {
+            ((ServerLevel) level).sendParticles(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)), player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
+        }
+
+    }
+
+    @SoftImplement("IForgeItem")
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return reequipAnimation(oldStack, newStack);
+    }
+
+    @SoftImplement("IForgeItem")
+    private boolean reequipAnimation(ItemStack before, ItemStack after) {
+        return !after.is(this) || isRanged(before) != isRanged(after);
+    }
+
+    @NotNull
+    public AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
+        return player.getBoundingBox().inflate(3.0D, 1D, 3.0D);
+    }
+
+
+
+    public static boolean isRanged(ItemStack stack) {
+        return stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).getBoolean(AttributedConstants.TAG_RANGED_MODE);
+    }
+
+    public static void setRanged(ItemStack stack, boolean enabled) {
+        CompoundTag stats = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
+        stats.putBoolean(AttributedConstants.TAG_RANGED_MODE, enabled);
+    }
+
+
 
 }

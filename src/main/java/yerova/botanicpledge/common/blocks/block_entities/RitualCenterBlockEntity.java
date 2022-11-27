@@ -1,12 +1,8 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
-import com.google.common.base.Suppliers;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -25,25 +21,21 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import vazkii.botania.common.block.ModBlocks;
-import vazkii.patchouli.api.IMultiblock;
-import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.api.BotanicPledgeAPI;
 import yerova.botanicpledge.api.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
-import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
+import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
 import yerova.botanicpledge.common.utils.AttributedConstants;
-import yerova.botanicpledge.common.utils.AttributedItemsUtils;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
 
@@ -165,28 +157,34 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
 
-/*        if(catalyst.hasTag() && catalyst.getTag().contains(AttributedConstants.TAG_STATS_SUBSTAT) && recipe != null && recipe.getAdditionalNBT() !=null) {
+
+        if (catalyst.hasTag() && catalyst.getTag().contains(AttributedConstants.TAG_STATS_SUBSTAT) && recipe != null && recipe.getAdditionalNBT() != null) {
             CompoundTag tag = catalyst.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
 
-            for (String str: recipe.getAdditionalNBT().getAllKeys()){
-                if(tag.getAllKeys().contains(str)) {
 
-                    if(!(tag.getDouble(str) < AttributedConstants.ATTRIBUTED_STATS().get(str))) {
+            for (String str : recipe.getAdditionalNBT().getAllKeys()) {
+                if (tag.getAllKeys().contains(str)) {
+
+                    BotanicPledge.LOGGER.info("Something went right");
+
+                    if (!(tag.getDouble(str) < AttributedConstants.ATTRIBUTED_STATS().get(str))) {
                         return false;
                     }
 
-                    if (tag.contains("may_fly")) {
+                    if (str.equals("may_fly")) {
                         return false;
 
                     }
 
-                    if (tag.contains("jump_height")){
+                    if (str.equals("jump_height")) {
                         return false;
                     }
                 }
             }
-        }*/
+        }
 
+
+        BotanicPledge.LOGGER.info(BotanicPledgeCommonConfigs.ARMOR_MAX_VALUE.get() + "");
 
         if (isCrafting)
             return false;

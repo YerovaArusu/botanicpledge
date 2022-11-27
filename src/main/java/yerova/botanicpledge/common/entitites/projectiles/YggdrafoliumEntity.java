@@ -10,6 +10,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -91,6 +92,8 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     private boolean tripped = false;
     private BlockPos magnetizePos = null;
 
+    private float damage;
+
     public final List<YggdrafoliumEntity.PositionProperties> propsList = new ArrayList<>();
 
     public YggdrafoliumEntity(EntityType<YggdrafoliumEntity> pEntityType, Level pLevel) {
@@ -98,10 +101,10 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
 
     }
 
-    public YggdrafoliumEntity(Level world, LivingEntity thrower, BlockPos targetpos) {
+    public YggdrafoliumEntity(Level world, LivingEntity thrower, BlockPos targetpos, float damage) {
         super(EntityInit.YGGDRAFOLIUM.get(), world, thrower);
         setTargetPos(targetpos);
-        //setVariety((int) (10 * Math.random()));
+        this.damage = damage;
     }
 
 
@@ -181,18 +184,6 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         if (lens != null) {
             lens.updateBurst(this, getSourceLens());
         }
-
-/*        int mana = getMana();
-        if (getTicksExisted() >= getMinManaLoss()) {
-            accumulatedManaLoss += getManaLossPerTick();
-            int loss = (int) accumulatedManaLoss;
-            setMana(mana - loss);
-            accumulatedManaLoss -= loss;
-
-            if (getMana() <= 0) {
-                discard();
-            }
-        }*/
 
         if (this.getTicksExisted() >= 80) {
             discard();
@@ -541,6 +532,8 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             if (hit.getType().equals(HitResult.Type.ENTITY)) {
                 if (((EntityHitResult) hit).getEntity() == getOwner()) {
                     return;
+                } else {
+                    ((EntityHitResult)hit).getEntity().hurt(new DamageSource("Yggdrafolium"), damage);
                 }
             }
             explodeAndDie();

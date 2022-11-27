@@ -1,7 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -20,7 +19,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
-import yerova.botanicpledge.client.config.BotanicPledgeClientConfigs;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
@@ -31,6 +29,7 @@ import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.client.KeyBindsInit;
 import yerova.botanicpledge.common.network.Networking;
 
 import static net.minecraftforge.client.gui.ForgeIngameGui.HOTBAR_ELEMENT;
@@ -62,8 +61,10 @@ public class BotanicPledge {
         forgeBus.addListener(this::processIMC);
         forgeBus.addListener(this::doClientStuff);
 
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, BotanicPledgeClientConfigs.SPEC, BotanicPledge.MOD_ID + "-client.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BotanicPledgeCommonConfigs.SPEC, BotanicPledge.MOD_ID + "-common.toml");
+
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BotanicPledgeCommonConfigs.GENERAL_SPEC, BotanicPledge.MOD_ID + "-common.toml");
+
 
         GeckoLib.initialize();
         MinecraftForge.EVENT_BUS.register(this);
@@ -71,6 +72,9 @@ public class BotanicPledge {
 
     private void setup(final FMLCommonSetupEvent event) {
         Networking.register();
+
+
+        System.out.println(BotanicPledgeCommonConfigs.ARMOR_MAX_VALUE.get());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -87,6 +91,8 @@ public class BotanicPledge {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+
+        KeyBindsInit.register(event);
 
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);

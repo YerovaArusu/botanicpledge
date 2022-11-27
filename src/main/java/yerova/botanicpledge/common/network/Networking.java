@@ -40,6 +40,12 @@ public class Networking {
                 .consumer(LeftClick::handle)
                 .add();
 
+        net.messageBuilder(YggRamusSwitchSkillToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(YggRamusSwitchSkillToServer::new)
+                .encoder(YggRamusSwitchSkillToServer::encode)
+                .consumer(YggRamusSwitchSkillToServer::handle)
+                .add();
+
     }
 
 

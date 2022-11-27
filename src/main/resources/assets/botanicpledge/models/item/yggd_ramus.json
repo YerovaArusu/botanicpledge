@@ -2,5 +2,13 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "botanicpledge:items/yggd_ramus"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+          "botanicpledge:ranged": 1.0
+      },
+      "model": "botanicpledge:item/yggd_ramus_ranged"
+    }
+  ]
 }
