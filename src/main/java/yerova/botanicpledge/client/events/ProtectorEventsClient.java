@@ -7,6 +7,7 @@ import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
+import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -20,22 +21,22 @@ public class ProtectorEventsClient {
 
 
         ItemStack stack = evt.getItemStack();
-        int width = evt.getScreenWidth() / 10;
-        int height = 4;
+        int width = 140;
+        int height = 5;
         int tooltipX = evt.getX() + 10;
         int tooltipY = evt.getY() - 15;
 
 
         if (stack.hasTag()) {
-            CompoundTag shield = stack.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
-            if (shield.contains("Charge")) {
-                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt("Charge"), shield.getInt("MaxCharge"),
+            CompoundTag shield = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+            if (shield.contains(BotanicPledgeConstants.CHARGE_TAG_NAME)) {
+                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt(BotanicPledgeConstants.CHARGE_TAG_NAME), shield.getInt(BotanicPledgeConstants.MAX_CHARGE_TAG_NAME),
                         tooltipX, tooltipY, width, height, 0.52F);
             }
 
 
-            if (shield.contains("Shield")) {
-                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt("Shield"), shield.getInt("MaxShield"),
+            if (shield.contains(BotanicPledgeConstants.SHIELD_TAG_NAME)) {
+                ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt(BotanicPledgeConstants.SHIELD_TAG_NAME), shield.getInt(BotanicPledgeConstants.MAX_SHIELD_TAG_NAME),
                         tooltipX, tooltipY - height, width, height, 0.754F);
             }
         }

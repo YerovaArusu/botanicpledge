@@ -32,7 +32,7 @@ import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.items.TierInit;
-import yerova.botanicpledge.common.utils.AttributedConstants;
+import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
 
 import java.util.List;
@@ -215,12 +215,12 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
 
     public static boolean isRanged(ItemStack stack) {
-        return stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT).getBoolean(AttributedConstants.TAG_RANGED_MODE);
+        return stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getBoolean(BotanicPledgeConstants.TAG_RANGED_MODE);
     }
 
     public static void setRanged(ItemStack stack, boolean enabled) {
-        CompoundTag stats = stack.getOrCreateTagElement(AttributedConstants.TAG_STATS_SUBSTAT);
-        stats.putBoolean(AttributedConstants.TAG_RANGED_MODE, enabled);
+        CompoundTag stats = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+        stats.putBoolean(BotanicPledgeConstants.TAG_RANGED_MODE, enabled);
     }
 
 
