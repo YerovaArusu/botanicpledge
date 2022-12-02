@@ -59,12 +59,47 @@ public class ProtectorHUD {
     });
 
     public static void drawBar(PoseStack ps, int value, int maxValue, int mouseX, int mouseY, int width, int height, float hue) {
-        int BarWidth = (int) Math.ceil(width * (((1 / (double) maxValue) * (double) value)));
+        int barWidth = (int) Math.ceil(width * (((1 / (double) maxValue) * (double) value)));
 
         RenderSystem.disableDepthTest();
+
         Gui.fill(ps, mouseX - 1, mouseY - height - 1, mouseX + width + 1, mouseY, 0xFF000000);
-        Gui.fill(ps, mouseX, mouseY - height, mouseX + BarWidth, mouseY, 0xFF000000 | Mth.hsvToRgb(hue, ((float) Math.sin((ClientTickHandler.ticksInGame + ClientTickHandler.partialTicks) * 0.2) + 1F) * 0.3F + 0.4F, 1F));
-        Gui.fill(ps, mouseX + BarWidth, mouseY - height, mouseX + width, mouseY, 0xFF555555);
+        Gui.fill(ps, mouseX, mouseY - height, mouseX + barWidth, mouseY, 0xFF000000 | Mth.hsvToRgb(hue, ((float) Math.sin((ClientTickHandler.ticksInGame + ClientTickHandler.partialTicks) * 0.2) + 1F) * 0.3F + 0.4F, 1F));
+        Gui.fill(ps, mouseX + barWidth, mouseY - height, mouseX + width, mouseY, 0xFF555555);
+
+
     }
+
+    //Test Rework of Mana display
+
+    public static void drawBar(PoseStack ps, int value, int maxValue, int mouseX, int mouseY, int width, int height, int barIdentifier) {
+        int barWidth = (int) Math.ceil(width * (((1 / (double) maxValue) * (double) value)));
+
+        drawSingleBar(EMPTY_BAR, ps, mouseX - 1, mouseY - height - 1, width, true);
+        if (barIdentifier == 1) {
+            drawSingleBar(FULL_CHARGE_BAR, ps, mouseX - 1, mouseY - height - 1, barWidth, true);
+        }
+        if (barIdentifier == 2) {
+            drawSingleBar(FULL_DEFENSE_BAR, ps, mouseX - 1, mouseY - height - 1, barWidth, true);
+        }
+
+    }
+
+    public static void drawSingleBar(ResourceLocation source, PoseStack pose, int x, int y, int barWidth, boolean disableDepthTest) {
+        if (disableDepthTest) RenderSystem.disableDepthTest();
+
+        RenderSystem.setShaderTexture(0, source);
+        for (int i = 0; i <= 101; i++) {
+            if (barWidth + 2 > i && i > 1 && i < 101) {
+                if (barWidth >= i) {
+                    GuiComponent.blit(pose, x + i, y, -1, 0, 1, 5, 1, 8);
+                }
+            }
+        }
+
+
+    }
+
+
 }
 

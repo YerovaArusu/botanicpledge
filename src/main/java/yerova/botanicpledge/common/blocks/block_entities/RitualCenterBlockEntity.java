@@ -1,8 +1,10 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -26,7 +28,9 @@ import yerova.botanicpledge.api.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
+import yerova.botanicpledge.client.render.blocks.ritual_center_block.RitualCenterBlockRenderer;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
+import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
 import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
@@ -53,8 +57,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
 
     }
-
-
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
@@ -73,6 +75,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
 
     public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {
+
 
         if (level.isClientSide) {
             if (entity.isCrafting) {
@@ -93,6 +96,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                             0, 0, 0);
                 }
             }
+
             return;
         }
 
@@ -332,5 +336,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         }
         return pedestalItems;
     }
+
+
 
 }

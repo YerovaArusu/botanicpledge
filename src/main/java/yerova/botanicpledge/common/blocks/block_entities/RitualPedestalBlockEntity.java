@@ -1,6 +1,8 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -33,6 +35,5 @@ public class RitualPedestalBlockEntity extends RitualBaseBlockEntity implements 
         event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ritual_pedestal.idle", true));
         return PlayState.CONTINUE;
     }
-
 
 }

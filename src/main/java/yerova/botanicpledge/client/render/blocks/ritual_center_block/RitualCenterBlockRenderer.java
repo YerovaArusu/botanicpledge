@@ -40,7 +40,6 @@ public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBloc
         if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
             tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getHeldStack());
         }
-
         ItemEntity entityItem = tileEntityIn.entity;
         matrixStack.pushPose();
         tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
@@ -53,14 +52,4 @@ public class RitualCenterBlockRenderer extends GeoBlockRenderer<RitualCenterBloc
         super.render(tileEntityIn, partialTicks, matrixStack, bufferIn, packedLightIn);
     }
 
-    public void renderFloatingItem(RitualCenterBlockEntity tileEntityIn, ItemEntity entityItem, double x, double y, double z, PoseStack stack, MultiBufferSource iRenderTypeBuffer) {
-        stack.pushPose();
-
-        tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
-        entityItem.setYHeadRot(tileEntityIn.frames);
-        //entityItem.age = (int) tileEntityIn.frames;
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, entityItem.getYRot(), 2.0f, stack, iRenderTypeBuffer, 15728880);
-
-        stack.popPose();
-    }
 }

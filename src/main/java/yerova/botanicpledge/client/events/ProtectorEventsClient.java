@@ -21,7 +21,7 @@ public class ProtectorEventsClient {
 
 
         ItemStack stack = evt.getItemStack();
-        int width = 140;
+        int width = 102;
         int height = 5;
         int tooltipX = evt.getX() + 10;
         int tooltipY = evt.getY() - 15;
@@ -31,13 +31,13 @@ public class ProtectorEventsClient {
             CompoundTag shield = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
             if (shield.contains(BotanicPledgeConstants.CHARGE_TAG_NAME)) {
                 ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt(BotanicPledgeConstants.CHARGE_TAG_NAME), shield.getInt(BotanicPledgeConstants.MAX_CHARGE_TAG_NAME),
-                        tooltipX, tooltipY, width, height, 0.52F);
+                        tooltipX, tooltipY, width, height, 1);
             }
 
 
             if (shield.contains(BotanicPledgeConstants.SHIELD_TAG_NAME)) {
                 ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt(BotanicPledgeConstants.SHIELD_TAG_NAME), shield.getInt(BotanicPledgeConstants.MAX_SHIELD_TAG_NAME),
-                        tooltipX, tooltipY - height, width, height, 0.754F);
+                        tooltipX, tooltipY - height, width, height, 2);
             }
         }
     }

@@ -67,12 +67,12 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
         if(YggdRamus.isRanged(player.getMainHandItem())) {
             //Do stuff if on ranged mode
 
             shootProjectiles(player, null);
-        } else {
+        }
+        if(!(YggdRamus.isRanged(player.getMainHandItem()))){
             //Do stuff if not on ranged mode
 
             if (player.isShiftKeyDown()) {
@@ -124,7 +124,8 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         if(YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
-        } else {
+        }
+        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             this.sweepAttack(player.getLevel(), player, 0.4F);
         }
 
@@ -136,7 +137,8 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public void LeftClick(Level level, Player player, ItemStack stack) {
         if(YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
-        } else {
+        }
+        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             this.sweepAttack(player.getLevel(), player, 0.4F);
         }
     }
@@ -211,8 +213,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
         return player.getBoundingBox().inflate(3.0D, 1D, 3.0D);
     }
-
-
 
     public static boolean isRanged(ItemStack stack) {
         return stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getBoolean(BotanicPledgeConstants.TAG_RANGED_MODE);

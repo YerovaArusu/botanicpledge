@@ -171,4 +171,6 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
         handleUpdateTag(pkt.getTag() == null ? new CompoundTag() : pkt.getTag());
     }
 
+
+
 }
