@@ -17,7 +17,7 @@ public class InputEvents {
 
 
     @SubscribeEvent
-    public static void onKeyPresses(InputEvent.KeyInputEvent event) {
+    public static void onKeyPresses(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
 
@@ -26,7 +26,7 @@ public class InputEvents {
 
 
     @SubscribeEvent
-    public static void onMouseClicked(InputEvent.MouseInputEvent event) {
+    public static void onMouseClicked(InputEvent.MouseButton event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         onInput(mc, event.getButton(), event.getAction());

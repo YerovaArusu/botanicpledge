@@ -16,15 +16,15 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
-import vazkii.botania.api.mana.IManaReceiver;
-import vazkii.botania.api.mana.spark.IManaSpark;
-import vazkii.botania.api.mana.spark.ISparkAttachable;
-import vazkii.botania.common.block.tile.mana.IThrottledPacket;
-import vazkii.botania.common.block.tile.mana.TilePool;
+import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.api.mana.spark.ManaSpark;
+import vazkii.botania.api.mana.spark.SparkAttachable;
+import vazkii.botania.common.block.block_entity.mana.ManaPoolBlockEntity;
+import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
 
 import java.util.List;
 
-public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, IManaReceiver, ISparkAttachable, IThrottledPacket {
+public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, ManaReceiver, SparkAttachable, ThrottledPacket {
     public static final int MAX_MANA = 264_000_000;
     public static final int TRANSFER_SPEED = 16000;
     private static final BlockPos[] POOL_LOCATIONS = {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1),
@@ -42,8 +42,8 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e) {
         if (level.getBlockEntity(blockPos) instanceof ManaYggdralBufferBlockEntity) {
             for (BlockPos poolPos : POOL_LOCATIONS) {
-                if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof TilePool) {
-                    TilePool tilePool = (TilePool) level.getBlockEntity(blockPos.offset(poolPos));
+                if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof ManaPoolBlockEntity) {
+                    ManaPoolBlockEntity tilePool = (ManaPoolBlockEntity) level.getBlockEntity(blockPos.offset(poolPos));
                     int manaToGet = Math.min(TRANSFER_SPEED, tilePool.getCurrentMana());
                     int spaceLeft = Math.max(0, MAX_MANA - tilePool.getCurrentMana());
                     int current = Math.min(spaceLeft, manaToGet);
@@ -59,11 +59,11 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
                 }
             }
 
-            if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof TilePool) {
+            if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof ManaPoolBlockEntity) {
                 ManaYggdralBufferBlockEntity sender = ((ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos));
-                TilePool receiver = (TilePool) level.getBlockEntity(blockPos.offset(0, 1, 0));
+                ManaPoolBlockEntity receiver = (ManaPoolBlockEntity) level.getBlockEntity(blockPos.offset(0, 1, 0));
                 int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
-                int space = Math.max(0, receiver.manaCap - receiver.getCurrentMana());
+                int space = Math.max(0, receiver.getMaxMana() - receiver.getCurrentMana());
                 int current = Math.min(space, manaToGet);
 
                 sender.receiveMana(-current);
@@ -128,8 +128,8 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     }
 
     @Override
-    public void attachSpark(IManaSpark entity) {
-        ISparkAttachable.super.attachSpark(entity);
+    public void attachSpark(ManaSpark entity) {
+        SparkAttachable.super.attachSpark(entity);
     }
 
     @Override
@@ -143,12 +143,12 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     }
 
     @Override
-    public IManaSpark getAttachedSpark() {
+    public ManaSpark getAttachedSpark() {
 
-        List<Entity> sparks = level.getEntitiesOfClass(Entity.class, new AABB(worldPosition.above(), worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(IManaSpark.class));
+        List<Entity> sparks = level.getEntitiesOfClass(Entity.class, new AABB(worldPosition.above(), worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(ManaSpark.class));
         if (sparks.size() == 1) {
             Entity e = sparks.get(0);
-            return (IManaSpark) e;
+            return (ManaSpark) e;
         }
 
         return null;

@@ -1,7 +1,6 @@
 package yerova.botanicpledge.common.blocks;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -10,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.BotaniaBlocks;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -23,15 +22,15 @@ public class BlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
 
     public static final RegistryObject<Block> MANA_YGGDRAL_BUFFER = registerBlockWithoutBlockItem("mana_yggdral_buffer",
-            () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+            () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(BotaniaBlocks.runeAltar).noOcclusion()));
 
 
     //Ritual Blocks
     public static final RegistryObject<Block> RITUAL_CENTER = registerBlockWithoutBlockItem("ritual_center",
-            () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+            () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(BotaniaBlocks.runeAltar).noOcclusion()));
 
     public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlockWithoutBlockItem("ritual_pedestal",
-            () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+            () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(BotaniaBlocks.runeAltar).noOcclusion()));
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
@@ -54,7 +53,7 @@ public class BlockInit {
                 new Item.Properties().tab(tab)) {
             @Override
             public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-                pTooltip.add(new TranslatableComponent(tooltipKey));
+                pTooltip.add(Component.translatable(tooltipKey));
             }
         });
     }

@@ -12,13 +12,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-import vazkii.botania.common.handler.ModSounds;
-import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
+import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -28,10 +26,10 @@ public class AttributedItemsEventHandler {
 
     @SubscribeEvent
     public static void handleDamage(LivingAttackEvent e) {
-        if (!e.getEntityLiving().level.isClientSide) {
+        if (!e.getEntity().level.isClientSide) {
 
-            if (e.getEntityLiving() instanceof Player player) {
-                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntityLiving(), "necklace", "divine_core")) {
+            if (e.getEntity() instanceof Player player) {
+                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntity(), "necklace", "divine_core")) {
                     ItemStack stack = result.stack();
 
                     if (!e.isCanceled() && stack.hasTag() && stack.getTag().contains(BotanicPledge.MOD_ID + ".stats")) {
@@ -43,7 +41,7 @@ public class AttributedItemsEventHandler {
                         if (def <= 0) {
                             return;
                         } else {
-                            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
+                            player.level.playSound(null, player.getX(), player.getY(), player.getZ(), BotaniaSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
 
                             e.setCanceled(true);
                         }
@@ -59,8 +57,8 @@ public class AttributedItemsEventHandler {
     @SubscribeEvent
     public static void handleDivineCoreJumps(LivingEvent.LivingJumpEvent evt) {
 
-        LivingEntity entity = evt.getEntityLiving();
-        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(evt.getEntityLiving(), "divine_core")) {
+        LivingEntity entity = evt.getEntity();
+        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(evt.getEntity(), "divine_core")) {
             ItemStack stack = result.stack();
 
             if (!evt.isCanceled() && stack.hasTag() && stack.getTag().contains(BotanicPledge.MOD_ID + ".stats")) {
@@ -81,14 +79,14 @@ public class AttributedItemsEventHandler {
     }
 
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent e) {
+    public static void onWorldTick(TickEvent.LevelTickEvent e) {
 
         // Don't do anything client side
-        if (e.world.isClientSide) {
+        if (e.level.isClientSide) {
             return;
         }
         if (e.phase == TickEvent.Phase.START) {
-            for (Player player : e.world.players()) {
+            for (Player player : e.level.players()) {
                 if (player instanceof ServerPlayer serverPlayer) {
 
                     AttributedItemsUtils.SyncShieldValuesToClient(serverPlayer);

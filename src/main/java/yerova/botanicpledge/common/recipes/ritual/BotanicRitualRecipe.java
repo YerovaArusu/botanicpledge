@@ -16,6 +16,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
@@ -44,7 +45,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
         this.pedestalItems = pedestalItems;
         this.result = result;
         manaCost = 0;
-        this.id = new ResourceLocation(BotanicPledge.MOD_ID, result.getItem().getRegistryName().getPath());
+        this.id = new ResourceLocation(BotanicPledge.MOD_ID, ForgeRegistries.ITEMS.getResourceKey(result.getItem()).toString());
     }
 
     public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result) {
@@ -273,27 +274,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             buf.writeBoolean(recipe.keepNbtOfReagent);
         }
 
-        @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
 
-        @Nullable
-        @Override
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return BotanicRitualRecipe.Serializer.castClass(RecipeSerializer.class);
-        }
-
-        @SuppressWarnings("unchecked") // Need this wrapper, because generics
-        private static <G> Class<G> castClass(Class<?> cls) {
-            return (Class<G>) cls;
-        }
     }
-
-
 }

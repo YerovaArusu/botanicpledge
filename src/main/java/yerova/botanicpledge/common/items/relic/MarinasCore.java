@@ -29,7 +29,7 @@ public class MarinasCore extends DivineCoreItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        if(stack.getTag() == null || !(stack.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT))){
+        if (stack.getTag() == null || !(stack.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT))) {
             stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).merge(BotanicPledgeConstants.INIT_CORE_SHIELD_TAG(maxCharge, maxShield));
         }
         return super.initCapabilities(stack, nbt);

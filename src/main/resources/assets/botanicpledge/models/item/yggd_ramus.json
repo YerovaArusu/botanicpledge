@@ -6,7 +6,7 @@
   "overrides": [
     {
       "predicate": {
-          "botanicpledge:ranged": 1.0
+        "botanicpledge:ranged": 1.0
       },
       "model": "botanicpledge:item/yggd_ramus_ranged"
     }

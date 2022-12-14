@@ -19,7 +19,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.client.fx.SparkleParticleData;
-import vazkii.botania.common.entity.ModEntities;
+import vazkii.botania.common.entity.BotaniaEntities;
 import vazkii.botania.common.helper.VecHelper;
 
 import javax.annotation.Nonnull;
@@ -39,7 +39,7 @@ public class EntityCorruptMagicMissile extends ThrowableProjectile {
     int time = 0;
 
     public EntityCorruptMagicMissile(LivingEntity owner, boolean evil, int damage) {
-        super(ModEntities.MAGIC_MISSILE, owner, owner.level);
+        super(BotaniaEntities.MAGIC_MISSILE, owner, owner.level);
         this.damage = damage;
         setEvil(evil);
     }

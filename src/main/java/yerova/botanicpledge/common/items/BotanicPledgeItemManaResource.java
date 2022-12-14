@@ -5,7 +5,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
-import vazkii.botania.common.item.ModItems;
+import vazkii.botania.common.item.BotaniaItems;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 
 import javax.annotation.Nonnull;
@@ -24,7 +24,7 @@ public class BotanicPledgeItemManaResource extends Item {
             return MarinaEntity.spawn(ctx.getPlayer(), stack, ctx.getLevel(), ctx.getClickedPos(), stack.is(ItemInit.YGGDRALIUM_INGOT.get()))
                     ? InteractionResult.SUCCESS
                     : InteractionResult.FAIL;
-        } else if (stack.is(ModItems.livingroot)) {
+        } else if (stack.is(BotaniaItems.livingroot)) {
             return Items.BONE_MEAL.useOn(ctx);
         }
 

@@ -7,17 +7,17 @@ import yerova.botanicpledge.setup.BotanicPledge;
 
 public class RitualPedestalBlockModel extends AnimatedGeoModel<RitualPedestalBlockEntity> {
     @Override
-    public ResourceLocation getModelLocation(RitualPedestalBlockEntity object) {
+    public ResourceLocation getModelResource(RitualPedestalBlockEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "geo/blocks/ritual_pedestal.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RitualPedestalBlockEntity object) {
+    public ResourceLocation getTextureResource(RitualPedestalBlockEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "textures/blocks/ritual_pedestal.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(RitualPedestalBlockEntity animatable) {
+    public ResourceLocation getAnimationResource(RitualPedestalBlockEntity animatable) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "animations/blocks/ritual_pedestal.animation.json");
     }
 }

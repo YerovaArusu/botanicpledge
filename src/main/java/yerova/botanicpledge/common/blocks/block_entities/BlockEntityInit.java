@@ -8,7 +8,7 @@ import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class BlockEntityInit {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BotanicPledge.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, BotanicPledge.MOD_ID);
 
 
     public static final RegistryObject<BlockEntityType<ManaYggdralBufferBlockEntity>> MANA_YGGDRAL_BUFFER_BLOCK_ENTITY =

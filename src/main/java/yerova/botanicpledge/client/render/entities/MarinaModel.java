@@ -7,17 +7,17 @@ import yerova.botanicpledge.setup.BotanicPledge;
 
 public class MarinaModel extends AnimatedGeoModel<MarinaEntity> {
     @Override
-    public ResourceLocation getModelLocation(MarinaEntity object) {
+    public ResourceLocation getModelResource(MarinaEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "geo/marina_model.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(MarinaEntity object) {
+    public ResourceLocation getTextureResource(MarinaEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "textures/entity/marina/marina.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(MarinaEntity animatable) {
+    public ResourceLocation getAnimationResource(MarinaEntity animatable) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "animations/marina_animations.geo.json");
     }
 }

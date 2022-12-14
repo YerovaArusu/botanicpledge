@@ -11,10 +11,7 @@ import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.SyncProtector;
 
 
-
-
 public class AttributedItemsUtils {
-
 
 
     public static void handleShieldRegenOnCurioTick(LivingEntity player, ItemStack stack, int maxShield, int defRegenPerTick, int maxCharge) {

@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.InterModComms;
@@ -22,17 +21,13 @@ import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
-import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
-import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
+//import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.items.ItemInit;
-import yerova.botanicpledge.client.KeyBindsInit;
 import yerova.botanicpledge.common.network.Networking;
-
-import static net.minecraftforge.client.gui.ForgeIngameGui.HOTBAR_ELEMENT;
 
 @Mod(BotanicPledge.MOD_ID)
 public class BotanicPledge {
@@ -44,7 +39,7 @@ public class BotanicPledge {
 
         IEventBus forgeBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
-
+        //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BotanicPledgeCommonConfigs.GENERAL_SPEC, BotanicPledge.MOD_ID + "-common.toml");
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
 
@@ -55,15 +50,13 @@ public class BotanicPledge {
         BlockInit.BLOCKS.register(forgeBus);
         BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
 
+        RecipeRegistry.register(eventBus);
+
 
         forgeBus.addListener(this::setup);
         forgeBus.addListener(this::enqueueIMC);
         forgeBus.addListener(this::processIMC);
         forgeBus.addListener(this::doClientStuff);
-
-
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, BotanicPledgeCommonConfigs.GENERAL_SPEC, BotanicPledge.MOD_ID + "-common.toml");
 
 
         GeckoLib.initialize();
@@ -74,7 +67,6 @@ public class BotanicPledge {
         Networking.register();
 
 
-        System.out.println(BotanicPledgeCommonConfigs.ARMOR_MAX_VALUE.get());
     }
 
     private void enqueueIMC(final InterModEnqueueEvent event) {
@@ -92,14 +84,9 @@ public class BotanicPledge {
 
     private void doClientStuff(final FMLClientSetupEvent event) {
 
-        KeyBindsInit.register(event);
-
         EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
-
-
-        OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);
 
 
     }

@@ -2,10 +2,8 @@ package yerova.botanicpledge.common.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.HashMap;
-
 public class BotanicPledgeCommonConfigs {
-    public static final ForgeConfigSpec GENERAL_SPEC;
+    //public static final ForgeConfigSpec GENERAL_SPEC;
 
     public static ForgeConfigSpec.ConfigValue<Integer> ARMOR_MAX_VALUE;
     public static ForgeConfigSpec.ConfigValue<Integer> ARMOR_TOUGHNESS_MAX_VALUE;
@@ -16,9 +14,9 @@ public class BotanicPledgeCommonConfigs {
     public static ForgeConfigSpec.ConfigValue<Integer> ATTACK_SPEED_MAX_VALUE;
 
     static {
-        ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
-        setupConfig(configBuilder);
-        GENERAL_SPEC = configBuilder.build();
+        //ForgeConfigSpec.Builder configBuilder = new ForgeConfigSpec.Builder();
+        //setupConfig(configBuilder);
+        //GENERAL_SPEC = configBuilder.build();
 
     }
 

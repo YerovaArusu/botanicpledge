@@ -15,7 +15,7 @@ public class PlayerInputEvents {
     @SubscribeEvent
     public static void PlayerLeftClickEvent(PlayerInteractEvent.LeftClickEmpty evt) {
         if (evt.getItemStack().getItem() instanceof LeftClickable) {
-            Networking.sendToServer(new LeftClick(evt.getPlayer().getMainHandItem()));
+            Networking.sendToServer(new LeftClick(evt.getEntity().getMainHandItem()));
         }
     }
 

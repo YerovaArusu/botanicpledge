@@ -7,17 +7,17 @@ import yerova.botanicpledge.setup.BotanicPledge;
 
 public class ManaYggdralBufferBlockItemModel extends AnimatedGeoModel<ManaYggdralBufferBlockItem> {
     @Override
-    public ResourceLocation getModelLocation(ManaYggdralBufferBlockItem object) {
+    public ResourceLocation getModelResource(ManaYggdralBufferBlockItem object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "geo/blocks/mana_yggdral_buffer.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(ManaYggdralBufferBlockItem object) {
+    public ResourceLocation getTextureResource(ManaYggdralBufferBlockItem object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "textures/blocks/mana_yggdral_buffer.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(ManaYggdralBufferBlockItem animatable) {
+    public ResourceLocation getAnimationResource(ManaYggdralBufferBlockItem animatable) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "animations/blocks/mana_yggdral_buffer.animation.json");
     }
 }

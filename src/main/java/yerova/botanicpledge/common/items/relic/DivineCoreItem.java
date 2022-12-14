@@ -5,33 +5,32 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-import vazkii.botania.api.item.IRelic;
-import vazkii.botania.common.item.relic.ItemRelic;
+import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.common.item.relic.RelicItem;
 import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class DivineCoreItem extends ItemRelic implements ICurioItem {
+public class DivineCoreItem extends RelicItem implements ICurioItem {
     public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
     private static final String TAG_CORE_UUID = "coreUUID";
 
-    public DivineCoreItem(Properties props) {
+    public DivineCoreItem(Item.Properties props) {
         super(props);
     }
 
@@ -62,9 +61,10 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return list;
     }
 
-    public static IRelic makeRelic(ItemStack stack) {
+    public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
+
 
     public static UUID getCoreUUID(ItemStack stack) {
         CompoundTag tag = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
@@ -166,20 +166,18 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
             CompoundTag statsTag = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
             for (String s : statsTag.getAllKeys()) {
                 if (attributeNameList().contains(s)) {
-                    tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+" + statsTag.getDouble(s) + " " + Component.translatable(s).toString()).withStyle(ChatFormatting.BLUE));
                 }
                 if (s.equals("jump_height")) {
-                    tooltip.add(new TextComponent("+" + statsTag.getDouble("jump_height") + " " + new TranslatableComponent("jump_height").getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+" + statsTag.getDouble("jump_height") + " " + Component.translatable("jump_height").getString()).withStyle(ChatFormatting.BLUE));
                 }
                 if (s.equals("may_fly")) {
-                    tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(Component.translatable("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
         } else {
-            tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
+            tooltip.add(Component.translatable("show_tooltip_stats", Component.literal("LShift").withStyle(ChatFormatting.BLUE)));
         }
-
-
         super.appendHoverText(stack, world, tooltip, flags);
     }
 

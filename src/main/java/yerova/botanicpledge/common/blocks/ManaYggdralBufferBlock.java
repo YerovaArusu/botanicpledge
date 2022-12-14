@@ -1,7 +1,7 @@
 package yerova.botanicpledge.common.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +23,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.common.item.ItemTwigWand;
+import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
 import yerova.botanicpledge.common.blocks.block_entities.ManaYggdralBufferBlockEntity;
 
@@ -74,8 +74,8 @@ public class ManaYggdralBufferBlock extends BaseEntityBlock {
         if (!pLevel.isClientSide()) {
             BlockEntity entity = pLevel.getBlockEntity(pPos);
             if (entity instanceof ManaYggdralBufferBlockEntity
-                    && pPlayer.getMainHandItem().getItem() instanceof ItemTwigWand) {
-                pPlayer.sendMessage(new TextComponent("Current Mana: " + ((ManaYggdralBufferBlockEntity) entity).getCurrentMana()), pPlayer.getUUID());
+                    && pPlayer.getMainHandItem().getItem() instanceof WandOfTheForestItem) {
+                pPlayer.sendSystemMessage(Component.literal("Current Mana: " + ((ManaYggdralBufferBlockEntity) entity).getCurrentMana()));
                 //TODO: Send a message showing the current Mana
             }
         }

@@ -25,7 +25,7 @@ java {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.09.04-1.18.2'
+    mappings channel: 'parchment', version: '2022.11.27-1.19.2'
 
     runs {
         client {
@@ -119,7 +119,8 @@ repositories {
     maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
 
     //just enough Items
-    maven {name = "Progwml6 maven"
+    maven {
+        name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
@@ -129,25 +130,26 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.84'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
     //botania
-    implementation fg.deobf("vazkii.botania:Botania:1.18.2-435")
+    implementation fg.deobf("vazkii.botania:Botania:1.19.2-436-FORGE")
 
     //curios
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.19.2-5.1.1.0")
 
     //patchouli
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.19.2-77")
 
     //geckolib
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.29')
+    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.19:3.1.38')
 
 
-    //just enough items
+
     // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-    // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${mc_version}-forge:${jei_version}"))
 
 }
 

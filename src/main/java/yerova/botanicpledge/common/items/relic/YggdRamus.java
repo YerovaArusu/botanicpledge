@@ -22,11 +22,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
@@ -52,7 +52,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
         if (!world.isClientSide && entity instanceof Player player) {
-            var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
+            var relic = XplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
                 relic.tickBinding(player);
             }
@@ -67,12 +67,12 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //Do stuff if on ranged mode
 
             shootProjectiles(player, null);
         }
-        if(!(YggdRamus.isRanged(player.getMainHandItem()))){
+        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             //Do stuff if not on ranged mode
 
             if (player.isShiftKeyDown()) {
@@ -111,7 +111,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     }
 
-    public static IRelic makeRelic(ItemStack stack) {
+    public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
 
@@ -122,7 +122,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -135,7 +135,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -158,7 +158,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage()/8);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage() / 8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -222,7 +222,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         CompoundTag stats = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
         stats.putBoolean(BotanicPledgeConstants.TAG_RANGED_MODE, enabled);
     }
-
 
 
 }

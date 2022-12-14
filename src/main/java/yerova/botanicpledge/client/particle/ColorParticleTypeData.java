@@ -43,11 +43,11 @@ public class ColorParticleTypeData implements ParticleOptions {
     };
 
     public ColorParticleTypeData(float r, float g, float b, boolean disableDepthTest, float size, float alpha, int age) {
-        this(ParticleSetup.YGGDRAL_TYPE, new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
+        this(ParticleSetup.YGGDRAL_TYPE.get(), new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
-        this(ParticleSetup.YGGDRAL_TYPE, color, disableDepthTest, size, alpha, age);
+        this(ParticleSetup.YGGDRAL_TYPE.get(), color, disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest) {
@@ -76,6 +76,6 @@ public class ColorParticleTypeData implements ParticleOptions {
 
     @Override
     public String writeToString() {
-        return type.getRegistryName().toString() + " " + color.serialize();
+        return type.getDeserializer().toString() + " " + color.serialize();
     }
 }

@@ -45,13 +45,12 @@ public class RitualPedestalBlockRenderer extends GeoBlockRenderer<RitualPedestal
         }
 
 
-
         ItemEntity entityItem = tileEntityIn.entity;
 
         tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
         entityItem.setYHeadRot(entityItem.getSpin(partialTicks));
         //entityItem.age = (int) tileEntityIn.frames;
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, entityItem.getYRot(),0, matrixStack, bufferIn, packedLightIn);
+        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, entityItem.getYRot(), 0, matrixStack, bufferIn, packedLightIn);
 
 
         matrixStack.popPose();

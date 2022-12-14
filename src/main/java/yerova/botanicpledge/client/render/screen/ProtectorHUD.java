@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraftforge.client.gui.IIngameOverlay;
+import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -18,7 +18,7 @@ public class ProtectorHUD {
     private static final ResourceLocation FULL_CHARGE_BAR = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/protector_hud/full_charge_bar.png");
     private static final ResourceLocation FULL_DEFENSE_BAR = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/protector_hud/full_defense_bar.png");
 
-    public static final IIngameOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
+    public static final IGuiOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
 
 
         int x = width / 3;

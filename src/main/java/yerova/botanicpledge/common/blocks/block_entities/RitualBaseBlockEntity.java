@@ -172,5 +172,4 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     }
 
 
-
 }

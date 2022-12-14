@@ -4,8 +4,8 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
 import yerova.botanicpledge.client.particle.ColorParticleTypeData;
 
-public class YggdralParticlesType extends ParticleType<ColorParticleTypeData> {
-    public YggdralParticlesType() {
+public class YggdralParticleType extends ParticleType<ColorParticleTypeData> {
+    public YggdralParticleType() {
         super(false, ColorParticleTypeData.DESERIALIZER);
     }
 

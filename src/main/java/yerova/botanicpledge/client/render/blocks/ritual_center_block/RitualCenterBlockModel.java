@@ -7,17 +7,17 @@ import yerova.botanicpledge.setup.BotanicPledge;
 
 public class RitualCenterBlockModel extends AnimatedGeoModel<RitualCenterBlockEntity> {
     @Override
-    public ResourceLocation getModelLocation(RitualCenterBlockEntity object) {
+    public ResourceLocation getModelResource(RitualCenterBlockEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "geo/blocks/ritual_center.geo.json");
     }
 
     @Override
-    public ResourceLocation getTextureLocation(RitualCenterBlockEntity object) {
+    public ResourceLocation getTextureResource(RitualCenterBlockEntity object) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "textures/blocks/ritual_center.png");
     }
 
     @Override
-    public ResourceLocation getAnimationFileLocation(RitualCenterBlockEntity animatable) {
+    public ResourceLocation getAnimationResource(RitualCenterBlockEntity animatable) {
         return new ResourceLocation(BotanicPledge.MOD_ID, "animations/blocks/ritual_center.animation.json");
     }
 }

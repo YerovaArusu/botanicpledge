@@ -19,15 +19,15 @@ public class YggdralParticleData implements ParticleProvider<ColorParticleTypeDa
 
     @Override
     public Particle createParticle(ColorParticleTypeData data, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-        return new YggdralParticles(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, data.color.getRed(), data.color.getGreen(), data.color.getBlue(), data.alpha, data.size, data.age, this.spriteSet, data.disableDepthTest);
+        return new YggdralParticle(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, data.color.getRed(), data.color.getGreen(), data.color.getBlue(), data.alpha, data.size, data.age, this.spriteSet, data.disableDepthTest);
     }
 
     public static ParticleOptions createData(ParticleColor color) {
-        return new ColorParticleTypeData(ParticleSetup.YGGDRAL_TYPE, color, false);
+        return new ColorParticleTypeData(ParticleSetup.YGGDRAL_TYPE.get(), color, false);
     }
 
     public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest) {
-        return new ColorParticleTypeData(ParticleSetup.YGGDRAL_TYPE, color, disableDepthTest, 0.25f, 0.75f, 36);
+        return new ColorParticleTypeData(ParticleSetup.YGGDRAL_TYPE.get(), color, disableDepthTest, 0.25f, 0.75f, 36);
     }
 
     public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {

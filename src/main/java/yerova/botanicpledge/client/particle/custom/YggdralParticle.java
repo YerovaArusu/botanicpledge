@@ -9,7 +9,7 @@ import yerova.botanicpledge.client.particle.ParticleRenderTypes;
 
 import java.util.Random;
 
-public class YggdralParticles extends TextureSheetParticle {
+public class YggdralParticle extends TextureSheetParticle {
     public float colorR = 0;
     public float colorG = 0;
     public float colorB = 0;
@@ -18,7 +18,7 @@ public class YggdralParticles extends TextureSheetParticle {
 
     public boolean disableDepthTest;
 
-    public YggdralParticles(ClientLevel worldIn, double x, double y, double z, double vx, double vy, double vz, float r, float g, float b, float a, float scale, int lifetime, SpriteSet sprite, boolean disableDepthTest) {
+    public YggdralParticle(ClientLevel worldIn, double x, double y, double z, double vx, double vy, double vz, float r, float g, float b, float a, float scale, int lifetime, SpriteSet sprite, boolean disableDepthTest) {
         super(worldIn, x, y, z, 0, 0, 0);
         this.hasPhysics = false;
 

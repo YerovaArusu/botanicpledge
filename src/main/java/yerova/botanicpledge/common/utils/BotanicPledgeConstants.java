@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.utils;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.HashMap;
@@ -19,7 +18,7 @@ public class BotanicPledgeConstants {
     public static final String TAG_RANGED_MODE = "ranged_mode";
 
 
-    public static final CompoundTag INIT_CORE_SHIELD_TAG (int maxCharge,int maxShield) {
+    public static final CompoundTag INIT_CORE_SHIELD_TAG(int maxCharge, int maxShield) {
         CompoundTag toReturn = ItemStack.EMPTY.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
 
 
@@ -33,17 +32,16 @@ public class BotanicPledgeConstants {
     }
 
 
-
-    public static final HashMap<String, Integer> ATTRIBUTED_STATS(){
+    public static final HashMap<String, Integer> ATTRIBUTED_STATS() {
         HashMap<String, Integer> hashMap = new HashMap();
 
-        hashMap.put("armor", BotanicPledgeCommonConfigs.ARMOR_MAX_VALUE.get());
-        hashMap.put("armor_toughness", BotanicPledgeCommonConfigs.ARMOR_TOUGHNESS_MAX_VALUE.get());
-        hashMap.put("max_health", BotanicPledgeCommonConfigs.MAX_HEALTH_MAX_VALUE.get());
-        hashMap.put("attack_damage", BotanicPledgeCommonConfigs.ATTACK_DAMAGE_MAX_VALUE.get());
-        hashMap.put("knockback_resistance", BotanicPledgeCommonConfigs.KNOCKBACK_RESISTANCE_MAX_VALUE.get());
-        hashMap.put("movement_speed", BotanicPledgeCommonConfigs.MOVEMENT_SPEED_MAX_VALUE.get());
-        hashMap.put("attack_speed", BotanicPledgeCommonConfigs.ATTACK_SPEED_MAX_VALUE.get());
+        hashMap.put("armor", 20);
+        hashMap.put("armor_toughness", 8);
+        hashMap.put("max_health", 20);
+        hashMap.put("attack_damage", 8);
+        hashMap.put("knockback_resistance", 4);
+        hashMap.put("movement_speed", 2);
+        hashMap.put("attack_speed", 4);
 
         return hashMap;
     }

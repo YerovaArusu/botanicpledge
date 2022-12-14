@@ -3,19 +3,18 @@ package yerova.botanicpledge.common.entitites.marina_boss;
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientboundAddMobPacket;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveMobEffectPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -63,20 +62,20 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import vazkii.botania.client.fx.WispParticleData;
-import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.entity.*;
-import vazkii.botania.common.handler.ModSounds;
+import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.MathHelper;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.helper.VecHelper;
-import vazkii.botania.common.item.ModItems;
-import vazkii.botania.common.lib.ModTags;
-import vazkii.botania.common.proxy.IProxy;
-import vazkii.botania.mixin.AccessorMobEffect;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.lib.BotaniaTags;
+import vazkii.botania.common.proxy.Proxy;
+import vazkii.botania.mixin.MobEffectAccessor;
 import vazkii.botania.network.EffectType;
-import vazkii.botania.network.clientbound.PacketBotaniaEffect;
-import vazkii.botania.network.clientbound.PacketSpawnDoppleganger;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.network.clientbound.BotaniaEffectPacket;
+import vazkii.botania.network.clientbound.SpawnGaiaGuardianPacket;
+import vazkii.botania.xplat.XplatAbstractions;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.common.blocks.BlockInit;
@@ -87,7 +86,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static vazkii.botania.common.helper.PlayerHelper.isTruePlayer;
 import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
@@ -244,9 +242,9 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
     private static final String TAG_MOB_SPAWN_TICKS = "mobSpawnTicks";
     private static final String TAG_HARD_MODE = "hardMode";
     private static final String TAG_PLAYER_COUNT = "playerCount";
-    private static final TagKey<Block> BLACKLIST = ModTags.Blocks.GAIA_BREAK_BLACKLIST;
+    private static final TagKey<Block> BLACKLIST = BotaniaTags.Blocks.GAIA_BREAK_BLACKLIST;
 
-    private static final EntityDataAccessor<Integer> INVUL_TIME = SynchedEntityData.defineId(EntityDoppleganger.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> INVUL_TIME = SynchedEntityData.defineId(GaiaGuardianEntity.class, EntityDataSerializers.INT);
 
     private static final List<BlockPos> PYLON_LOCATIONS = ImmutableList.of(
             new BlockPos(4, 1, 4),
@@ -286,7 +284,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
         //check difficulty
         if (world.getDifficulty() == Difficulty.PEACEFUL) {
             if (!world.isClientSide) {
-                player.sendMessage(new TranslatableComponent("botaniamisc.peacefulNoob").withStyle(ChatFormatting.RED), Util.NIL_UUID);
+                player.sendSystemMessage(Component.translatable("botaniamisc.peacefulNoob").withStyle(ChatFormatting.RED));
             }
             return false;
         }
@@ -297,7 +295,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
             if (world.isClientSide) {
                 warnInvalidBlocks(world, invalidPylonBlocks);
             } else {
-                player.sendMessage(new TranslatableComponent("botaniamisc.needsCatalysts").withStyle(ChatFormatting.RED), Util.NIL_UUID);
+                player.sendSystemMessage(Component.translatable("botaniamisc.needsCatalysts").withStyle(ChatFormatting.RED));
             }
 
             return false;
@@ -309,9 +307,10 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
             if (world.isClientSide) {
                 warnInvalidBlocks(world, invalidArenaBlocks);
             } else {
-                IXplatAbstractions.INSTANCE.sendToPlayer(player, new PacketBotaniaEffect(EffectType.ARENA_INDICATOR, pos.getX(), pos.getY(), pos.getZ()));
+                XplatAbstractions.INSTANCE.sendToPlayer(player, new BotaniaEffectPacket(EffectType.ARENA_INDICATOR, pos.getX(), pos.getY(), pos.getZ()));
 
-                player.sendMessage(new TranslatableComponent("botaniamisc.badArena").withStyle(ChatFormatting.RED), Util.NIL_UUID);
+
+                player.sendSystemMessage(Component.translatable("botaniamisc.badArena").withStyle(ChatFormatting.RED));
             }
 
             return false;
@@ -343,7 +342,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
                 e.getAttribute(Attributes.ARMOR).setBaseValue(15);
             }
 
-            e.playSound(ModSounds.gaiaSummon, 1F, 1F);
+            e.playSound(BotaniaSounds.gaiaSummon, 1F, 1F);
             e.finalizeSpawn((ServerLevelAccessor) world, world.getCurrentDifficultyAt(e.blockPosition()), MobSpawnType.EVENT, null, null);
             world.addFreshEntity(e);
         }
@@ -358,7 +357,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
             BlockPos pos_ = beaconPos.offset(coords);
 
             BlockState state = world.getBlockState(pos_);
-            if (!state.is(ModBlocks.gaiaPylon)) {
+            if (!state.is(BotaniaBlocks.gaiaPylon)) {
                 invalidPylonBlocks.add(pos_);
             }
         }
@@ -568,16 +567,16 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
             }
 
             // Stop all the pixies leftover from the fight
-            for (EntityPixie pixie : level.getEntitiesOfClass(EntityPixie.class, getArenaBB(getSource()), p -> p.isAlive() && p.getPixieType() == 1)) {
+            for (PixieEntity pixie : level.getEntitiesOfClass(PixieEntity.class, getArenaBB(getSource()), p -> p.isAlive() && p.getPixieType() == 1)) {
                 pixie.spawnAnim();
                 pixie.discard();
             }
-            for (EntityMagicLandmine landmine : level.getEntitiesOfClass(EntityMagicLandmine.class, getArenaBB(getSource()))) {
+            for (MagicLandmineEntity landmine : level.getEntitiesOfClass(MagicLandmineEntity.class, getArenaBB(getSource()))) {
                 landmine.discard();
             }
         }
 
-        playSound(ModSounds.gaiaDeath, 1F, (1F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
+        playSound(BotaniaSounds.gaiaDeath, 1F, (1F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F);
         level.addParticle(ParticleTypes.EXPLOSION_EMITTER, getX(), getY(), getZ(), 1D, 0D, 0D);
     }
 
@@ -732,17 +731,18 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
     }
 
     private void clearPotions(Player player) {
-        List<MobEffect> potionsToRemove = player.getActiveEffects().stream()
-                .filter(effect -> effect.getDuration() < 160 && effect.isAmbient() && ((AccessorMobEffect) effect.getEffect()).getType() != MobEffectCategory.HARMFUL)
-                .map(MobEffectInstance::getEffect)
-                .distinct()
-                .collect(Collectors.toList());
+        Set<MobEffect> effectsToRemove = new HashSet<>();
+        for (var effectInstance : player.getActiveEffects()) {
+            if (effectInstance.getDuration() < 160 && effectInstance.isAmbient() && ((MobEffectAccessor) effectInstance.getEffect()).getType() != MobEffectCategory.HARMFUL) {
+                effectsToRemove.add(effectInstance.getEffect());
+            }
+        }
 
-        potionsToRemove.forEach(potion -> {
-            player.removeEffect(potion);
+        for (var effect : effectsToRemove) {
+            player.removeEffect(effect);
             ((ServerLevel) level).getChunkSource().broadcastAndSend(player,
-                    new ClientboundRemoveMobEffectPacket(player.getId(), potion));
-        });
+                    new ClientboundRemoveMobEffectPacket(player.getId(), effect));
+        }
     }
 
     private void keepInsideArena(Player player) {
@@ -775,7 +775,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
                     case 2 -> {
                         if (!players.isEmpty()) {
                             for (int j = 0; j < 1 + level.random.nextInt(hardMode ? 8 : 5); j++) {
-                                EntityPixie pixie = new EntityPixie(level);
+                                PixieEntity pixie = new PixieEntity(level);
                                 pixie.setProps(players.get(random.nextInt(players.size())), this, 1, 8);
                                 pixie.setPos(getX() + getBbWidth() / 2, getY() + 2, getZ() + getBbWidth() / 2);
                                 pixie.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(pixie.blockPosition()),
@@ -798,7 +798,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
                     entity.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(entity.blockPosition()),
                             MobSpawnType.MOB_SUMMONED, null, null);
                     if (entity instanceof WitherSkeleton && hardMode) {
-                        entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.elementiumSword));
+                        entity.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(BotaniaItems.elementiumSword));
                     }
                     level.addFreshEntity(entity);
                 }
@@ -814,7 +814,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
 
         if (level.isClientSide) {
             particles();
-            Player player = IProxy.INSTANCE.getClientPlayer();
+            Player player = Proxy.INSTANCE.getClientPlayer();
             if (getPlayersAround().contains(player)) {
                 player.getAbilities().flying &= player.getAbilities().instabuild;
             }
@@ -919,7 +919,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
                                 int y = (int) players.get(random.nextInt(players.size())).getY();
                                 int z = source.getZ() - 10 + random.nextInt(20);
 
-                                EntityMagicLandmine landmine = ModEntities.MAGIC_LANDMINE.create(level);
+                                MagicLandmineEntity landmine = BotaniaEntities.MAGIC_LANDMINE.create(level);
                                 landmine.setPos(x + 0.5, y, z + 0.5);
                                 //landmine.summoner = this;
                                 level.addFreshEntity(landmine);
@@ -929,7 +929,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
 
                         for (int pl = 0; pl < playerCount; pl++) {
                             for (int i = 0; i < (spawnPixies ? level.random.nextInt(hardMode ? 6 : 3) : 1); i++) {
-                                EntityPixie pixie = new EntityPixie(level);
+                                PixieEntity pixie = new PixieEntity(level);
                                 pixie.setProps(players.get(random.nextInt(players.size())), this, 1, 8);
                                 pixie.setPos(getX() + getBbWidth() / 2, getY() + 2, getZ() + getBbWidth() / 2);
                                 pixie.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(pixie.blockPosition()),
@@ -991,19 +991,19 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
     }
 
     private void spawnMissile() {
-        EntityMagicMissile missile = new EntityMagicMissile(this, true);
-        missile.setPos(getX() + (random.nextDouble(0 + 4) - 2), getY() + (random.nextDouble(2 - 1) + 1), getZ() + (random.nextDouble(0 + 4) - 2));
+        MagicMissileEntity missile = new MagicMissileEntity(this, true);
+        missile.setPos(getX() + (Math.random() - 0.5 * 0.1), getY() + 2.4 + (Math.random() - 0.5 * 0.1), getZ() + (Math.random() - 0.5 * 0.1));
         if (missile.findTarget()) {
-            playSound(ModSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
+            playSound(BotaniaSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
             level.addFreshEntity(missile);
         }
     }
 
     private void spawnCorruptedMissile() {
         EntityCorruptMagicMissile missile = new EntityCorruptMagicMissile(this, true, 20);
-        missile.setPos(getX() + (random.nextDouble(0 + 4) - 2), getY() + (random.nextDouble(2 - 1) + 1), getZ() + (random.nextDouble(0 + 4) - 2));
+        missile.setPos(getX() + (Math.random() - 0.5 * 0.1), getY() + 2.4 + (Math.random() - 0.5 * 0.1), getZ() + (Math.random() - 0.5 * 0.1));
         if (missile.findTarget()) {
-            playSound(ModSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
+            playSound(BotaniaSounds.missile, 1F, 0.8F + (float) Math.random() * 0.2F);
             level.addFreshEntity(missile);
         }
     }
@@ -1038,10 +1038,9 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
         teleportTo(newX, newY, newZ);
 
         //play sound
-        level.playSound(null, oldX, oldY, oldZ, ModSounds.gaiaTeleport, this.getSoundSource(), 1F, 1F);
-        this.playSound(ModSounds.gaiaTeleport, 1F, 1F);
+        level.playSound(null, oldX, oldY, oldZ, BotaniaSounds.gaiaTeleport, this.getSoundSource(), 1F, 1F);
+        this.playSound(BotaniaSounds.gaiaTeleport, 1F, 1F);
 
-        Random random = getRandom();
 
         //spawn particles along the path
         int particleCount = 128;
@@ -1097,15 +1096,17 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
         this.hardMode = hardMode;
         this.source = source;
         this.bossInfoUUID = bossInfoUUID;
-        IProxy.INSTANCE.runOnClient(() -> () -> MariaMusic.play(this));
+        Proxy.INSTANCE.runOnClient(() -> () -> MariaMusic.play(this));
     }
 
-    @Nonnull
+
+    @NotNull
     @Override
     public Packet<?> getAddEntityPacket() {
-        return IXplatAbstractions.INSTANCE.toVanillaClientboundPacket(
-                new PacketSpawnDoppleganger(new ClientboundAddMobPacket(this), playerCount, hardMode, source, bossInfoUUID));
+        return XplatAbstractions.INSTANCE.toVanillaClientboundPacket(
+                new SpawnGaiaGuardianPacket(new ClientboundAddEntityPacket(this), playerCount, hardMode, source, bossInfoUUID));
     }
+
 
     @Override
     public boolean canBeLeashed(Player player) {
@@ -1118,7 +1119,7 @@ public class MarinaEntity extends Mob implements IEntityAdditionalSpawnData, IAn
         private final MarinaEntity guardian;
 
         private MariaMusic(MarinaEntity guardian) {
-            super(guardian.hardMode ? ModSounds.gaiaMusic2 : ModSounds.gaiaMusic1, SoundSource.RECORDS);
+            super(guardian.hardMode ? BotaniaSounds.gaiaMusic2 : BotaniaSounds.gaiaMusic1, SoundSource.RECORDS, SoundInstance.createUnseededRandom());
             this.guardian = guardian;
             this.x = guardian.getSource().getX();
             this.y = guardian.getSource().getY();
