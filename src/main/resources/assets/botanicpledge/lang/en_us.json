@@ -31,6 +31,8 @@
   "jump_height": "Jump Height",
   "may_fly": "May Fly",
   "show_tooltip_stats": "Press %1$s to show Stats",
+  "tooltip_manacost": "Mana Cost are %1$s per second",
+  "switch_weapon_mode_tooltip": "Press %1$s to switch Mode",
   "block.botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
   "entity.botanicpledge.marina": "Marina Arusu",
   "entity.botanicpledge.maria": "Maria Arusu",

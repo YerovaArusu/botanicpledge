@@ -9,7 +9,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -136,7 +138,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
 
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag cmp) {
+    public void addAdditionalSaveData(CompoundTag cmp) {
 
         cmp.putFloat(TAG_ROTATION, this.getRotation());
         cmp.putFloat(TAG_PITCH, this.getPitch());
@@ -149,7 +151,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag cmp) {
+    public void readAdditionalSaveData(CompoundTag cmp) {
 
         setRotation(cmp.getFloat(TAG_ROTATION));
         setPitch(cmp.getFloat(TAG_PITCH));
@@ -160,6 +162,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
 
         super.readAdditionalSaveData(cmp);
     }
+
 
 
     public float getRotation() {

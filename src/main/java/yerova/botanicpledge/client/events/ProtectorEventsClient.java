@@ -27,7 +27,7 @@ public class ProtectorEventsClient {
         int tooltipY = evt.getY() - 15;
 
 
-        if (stack.hasTag()) {
+        if (stack.hasTag() && stack.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT)) {
             CompoundTag shield = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
             if (shield.contains(BotanicPledgeConstants.CHARGE_TAG_NAME)) {
                 ProtectorHUD.drawBar(evt.getPoseStack(), shield.getInt(BotanicPledgeConstants.CHARGE_TAG_NAME), shield.getInt(BotanicPledgeConstants.MAX_CHARGE_TAG_NAME),

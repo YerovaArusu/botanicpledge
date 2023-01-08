@@ -6,6 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
@@ -40,6 +41,4 @@ public class ModEventClientBusEvents {
     public static void onModelBake(ModelBakeEvent evt) {
         //Miscellaneous.INSTANCE.onModelBake(evt.getModelLoader(), evt.getModelRegistry());
     }
-
-
 }

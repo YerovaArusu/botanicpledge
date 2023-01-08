@@ -29,6 +29,7 @@ public class MariasCore extends DivineCoreItem implements ICurioRenderer {
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
+        super.curioTick(slotContext, stack);
         AttributedItemsUtils.handleShieldRegenOnCurioTick(slotContext.entity(), stack, maxShield, defRegenPerTick, maxCharge);
     }
 

@@ -40,6 +40,9 @@ import vazkii.botania.common.proxy.IProxy;
 import vazkii.botania.xplat.BotaniaConfig;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.entitites.EntityInit;
+import yerova.botanicpledge.common.items.relic.YggdRamus;
+import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -105,6 +108,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         super(EntityInit.YGGDRAFOLIUM.get(), world, thrower);
         setTargetPos(targetpos);
         this.damage = damage;
+        this.setOwner(thrower);
     }
 
 
@@ -220,22 +224,6 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
 
     private IManaReceiver collidedTile = null;
     private boolean noParticles = false;
-
-    public IManaReceiver getCollidedTile(boolean noParticles) {
-        this.noParticles = noParticles;
-
-        int iterations = 0;
-        while (isAlive() && iterations < BotaniaConfig.common().spreaderTraceTime()) {
-            tick();
-            iterations++;
-        }
-
-        if (fake) {
-            incrementFakeParticleTick();
-        }
-
-        return collidedTile;
-    }
 
     @Override
     public boolean canChangeDimensions() {
@@ -487,7 +475,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             return;
         }
 
-        onHitCommon(hit, true);
+        onHitCommon(hit);
 
         if (!hasAlreadyCollidedAt(collidePos)) {
             alreadyCollidedAt.add(collidePos);
@@ -498,17 +486,22 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     @Override
     protected void onHitEntity(@Nonnull EntityHitResult hit) {
         super.onHitEntity(hit);
-        onHitCommon(hit, false);
-    }
 
-    private void onHitCommon(HitResult hit, boolean shouldKill) {
-        ILensEffect lens = getLensInstance();
-        if (lens != null) {
-            shouldKill = lens.collideBurst(this, hit, collidedTile != null
-                    && collidedTile.canReceiveManaFromBursts(), shouldKill, getSourceLens());
+        if (hit.getEntity() == getOwner()) {
+            return;
+        } else {
+            hit.getEntity().hurt(new DamageSource("Yggdrafolium"), damage);
+            if (getOwner() instanceof Player player && player.getMainHandItem().getItem() instanceof YggdRamus) {
+                YggdRamus.appendFireAspect(player, hit.getEntity());
+            }
         }
 
-        if (shouldKill && isAlive()) {
+        onHitCommon(hit);
+    }
+
+    private void onHitCommon(HitResult hit) {
+
+        if (isAlive()) {
             if (!fake && level.isClientSide) {
                 int color = getColor();
                 float r = (color >> 16 & 0xFF) / 255F;
@@ -529,13 +522,6 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
                 level.addParticle(data, getX(), getY(), getZ(), 0, 0, 0);
             }
 
-            if (hit.getType().equals(HitResult.Type.ENTITY)) {
-                if (((EntityHitResult) hit).getEntity() == getOwner()) {
-                    return;
-                } else {
-                    ((EntityHitResult)hit).getEntity().hurt(new DamageSource("Yggdrafolium"), damage);
-                }
-            }
             explodeAndDie();
         }
     }

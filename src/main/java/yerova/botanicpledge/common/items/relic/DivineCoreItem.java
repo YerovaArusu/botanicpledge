@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -18,7 +19,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
+import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
@@ -30,6 +33,7 @@ import java.util.UUID;
 public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
     private static final String TAG_CORE_UUID = "coreUUID";
+    private int manaCost = 100;
 
     public DivineCoreItem(Properties props) {
         super(props);
@@ -62,6 +66,27 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return list;
     }
 
+
+    @Override
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        ICurioItem.super.curioTick(slotContext, stack);
+
+
+        if(slotContext.entity() instanceof  Player player) {
+
+            if (player.tickCount %20 == 0) {
+                int manaCost = getManaCost();
+                if(player.flyDist > 0) {
+                    manaCost = getManaCost()* 4;
+                }
+                ManaItemHandler.instance().requestManaExact(stack, player, manaCost, true);
+            }
+        }
+
+
+
+    }
+
     public static IRelic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
@@ -89,8 +114,8 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
 
-        if (slotContext.entity() instanceof Player) {
-            Player player = ((Player) slotContext.entity());
+        if (slotContext.entity() instanceof Player player) {
+            //Player player = ((Player) slotContext.entity());
 
             for (int i = 0; i < attributeList().size(); i++) {
                 double addValue = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
@@ -162,6 +187,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
+
         if (Screen.hasShiftDown()) {
             CompoundTag statsTag = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
             for (String s : statsTag.getAllKeys()) {
@@ -175,6 +201,9 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                     tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
+
+            tooltip.add(new TranslatableComponent("tooltip_manacost", new TextComponent(String.valueOf(this.manaCost)).withStyle(ChatFormatting.AQUA)));
+
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
         }
@@ -186,11 +215,22 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     private void startFlying(Player player) {
         player.getAbilities().mayfly = true;
         player.onUpdateAbilities();
+
+
     }
 
     private void stopFlying(Player player) {
         player.getAbilities().flying = false;
         player.getAbilities().mayfly = false;
         player.onUpdateAbilities();
+
+
+    }
+
+    public void setManaCost(int manaCost) {
+        this.manaCost = manaCost;
+    }
+    public int getManaCost() {
+        return this.manaCost;
     }
 }
