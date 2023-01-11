@@ -21,18 +21,18 @@ public class AttributedItemsUtils {
         if (!(player instanceof ServerPlayer)) return;
         ServerPlayer serverPlayer = (ServerPlayer) player;
 
-        CompoundTag stats = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+        CompoundTag stats = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
 
 
         //Normal Stats
-        stats.putInt(BotanicPledgeConstants.MAX_SHIELD_TAG_NAME, maxShield);
-        stats.putInt(BotanicPledgeConstants.MAX_CHARGE_TAG_NAME, maxCharge);
+        stats.putInt(BPConstants.MAX_SHIELD_TAG_NAME, maxShield);
+        stats.putInt(BPConstants.MAX_CHARGE_TAG_NAME, maxCharge);
 
-        int charge = stats.getInt(BotanicPledgeConstants.CHARGE_TAG_NAME);
+        int charge = stats.getInt(BPConstants.CHARGE_TAG_NAME);
         if (charge < maxCharge)
             charge += ManaItemHandler.instance().requestMana(stack, serverPlayer, maxCharge - charge, true);
 
-        int shield = stats.getInt(BotanicPledgeConstants.SHIELD_TAG_NAME);
+        int shield = stats.getInt(BPConstants.SHIELD_TAG_NAME);
         if (shield < maxShield) {
             if (defRegenPerTick + shield >= maxShield) defRegenPerTick = maxShield - shield;
 
@@ -40,23 +40,23 @@ public class AttributedItemsUtils {
                 charge -= defRegenPerTick * 4;
                 shield += defRegenPerTick;
             }
-            stats.putInt(BotanicPledgeConstants.SHIELD_TAG_NAME, shield);
+            stats.putInt(BPConstants.SHIELD_TAG_NAME, shield);
         }
-        stats.putInt(BotanicPledgeConstants.CHARGE_TAG_NAME, charge);
+        stats.putInt(BPConstants.CHARGE_TAG_NAME, charge);
     }
 
     public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
         boolean success = false;
         for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer, "necklace", "divine_core")) {
-            if (result.stack().hasTag() && result.stack().getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT)) {
+            if (result.stack().hasTag() && result.stack().getTag().contains(BPConstants.STATS_TAG_NAME)) {
 
-                CompoundTag shield = result.stack().getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+                CompoundTag shield = result.stack().getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
 
                 Networking.sendToPlayer(new SyncProtector(
-                        shield.getInt(BotanicPledgeConstants.CHARGE_TAG_NAME),
-                        shield.getInt(BotanicPledgeConstants.MAX_CHARGE_TAG_NAME),
-                        shield.getInt(BotanicPledgeConstants.SHIELD_TAG_NAME),
-                        shield.getInt(BotanicPledgeConstants.MAX_SHIELD_TAG_NAME)), serverPlayer);
+                        shield.getInt(BPConstants.CHARGE_TAG_NAME),
+                        shield.getInt(BPConstants.MAX_CHARGE_TAG_NAME),
+                        shield.getInt(BPConstants.SHIELD_TAG_NAME),
+                        shield.getInt(BPConstants.MAX_SHIELD_TAG_NAME)), serverPlayer);
 
                 success = true;
             }

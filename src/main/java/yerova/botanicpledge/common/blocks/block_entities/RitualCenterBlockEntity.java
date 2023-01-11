@@ -1,10 +1,8 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -28,13 +26,11 @@ import yerova.botanicpledge.api.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
-import yerova.botanicpledge.client.render.blocks.ritual_center_block.RitualCenterBlockRenderer;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
 import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
-import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
+import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
@@ -121,14 +117,14 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                     //NBT handling
                     if (entity.heldStack.getItem() instanceof DivineCoreItem) {
                         if (recipe.getAdditionalNBT() != null) {
-                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
                             for (String s : recipe.getAdditionalNBT().getAllKeys()) {
                                 if (combinedTag.contains(s)) {
                                     combinedTag.putDouble(s, combinedTag.getDouble(s) + recipe.getAdditionalNBT().getDouble(s));
                                 } else {
                                     combinedTag.putDouble(s, recipe.getAdditionalNBT().getDouble(s));
                                 }
-                                entity.heldStack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).merge(combinedTag);
+                                entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).merge(combinedTag);
                             }
                         }
                     }
@@ -162,8 +158,8 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
 
 
-        if (catalyst.hasTag() && catalyst.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT) && recipe != null && recipe.getAdditionalNBT() != null) {
-            CompoundTag tag = catalyst.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+        if (catalyst.hasTag() && catalyst.getTag().contains(BPConstants.STATS_TAG_NAME) && recipe != null && recipe.getAdditionalNBT() != null) {
+            CompoundTag tag = catalyst.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
 
 
             for (String str : recipe.getAdditionalNBT().getAllKeys()) {
@@ -171,7 +167,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
                     BotanicPledge.LOGGER.info("Something went right");
 
-                    if (!(tag.getDouble(str) < BotanicPledgeConstants.ATTRIBUTED_STATS().get(str))) {
+                    if (!(tag.getDouble(str) < BPConstants.ATTRIBUTED_STATS().get(str))) {
                         return false;
                     }
 

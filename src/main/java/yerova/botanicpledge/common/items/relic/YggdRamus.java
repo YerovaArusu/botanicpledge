@@ -1,7 +1,6 @@
 package yerova.botanicpledge.common.items.relic;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +35,7 @@ import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.items.TierInit;
-import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
+import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
 
 import java.util.List;
@@ -274,15 +270,15 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public static boolean isRanged(ItemStack stack) {
         boolean returner = false;
         if(stack.getItem() instanceof YggdRamus) {
-            returner = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getBoolean(BotanicPledgeConstants.TAG_RANGED_MODE);
+            returner = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getBoolean(BPConstants.TAG_RANGED_MODE);
         }
         return returner;
     }
 
     public static void setRanged(ItemStack stack, boolean enabled) {
         if(stack.getItem() instanceof YggdRamus) {
-            CompoundTag stats = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
-            stats.putBoolean(BotanicPledgeConstants.TAG_RANGED_MODE, enabled);
+            CompoundTag stats = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+            stats.putBoolean(BPConstants.TAG_RANGED_MODE, enabled);
         }
     }
 

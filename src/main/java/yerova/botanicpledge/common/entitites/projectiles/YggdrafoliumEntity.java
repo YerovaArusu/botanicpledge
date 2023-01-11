@@ -41,8 +41,6 @@ import vazkii.botania.xplat.BotaniaConfig;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
-import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

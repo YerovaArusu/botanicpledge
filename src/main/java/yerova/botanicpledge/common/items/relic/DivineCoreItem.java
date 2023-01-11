@@ -7,84 +7,42 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
-import yerova.botanicpledge.common.utils.BotanicPledgeConstants;
+import yerova.botanicpledge.common.utils.BPConstants;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class DivineCoreItem extends ItemRelic implements ICurioItem {
-    public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
-    private static final String TAG_CORE_UUID = "coreUUID";
-    private int manaCost = 100;
 
     public DivineCoreItem(Properties props) {
         super(props);
     }
 
-    public static ArrayList<Attribute> attributeList() {
-        ArrayList<Attribute> list = new ArrayList<Attribute>();
-        list.add(Attributes.ARMOR);
-        list.add(Attributes.ARMOR_TOUGHNESS);
-        list.add(Attributes.MAX_HEALTH);
-        list.add(Attributes.ATTACK_DAMAGE);
-        list.add(Attributes.KNOCKBACK_RESISTANCE);
-        list.add(Attributes.MOVEMENT_SPEED);
-        list.add(Attributes.ATTACK_SPEED);
-
-
-        return list;
-    }
-
-    public static ArrayList<String> attributeNameList() {
-        ArrayList<String> list = new ArrayList<String>();
-        list.add("armor");
-        list.add("armor_toughness");
-        list.add("max_health");
-        list.add("attack_damage");
-        list.add("knockback_resistance");
-        list.add("movement_speed");
-        list.add("attack_speed");
-
-        return list;
-    }
-
-
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         ICurioItem.super.curioTick(slotContext, stack);
 
-
         if(slotContext.entity() instanceof  Player player) {
-
             if (player.tickCount %20 == 0) {
-                int manaCost = getManaCost();
                 if(player.flyDist > 0) {
-                    manaCost = getManaCost()* 4;
+                    setManaCost(stack,getManaCost(stack)* 4);
                 }
-                ManaItemHandler.instance().requestManaExact(stack, player, manaCost, true);
+                ManaItemHandler.instance().requestManaExact(stack, player, getManaCost(stack), true);
             }
         }
-
-
-
     }
 
     public static IRelic makeRelic(ItemStack stack) {
@@ -92,45 +50,33 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     }
 
     public static UUID getCoreUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
-
-        // Legacy handling
+        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
         String tagCoreUuidMostLegacy = "coreUUIDMost";
         String tagCoreUuidLeastLegacy = "coreUUIDLeast";
         if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
             UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
-            tag.putUUID(TAG_CORE_UUID, uuid);
+            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
         }
-
-        if (!tag.hasUUID(TAG_CORE_UUID)) {
+        if (!tag.hasUUID(BPConstants.TAG_CORE_UUID)) {
             UUID uuid = UUID.randomUUID();
-            tag.putUUID(TAG_CORE_UUID, uuid);
+            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
         }
-
-        return tag.getUUID(TAG_CORE_UUID);
+        return tag.getUUID(BPConstants.TAG_CORE_UUID);
     }
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-
-
         if (slotContext.entity() instanceof Player player) {
-            //Player player = ((Player) slotContext.entity());
-
-            for (int i = 0; i < attributeList().size(); i++) {
-                double addValue = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+            for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
+                double addValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNameList().get(i));
                 AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
-
-                if (!player.getAttribute(attributeList().get(i)).hasModifier(statModifier)) {
-                    player.getAttribute(attributeList().get(i)).addPermanentModifier(statModifier);
+                if (!player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).hasModifier(statModifier)) {
+                    player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).addPermanentModifier(statModifier);
                 }
             }
-
-            if (stack.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT)
-                    && stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).contains("may_fly")) {
-
+            if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
+                    && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
                 this.startFlying(player);
-
             }
         }
     }
@@ -138,33 +84,24 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
-        if (slotContext.entity() instanceof Player) {
-            Player player = ((Player) slotContext.entity());
-
+        if (slotContext.entity() instanceof Player player) {
             if (newStack.getItem() != stack.getItem()) {
-                for (int i = 0; i < attributeList().size(); i++) {
-
-                    double reducerValue = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).getInt(attributeNameList().get(i));
+                for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
+                    double reducerValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNameList().get(i));
                     AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
-                    AttributeInstance statAttribute = player.getAttribute(attributeList().get(i));
-
+                    AttributeInstance statAttribute = player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i));
                     if (statAttribute.hasModifier(statModifier)) {
                         statAttribute.removeModifier(statModifier);
-
-                        if (attributeNameList().get(i).equals(attributeNameList().get(2))) {
-
+                        if (BPConstants.attributeNameList().get(i).equals(BPConstants.attributeNameList().get(2))) {
                             if (player.getHealth() > slotContext.entity().getMaxHealth()) {
-                                player.hurt(HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+                                player.hurt(BPConstants.HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
                             }
                         }
                     }
                 }
-
-                if (stack.getTag().contains(BotanicPledgeConstants.TAG_STATS_SUBSTAT)
-                        && stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT).contains("may_fly")) {
-
+                if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
+                        && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
                     this.stopFlying(player);
-
                 }
             }
         }
@@ -187,11 +124,10 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
-
         if (Screen.hasShiftDown()) {
-            CompoundTag statsTag = stack.getOrCreateTagElement(BotanicPledgeConstants.TAG_STATS_SUBSTAT);
+            CompoundTag statsTag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
             for (String s : statsTag.getAllKeys()) {
-                if (attributeNameList().contains(s)) {
+                if (BPConstants.attributeNameList().contains(s)) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
                 }
                 if (s.equals("jump_height")) {
@@ -201,14 +137,10 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                     tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
-
-            tooltip.add(new TranslatableComponent("tooltip_manacost", new TextComponent(String.valueOf(this.manaCost)).withStyle(ChatFormatting.AQUA)));
-
+            tooltip.add(new TranslatableComponent("tooltip_manacost", new TextComponent(String.valueOf(this.getManaCost(stack))).withStyle(ChatFormatting.AQUA)));
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
         }
-
-
         super.appendHoverText(stack, world, tooltip, flags);
     }
 
@@ -223,14 +155,39 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         player.getAbilities().flying = false;
         player.getAbilities().mayfly = false;
         player.onUpdateAbilities();
-
-
     }
 
-    public void setManaCost(int manaCost) {
-        this.manaCost = manaCost;
+    public static void setManaCost(ItemStack stack, int manaCost) {
+        if(stack.getItem() instanceof DivineCoreItem){
+            stack.getOrCreateTagElement(BPConstants.SHIELD_TAG_NAME).putInt(BPConstants.MANA_COST_TAG_NAME, manaCost);
+        }
     }
-    public int getManaCost() {
-        return this.manaCost;
+    public int getManaCost(ItemStack stack) {
+        return Math.max(stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.MANA_COST_TAG_NAME), BPConstants.BASIC_MANA_COST);
     }
+
+    public static int getCoreRank(ItemStack stack) {
+        int coreRank = BPConstants.MIN_CORE_RANK;
+        if(stack.getItem() instanceof DivineCoreItem && stack.getTag() != null && stack.getTag().contains(BPConstants.STATS_TAG_NAME)){
+            coreRank = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.CORE_RANK_TAG_NAME);
+            if(coreRank >= BPConstants.MAX_CORE_RANK) {
+                coreRank = BPConstants.MAX_CORE_RANK;
+            } else if(coreRank <= BPConstants.MIN_CORE_RANK) {
+                coreRank = BPConstants.MIN_CORE_RANK;
+            }
+        }
+        return coreRank;
+    }
+
+    public static void setCoreRank(ItemStack stack, int toSetRank) {
+        if(toSetRank >= BPConstants.MAX_CORE_RANK) {
+            toSetRank = BPConstants.MAX_CORE_RANK;
+        } else if (toSetRank <= BPConstants.MIN_CORE_RANK) {
+            toSetRank = BPConstants.MIN_CORE_RANK;
+        }
+        if(stack.getItem() instanceof DivineCoreItem) {
+            stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).putInt(BPConstants.CORE_RANK_TAG_NAME, toSetRank);
+        }
+    }
+
 }
