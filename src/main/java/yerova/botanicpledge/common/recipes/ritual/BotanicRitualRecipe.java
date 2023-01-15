@@ -19,9 +19,11 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,7 +37,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     public ResourceLocation id;
     public int manaCost;
     public boolean keepNbtOfReagent = false;
-    public CompoundTag additionalNBT = null;
+    public HashMap<String, Integer> additionalAttributes = null;
 
     public static final String RECIPE_ID = "botanic_ritual";
 
@@ -48,17 +50,17 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     }
 
     public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result) {
-        this(id, pedestalItems, reagent, result, new CompoundTag(), 0, false);
+        this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), 0, false);
     }
 
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, CompoundTag additionalNBT, int cost, boolean keepNbtOfReagent) {
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, HashMap<String, Integer> additionalAttributes, int cost, boolean keepNbtOfReagent) {
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
         this.result = result;
         manaCost = cost;
         this.id = id;
         this.keepNbtOfReagent = keepNbtOfReagent;
-        this.additionalNBT = additionalNBT;
+        this.additionalAttributes = additionalAttributes;
     }
 
     public BotanicRitualRecipe() {
@@ -92,8 +94,8 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     }
 
     @Override
-    public CompoundTag getAdditionalNBT() {
-        return this.additionalNBT;
+    public HashMap<String, Integer> getAdditionalAttributes() {
+        return this.additionalAttributes;
     }
 
 
@@ -215,6 +217,20 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             String statName = json.has("statName") ? GsonHelper.getAsString(json, "statName") : "";
             double statValue = json.has("statValue") ? GsonHelper.getAsDouble(json, "statValue") : 0.0;
 
+            //New LevelUp Handler
+            HashMap<String, Integer> attributes = new HashMap<>();
+            for (String s: BPConstants.attributeNames()) {
+                if(json.has(s)){
+                    attributes.put(s, GsonHelper.getAsInt(json, s, 0));
+                }
+            }
+             if (json.has("may_fly")) {
+                 attributes.put("may_fly", GsonHelper.getAsInt(json, "may_fly", 0));
+             }
+             if(json.has("jump_height")) {
+                 attributes.put("jump_height", GsonHelper.getAsInt(json, "jump_height", 0));
+             }
+
             CompoundTag additionalTags = null;
             if (!statName.isEmpty() && statValue != 0.0) {
                 additionalTags = output.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
@@ -232,7 +248,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             }
 
-            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, additionalTags, cost, keepNbtOfReagent);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost, keepNbtOfReagent);
         }
 
         @Nullable
@@ -241,7 +257,8 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             int length = buffer.readInt();
             Ingredient reagent = Ingredient.fromNetwork(buffer);
             ItemStack output = buffer.readItem();
-            CompoundTag additionalNBT = buffer.readNbt();
+            HashMap<String, Integer> attributes = (HashMap<String, Integer>) buffer.readMap(i -> i.readUtf(0x1000), i -> Integer.parseInt(i.readUtf(0x1000)));
+
             List<Ingredient> stacks = new ArrayList<>();
 
             for (int i = 0; i < length; i++) {
@@ -254,7 +271,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             }
             int cost = buffer.readInt();
             boolean keepNbtOfReagent = buffer.readBoolean();
-            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, additionalNBT, cost, keepNbtOfReagent);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost, keepNbtOfReagent);
         }
 
         @Override
@@ -264,7 +281,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             buf.writeItem(recipe.result);
 
-            buf.writeNbt(recipe.additionalNBT);
+            buf.writeMap(recipe.additionalAttributes,(o, v) -> o.writeUtf(v, 0x1000), (o, r) -> o.writeUtf(r.toString(), 0x1000));
 
             for (Ingredient i : recipe.pedestalItems) {
                 i.toNetwork(buf);

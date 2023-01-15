@@ -103,7 +103,6 @@ public class RitualCenterBlock extends BaseEntityBlock {
                     ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                     world.addFreshEntity(item);
                 }
-
                 tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
 
             }

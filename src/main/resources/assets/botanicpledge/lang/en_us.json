@@ -32,6 +32,7 @@
   "may_fly": "May Fly",
   "show_tooltip_stats": "Press %1$s to show Stats",
   "tooltip_manacost": "Mana Cost are %1$s per second",
+  "tooltip_core_rank": "Current Rank: %1$s of %2$s",
   "switch_weapon_mode_tooltip": "Press %1$s to switch Mode",
   "block.botanicpledge.mana_yggdral_buffer": "Mana Yggdral Buffer",
   "entity.botanicpledge.marina": "Marina Arusu",

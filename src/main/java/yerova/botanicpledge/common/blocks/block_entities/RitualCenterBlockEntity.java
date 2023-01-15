@@ -29,6 +29,7 @@ import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
+import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -116,6 +117,13 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
                     //NBT handling
                     if (entity.heldStack.getItem() instanceof DivineCoreItem) {
+                        if(recipe.getAdditionalAttributes() != null) {
+                            for (String s: recipe.getAdditionalAttributes().keySet()) {
+                                DivineCoreItem.levelUpCoreAttribute(entity.heldStack, s, recipe.getAdditionalAttributes().get(s));
+                            }
+                        }
+
+/*
                         if (recipe.getAdditionalNBT() != null) {
                             CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
                             for (String s : recipe.getAdditionalNBT().getAllKeys()) {
@@ -126,7 +134,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                                 }
                                 entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).merge(combinedTag);
                             }
-                        }
+                        }*/
                     }
                     entity.clearItems(entity);
 
@@ -148,7 +156,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         }
     }
 
-
     public IBotanicRitualRecipe getRecipe(ItemStack stack, @Nullable Player playerEntity) {
         List<ItemStack> pedestalItems = getPedestalItems();
         return BotanicPledgeAPI.getInstance().getBotanicRitualRecipes(level).stream().filter(r -> r.isMatch(pedestalItems, stack, this, playerEntity)).findFirst().orElse(null);
@@ -157,34 +164,11 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
 
-
-        if (catalyst.hasTag() && catalyst.getTag().contains(BPConstants.STATS_TAG_NAME) && recipe != null && recipe.getAdditionalNBT() != null) {
-            CompoundTag tag = catalyst.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-
-
-            for (String str : recipe.getAdditionalNBT().getAllKeys()) {
-                if (tag.getAllKeys().contains(str)) {
-
-                    BotanicPledge.LOGGER.info("Something went right");
-
-                    if (!(tag.getDouble(str) < BPConstants.ATTRIBUTED_STATS().get(str))) {
-                        return false;
-                    }
-
-                    if (str.equals("may_fly")) {
-                        return false;
-
-                    }
-
-                    if (str.equals("jump_height")) {
-                        return false;
-                    }
-                }
+        if(catalyst.getItem() instanceof DivineCoreItem) {
+            for (String s: recipe.getAdditionalAttributes().keySet()) {
+                if (!(DivineCoreItem.levelUpAttributePossible(catalyst, s, recipe.getAdditionalAttributes().get(s)))) return false;
             }
         }
-
-
-        BotanicPledge.LOGGER.info(BotanicPledgeCommonConfigs.ARMOR_MAX_VALUE.get() + "");
 
         if (isCrafting)
             return false;

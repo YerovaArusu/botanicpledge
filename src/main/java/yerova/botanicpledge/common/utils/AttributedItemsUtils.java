@@ -18,11 +18,8 @@ public class AttributedItemsUtils {
 
 
     public static void handleShieldRegenOnCurioTick(LivingEntity player, ItemStack stack, int maxShield, int defRegenPerTick, int maxCharge) {
-        if (!(player instanceof ServerPlayer)) return;
-        ServerPlayer serverPlayer = (ServerPlayer) player;
-
+        if (!(player instanceof ServerPlayer serverPlayer)) return;
         CompoundTag stats = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-
 
         //Normal Stats
         stats.putInt(BPConstants.MAX_SHIELD_TAG_NAME, maxShield);

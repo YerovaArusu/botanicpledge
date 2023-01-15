@@ -21,7 +21,6 @@ import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.utils.BPConstants;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,7 +67,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
         if (slotContext.entity() instanceof Player player) {
             for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                double addValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNameList().get(i));
+                double addValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNames().get(i));
                 AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
                 if (!player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).hasModifier(statModifier)) {
                     player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).addPermanentModifier(statModifier);
@@ -87,12 +86,12 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         if (slotContext.entity() instanceof Player player) {
             if (newStack.getItem() != stack.getItem()) {
                 for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                    double reducerValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNameList().get(i));
+                    double reducerValue = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.attributeNames().get(i));
                     AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
                     AttributeInstance statAttribute = player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i));
                     if (statAttribute.hasModifier(statModifier)) {
                         statAttribute.removeModifier(statModifier);
-                        if (BPConstants.attributeNameList().get(i).equals(BPConstants.attributeNameList().get(2))) {
+                        if (BPConstants.attributeNames().get(i).equals(BPConstants.attributeNames().get(2))) {
                             if (player.getHealth() > slotContext.entity().getMaxHealth()) {
                                 player.hurt(BPConstants.HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
                             }
@@ -126,8 +125,17 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         if (Screen.hasShiftDown()) {
             CompoundTag statsTag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+
+            tooltip.add(new TranslatableComponent("tooltip_core_rank",
+                    new TextComponent(String.valueOf(DivineCoreItem.getCoreRank(stack))).withStyle(ChatFormatting.YELLOW),
+                    new TextComponent(String.valueOf(BPConstants.MAX_CORE_RANK)).withStyle(ChatFormatting.YELLOW))
+                    .withStyle(ChatFormatting.LIGHT_PURPLE));
+
+            tooltip.add(new TextComponent(""));
+
+
             for (String s : statsTag.getAllKeys()) {
-                if (BPConstants.attributeNameList().contains(s)) {
+                if (BPConstants.attributeNames().contains(s)) {
                     tooltip.add(new TextComponent("+" + statsTag.getDouble(s) + " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
                 }
                 if (s.equals("jump_height")) {
@@ -137,7 +145,11 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
                     tooltip.add(new TextComponent(new TranslatableComponent("may_fly").getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
+
+            tooltip.add(new TextComponent(""));
             tooltip.add(new TranslatableComponent("tooltip_manacost", new TextComponent(String.valueOf(this.getManaCost(stack))).withStyle(ChatFormatting.AQUA)));
+            tooltip.add(new TextComponent(""));
+
         } else {
             tooltip.add(new TranslatableComponent("show_tooltip_stats", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
         }
@@ -188,6 +200,48 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         if(stack.getItem() instanceof DivineCoreItem) {
             stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).putInt(BPConstants.CORE_RANK_TAG_NAME, toSetRank);
         }
+    }
+
+    public static boolean levelUpCoreAttribute(ItemStack stack, String attributeName, int amount) {
+        int level = 0;
+        boolean levelUp = false;
+        if(stack.getItem() instanceof DivineCoreItem) {
+            level = getStatsSubstat(stack).getInt(attributeName) + amount;
+            if(level <= getMaxAttributeLevel(stack) && level > 0) {
+                getStatsSubstat(stack).putInt(attributeName, level);
+                levelUp = true;
+            }
+        }
+        return levelUp;
+    }
+
+    public static int getMaxAttributeLevel(ItemStack stack){
+        int maxLevel = -1;
+        if(stack.getItem() instanceof DivineCoreItem) {
+            maxLevel = DivineCoreItem.getCoreRank(stack) * BPConstants.CORE_MAX_LEVEL_INCREASE_PER_RANK;
+        }
+        return maxLevel;
+    }
+
+    public static CompoundTag getStatsSubstat(ItemStack stack) {
+        CompoundTag bpTag = ItemStack.EMPTY.getTag();
+        if(stack.getItem() instanceof DivineCoreItem && stack.getTag() != null && stack.getTag().contains(BPConstants.STATS_TAG_NAME)) {
+            bpTag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+        }
+        return bpTag;
+    }
+
+    public static int getShieldValueAccordingToRank(ItemStack stack, int defaultValue) {
+        int toReturn = 0;
+        if(stack.getItem() instanceof  DivineCoreItem) {
+            toReturn = DivineCoreItem.getCoreRank(stack) * defaultValue;
+        }
+        return toReturn;
+    }
+
+    public static boolean levelUpAttributePossible(ItemStack stack, String attributeName, int value) {
+        if(!(stack.getItem() instanceof DivineCoreItem)) return false;
+        return getMaxAttributeLevel(stack) <= getStatsSubstat(stack).getInt(attributeName) + value;
     }
 
 }

@@ -27,6 +27,7 @@ public class BPConstants {
     public static final int MAX_CORE_RANK = 5;
     public static final int MIN_CORE_RANK = 1;
     public static final int BASIC_MANA_COST = 100;
+    public static final int CORE_MAX_LEVEL_INCREASE_PER_RANK = 10;
 
     public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
     public static final String TAG_CORE_UUID = "coreUUID";
@@ -74,7 +75,7 @@ public class BPConstants {
         return list;
     }
 
-    public static ArrayList<String> attributeNameList() {
+    public static ArrayList<String> attributeNames() {
         ArrayList<String> list = new ArrayList<String>();
         list.add("armor");
         list.add("armor_toughness");
