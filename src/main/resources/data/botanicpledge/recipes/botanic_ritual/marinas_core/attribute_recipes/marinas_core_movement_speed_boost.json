@@ -32,8 +32,7 @@
   "output": {
     "item": "botanicpledge:marinas_core"
   },
-  "statName": "movement_speed",
-  "statValue": 0.1,
+  "movement_speed": 1,
   "manaCost": 250000,
   "keepNbtOfReagent": true
 }

@@ -32,7 +32,7 @@ public class MarinasCore extends DivineCoreItem {
     @Nullable
     @Override
     public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-        if(stack.getTag() == null || !(stack.getTag().contains(BPConstants.STATS_TAG_NAME))){
+        if (stack.getTag() == null || !(stack.getTag().contains(BPConstants.STATS_TAG_NAME))) {
             stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).merge(BPConstants.INIT_CORE_TAG(
                     getShieldValueAccordingToRank(stack, maxCharge),
                     getShieldValueAccordingToRank(stack, maxShield)));

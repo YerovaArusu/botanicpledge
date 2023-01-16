@@ -27,12 +27,8 @@ import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
-import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
-import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -54,6 +50,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
 
     }
+
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller",
@@ -117,24 +114,11 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
                     //NBT handling
                     if (entity.heldStack.getItem() instanceof DivineCoreItem) {
-                        if(recipe.getAdditionalAttributes() != null) {
-                            for (String s: recipe.getAdditionalAttributes().keySet()) {
+                        if (recipe.getAdditionalAttributes() != null) {
+                            for (String s : recipe.getAdditionalAttributes().keySet()) {
                                 DivineCoreItem.levelUpCoreAttribute(entity.heldStack, s, recipe.getAdditionalAttributes().get(s));
                             }
                         }
-
-/*
-                        if (recipe.getAdditionalNBT() != null) {
-                            CompoundTag combinedTag = entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-                            for (String s : recipe.getAdditionalNBT().getAllKeys()) {
-                                if (combinedTag.contains(s)) {
-                                    combinedTag.putDouble(s, combinedTag.getDouble(s) + recipe.getAdditionalNBT().getDouble(s));
-                                } else {
-                                    combinedTag.putDouble(s, recipe.getAdditionalNBT().getDouble(s));
-                                }
-                                entity.heldStack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).merge(combinedTag);
-                            }
-                        }*/
                     }
                     entity.clearItems(entity);
 
@@ -163,10 +147,12 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
 
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
+        if (recipe == null) return false;
 
-        if(catalyst.getItem() instanceof DivineCoreItem) {
-            for (String s: recipe.getAdditionalAttributes().keySet()) {
-                if (!(DivineCoreItem.levelUpAttributePossible(catalyst, s, recipe.getAdditionalAttributes().get(s)))) return false;
+        if (catalyst.getItem() instanceof DivineCoreItem) {
+            for (String s : recipe.getAdditionalAttributes().keySet()) {
+                if (!(DivineCoreItem.levelUpAttributePossible(catalyst, s, recipe.getAdditionalAttributes().get(s))))
+                    return false;
             }
         }
 
@@ -316,7 +302,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         }
         return pedestalItems;
     }
-
 
 
 }

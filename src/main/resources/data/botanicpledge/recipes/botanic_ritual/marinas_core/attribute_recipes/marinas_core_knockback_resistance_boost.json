@@ -32,8 +32,7 @@
   "output": {
     "item": "botanicpledge:marinas_core"
   },
-  "statName": "knockback_resistance",
-  "statValue": 0.1,
+  "knockback_resistance": 1,
   "manaCost": 250000,
   "keepNbtOfReagent": true
 }

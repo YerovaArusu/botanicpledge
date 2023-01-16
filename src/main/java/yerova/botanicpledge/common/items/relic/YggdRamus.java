@@ -64,9 +64,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     }
 
 
-
-
-
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         RelicImpl.addDefaultTooltip(stack, tooltip);
@@ -79,13 +76,13 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //Do stuff if on ranged mode
 
             //shootProjectiles(player, null);
             shootProjectilesRework(player);
         }
-        if(!(YggdRamus.isRanged(player.getMainHandItem()))){
+        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             //Do stuff if not on ranged mode
 
             if (player.isShiftKeyDown()) {
@@ -135,7 +132,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -148,7 +145,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-        if(YggdRamus.isRanged(player.getMainHandItem())) {
+        if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -171,7 +168,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage()/8);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage() / 8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -197,8 +194,8 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     public void shootProjectilesRework(LivingEntity player) {
 
-        HitResult result = raytrace(player,16, true);
-        BlockPos targetpos = result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult)result).getEntity().getOnPos(): ((BlockHitResult)result).getBlockPos();
+        HitResult result = raytrace(player, 16, true);
+        BlockPos targetpos = result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity().getOnPos() : ((BlockHitResult) result).getBlockPos();
 
         double range = 4D;
         double j = -Math.PI + 2 * Math.PI * Math.random();
@@ -206,7 +203,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage()/8);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage() / 8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -234,7 +231,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
         for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
             if (enemy != player && player.canHit(enemy, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
-
 
 
                 enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
@@ -269,14 +265,14 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     public static boolean isRanged(ItemStack stack) {
         boolean returner = false;
-        if(stack.getItem() instanceof YggdRamus) {
+        if (stack.getItem() instanceof YggdRamus) {
             returner = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getBoolean(BPConstants.TAG_RANGED_MODE);
         }
         return returner;
     }
 
     public static void setRanged(ItemStack stack, boolean enabled) {
-        if(stack.getItem() instanceof YggdRamus) {
+        if (stack.getItem() instanceof YggdRamus) {
             CompoundTag stats = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
             stats.putBoolean(BPConstants.TAG_RANGED_MODE, enabled);
         }

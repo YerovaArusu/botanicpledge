@@ -2,20 +2,13 @@ package yerova.botanicpledge.common.events;
 
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.IConfigEvent;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
-import org.apache.logging.log4j.core.jmx.Server;
-import yerova.botanicpledge.common.config.BotanicPledgeCommonConfigs;
 import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.entitites.marina_boss.MarinaEntity;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
@@ -45,14 +38,6 @@ public class ModEventBusEvents {
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
     }
 
-    @SubscribeEvent
-    public static void onConfigLoadingEvent(ModConfigEvent.Loading event){
-    }
-
-    @SubscribeEvent
-    public static void onConfigReloadEvent(ModConfigEvent.Reloading event){
-
-    }
 
 
 }

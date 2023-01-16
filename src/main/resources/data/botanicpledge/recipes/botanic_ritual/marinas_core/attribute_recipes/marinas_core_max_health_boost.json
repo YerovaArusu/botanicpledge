@@ -32,8 +32,7 @@
   "output": {
     "item": "botanicpledge:marinas_core"
   },
-  "statName": "max_health",
-  "statValue": 1.0,
+  "max_health": 1,
   "manaCost": 250000,
   "keepNbtOfReagent": true
 }

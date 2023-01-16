@@ -219,17 +219,17 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             //New LevelUp Handler
             HashMap<String, Integer> attributes = new HashMap<>();
-            for (String s: BPConstants.attributeNames()) {
-                if(json.has(s)){
+            for (String s : BPConstants.attributeNames()) {
+                if (json.has(s)) {
                     attributes.put(s, GsonHelper.getAsInt(json, s, 0));
                 }
             }
-             if (json.has("may_fly")) {
-                 attributes.put("may_fly", GsonHelper.getAsInt(json, "may_fly", 0));
-             }
-             if(json.has("jump_height")) {
-                 attributes.put("jump_height", GsonHelper.getAsInt(json, "jump_height", 0));
-             }
+            if (json.has("may_fly")) {
+                attributes.put("may_fly", GsonHelper.getAsInt(json, "may_fly", 0));
+            }
+            if (json.has("jump_height")) {
+                attributes.put("jump_height", GsonHelper.getAsInt(json, "jump_height", 0));
+            }
 
             CompoundTag additionalTags = null;
             if (!statName.isEmpty() && statValue != 0.0) {
@@ -281,7 +281,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             buf.writeItem(recipe.result);
 
-            buf.writeMap(recipe.additionalAttributes,(o, v) -> o.writeUtf(v, 0x1000), (o, r) -> o.writeUtf(r.toString(), 0x1000));
+            buf.writeMap(recipe.additionalAttributes, (o, v) -> o.writeUtf(v, 0x1000), (o, r) -> o.writeUtf(r.toString(), 0x1000));
 
             for (Ingredient i : recipe.pedestalItems) {
                 i.toNetwork(buf);

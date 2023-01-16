@@ -32,8 +32,7 @@
   "output": {
     "item": "botanicpledge:marinas_core"
   },
-  "statName": "armor",
-  "statValue": 1.0,
+  "armor": 1,
   "manaCost": 250000,
   "keepNbtOfReagent": true
 }

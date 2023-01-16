@@ -9,7 +9,6 @@ import vazkii.botania.api.item.IRelic;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
-import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 
 import java.util.Map;
@@ -25,7 +24,6 @@ public class ForgeCommonInitializer {
             ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
             ItemInit.YGGD_RAMUS.get(), YggdRamus::makeRelic
     ));
-
 
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
