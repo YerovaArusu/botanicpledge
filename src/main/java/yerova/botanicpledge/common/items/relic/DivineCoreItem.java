@@ -188,6 +188,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     }
 
     private void stopFlying(Player player) {
+        if(player.isSpectator() ||player.isCreative()) return;
         player.getAbilities().flying = false;
         player.getAbilities().mayfly = false;
         player.onUpdateAbilities();
@@ -227,17 +228,13 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         }
     }
 
-    public static boolean levelUpCoreAttribute(ItemStack stack, String attributeName, int amount) {
-        int level = 0;
-        boolean levelUp = false;
+    public static void levelUpCoreAttribute(ItemStack stack, String attributeName, int amount) {
         if (stack.getItem() instanceof DivineCoreItem) {
-            level = getStatsSubstat(stack).getInt(attributeName) + amount;
+            int level = getStatsSubstat(stack).getInt(attributeName) + amount;
             if (level <= getMaxAttributeLevel(stack) && level > 0) {
                 getStatsSubstat(stack).putInt(attributeName, level);
-                levelUp = true;
             }
         }
-        return levelUp;
     }
 
     public static int getMaxAttributeLevel(ItemStack stack) {

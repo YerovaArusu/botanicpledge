@@ -68,13 +68,16 @@ public class ItemInit {
     public static RegistryObject<Item> WORLD_ASH_BRANCH = ITEMS.register("world_ash_branch", () -> new Item(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
+    public static RegistryObject<Item> ESSENCE_OF_WILL = ITEMS.register("essence_of_will", ()-> new EssenceOfWillItem(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.RARE)));
+
     //BlockItems
-    public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer_block_item",
+    public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer",
             () -> new ManaYggdralBufferBlockItem(BlockInit.MANA_YGGDRAL_BUFFER.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
 
-    public static final RegistryObject<Item> RITUAL_CORE_BLOCK_ITEM = ITEMS.register("ritual_center_block_item",
+    public static final RegistryObject<Item> RITUAL_CORE_BLOCK_ITEM = ITEMS.register("ritual_center",
             () -> new RitualCenterBlockItem(BlockInit.RITUAL_CENTER.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
 
-    public static final RegistryObject<Item> RITUAL_PEDESTAL_BLOCK_ITEM = ITEMS.register("ritual_pedestal_block_item",
+    public static final RegistryObject<Item> RITUAL_PEDESTAL_BLOCK_ITEM = ITEMS.register("ritual_pedestal",
             () -> new RitualPedestalBlockItem(BlockInit.RITUAL_PEDESTAL.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
 }
