@@ -13,7 +13,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.ManaItemHandler;
@@ -188,7 +190,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     }
 
     private void stopFlying(Player player) {
-        if(player.isSpectator() ||player.isCreative()) return;
+        if (player.isSpectator() || player.isCreative()) return;
         player.getAbilities().flying = false;
         player.getAbilities().mayfly = false;
         player.onUpdateAbilities();
@@ -282,6 +284,17 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
             case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> attributeLevel * BPConstants.JUMP_HEIGHT_LEVEL_UP_VALUE;
             default -> 0;
         };
+    }
+
+    public static boolean playerHasCoreWithRankEquipped(Player player, int rank) {
+        boolean returner = false;
+        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "divine_core")) {
+            ItemStack stack = result.stack();
+            if (stack.getItem() instanceof DivineCoreItem && DivineCoreItem.getCoreRank(stack) >= rank) {
+                returner = true;
+            }
+        }
+        return returner;
     }
 
 }

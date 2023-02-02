@@ -37,10 +37,9 @@ import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.items.TierInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 
 import java.util.List;
-
-import static vazkii.botania.common.item.equipment.tool.ToolCommons.raytraceFromEntity;
 
 public class YggdRamus extends SwordItem implements LeftClickable {
 
@@ -56,9 +55,15 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean selected) {
         if (!world.isClientSide && entity instanceof Player player) {
+
+            //Relic Handler
             var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
                 relic.tickBinding(player);
+            }
+
+            if (YggdRamus.isRanged(stack)) {
+                //TODO: set A much slower attack speed
             }
         }
     }
@@ -66,6 +71,12 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
+        if (world == null) return;
+        Player player = PlayerUtils.getStackOwner(world, stack);
+        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
+            tooltip.add(new TranslatableComponent("tooltip_stat_low_level").withStyle(ChatFormatting.DARK_RED));
+        }
+
         RelicImpl.addDefaultTooltip(stack, tooltip);
 
         tooltip.add(new TranslatableComponent("switch_weapon_mode_tooltip", new TextComponent("V").withStyle(ChatFormatting.YELLOW)));
@@ -76,11 +87,14 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+            return super.use(level, player, hand);
+
         if (YggdRamus.isRanged(player.getMainHandItem())) {
             //Do stuff if on ranged mode
 
             //shootProjectiles(player, null);
-            shootProjectilesRework(player);
+            shootProjectiles(player);
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             //Do stuff if not on ranged mode
@@ -109,6 +123,8 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
+        if (!DivineCoreItem.playerHasCoreWithRankEquipped(pContext.getPlayer(), BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+            return InteractionResult.FAIL;
         Player player = pContext.getPlayer();
 
         Vec3 targetPos = player.position().add(player.getLookAngle().scale(5D));
@@ -132,12 +148,15 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (YggdRamus.isRanged(player.getMainHandItem())) {
-            //TODO: do something on Ranged Mode
+        if (DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
+            if (YggdRamus.isRanged(player.getMainHandItem())) {
+                //TODO: do something on Ranged Mode
+            }
+            if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
+                this.sweepAttack(player.getLevel(), player, 0.4F);
+            }
         }
-        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
-            this.sweepAttack(player.getLevel(), player, 0.4F);
-        }
+
 
         return super.onLeftClickEntity(stack, player, entity);
     }
@@ -145,6 +164,9 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
+        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+            return;
+
         if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         }
@@ -159,43 +181,10 @@ public class YggdRamus extends SwordItem implements LeftClickable {
                         source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
     }
 
-    public void shootProjectiles(LivingEntity player, Entity target) {
-        BlockPos targetpos = target == null ? raytraceFromEntity(player, 16F, true).getBlockPos().offset(0, 1, 0) : new BlockPos(target.getX(), target.getY(), target.getZ()).offset(0, 1, 0);
-
-        double range = 4D;
-        double j = -Math.PI + 2 * Math.PI * Math.random();
-        double k;
-        double x, y, z;
-        for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
-            if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage() / 8);
-                k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
-                x = player.getX() + range * Math.sin(k) * Math.cos(j);
-                y = player.getY() + range * Math.cos(k);
-                z = player.getZ() + range * Math.sin(k) * Math.sin(j);
-                j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
-                sword.setPos(x, y, z);
-                sword.faceTarget(1.0F);
-
-                sword.setColor(0x08e8de);
-                sword.setStartingMana(MANA_COST_PER_SHOT);
-                sword.setMinManaLoss(1);
-                sword.setManaLossPerTick(1F);
-                sword.setMana(MANA_COST_PER_SHOT);
-                sword.setGravity(0F);
-                sword.setDeltaMovement(sword.getDeltaMovement().scale(0.8));
-
-                sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
-
-                player.level.addFreshEntity(sword);
-            }
-        }
-    }
-
-    public void shootProjectilesRework(LivingEntity player) {
+    public void shootProjectiles(LivingEntity player) {
 
         HitResult result = raytrace(player, 16, true);
-        BlockPos targetpos = result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity().getOnPos() : ((BlockHitResult) result).getBlockPos();
+        BlockPos targetPos = result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity().getOnPos() : ((BlockHitResult) result).getBlockPos();
 
         double range = 4D;
         double j = -Math.PI + 2 * Math.PI * Math.random();
@@ -203,7 +192,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetpos, this.getDamage() / 8);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetPos, this.getDamage() / 8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -288,5 +277,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public static HitResult raytrace(Entity e, double distance, boolean fluids) {
         return e.pick(distance, 1, fluids);
     }
+
 
 }

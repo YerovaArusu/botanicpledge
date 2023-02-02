@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.KeyBindsInit;
-import yerova.botanicpledge.client.render.entities.MarinaRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
@@ -83,7 +82,6 @@ public class BotanicPledge {
 
         KeyBindsInit.register(event);
 
-        EntityRenderers.register(EntityInit.MARINA.get(), MarinaRenderer::new);
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
 

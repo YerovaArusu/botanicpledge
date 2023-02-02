@@ -40,6 +40,4 @@ public class MariasCore extends DivineCoreItem {
         }
         return super.initCapabilities(stack, nbt);
     }
-
-
 }

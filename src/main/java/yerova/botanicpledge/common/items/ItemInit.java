@@ -68,7 +68,7 @@ public class ItemInit {
     public static RegistryObject<Item> WORLD_ASH_BRANCH = ITEMS.register("world_ash_branch", () -> new Item(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
-    public static RegistryObject<Item> ESSENCE_OF_WILL = ITEMS.register("essence_of_will", ()-> new EssenceOfWillItem(
+    public static RegistryObject<Item> ESSENCE_OF_WILL = ITEMS.register("essence_of_will", () -> new EssenceOfWillItem(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.RARE)));
 
     //BlockItems
