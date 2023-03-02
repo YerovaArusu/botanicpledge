@@ -130,12 +130,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.84'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.2.1'
     //botania
     implementation fg.deobf("vazkii.botania:Botania:1.18.2-435")
 
     //curios
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.7.1")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.0")
 
     //patchouli
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")

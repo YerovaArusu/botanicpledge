@@ -9,7 +9,7 @@ import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
 
-public class BPConstants {
+public final class BPConstants {
 
     public static final String STATS_TAG_NAME = BotanicPledge.MOD_ID + ".stats";
 
