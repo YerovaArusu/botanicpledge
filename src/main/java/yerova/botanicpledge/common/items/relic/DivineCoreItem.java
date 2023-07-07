@@ -22,6 +22,7 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,13 +36,17 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         ICurioItem.super.curioTick(slotContext, stack);
-
         if (slotContext.entity() instanceof Player player) {
-            if (player.tickCount % 20 == 0) {
-                if (player.flyDist > 0) {
-                    setManaCost(stack, getManaCost(stack) * 4);
+
+            //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
+            if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
+
+                if (player.tickCount % 20 == 0) {
+                    if (player.flyDist > 0) {
+                        setManaCost(stack, getManaCost(stack) * 4);
+                    }
+                    ManaItemHandler.instance().requestManaExact(stack, player, getManaCost(stack), true);
                 }
-                ManaItemHandler.instance().requestManaExact(stack, player, getManaCost(stack), true);
             }
         }
     }
@@ -67,17 +72,23 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+
         if (slotContext.entity() instanceof Player player) {
-            for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                double addValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
-                AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
-                if (!player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).hasModifier(statModifier)) {
-                    player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).addPermanentModifier(statModifier);
+
+            //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
+            if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
+
+                for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
+                    double addValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
+                    AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
+                    if (!player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).hasModifier(statModifier)) {
+                        player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).addPermanentModifier(statModifier);
+                    }
                 }
-            }
-            if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
-                    && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
-                this.startFlying(player);
+                if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
+                        && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
+                    this.startFlying(player);
+                }
             }
         }
     }
@@ -86,23 +97,27 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
 
         if (slotContext.entity() instanceof Player player) {
-            if (newStack.getItem() != stack.getItem()) {
-                for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                    double reducerValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
-                    AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
-                    AttributeInstance statAttribute = player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i));
-                    if (statAttribute.hasModifier(statModifier)) {
-                        statAttribute.removeModifier(statModifier);
-                        if (BPConstants.attributeNames().get(i).equals(BPConstants.attributeNames().get(2))) {
-                            if (player.getHealth() > slotContext.entity().getMaxHealth()) {
-                                player.hurt(BPConstants.HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+
+            //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
+            if(!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
+                if (newStack.getItem() != stack.getItem()) {
+                    for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
+                        double reducerValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
+                        AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
+                        AttributeInstance statAttribute = player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i));
+                        if (statAttribute.hasModifier(statModifier)) {
+                            statAttribute.removeModifier(statModifier);
+                            if (BPConstants.attributeNames().get(i).equals(BPConstants.attributeNames().get(2))) {
+                                if (player.getHealth() > slotContext.entity().getMaxHealth()) {
+                                    player.hurt(BPConstants.HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
+                                }
                             }
                         }
                     }
-                }
-                if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
-                        && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
-                    this.stopFlying(player);
+                    if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
+                            && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
+                        this.stopFlying(player);
+                    }
                 }
             }
         }
@@ -110,17 +125,17 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return true;
+        return !PlayerUtils.checkForArmorFromMod((Player) slotContext.entity(), BPConstants.DRACONIC_EVOLUTION_MODID);
     }
 
     @Override
     public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
-        return true;
+        return !PlayerUtils.checkForArmorFromMod((Player) slotContext.entity(), BPConstants.DRACONIC_EVOLUTION_MODID);
     }
 
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return true;
+        return !PlayerUtils.checkForArmorFromMod((Player) slotContext.entity(), BPConstants.DRACONIC_EVOLUTION_MODID);
     }
 
     @Override

@@ -51,6 +51,11 @@ public final class BPConstants {
     public static final double MAY_FLY_LEVEL_UP_VALUE = 0;
     public static final double JUMP_HEIGHT_LEVEL_UP_VALUE = 0.2;
 
+    public static final String PROJECTILE_COUNT_TRACKER_TAG_NAME = "projectile_count";
+
+    public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";
+
+
     public static final CompoundTag INIT_CORE_TAG(int maxCharge, int maxShield) {
         CompoundTag toReturn = ItemStack.EMPTY.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
 

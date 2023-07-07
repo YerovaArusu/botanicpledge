@@ -3,9 +3,14 @@ package yerova.botanicpledge.common.utils;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public class PlayerUtils {
+
+
     public static boolean removeItemFromInventory(@NotNull Player player, @NotNull ItemStack stack, int amount) {
         if (!player.getInventory().contains(stack)) return false;
         if (stack.getCount() < amount) return false;
@@ -31,5 +36,20 @@ public class PlayerUtils {
             if (p.getInventory().contains(stack)) return p;
         }
         return level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
+    }
+
+    public static ArrayList<ItemStack> getArmorSlotContents(@NotNull Player player) {
+        return (ArrayList<ItemStack>) player.getArmorSlots();
+    }
+
+    public static boolean checkForArmorFromMod(@NotNull Player player,@NotNull String modIdToCheckFor) {
+        boolean toReturn = false;
+        for (ItemStack stack : getArmorSlotContents(player)) {
+            if (stack != ItemStack.EMPTY && stack != null && ForgeHooks.getDefaultCreatorModId(stack).equals(modIdToCheckFor)) {
+                toReturn = true;
+                break;
+            }
+        }
+        return toReturn;
     }
 }

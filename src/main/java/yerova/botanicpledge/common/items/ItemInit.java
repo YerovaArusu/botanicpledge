@@ -14,6 +14,7 @@ import yerova.botanicpledge.common.items.protectors.GaiaProtector;
 import yerova.botanicpledge.common.items.protectors.ManaProtector;
 import yerova.botanicpledge.common.items.protectors.TerraProtector;
 import yerova.botanicpledge.common.items.protectors.YggdralProtector;
+import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
@@ -45,6 +46,12 @@ public class ItemInit {
     public static final RegistryObject<Item> YGGD_RAMUS = ITEMS.register("yggd_ramus", () -> new YggdRamus(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
     ));
+
+
+    public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
+    ));
+
 
 
     //cores
