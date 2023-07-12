@@ -38,13 +38,10 @@ public class PlayerUtils {
         return level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
     }
 
-    public static ArrayList<ItemStack> getArmorSlotContents(@NotNull Player player) {
-        return (ArrayList<ItemStack>) player.getArmorSlots();
-    }
 
     public static boolean checkForArmorFromMod(@NotNull Player player,@NotNull String modIdToCheckFor) {
         boolean toReturn = false;
-        for (ItemStack stack : getArmorSlotContents(player)) {
+        for (ItemStack stack : player.getArmorSlots()) {
             if (stack != ItemStack.EMPTY && stack != null && ForgeHooks.getDefaultCreatorModId(stack).equals(modIdToCheckFor)) {
                 toReturn = true;
                 break;

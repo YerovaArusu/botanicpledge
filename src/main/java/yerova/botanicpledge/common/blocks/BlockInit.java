@@ -2,15 +2,21 @@ package yerova.botanicpledge.common.blocks;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.PumpkinBlock;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import vazkii.botania.common.block.BlockSpecialFlower;
 import vazkii.botania.common.block.ModBlocks;
+import vazkii.botania.common.block.ModSubtiles;
+import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -24,6 +30,10 @@ public class BlockInit {
 
     public static final RegistryObject<Block> MANA_YGGDRAL_BUFFER = registerBlockWithoutBlockItem("mana_yggdral_buffer",
             () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+
+    //Flower
+    public static final RegistryObject<Block> THUNDER_LILY  = registerBlock("thunder_lily", () ->
+            new BlockSpecialFlower(MobEffects.ABSORPTION,10, BlockBehaviour.Properties.copy(Blocks.POPPY), BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
     //Ritual Blocks

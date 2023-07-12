@@ -55,6 +55,10 @@ public final class BPConstants {
 
     public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";
 
+    public static final String FLOWER_TAG_BURN_TIME = "burnTime";
+    public static final String FLOWER_TAG_COOLDOWN = "cooldown";
+    public static final String FLOWER_TAG_CD = "cd";
+
 
     public static final CompoundTag INIT_CORE_TAG(int maxCharge, int maxShield) {
         CompoundTag toReturn = ItemStack.EMPTY.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);

@@ -1,0 +1,35 @@
+{
+  "type": "botania:petal_apothecary",
+  "output": {
+    "item": "botanicpledge:thunder_lily"
+  },
+  "ingredients": [
+    {
+      "tag": "botania:petals/light_blue"
+    },
+    {
+      "tag": "botania:petals/light_blue"
+    },
+    {
+      "tag": "botania:petals/cyan"
+    },
+    {
+      "tag": "botania:petals/cyan"
+    },
+    {
+      "tag": "botania:petals/blue"
+    },
+    {
+      "tag": "botania:rune_pride"
+    },
+    {
+      "tag": "botania:rune_sloth"
+    },
+    {
+      "item": "botania:rune_envy"
+    },
+    {
+      "item": "botania:life_essence"
+    }
+  ]
+}
