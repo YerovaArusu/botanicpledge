@@ -30,8 +30,8 @@ public class AttributedItemsUtils {
         if (shield < maxShield) {
             if (defRegenPerTick + shield >= maxShield) defRegenPerTick = maxShield - shield;
 
-            if (charge >= defRegenPerTick * 4) {
-                charge -= defRegenPerTick * 4;
+            if (charge >= defRegenPerTick * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
+                charge -= defRegenPerTick * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE;
                 shield += defRegenPerTick;
             }
             stats.putInt(BPConstants.SHIELD_TAG_NAME, shield);

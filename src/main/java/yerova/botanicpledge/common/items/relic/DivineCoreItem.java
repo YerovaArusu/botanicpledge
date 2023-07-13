@@ -43,7 +43,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
                 if (player.tickCount % 20 == 0) {
                     if (player.flyDist > 0) {
-                        setManaCost(stack, getManaCost(stack) * 4);
+                        setManaCost(stack, getManaCost(stack) * BPConstants.MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE);
                     }
                     ManaItemHandler.instance().requestManaExact(stack, player, getManaCost(stack), true);
                 }

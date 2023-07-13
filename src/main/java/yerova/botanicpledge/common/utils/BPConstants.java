@@ -22,6 +22,9 @@ public final class BPConstants {
 
     public static final String TAG_RANGED_MODE = "ranged_mode";
 
+    public static final int MANA_TO_SHIELD_CONVERSION_RATE = 40;
+    public static final int MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE = 10;
+
     public static final int MAX_CORE_RANK = 6;
     public static final int MIN_CORE_RANK = 1;
     public static final int BASIC_MANA_COST = 100;
