@@ -91,9 +91,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
             return super.use(level, player, hand);
 
         if (YggdRamus.isRanged(player.getMainHandItem())) {
-            //Do stuff if on ranged mode
-
-            //shootProjectiles(player, null);
             shootProjectiles(player);
         }
         if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -103,8 +100,10 @@ public class YggdRamus extends SwordItem implements LeftClickable {
                 if (player.isOnGround()) {
                     for (LivingEntity entity : YggdRamus.getEntitiesAround(player.getOnPos(), 6, level)) {
                         entity.setDeltaMovement(entity.getDeltaMovement().add(0, 1D, 0));
+
+                        entity.hurt(DamageSource.playerAttack(player), getDamage()/3);
                     }
-                    if (!level.isClientSide)
+                    if (level.isClientSide)
                         for (int i = 0; i < 360; i += 30) {
                             double r = 3D;
                             double x = player.getX() + r * Math.cos(Math.toRadians(i));
@@ -149,10 +148,9 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         if (DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
-            if (YggdRamus.isRanged(player.getMainHandItem())) {
+            if (YggdRamus.isRanged(player.getMainHandItem()))    {
                 //TODO: do something on Ranged Mode
-            }
-            if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
+            }else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
                 this.sweepAttack(player.getLevel(), player, 0.4F);
             }
         }
@@ -169,8 +167,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
         if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
-        }
-        if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
+        } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
             this.sweepAttack(player.getLevel(), player, 0.4F);
         }
     }
@@ -231,8 +228,9 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         }
         double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
         double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-        if (level instanceof ServerLevel) {
-            ((ServerLevel) level).sendParticles(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)), player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 0, d0, 0.0D, d1, 0.0D);
+        if(level.isClientSide) {
+            level.addParticle(ManaSweepParticleData.createData(new ParticleColor(66,214,227)),
+                    player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 1.0D, 1.0D,1.0D );
         }
 
     }

@@ -44,33 +44,34 @@ public class YggdFocus extends Entity {
     @Override
     public void tick() {
         super.tick();
+        if (level.isClientSide) {
+            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+                    this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    0, 0, 0);
 
-        level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
-                this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                0, 0, 0);
+            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+                    this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    0, 0, 0);
 
-        level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
-                this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                0, 0, 0);
+            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+                    this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    0, 0, 0);
 
-        level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
-                this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                0, 0, 0);
+            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+                    this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
+                    0, 0, 0);
+        } else {
+            dmg();
+        }
 
-        level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
-                this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
-                this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
-                0, 0, 0);
-
-
-        dmg();
     }
 
 
