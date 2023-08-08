@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class ManaUtils {
+
+    //TODO: Rework this
     @Nullable
     public static BlockPos takeManaNearby(BlockPos pos, Level world, int range, int mana) {
         Optional<BlockPos> loc = BlockPos.findClosestMatch(pos, range, range, (b) -> world.getBlockEntity(b) instanceof TilePool && ((TilePool) world.getBlockEntity(b)).getCurrentMana() >= mana);

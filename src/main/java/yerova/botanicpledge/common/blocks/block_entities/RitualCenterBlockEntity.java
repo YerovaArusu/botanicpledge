@@ -112,14 +112,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
                     pedestalItems.forEach(i -> i = null);
                     entity.heldStack = recipe.getResult(pedestalItems, entity.heldStack, entity);
 
-                    //NBT handling
-                    if (entity.heldStack.getItem() instanceof DivineCoreItem) {
-                        if (recipe.getAdditionalAttributes() != null) {
-                            for (String s : recipe.getAdditionalAttributes().keySet()) {
-                                DivineCoreItem.levelUpCoreAttribute(entity.heldStack, s, recipe.getAdditionalAttributes().get(s));
-                            }
-                        }
-                    }
                     entity.clearItems(entity);
 
                 }
@@ -148,13 +140,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
         if (recipe == null) return false;
-
-        if (catalyst.getItem() instanceof DivineCoreItem) {
-            for (String s : recipe.getAdditionalAttributes().keySet()) {
-                if (!(DivineCoreItem.levelUpAttributePossible(catalyst, s, recipe.getAdditionalAttributes().get(s))))
-                    return false;
-            }
-        }
 
         if (isCrafting)
             return false;

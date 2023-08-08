@@ -10,10 +10,6 @@ import yerova.botanicpledge.common.blocks.BlockInit;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualPedestalBlockItem;
-import yerova.botanicpledge.common.items.protectors.GaiaProtector;
-import yerova.botanicpledge.common.items.protectors.ManaProtector;
-import yerova.botanicpledge.common.items.protectors.TerraProtector;
-import yerova.botanicpledge.common.items.protectors.YggdralProtector;
 import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
@@ -28,25 +24,11 @@ public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, BotanicPledge.MOD_ID);
 
 
-    //Protectors
-    public static final RegistryObject<Item> MANA_PROTECTOR = ITEMS.register("mana_protector", () -> new ManaProtector(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON).stacksTo(1)));
-
-    public static final RegistryObject<Item> TERRA_PROTECTOR = ITEMS.register("terra_protector", () -> new TerraProtector(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.RARE).stacksTo(1)));
-
-    public static final RegistryObject<Item> GAIA_PROTECTOR = ITEMS.register("gaia_protector", () -> new GaiaProtector(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
-
-    public static final RegistryObject<Item> YGGDRAL_PROTECTOR = ITEMS.register("yggdral_protector", () -> new YggdralProtector(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
-
     //weapons
 
     public static final RegistryObject<Item> YGGD_RAMUS = ITEMS.register("yggd_ramus", () -> new YggdRamus(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
     ));
-
 
     public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
@@ -75,8 +57,10 @@ public class ItemInit {
     public static RegistryObject<Item> WORLD_ASH_BRANCH = ITEMS.register("world_ash_branch", () -> new Item(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.COMMON)));
 
-    public static RegistryObject<Item> ESSENCE_OF_WILL = ITEMS.register("essence_of_will", () -> new EssenceOfWillItem(
+
+    public static RegistryObject<Item> SOCKET_GEM = ITEMS.register("rune_gem", () -> new RuneGemItem(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.RARE)));
+
 
     //BlockItems
     public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer",

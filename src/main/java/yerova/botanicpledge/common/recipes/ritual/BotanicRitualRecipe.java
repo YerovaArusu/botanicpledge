@@ -22,10 +22,7 @@ import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class BotanicRitualRecipe implements IBotanicRitualRecipe {
@@ -38,6 +35,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     public int manaCost;
     public boolean keepNbtOfReagent = false;
     public HashMap<String, Integer> additionalAttributes = null;
+    public CompoundTag gemCompoundTag = null;
 
     public static final String RECIPE_ID = "botanic_ritual";
 
@@ -51,6 +49,14 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
     public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result) {
         this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), 0, false);
+    }
+
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, CompoundTag gemCompoundTag, int manaCost) {
+        this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), manaCost, false);
+    }
+
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result,  HashMap<String, Integer> additionalAttributes, int manaCost) {
+        this(id, pedestalItems, reagent, result, additionalAttributes, manaCost, false);
     }
 
     public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, HashMap<String, Integer> additionalAttributes, int cost, boolean keepNbtOfReagent) {
@@ -210,13 +216,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             //Mana Cost
             int cost = json.has("manaCost") ? GsonHelper.getAsInt(json, "manaCost") : 0;
 
-            //keepNBT
-            boolean keepNbtOfReagent = json.has("keepNbtOfReagent") && GsonHelper.getAsBoolean(json, "keepNbtOfReagent");
-
-            //Additional NBT
-            String statName = json.has("statName") ? GsonHelper.getAsString(json, "statName") : "";
-            double statValue = json.has("statValue") ? GsonHelper.getAsDouble(json, "statValue") : 0.0;
-
             //New LevelUp Handler
             HashMap<String, Integer> attributes = new HashMap<>();
             for (String s : BPConstants.attributeNames()) {
@@ -224,19 +223,13 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
                     attributes.put(s, GsonHelper.getAsInt(json, s, 0));
                 }
             }
+
             if (json.has("may_fly")) {
                 attributes.put("may_fly", GsonHelper.getAsInt(json, "may_fly", 0));
             }
             if (json.has("jump_height")) {
                 attributes.put("jump_height", GsonHelper.getAsInt(json, "jump_height", 0));
             }
-
-            CompoundTag additionalTags = null;
-            if (!statName.isEmpty() && statValue != 0.0) {
-                additionalTags = output.getOrCreateTagElement(BotanicPledge.MOD_ID + ".stats");
-                additionalTags.putDouble(statName, statValue);
-            }
-
 
             //Pedestal Items
             JsonArray pedestalItems = GsonHelper.getAsJsonArray(json, "pedestalItems");
@@ -248,7 +241,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             }
 
-            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost, keepNbtOfReagent);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent,output, attributes, cost);
         }
 
         @Nullable

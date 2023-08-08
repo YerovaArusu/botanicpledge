@@ -7,58 +7,71 @@ import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.api.mana.ManaItemHandler;
+import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.SyncProtector;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class AttributedItemsUtils {
 
 
-    public static void handleShieldRegenOnCurioTick(LivingEntity player, ItemStack stack, int maxShield, int defRegenPerTick, int maxCharge) {
+    public static void handleShieldRegenOnCurioTick(LivingEntity player, ItemStack stack) {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
-        CompoundTag stats = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+        if (!((stack.getItem()) instanceof DivineCoreItem)) return;
 
-        //Normal Stats
-        stats.putInt(BPConstants.MAX_SHIELD_TAG_NAME, maxShield);
-        stats.putInt(BPConstants.MAX_CHARGE_TAG_NAME, maxCharge);
+        stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attributes -> {
+                if(attributes.getCurrentCharge() < attributes.getMaxCharge()) {
+                    attributes.addCurrentCharge(
+                            ManaItemHandler.instance().requestMana(
+                                    stack,serverPlayer, attributes.getMaxCharge() - attributes.getCurrentCharge(), true));
+                }
 
-        int charge = stats.getInt(BPConstants.CHARGE_TAG_NAME);
-        if (charge < maxCharge)
-            charge += ManaItemHandler.instance().requestMana(stack, serverPlayer, maxCharge - charge, true);
+                if(attributes.getCurrentShield() < attributes.getMaxShield()) {
+                    int defRegen = attributes.getDefRegenPerTick();
+                    if (defRegen + attributes.getCurrentShield() >= attributes.getMaxShield()) defRegen = attributes.getMaxShield() + attributes.getCurrentShield();
 
-        int shield = stats.getInt(BPConstants.SHIELD_TAG_NAME);
-        if (shield < maxShield) {
-            if (defRegenPerTick + shield >= maxShield) defRegenPerTick = maxShield - shield;
-
-            if (charge >= defRegenPerTick * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
-                charge -= defRegenPerTick * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE;
-                shield += defRegenPerTick;
-            }
-            stats.putInt(BPConstants.SHIELD_TAG_NAME, shield);
-        }
-        stats.putInt(BPConstants.CHARGE_TAG_NAME, charge);
+                    if (attributes.getCurrentCharge() >= defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
+                        attributes.removeCurrentCharge(defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE);
+                        attributes.addCurrentShield(defRegen);
+                    }
+                }
+        });
     }
 
     public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
-        boolean success = false;
-        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer, "necklace", "divine_core")) {
-            if (result.stack().hasTag() && result.stack().getTag().contains(BPConstants.STATS_TAG_NAME)) {
+        AtomicBoolean success = new AtomicBoolean(false);
+        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer,  "divine_core")) {
+            if (!(result.stack().getItem() instanceof DivineCoreItem)) return;
 
-                CompoundTag shield = result.stack().getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-
+            result.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
                 Networking.sendToPlayer(new SyncProtector(
-                        shield.getInt(BPConstants.CHARGE_TAG_NAME),
-                        shield.getInt(BPConstants.MAX_CHARGE_TAG_NAME),
-                        shield.getInt(BPConstants.SHIELD_TAG_NAME),
-                        shield.getInt(BPConstants.MAX_SHIELD_TAG_NAME)), serverPlayer);
+                        attribute.getCurrentCharge(),
+                        attribute.getMaxCharge(),
+                        attribute.getCurrentShield(),
+                        attribute.getMaxShield()),serverPlayer);
 
-                success = true;
-            }
+                success.set(true);
+            });
         }
 
-        if (!success) {
+        if (!success.get()) {
             Networking.sendToPlayer(new SyncProtector(0, 0, 0, 0), serverPlayer);
         }
+    }
+
+    public static HashMap<Integer, Map.Entry<String, Double>> getCoreAttributeDefault(){
+        HashMap<Integer, Map.Entry<String, Double>> map = new HashMap<>();
+
+        for (int i = 1; i < BPConstants.MAX_SOCKETS; i++) {
+            map.put(i, Map.entry(BPConstants.NO_RUNE_GEM,0.0));
+        }
+
+        return map;
     }
 
 

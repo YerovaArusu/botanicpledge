@@ -58,18 +58,6 @@ public class ProtectorHUD {
 
     });
 
-    public static void drawBar(PoseStack ps, int value, int maxValue, int mouseX, int mouseY, int width, int height, float hue) {
-        int barWidth = (int) Math.ceil(width * (((1 / (double) maxValue) * (double) value)));
-
-        RenderSystem.disableDepthTest();
-
-        Gui.fill(ps, mouseX - 1, mouseY - height - 1, mouseX + width + 1, mouseY, 0xFF000000);
-        Gui.fill(ps, mouseX, mouseY - height, mouseX + barWidth, mouseY, 0xFF000000 | Mth.hsvToRgb(hue, ((float) Math.sin((ClientTickHandler.ticksInGame + ClientTickHandler.partialTicks) * 0.2) + 1F) * 0.3F + 0.4F, 1F));
-        Gui.fill(ps, mouseX + barWidth, mouseY - height, mouseX + width, mouseY, 0xFF555555);
-
-
-    }
-
     //Test Rework of Mana display
 
     public static void drawBar(PoseStack ps, int value, int maxValue, int mouseX, int mouseY, int width, int height, int barIdentifier) {

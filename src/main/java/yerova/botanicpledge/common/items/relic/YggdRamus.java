@@ -89,8 +89,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         if (world == null) return;
-        Player player = PlayerUtils.getStackOwner(world, stack);
-        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
+        if (!(DivineCoreItem.getLevel(stack) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
             tooltip.add(new TranslatableComponent("tooltip_stat_low_level").withStyle(ChatFormatting.DARK_RED));
         }
 
@@ -104,7 +103,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     @NotNull
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+        if (!(DivineCoreItem.getLevel(player.getMainHandItem()) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
             return super.use(level, player, hand);
 
         if (YggdRamus.isRanged(player.getMainHandItem())) {
@@ -121,7 +120,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
-        if (!DivineCoreItem.playerHasCoreWithRankEquipped(pContext.getPlayer(), BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+        if (!(DivineCoreItem.getLevel(pContext.getItemInHand()) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
             return InteractionResult.FAIL;
         collectEnemiesAbility(pContext.getPlayer(), pContext.getLevel());
 
@@ -139,7 +138,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if (DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
+        if (!(DivineCoreItem.getLevel(stack) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
             if (YggdRamus.isRanged(player.getMainHandItem())) {
                 //TODO: do something on Ranged Mode
             } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
@@ -154,7 +153,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-        if (!DivineCoreItem.playerHasCoreWithRankEquipped(player, BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
+        if (!(DivineCoreItem.getLevel(stack) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
             return;
 
         if (YggdRamus.isRanged(player.getMainHandItem())) {
@@ -281,7 +280,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     public void shootEnemiesIntoSkyAbility(Level level, Player player, int radius) {
 
-        if (player.isShiftKeyDown() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, MANA_COST_FOR_THROW_INTO_AIR, true)) {
+        if (player.isShiftKeyDown() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, MANA_COST_FOR_THROW_INTO_AIR, true) || player.isCreative()) {
             for (LivingEntity entity : getAttackableEnemiesAroundUser(player, level, radius)) {
 
                 //Lift and damage
@@ -306,7 +305,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     }
 
     public void collectEnemiesAbility(Player player, Level level) {
-        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, MANA_COST_COLLECT_ENEMIES, true)) {
+        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, MANA_COST_COLLECT_ENEMIES, true) || player.isCreative()) {
             Vec3 targetPos = player.position().add(player.getLookAngle().scale(5D));
             YggdFocus focus = new YggdFocus(level, player);
             focus.setPos(targetPos.x, targetPos.y + 2, targetPos.z);

@@ -2,35 +2,63 @@ package yerova.botanicpledge.common.items.relic;
 
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.mana.IManaItem;
+import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItemHandler;
+import vazkii.botania.common.helper.ItemNBTHelper;
 import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.common.lib.ModTags;
+import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 
-import java.util.List;
-import java.util.UUID;
+import javax.annotation.Nonnull;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
+    private static final String TAG_MANA = "mana";
+    public static final int[] LEVELS = new int[]{
+            0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, 2_000_000_000
+    };
+    public static final int MAX_LEVEL_MANA = 2_000_000_000;
+
     public DivineCoreItem(Properties props) {
         super(props);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
+        if (allowdedIn(pCategory)) {
+            ItemStack emptyManaStack = new ItemStack(this);
+            setMana(emptyManaStack, 0);
+            pItems.add(emptyManaStack);
+
+
+            ItemStack fullManaStack = new ItemStack(this);
+            setMana(fullManaStack, MAX_LEVEL_MANA);
+            pItems.add(fullManaStack);
+        }
     }
 
     @Override
@@ -43,9 +71,12 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
                 if (player.tickCount % 20 == 0) {
                     if (player.flyDist > 0) {
-                        setManaCost(stack, getManaCost(stack) * BPConstants.MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE);
+
+                        stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+                            attribute.setManaCostPerTick(attribute.getManaCostPerTick() * BPConstants.MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE);
+                            ManaItemHandler.instance().requestManaExact(stack, player, attribute.getManaCostPerTick(), true);
+                        });
                     }
-                    ManaItemHandler.instance().requestManaExact(stack, player, getManaCost(stack), true);
                 }
             }
         }
@@ -74,50 +105,125 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
 
         if (slotContext.entity() instanceof Player player) {
-
             //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
             if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
 
-                for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                    double addValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
-                    AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", addValue, AttributeModifier.Operation.ADDITION);
-                    if (!player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).hasModifier(statModifier)) {
-                        player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i)).addPermanentModifier(statModifier);
+                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+
+                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
+                        double attributeValue = 0.0;
+                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
+                            attributeValue += entry.getValue();
+                        }
+                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
+                        if (!player.getAttribute(Attributes.ARMOR).hasModifier(modifier)) {
+                            player.getAttribute(Attributes.ARMOR).addPermanentModifier(modifier);
+                        }
                     }
-                }
-                if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
-                        && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
-                    this.startFlying(player);
-                }
+
+                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
+                        double attributeValue = 0.0;
+                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
+                            attributeValue += entry.getValue();
+                        }
+                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
+                        if (!player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(modifier)) {
+                            player.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(modifier);
+                        }
+                    }
+
+                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
+                        double attributeValue = 0.0;
+                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
+                            attributeValue += entry.getValue();
+                        }
+                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
+                        if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(modifier)) {
+                            player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(modifier);
+                        }
+                    }
+
+                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
+                        double attributeValue = 0.0;
+                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
+                            attributeValue += entry.getValue();
+                        }
+
+                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME, 1 + (attributeValue / 100), AttributeModifier.Operation.MULTIPLY_TOTAL);
+                        if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(modifier)) {
+                            player.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(modifier);
+
+                        }
+                    }
+                });
+
+                this.startFlying(player);
             }
         }
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-
         if (slotContext.entity() instanceof Player player) {
 
             //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
-            if(!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
-                if (newStack.getItem() != stack.getItem()) {
-                    for (int i = 0; i < BPConstants.ATTRIBUTE_LIST().size(); i++) {
-                        double reducerValue = getAttributeValueFromAttributeLevel(stack, BPConstants.attributeNames().get(i));
-                        AttributeModifier statModifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", reducerValue, AttributeModifier.Operation.ADDITION);
-                        AttributeInstance statAttribute = player.getAttribute(BPConstants.ATTRIBUTE_LIST().get(i));
-                        if (statAttribute.hasModifier(statModifier)) {
-                            statAttribute.removeModifier(statModifier);
-                            if (BPConstants.attributeNames().get(i).equals(BPConstants.attributeNames().get(2))) {
-                                if (player.getHealth() > slotContext.entity().getMaxHealth()) {
-                                    player.hurt(BPConstants.HEALTH_SET_DMG_SRC, slotContext.entity().getAbsorptionAmount() + (float) reducerValue);
-                                }
+            if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
+                AtomicInteger newCost = new AtomicInteger();
+                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(a -> newCost.set(a.getManaCostPerTick()));
+                AtomicInteger oldCost = new AtomicInteger();
+                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(a -> oldCost.set(a.getManaCostPerTick()));
+
+
+                if (newStack == ItemStack.EMPTY || oldCost.get() != newCost.get()) {
+
+                    stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+
+                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
+                            double attributeValue = 0.0;
+                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
+                                attributeValue += entry.getValue();
+                            }
+                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
+                            if (player.getAttribute(Attributes.ARMOR).hasModifier(modifier)) {
+                                player.getAttribute(Attributes.ARMOR).removeModifier(modifier);
                             }
                         }
-                    }
-                    if (stack.getTag().contains(BPConstants.STATS_TAG_NAME)
-                            && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains("may_fly")) {
-                        this.stopFlying(player);
-                    }
+
+                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
+                            double attributeValue = 0.0;
+                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
+                                attributeValue += entry.getValue();
+                            }
+                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
+                            if (player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(modifier)) {
+                                player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(modifier);
+                            }
+                        }
+
+                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
+                            double attributeValue = 0.0;
+                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
+                                attributeValue += entry.getValue();
+                            }
+                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
+                            if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(modifier)) {
+                                player.getAttribute(Attributes.MAX_HEALTH).removeModifier(modifier);
+                            }
+                        }
+
+                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
+                            double attributeValue = 0.0;
+                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
+                                attributeValue += entry.getValue();
+                            }
+                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", 1 + (attributeValue / 100), AttributeModifier.Operation.MULTIPLY_TOTAL);
+                            if (player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(modifier)) {
+                                player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(modifier);
+                            }
+                        }
+                    });
+                    this.stopFlying(player);
+
                 }
             }
         }
@@ -135,65 +241,55 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        return !PlayerUtils.checkForArmorFromMod((Player) slotContext.entity(), BPConstants.DRACONIC_EVOLUTION_MODID);
+        return !PlayerUtils.checkForArmorFromMod((Player) slotContext.entity(), BPConstants.DRACONIC_EVOLUTION_MODID)
+                && !(((Player) slotContext.entity()).getOffhandItem().getItem() instanceof DivineCoreItem);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
-        CompoundTag statsTag = getStatsSubstat(stack);
-        int maximum = getMaxAttributeLevel(stack);
 
-        if (Screen.hasControlDown() && !Screen.hasShiftDown()) {
-            for (String s : statsTag.getAllKeys()) {
-                if (BPConstants.attributeNames().contains(s)) {
-                    tooltip.add(new TextComponent(
-                            new TranslatableComponent(s).getString() +
-                                    ": Level: " + getStatsSubstat(stack).getInt(s) +
-                                    " / " + maximum).withStyle(ChatFormatting.BLUE));
-                }
-                if (s.equals(BPConstants.JUMP_HEIGHT_TAG_NAME)) {
-                    tooltip.add(new TextComponent(
-                            new TranslatableComponent(BPConstants.JUMP_HEIGHT_TAG_NAME).getString() +
-                                    ": Level: " + getStatsSubstat(stack).getInt(BPConstants.JUMP_HEIGHT_TAG_NAME) +
-                                    " / " + maximum).withStyle(ChatFormatting.BLUE));
-                }
-                if (s.equals(BPConstants.MAY_FLY_TAG_NAME)) {
-                    tooltip.add(new TextComponent(
-                            new TranslatableComponent(BPConstants.MAY_FLY_TAG_NAME).getString() +
-                                    ": Level: " + getStatsSubstat(stack).getInt(BPConstants.MAY_FLY_TAG_NAME) +
-                                    " / " + maximum).withStyle(ChatFormatting.BLUE));
-                }
-            }
-        }
+        stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-        if (Screen.hasShiftDown() && !Screen.hasControlDown()) {
+            tooltip.add(new TextComponent("Shield: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double)attribute.getCurrentShield()/attribute.getMaxShield() *100))) + "%").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double)attribute.getCurrentCharge()/attribute.getMaxCharge() *100))) + "%").withStyle(ChatFormatting.GRAY));
 
-            for (String s : statsTag.getAllKeys()) {
-                if (BPConstants.attributeNames().contains(s)) {
-                    tooltip.add(new TextComponent("+" + getAttributeValueFromAttributeLevel(stack, s) +
-                            " " + new TranslatableComponent(s).getString()).withStyle(ChatFormatting.BLUE));
-                }
-                if (s.equals(BPConstants.JUMP_HEIGHT_TAG_NAME)) {
-                    tooltip.add(new TextComponent("+" + getAttributeValueFromAttributeLevel(stack, s) +
-                            " " + new TranslatableComponent(BPConstants.JUMP_HEIGHT_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-                if (s.equals(BPConstants.MAY_FLY_TAG_NAME)) {
-                    tooltip.add(new TextComponent(new TranslatableComponent(BPConstants.MAY_FLY_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
+                    tooltip.add(new TextComponent("Socket: +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
-        }
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
+                    tooltip.add(new TextComponent("+" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                }
+            }
 
-        if ((!Screen.hasShiftDown() && !Screen.hasControlDown()) || (Screen.hasShiftDown() && Screen.hasControlDown())) {
-            tooltip.add(new TranslatableComponent("tooltip_core_rank",
-                    new TextComponent(String.valueOf(DivineCoreItem.getCoreRank(stack))).withStyle(ChatFormatting.YELLOW),
-                    new TextComponent(String.valueOf(BPConstants.MAX_CORE_RANK)).withStyle(ChatFormatting.YELLOW))
-                    .withStyle(ChatFormatting.LIGHT_PURPLE));
-            tooltip.add(new TextComponent(""));
-            tooltip.add(new TranslatableComponent("tooltip_mana_cost", new TextComponent(String.valueOf(this.getManaCost(stack))).withStyle(ChatFormatting.AQUA)));
-            tooltip.add(new TranslatableComponent("show_tooltip_stat_values", new TextComponent("LShift").withStyle(ChatFormatting.BLUE)));
-            tooltip.add(new TranslatableComponent("show_tooltip_stat_levels", new TextComponent("Control").withStyle(ChatFormatting.BLUE)));
-        }
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
+                    tooltip.add(new TextComponent("+" + entry.getValue() + " " + new TranslatableComponent(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                }
+            }
+
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
+                    tooltip.add(new TextComponent("+" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                }
+            }
+
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
+                    tooltip.add(new TextComponent("+" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.JUMP_HEIGHT_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                }
+            }
+            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.NO_RUNE_GEM))) {
+                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.NO_RUNE_GEM)).toList()) {
+                    tooltip.add(new TextComponent(new TranslatableComponent(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
+                }
+            }
+        });
+
         super.appendHoverText(stack, world, tooltip, flags);
     }
 
@@ -211,105 +307,112 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         player.onUpdateAbilities();
     }
 
-    public static void setManaCost(ItemStack stack, int manaCost) {
-        if (stack.getItem() instanceof DivineCoreItem) {
-            stack.getOrCreateTagElement(BPConstants.SHIELD_TAG_NAME).putInt(BPConstants.MANA_COST_TAG_NAME, manaCost);
-        }
-    }
 
-    public int getManaCost(ItemStack stack) {
-        return Math.max(stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.MANA_COST_TAG_NAME), BPConstants.BASIC_MANA_COST);
-    }
-
-    public static int getCoreRank(ItemStack stack) {
-        int coreRank = BPConstants.MIN_CORE_RANK;
-        if (stack.getItem() instanceof DivineCoreItem && stack.getTag() != null && stack.getTag().contains(BPConstants.STATS_TAG_NAME)) {
-            coreRank = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.CORE_RANK_TAG_NAME);
-            if (coreRank >= BPConstants.MAX_CORE_RANK) {
-                coreRank = BPConstants.MAX_CORE_RANK;
-            } else if (coreRank <= BPConstants.MIN_CORE_RANK) {
-                coreRank = BPConstants.MIN_CORE_RANK;
-            }
-        }
-        return coreRank;
-    }
-
-    public static void setCoreRank(ItemStack stack, int toSetRank) {
-        if (toSetRank >= BPConstants.MAX_CORE_RANK) {
-            toSetRank = BPConstants.MAX_CORE_RANK;
-        } else if (toSetRank <= BPConstants.MIN_CORE_RANK) {
-            toSetRank = BPConstants.MIN_CORE_RANK;
-        }
-        if (stack.getItem() instanceof DivineCoreItem) {
-            stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).putInt(BPConstants.CORE_RANK_TAG_NAME, toSetRank);
-        }
-    }
-
-    public static void levelUpCoreAttribute(ItemStack stack, String attributeName, int amount) {
-        if (stack.getItem() instanceof DivineCoreItem) {
-            int level = getStatsSubstat(stack).getInt(attributeName) + amount;
-            if (level <= getMaxAttributeLevel(stack) && level > 0) {
-                getStatsSubstat(stack).putInt(attributeName, level);
-            }
-        }
-    }
-
-    public static int getMaxAttributeLevel(ItemStack stack) {
-        int maxLevel = -1;
-        if (stack.getItem() instanceof DivineCoreItem) {
-            maxLevel = DivineCoreItem.getCoreRank(stack) * BPConstants.CORE_MAX_LEVEL_INCREASE_PER_RANK;
-        }
-        return maxLevel;
-    }
-
-    public static CompoundTag getStatsSubstat(ItemStack stack) {
-        CompoundTag bpTag = ItemStack.EMPTY.getTag();
-        if (stack.getItem() instanceof DivineCoreItem && stack.getTag() != null && stack.getTag().contains(BPConstants.STATS_TAG_NAME)) {
-            bpTag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-        }
-        return bpTag;
-    }
 
     public static int getShieldValueAccordingToRank(ItemStack stack, int defaultValue) {
         int toReturn = 0;
         if (stack.getItem() instanceof DivineCoreItem) {
-            toReturn = DivineCoreItem.getCoreRank(stack) * defaultValue;
+            toReturn = DivineCoreItem.getLevel(stack) * defaultValue;
         }
         return toReturn;
     }
 
-    public static boolean levelUpAttributePossible(ItemStack stack, String attributeName, int value) {
-        if (!(stack.getItem() instanceof DivineCoreItem)) return false;
-        return getMaxAttributeLevel(stack) >= getStatsSubstat(stack).getInt(attributeName) + value;
+    @Override
+    public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
+        int level = getLevel(stack);
+        int max = LEVELS[Math.min(LEVELS.length - 1, level + 1)];
+        int curr = getMana_(stack);
+        float percent = level == 0 ? 0F : (float) curr / (float) max;
+
+        return Optional.of(new ManaBarTooltip(percent, level));
     }
 
-    public static double getAttributeValueFromAttributeLevel(ItemStack stack, String attributeName) {
-        int attributeLevel = getStatsSubstat(stack).getInt(attributeName);
-
-        return switch (attributeName) {
-            case (BPConstants.ARMOR_TAG_NAME) -> attributeLevel * BPConstants.ARMOR_LEVEL_UP_VALUE;
-            case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> attributeLevel * BPConstants.ARMOR_TOUGHNESS_LEVEL_UP_VALUE;
-            case (BPConstants.MAX_HEALTH_TAG_NAME) -> attributeLevel * BPConstants.MAX_HEALTH_LEVEL_UP_VALUE;
-            case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> attributeLevel * BPConstants.ATTACK_DAMAGE_LEVEL_UP_VALUE;
-            case (BPConstants.KNOCKBACK_RESISTANCE_TAG_NAME) ->
-                    attributeLevel * BPConstants.KNOCKBACK_RESISTANCE_LEVEL_UP_VALUE;
-            case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> attributeLevel * BPConstants.MOVEMENT_SPEED_LEVEL_UP_VALUE;
-            case (BPConstants.ATTACK_SPEED_TAG_NAME) -> attributeLevel * BPConstants.ATTACK_SPEED_LEVEL_UP_VALUE;
-            case (BPConstants.MAY_FLY_TAG_NAME) -> attributeLevel * BPConstants.MAY_FLY_LEVEL_UP_VALUE;
-            case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> attributeLevel * BPConstants.JUMP_HEIGHT_LEVEL_UP_VALUE;
-            default -> 0;
-        };
+    protected static void setMana(ItemStack stack, int mana) {
+        if (mana > 0) {
+            ItemNBTHelper.setInt(stack, TAG_MANA, mana);
+        } else {
+            ItemNBTHelper.removeEntry(stack, TAG_MANA);
+        }
     }
 
-    public static boolean playerHasCoreWithRankEquipped(Player player, int rank) {
-        boolean returner = false;
-        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "divine_core")) {
-            ItemStack stack = result.stack();
-            if (stack.getItem() instanceof DivineCoreItem && DivineCoreItem.getCoreRank(stack) >= rank) {
-                returner = true;
+    public static int getMana_(ItemStack stack) {
+        return ItemNBTHelper.getInt(stack, TAG_MANA, 0);
+    }
+
+    public static int getLevel(ItemStack stack) {
+        long mana = getMana_(stack);
+        for (int i = LEVELS.length - 1; i > 0; i--) {
+            if (mana >= LEVELS[i]) {
+                return i;
             }
         }
-        return returner;
+
+        return 0;
+    }
+
+    public static class ManaItem implements IManaItem {
+        private final ItemStack stack;
+
+        public ManaItem(ItemStack stack) {
+            this.stack = stack;
+        }
+
+        @Override
+        public int getMana() {
+            return getMana_(stack) * stack.getCount();
+        }
+
+        @Override
+        public int getMaxMana() {
+            return MAX_LEVEL_MANA * stack.getCount();
+        }
+
+        @Override
+        public void addMana(int mana) {
+            setMana(stack, Math.min(getMana() + mana, getMaxMana()) / stack.getCount());
+        }
+
+        @Override
+        public boolean canReceiveManaFromPool(BlockEntity pool) {
+            return true;
+        }
+
+        @Override
+        public boolean canReceiveManaFromItem(ItemStack otherStack) {
+            return !otherStack.is(ModTags.Items.TERRA_PICK_BLACKLIST);
+        }
+
+        @Override
+        public boolean canExportManaToPool(BlockEntity pool) {
+            return false;
+        }
+
+        @Override
+        public boolean canExportManaToItem(ItemStack otherStack) {
+            return false;
+        }
+
+        @Override
+        public boolean isNoExport() {
+            return true;
+        }
+    }
+
+    @Nonnull
+    @Override
+    public Rarity getRarity(@Nonnull ItemStack stack) {
+        int level = getLevel(stack);
+        if (stack.isEnchanted()) {
+            level++;
+        }
+
+        if (level >= 5) { // SS rank/enchanted S rank
+            return Rarity.EPIC;
+        }
+        if (level >= 3) { // A rank/enchanted B rank
+            return Rarity.RARE;
+        }
+        return Rarity.UNCOMMON;
     }
 
 }

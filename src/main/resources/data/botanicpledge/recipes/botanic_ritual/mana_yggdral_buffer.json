@@ -1,39 +1,37 @@
 {
   "type": "botanicpledge:botanic_ritual",
   "reagent": {
-    "item": "botanicpledge:marias_core"
+    "item": "botania:mana_pool"
   },
   "pedestalItems": [
     {
-      "item": "minecraft:feather"
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdralium_block"
     },
     {
-      "item": "minecraft:feather"
+      "item": "minecraft:gold_block"
+    },
+    {
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdralium_block"
     },
     {
-      "item": "minecraft:feather"
-    },
-    {
-      "item": "botanicpledge:yggdralium_block"
-    },
-    {
-      "item": "minecraft:feather"
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdralium_block"
     }
   ],
   "output": {
-    "item": "botanicpledge:marias_core"
+    "item": "botanicpledge:mana_yggdral_buffer"
   },
-  "may_fly": 1,
-  "manaCost": 500000,
-  "keepNbtOfReagent": true
+  "manaCost": 1000000,
+  "keepNbtOfReagent": false
 }
-
