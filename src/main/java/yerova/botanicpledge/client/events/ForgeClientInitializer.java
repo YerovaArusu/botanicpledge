@@ -1,24 +1,65 @@
 package yerova.botanicpledge.client.events;
 
 
+import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import vazkii.botania.api.BotaniaForgeClientCapabilities;
+import vazkii.botania.api.block.IWandHUD;
+import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.render.blocks.mana_ygdral_buffer_block.ManaYggdralBufferBlockRenderer;
 import yerova.botanicpledge.client.render.blocks.ritual_center_block.RitualCenterBlockRenderer;
 import yerova.botanicpledge.client.render.blocks.ritual_pedestal_block.RitualPedestalBlockRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.setup.BotanicPledge;
 
-@Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ModEventClientBusEvents {
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-    @SubscribeEvent
+import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
+
+@Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public class ForgeClientInitializer {
+
+    public static void attachBeCapabilities(AttachCapabilitiesEvent<BlockEntity> e) {
+        var be = e.getObject();
+
+        var makeWandHud = WAND_HUD.get().get(be.getType());
+        if (makeWandHud != null) {
+            e.addCapability(prefix("wand_hud"),
+                    CapabilityUtil.makeProvider(BotaniaForgeClientCapabilities.WAND_HUD, makeWandHud.apply(be)));
+        }
+    }
+
+    private static final Supplier<Map<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>> WAND_HUD = Suppliers.memoize(() -> {
+        var ret = new IdentityHashMap<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>();
+        BlockEntityInit.registerWandHudCaps((factory, types) -> {
+            for (var type : types) {
+                ret.put(type, factory);
+            }
+        });
+        BlockEntityInit.registerWandHudCaps((factory, types) -> {
+            for (var type : types) {
+                ret.put(type, factory);
+            }
+        });
+        return Collections.unmodifiableMap(ret);
+    });
+
+
+        @SubscribeEvent
     public static void registerArmorRenderer(final EntityRenderersEvent.AddLayers evt) {
 
     }

@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.blocks;
+package yerova.botanicpledge.setup;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -7,18 +7,18 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.PumpkinBlock;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.BlockSpecialFlower;
 import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.block.ModSubtiles;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.common.blocks.ManaYggdralBufferBlock;
+import yerova.botanicpledge.common.blocks.RitualCenterBlock;
+import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
+import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
-import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.setup.ItemInit;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;

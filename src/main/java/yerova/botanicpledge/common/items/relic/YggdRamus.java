@@ -35,10 +35,9 @@ import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
-import yerova.botanicpledge.common.items.TierInit;
+import yerova.botanicpledge.setup.TierInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
-import yerova.botanicpledge.common.utils.PlayerUtils;
 
 import java.util.List;
 import java.util.Objects;

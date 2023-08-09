@@ -14,9 +14,7 @@ import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.IManaItem;
@@ -27,7 +25,6 @@ import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.common.lib.ModTags;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 

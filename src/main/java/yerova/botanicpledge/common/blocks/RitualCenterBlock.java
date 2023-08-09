@@ -20,8 +20,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ItemTwigWand;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.setup.BlockInit;
 
 import java.util.HashMap;
 

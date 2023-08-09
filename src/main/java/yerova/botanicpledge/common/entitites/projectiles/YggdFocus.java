@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
-import yerova.botanicpledge.common.entitites.EntityInit;
+import yerova.botanicpledge.setup.EntityInit;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.entitites;
+package yerova.botanicpledge.setup;
 
 
 import net.minecraft.world.entity.EntityType;

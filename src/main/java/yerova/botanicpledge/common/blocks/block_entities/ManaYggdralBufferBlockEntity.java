@@ -1,14 +1,20 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
 import com.google.common.base.Predicates;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.lwjgl.opengl.GL11;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -16,15 +22,25 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import vazkii.botania.api.BotaniaAPIClient;
+import vazkii.botania.api.block.IWandHUD;
+import vazkii.botania.api.block.IWandable;
+import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.IManaSpark;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
+import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.gui.HUDHandler;
 import vazkii.botania.common.block.tile.mana.IThrottledPacket;
 import vazkii.botania.common.block.tile.mana.TilePool;
+import vazkii.botania.common.item.ItemManaTablet;
+import vazkii.botania.common.item.ModItems;
+import yerova.botanicpledge.setup.BlockEntityInit;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
-public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, IManaReceiver, ISparkAttachable, IThrottledPacket {
+public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, IManaReceiver, ISparkAttachable, IThrottledPacket, IWandable {
     public static final int MAX_MANA = 264_000_000;
     public static final int TRANSFER_SPEED = 16000;
     private static final BlockPos[] POOL_LOCATIONS = {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1),
@@ -186,5 +202,50 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     @Override
     public void markDispatchable() {
         sendPacket = true;
+    }
+
+    @Override
+    public boolean onUsedByWand(@Nullable Player player, ItemStack stack, Direction side) {
+        if (player == null || player.isShiftKeyDown()) {
+            VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this);
+        }
+        return true;
+    }
+
+    public static class WandHud implements IWandHUD {
+        private final ManaYggdralBufferBlockEntity pool;
+
+        public WandHud(ManaYggdralBufferBlockEntity pool) {
+            this.pool = pool;
+        }
+
+        @Override
+        public void renderHUD(PoseStack ms, Minecraft mc) {
+            ItemStack poolStack = new ItemStack(pool.getBlockState().getBlock());
+            String name = poolStack.getHoverName().getString();
+            int color = 0x4444FF;
+            BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, pool.getCurrentMana(), ManaYggdralBufferBlockEntity.MAX_MANA, name);
+
+            int x = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 11;
+            int y = Minecraft.getInstance().getWindow().getGuiScaledHeight() / 2 + 30;
+
+            int u = 22;
+            int v = 38;
+
+            RenderSystem.enableBlend();
+            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+            RenderSystem.setShaderTexture(0, HUDHandler.manaBar);
+            RenderHelper.drawTexturedModalRect(ms, x, y, u, v, 22, 15);
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+
+            ItemStack tablet = new ItemStack(ModItems.manaTablet);
+            ItemManaTablet.setStackCreative(tablet);
+
+            mc.getItemRenderer().renderAndDecorateItem(tablet, x - 20, y);
+            mc.getItemRenderer().renderAndDecorateItem(poolStack, x + 26, y);
+
+            RenderSystem.disableBlend();
+        }
     }
 }

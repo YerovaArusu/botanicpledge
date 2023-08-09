@@ -5,14 +5,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
 import vazkii.botania.client.fx.WispParticleData;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 
 public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
@@ -30,9 +29,9 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
     public void tickFlower() {
         super.tickFlower();
 
-        if (getLevel().isRaining() && cd == 0) {
+        if (cd == 0) {
             int baseY = 64;
-            if (getLevel().random.nextInt((int) (4000 * baseY / getEffectivePos().getY())) == 1) {
+            if (getLevel().random.nextInt(400) == 1) {
                 LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
                 bolt.setPos(getEffectivePos().getX(), getEffectivePos().getY(), getEffectivePos().getZ());
                 if(!getLevel().isClientSide)
@@ -48,7 +47,7 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
         }
 
         for (LightningBolt bolt : getLevel().getEntitiesOfClass(LightningBolt.class,
-                new AABB(getEffectivePos().offset(AREA.minX, AREA.minY, AREA.minZ),
+                new AABB(getEffectivePos().offset(AREA.minX -1, AREA.minY-1, AREA.minZ-1),
                         getEffectivePos().offset(AREA.maxX + 1, AREA.maxY + 1, AREA.maxZ + 1)))) {
             if (!bolt.isRemoved()) {
                 if (cooldown == 0) {

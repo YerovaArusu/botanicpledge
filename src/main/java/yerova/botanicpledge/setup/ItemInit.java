@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.items;
+package yerova.botanicpledge.setup;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.Item;
@@ -6,7 +6,9 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.common.blocks.BlockInit;
+import yerova.botanicpledge.common.items.BotanicPledgeTab;
+import yerova.botanicpledge.common.items.RuneGemItem;
+import yerova.botanicpledge.common.items.YggdraliumIngot;
 import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
 import yerova.botanicpledge.common.items.block_items.RitualPedestalBlockItem;
@@ -14,7 +16,6 @@ import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 public class ItemInit {
     //Custom Rarity

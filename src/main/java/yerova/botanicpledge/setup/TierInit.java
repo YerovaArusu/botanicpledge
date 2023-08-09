@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.items;
+package yerova.botanicpledge.setup;
 
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.crafting.Ingredient;

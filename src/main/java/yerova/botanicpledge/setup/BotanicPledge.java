@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -20,14 +21,11 @@ import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.KeyBindsInit;
+import yerova.botanicpledge.client.events.ForgeClientInitializer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
-import yerova.botanicpledge.common.blocks.BlockInit;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
-import yerova.botanicpledge.common.entitites.EntityInit;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
-import yerova.botanicpledge.common.items.ItemInit;
 import yerova.botanicpledge.common.network.Networking;
 
 import static net.minecraftforge.client.gui.ForgeIngameGui.HOTBAR_ELEMENT;
@@ -45,6 +43,8 @@ public class BotanicPledge {
 
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
+        eventBus.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
+
 
         APIRegistry.setup();
 

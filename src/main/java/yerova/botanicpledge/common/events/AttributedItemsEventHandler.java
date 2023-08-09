@@ -21,7 +21,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.items.ItemInit;
+import yerova.botanicpledge.setup.ItemInit;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;

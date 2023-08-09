@@ -27,8 +27,8 @@ import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
+import yerova.botanicpledge.setup.BlockEntityInit;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

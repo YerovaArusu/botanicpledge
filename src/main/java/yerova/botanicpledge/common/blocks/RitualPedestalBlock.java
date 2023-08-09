@@ -17,7 +17,7 @@ import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEnti
 
 public class RitualPedestalBlock extends BaseEntityBlock {
 
-    protected RitualPedestalBlock(Properties properties) {
+    public RitualPedestalBlock(Properties properties) {
         super(properties);
     }
 

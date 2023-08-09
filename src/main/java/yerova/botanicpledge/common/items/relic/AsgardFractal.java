@@ -9,15 +9,12 @@ import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SandBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.checkerframework.checker.units.qual.A;
-import yerova.botanicpledge.common.items.TierInit;
+import yerova.botanicpledge.setup.TierInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.common.utils.ModNBTUtils;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
 import java.util.List;

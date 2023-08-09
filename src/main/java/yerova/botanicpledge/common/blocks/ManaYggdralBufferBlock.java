@@ -24,7 +24,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.item.ItemTwigWand;
-import yerova.botanicpledge.common.blocks.block_entities.BlockEntityInit;
+import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.blocks.block_entities.ManaYggdralBufferBlockEntity;
 
 public class ManaYggdralBufferBlock extends BaseEntityBlock {
@@ -33,7 +33,7 @@ public class ManaYggdralBufferBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
     private static final VoxelShape SHAPE = Block.box(0, 0.1, 0, 16, 16, 16);
 
-    protected ManaYggdralBufferBlock(Properties p_49224_) {
+    public ManaYggdralBufferBlock(Properties p_49224_) {
         super(p_49224_);
     }
 
@@ -71,15 +71,6 @@ public class ManaYggdralBufferBlock extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos,
                                  Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        if (!pLevel.isClientSide()) {
-            BlockEntity entity = pLevel.getBlockEntity(pPos);
-            if (entity instanceof ManaYggdralBufferBlockEntity
-                    && pPlayer.getMainHandItem().getItem() instanceof ItemTwigWand) {
-                pPlayer.sendMessage(new TextComponent("Current Mana: " + ((ManaYggdralBufferBlockEntity) entity).getCurrentMana()), pPlayer.getUUID());
-                //TODO: Send a message showing the current Mana
-            }
-        }
-
         return InteractionResult.sidedSuccess(pLevel.isClientSide());
     }
 
