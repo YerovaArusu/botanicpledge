@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -51,11 +52,9 @@ public class ManaBufferBlockEntity extends BlockEntity implements IManaReceiver,
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, ManaBufferBlockEntity e) {
 
-        //TODO: Rework this... it does not work
-
         if (level.getBlockEntity(blockPos) instanceof ManaBufferBlockEntity entity) {
 
-            if (level.isClientSide && entity.mana > 0) {
+            if(level instanceof ServerLevel serverLevel) {
                 int color = 0x08e8de;
 
                 float r = (color >> 16 & 0xFF) / 255F;
@@ -64,9 +63,12 @@ public class ManaBufferBlockEntity extends BlockEntity implements IManaReceiver,
 
                 for (int i = 0; i < 5; i++) {
                     WispParticleData data = WispParticleData.wisp(0.7F * ((float) e.mana / MAX_MANA), r, g, b, true);
-                    IProxy.INSTANCE.addParticleForceNear(level, data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
+
+                    serverLevel.sendParticles(data,blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
+                            10,0, 0, 0,(float) (Math.random() - 0.5F) * 0.12F);
+
+
                 }
-            } else {
 
 
                 for (BlockPos poolPos : POOL_LOCATIONS) {
