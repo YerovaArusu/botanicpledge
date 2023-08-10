@@ -4,8 +4,6 @@ import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.resources.ResourceLocation;
 import yerova.botanicpledge.setup.BotanicPledge;
 
-import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
-
 public class ModelUtils {
 
     public static ModelLayerLocation make(String name) {
@@ -13,6 +11,6 @@ public class ModelUtils {
     }
 
     public static ModelLayerLocation make(String name, String layer) {
-        return new ModelLayerLocation(new ResourceLocation(BotanicPledge.MOD_ID,name), layer);
+        return new ModelLayerLocation(new ResourceLocation(BotanicPledge.MOD_ID, name), layer);
     }
 }

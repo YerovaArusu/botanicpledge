@@ -3,7 +3,6 @@ package yerova.botanicpledge.common.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,14 +15,16 @@ public class CoreAttribute {
     private int currentShield;
     private int defRegenPerTick;
     private int manaCostPerTick;
-    private HashMap<Integer, Map.Entry<String, Double>> sockets = AttributedItemsUtils.getCoreAttributeDefault();;
+    private HashMap<Integer, Map.Entry<String, Double>> sockets = AttributedItemsUtils.getCoreAttributeDefault();
+    ;
 
     public CoreAttribute(int maxCharge, int maxShield, int defRegenPerTick, int manaCostPerTick) {
         this.maxCharge = maxCharge;
         this.maxShield = maxShield;
         this.defRegenPerTick = defRegenPerTick;
         this.manaCostPerTick = manaCostPerTick;
-        this.sockets = AttributedItemsUtils.getCoreAttributeDefault();;
+        this.sockets = AttributedItemsUtils.getCoreAttributeDefault();
+        ;
     }
 
     public int getMaxCharge() {
@@ -105,7 +106,7 @@ public class CoreAttribute {
 
     public String getSocketAttributeNameByIndex(int i) {
 
-         return this.sockets.get(i) != null ? this.sockets.get(i).getKey() : BPConstants.NO_RUNE_GEM;
+        return this.sockets.get(i) != null ? this.sockets.get(i).getKey() : BPConstants.NO_RUNE_GEM;
 
     }
 
@@ -114,13 +115,13 @@ public class CoreAttribute {
     }
 
     public boolean hasEmptySocket() {
-        return sockets.containsValue(Map.entry(BPConstants.NO_RUNE_GEM,0.0));
+        return sockets.containsValue(Map.entry(BPConstants.NO_RUNE_GEM, 0.0));
     }
 
     public int getEmptySocketIndex() {
         int toReturn = -1;
-        for (int i:sockets.keySet()) {
-            if(sockets.get(i).getKey().equals(BPConstants.NO_RUNE_GEM)){
+        for (int i : sockets.keySet()) {
+            if (sockets.get(i).getKey().equals(BPConstants.NO_RUNE_GEM)) {
                 toReturn = i;
                 break;
             }
@@ -135,11 +136,12 @@ public class CoreAttribute {
     public HashMap<Integer, Map.Entry<String, Double>> getAttributes() {
         return sockets;
     }
+
     public ArrayList<Map.Entry<String, Double>> getAttributesNamesAndValues() {
         ArrayList<Map.Entry<String, Double>> arrayList = new ArrayList<>();
 
-        for (int i: sockets.keySet()) {
-            arrayList.add(Map.entry(sockets.get(i).getKey(),sockets.get(i).getValue()));
+        for (int i : sockets.keySet()) {
+            arrayList.add(Map.entry(sockets.get(i).getKey(), sockets.get(i).getValue()));
         }
         return arrayList;
     }
@@ -153,13 +155,13 @@ public class CoreAttribute {
         nbt.putInt(BPConstants.MANA_COST_TAG_NAME, manaCostPerTick);
 
 
-            for (int i = 1; i <= BPConstants.MAX_SOCKETS; i++) {
-                if(sockets.get(i) != null) {
-                    nbt.putDouble(BPConstants.SOCKET_PRE_TAG + "." + i + "." + getSocketAttributeNameByIndex(i), getSocketAttributeValueByIndex(i));
-                } else {
-                    nbt.putDouble(BPConstants.SOCKET_PRE_TAG + "." + i + "." + BPConstants.NO_RUNE_GEM, 0.0);
-                }
+        for (int i = 1; i <= BPConstants.MAX_SOCKETS; i++) {
+            if (sockets.get(i) != null) {
+                nbt.putDouble(BPConstants.SOCKET_PRE_TAG + "." + i + "." + getSocketAttributeNameByIndex(i), getSocketAttributeValueByIndex(i));
+            } else {
+                nbt.putDouble(BPConstants.SOCKET_PRE_TAG + "." + i + "." + BPConstants.NO_RUNE_GEM, 0.0);
             }
+        }
 
 
     }

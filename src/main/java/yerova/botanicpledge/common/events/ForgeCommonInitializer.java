@@ -13,12 +13,12 @@ import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.IManaItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
-import yerova.botanicpledge.setup.ItemInit;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BotanicPledge;
+import yerova.botanicpledge.setup.ItemInit;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -39,7 +39,6 @@ public class ForgeCommonInitializer {
             ItemInit.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
             ItemInit.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
     ));
-
 
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
@@ -64,8 +63,10 @@ public class ForgeCommonInitializer {
 
         ItemStack stack = e.getObject();
 
-        if(stack.getItem() instanceof MariasCore) e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
-        if(stack.getItem() instanceof MarinasCore) e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
+        if (stack.getItem() instanceof MariasCore)
+            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
+        if (stack.getItem() instanceof MarinasCore)
+            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
 
     }
 

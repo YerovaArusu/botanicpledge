@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "botanicpledge:block/mana_buffer"
+    },
+    "facing=south": {
+      "model": "botanicpledge:block/mana_buffer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "botanicpledge:block/mana_buffer",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "botanicpledge:block/mana_buffer",
+      "y": 90
+    }
+  }
+}

@@ -1,6 +1,5 @@
 package yerova.botanicpledge.common.utils;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -25,27 +24,28 @@ public class AttributedItemsUtils {
         if (!((stack.getItem()) instanceof DivineCoreItem)) return;
 
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attributes -> {
-                if(attributes.getCurrentCharge() < attributes.getMaxCharge()) {
-                    attributes.addCurrentCharge(
-                            ManaItemHandler.instance().requestMana(
-                                    stack,serverPlayer, attributes.getMaxCharge() - attributes.getCurrentCharge(), true));
-                }
+            if (attributes.getCurrentCharge() < attributes.getMaxCharge()) {
+                attributes.addCurrentCharge(
+                        ManaItemHandler.instance().requestMana(
+                                stack, serverPlayer, attributes.getMaxCharge() - attributes.getCurrentCharge(), true));
+            }
 
-                if(attributes.getCurrentShield() < attributes.getMaxShield()) {
-                    int defRegen = attributes.getDefRegenPerTick();
-                    if (defRegen + attributes.getCurrentShield() >= attributes.getMaxShield()) defRegen = attributes.getMaxShield() + attributes.getCurrentShield();
+            if (attributes.getCurrentShield() < attributes.getMaxShield()) {
+                int defRegen = attributes.getDefRegenPerTick();
+                if (defRegen + attributes.getCurrentShield() >= attributes.getMaxShield())
+                    defRegen = attributes.getMaxShield() + attributes.getCurrentShield();
 
-                    if (attributes.getCurrentCharge() >= defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
-                        attributes.removeCurrentCharge(defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE);
-                        attributes.addCurrentShield(defRegen);
-                    }
+                if (attributes.getCurrentCharge() >= defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
+                    attributes.removeCurrentCharge(defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE);
+                    attributes.addCurrentShield(defRegen);
                 }
+            }
         });
     }
 
     public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
         AtomicBoolean success = new AtomicBoolean(false);
-        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer,  "divine_core")) {
+        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(serverPlayer, "divine_core")) {
             if (!(result.stack().getItem() instanceof DivineCoreItem)) return;
 
             result.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
@@ -53,7 +53,7 @@ public class AttributedItemsUtils {
                         attribute.getCurrentCharge(),
                         attribute.getMaxCharge(),
                         attribute.getCurrentShield(),
-                        attribute.getMaxShield()),serverPlayer);
+                        attribute.getMaxShield()), serverPlayer);
 
                 success.set(true);
             });
@@ -64,11 +64,11 @@ public class AttributedItemsUtils {
         }
     }
 
-    public static HashMap<Integer, Map.Entry<String, Double>> getCoreAttributeDefault(){
+    public static HashMap<Integer, Map.Entry<String, Double>> getCoreAttributeDefault() {
         HashMap<Integer, Map.Entry<String, Double>> map = new HashMap<>();
 
         for (int i = 1; i < BPConstants.MAX_SOCKETS; i++) {
-            map.put(i, Map.entry(BPConstants.NO_RUNE_GEM,0.0));
+            map.put(i, Map.entry(BPConstants.NO_RUNE_GEM, 0.0));
         }
 
         return map;

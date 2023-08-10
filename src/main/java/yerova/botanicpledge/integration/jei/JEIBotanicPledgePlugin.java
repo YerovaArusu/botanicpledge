@@ -11,8 +11,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
-import yerova.botanicpledge.setup.BlockInit;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
+import yerova.botanicpledge.setup.BlockInit;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;

@@ -328,7 +328,7 @@
     "minecraft:conduit",
     "botanicpledge:ritual_center",
     "botanicpledge:ritual_pedestal",
-    "botanicpledge:mana_yggdral_buffer",
+    "botanicpledge:mana_buffer",
     "botanicpledge:yggdralium_block"
   ]
 }

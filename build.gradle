@@ -16,7 +16,6 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
 
-
 group = 'yerova'
 version = '0.1'
 
@@ -116,11 +115,9 @@ repositories {
     //curios
     maven { url = "https://maven.theillusivec4.top/" }
 
-    //geckolib
-    maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
-
     //just enough Items
-    maven {name = "Progwml6 maven"
+    maven {
+        name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
     maven {
@@ -139,9 +136,6 @@ dependencies {
 
     //patchouli
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
-
-    //geckolib
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.18:3.0.29')
 
 
     //just enough items

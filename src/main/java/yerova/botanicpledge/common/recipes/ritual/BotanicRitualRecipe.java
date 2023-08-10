@@ -22,7 +22,10 @@ import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BotanicRitualRecipe implements IBotanicRitualRecipe {
@@ -55,7 +58,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
         this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), manaCost, false);
     }
 
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result,  HashMap<String, Integer> additionalAttributes, int manaCost) {
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, HashMap<String, Integer> additionalAttributes, int manaCost) {
         this(id, pedestalItems, reagent, result, additionalAttributes, manaCost, false);
     }
 
@@ -241,7 +244,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             }
 
-            return new BotanicRitualRecipe(recipeId, stacks, reagent,output, attributes, cost);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost);
         }
 
         @Nullable

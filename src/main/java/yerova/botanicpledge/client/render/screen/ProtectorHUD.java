@@ -2,13 +2,10 @@ package yerova.botanicpledge.client.render.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.IIngameOverlay;
-import vazkii.botania.client.core.handler.ClientTickHandler;
 import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 import yerova.botanicpledge.setup.BotanicPledge;
 

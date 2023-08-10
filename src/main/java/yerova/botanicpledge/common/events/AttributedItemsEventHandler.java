@@ -21,11 +21,11 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.setup.ItemInit;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
+import yerova.botanicpledge.setup.ItemInit;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,7 +44,7 @@ public class AttributedItemsEventHandler {
                     if (!e.isCanceled()) {
                         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-                            if (attribute.getCurrentShield() - e.getAmount()> 0) {
+                            if (attribute.getCurrentShield() - e.getAmount() > 0) {
                                 attribute.removeCurrentShield((int) Math.ceil(e.getAmount()));
                                 player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
                                 e.setCanceled(true);
@@ -68,7 +68,7 @@ public class AttributedItemsEventHandler {
                 stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
                     if (attribute.hasSocketAttribute(BPConstants.JUMP_HEIGHT_TAG_NAME)) {
                         double jumpHeight = 0;
-                        for (Map.Entry<String, Double> entry: attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
+                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
                             jumpHeight += entry.getValue();
                         }
                         jump.set(jumpHeight);
@@ -76,7 +76,7 @@ public class AttributedItemsEventHandler {
                 });
 
                 Vec3 vec3 = entity.getDeltaMovement();
-                jump.set(vec3.y + (1 + (jump.get()/100)));
+                jump.set(vec3.y + (1 + (jump.get() / 100)));
                 entity.setDeltaMovement(vec3.x, jump.get(), vec3.z);
 
                 if (entity.isSprinting()) {

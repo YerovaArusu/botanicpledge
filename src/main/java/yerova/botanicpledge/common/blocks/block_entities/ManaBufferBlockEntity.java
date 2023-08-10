@@ -15,13 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.lwjgl.opengl.GL11;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.block.IWandHUD;
 import vazkii.botania.api.block.IWandable;
@@ -30,91 +23,97 @@ import vazkii.botania.api.mana.IManaReceiver;
 import vazkii.botania.api.mana.spark.IManaSpark;
 import vazkii.botania.api.mana.spark.ISparkAttachable;
 import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.client.gui.HUDHandler;
 import vazkii.botania.common.block.tile.mana.IThrottledPacket;
 import vazkii.botania.common.block.tile.mana.TilePool;
 import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ModItems;
+import vazkii.botania.common.proxy.IProxy;
 import yerova.botanicpledge.setup.BlockEntityInit;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimatable, IManaReceiver, ISparkAttachable, IThrottledPacket, IWandable {
+public class ManaBufferBlockEntity extends BlockEntity implements IManaReceiver, ISparkAttachable, IThrottledPacket, IWandable {
     public static final int MAX_MANA = 264_000_000;
     public static final int TRANSFER_SPEED = 16000;
     private static final BlockPos[] POOL_LOCATIONS = {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1),
             new BlockPos(-1, 0, 0), new BlockPos(0, 0, -1), new BlockPos(0, -1, 0)};
     private static final String TAG_MANA = "mana";
     private static boolean sendPacket = false;
-    private final AnimationFactory factory = new AnimationFactory(this);
     private int mana;
 
-    public ManaYggdralBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntityInit.MANA_YGGDRAL_BUFFER_BLOCK_ENTITY.get(), blockPos, blockState);
+    public ManaBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(BlockEntityInit.MANA_BUFFER_BLOCK_ENTITY.get(), blockPos, blockState);
 
     }
 
-    public static <E extends BlockEntity> void tick(Level level, BlockPos blockPos, BlockState blockState, E e) {
-        if (level.getBlockEntity(blockPos) instanceof ManaYggdralBufferBlockEntity) {
-            for (BlockPos poolPos : POOL_LOCATIONS) {
-                if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof TilePool) {
-                    TilePool tilePool = (TilePool) level.getBlockEntity(blockPos.offset(poolPos));
-                    int manaToGet = Math.min(TRANSFER_SPEED, tilePool.getCurrentMana());
-                    int spaceLeft = Math.max(0, MAX_MANA - tilePool.getCurrentMana());
-                    int current = Math.min(spaceLeft, manaToGet);
-                    tilePool.receiveMana(-current);
-                    ((ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
-                } else if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof ManaYggdralBufferBlockEntity) {
-                    ManaYggdralBufferBlockEntity buffer = (ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos.offset(poolPos));
-                    int manaToGet = Math.min(TRANSFER_SPEED, buffer.getCurrentMana());
-                    int spaceLeft = Math.max(0, MAX_MANA - buffer.getCurrentMana());
-                    int current = Math.min(spaceLeft, manaToGet);
-                    buffer.receiveMana(-current);
-                    ((ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+    public static void tick(Level level, BlockPos blockPos, BlockState blockState, ManaBufferBlockEntity e) {
+
+        //TODO: Rework this... it does not work
+
+        if (level.getBlockEntity(blockPos) instanceof ManaBufferBlockEntity entity) {
+
+            if (level.isClientSide && entity.mana > 0) {
+                int color = 0x08e8de;
+
+                float r = (color >> 16 & 0xFF) / 255F;
+                float g = (color >> 8 & 0xFF) / 255F;
+                float b = (color & 0xFF) / 255F;
+
+                for (int i = 0; i < 5; i++) {
+                    WispParticleData data = WispParticleData.wisp(0.7F * ((float) e.mana / MAX_MANA), r, g, b, true);
+                    IProxy.INSTANCE.addParticleForceNear(level, data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
+                }
+            } else {
+
+
+                for (BlockPos poolPos : POOL_LOCATIONS) {
+                    if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof TilePool) {
+
+
+                        TilePool tilePool = (TilePool) level.getBlockEntity(blockPos.offset(poolPos));
+                        int manaToGet = Math.min(TRANSFER_SPEED, tilePool.getCurrentMana());
+                        int spaceLeft = Math.max(0, MAX_MANA - tilePool.getCurrentMana());
+                        int current = Math.min(spaceLeft, manaToGet);
+                        tilePool.receiveMana(-current);
+                        ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+                    } else if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof ManaBufferBlockEntity) {
+                        ManaBufferBlockEntity buffer = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(poolPos));
+                        int manaToGet = Math.min(TRANSFER_SPEED, buffer.getCurrentMana());
+                        int spaceLeft = Math.max(0, MAX_MANA - buffer.getCurrentMana());
+                        int current = Math.min(spaceLeft, manaToGet);
+                        buffer.receiveMana(-current);
+                        ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+                    }
+                }
+
+                if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof TilePool) {
+                    ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
+                    TilePool receiver = (TilePool) level.getBlockEntity(blockPos.offset(0, 1, 0));
+                    int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
+                    int space = Math.max(0, receiver.manaCap - receiver.getCurrentMana());
+                    int current = Math.min(space, manaToGet);
+
+                    sender.receiveMana(-current);
+                    receiver.receiveMana(current);
+                } else if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof ManaBufferBlockEntity) {
+                    ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
+                    ManaBufferBlockEntity receiver = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(0, 1, 0));
+                    int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
+                    int space = Math.max(0, MAX_MANA - receiver.getCurrentMana());
+                    int current = Math.min(space, manaToGet);
+
+                    sender.receiveMana(-current);
+                    receiver.receiveMana(current);
                 }
             }
 
-            if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof TilePool) {
-                ManaYggdralBufferBlockEntity sender = ((ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos));
-                TilePool receiver = (TilePool) level.getBlockEntity(blockPos.offset(0, 1, 0));
-                int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
-                int space = Math.max(0, receiver.manaCap - receiver.getCurrentMana());
-                int current = Math.min(space, manaToGet);
-
-                sender.receiveMana(-current);
-                receiver.receiveMana(current);
-            } else if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof ManaYggdralBufferBlockEntity) {
-                ManaYggdralBufferBlockEntity sender = ((ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos));
-                ManaYggdralBufferBlockEntity receiver = (ManaYggdralBufferBlockEntity) level.getBlockEntity(blockPos.offset(0, 1, 0));
-                int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
-                int space = Math.max(0, MAX_MANA - receiver.getCurrentMana());
-                int current = Math.min(space, manaToGet);
-
-                sender.receiveMana(-current);
-                receiver.receiveMana(current);
-            }
 
         }
 
 
-    }
-
-    //Animations with GeckoLib
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.mana_yggdral_buffer.idle", true));
-        return PlayState.CONTINUE;
     }
 
     @Override
@@ -131,6 +130,7 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     public void load(CompoundTag tag) {
         mana = tag.getInt(TAG_MANA);
     }
+
 
     @Override
     protected void saveAdditional(CompoundTag tag) {
@@ -213,9 +213,9 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
     }
 
     public static class WandHud implements IWandHUD {
-        private final ManaYggdralBufferBlockEntity pool;
+        private final ManaBufferBlockEntity pool;
 
-        public WandHud(ManaYggdralBufferBlockEntity pool) {
+        public WandHud(ManaBufferBlockEntity pool) {
             this.pool = pool;
         }
 
@@ -224,7 +224,7 @@ public class ManaYggdralBufferBlockEntity extends BlockEntity implements IAnimat
             ItemStack poolStack = new ItemStack(pool.getBlockState().getBlock());
             String name = poolStack.getHoverName().getString();
             int color = 0x4444FF;
-            BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, pool.getCurrentMana(), ManaYggdralBufferBlockEntity.MAX_MANA, name);
+            BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, pool.getCurrentMana(), ManaBufferBlockEntity.MAX_MANA, name);
 
             int x = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 11;
             int y = Minecraft.getInstance().getWindow().getGuiScaledHeight() / 2 + 30;

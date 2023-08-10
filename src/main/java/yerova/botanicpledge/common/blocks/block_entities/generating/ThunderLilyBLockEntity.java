@@ -11,14 +11,14 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
 import vazkii.botania.client.fx.WispParticleData;
-import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.setup.BlockEntityInit;
 
 public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
 
     public static final int MAX_MANA = 64_000;
     public static final int COLOR_HEX = 0x0000CD;
-    public static final AABB AREA = new AABB(-2,0,-2,2,1,2);
+    public static final AABB AREA = new AABB(-2, 0, -2, 2, 1, 2);
     private int burnTime = 0, cooldown = 0, cd = 0;
 
     public ThunderLilyBLockEntity(BlockPos pos, BlockState state) {
@@ -30,11 +30,10 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
         super.tickFlower();
 
         if (cd == 0) {
-            int baseY = 64;
-            if (getLevel().random.nextInt(400) == 1) {
+            if (getLevel().random.nextInt(300) == 1) {
                 LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
                 bolt.setPos(getEffectivePos().getX(), getEffectivePos().getY(), getEffectivePos().getZ());
-                if(!getLevel().isClientSide)
+                if (!getLevel().isClientSide)
                     getLevel().addFreshEntity(bolt);
                 cd += getCooldown();
                 if (cooldown == 0) {
@@ -47,7 +46,7 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
         }
 
         for (LightningBolt bolt : getLevel().getEntitiesOfClass(LightningBolt.class,
-                new AABB(getEffectivePos().offset(AREA.minX -1, AREA.minY-1, AREA.minZ-1),
+                new AABB(getEffectivePos().offset(AREA.minX - 1, AREA.minY - 1, AREA.minZ - 1),
                         getEffectivePos().offset(AREA.maxX + 1, AREA.maxY + 1, AREA.maxZ + 1)))) {
             if (!bolt.isRemoved()) {
                 if (cooldown == 0) {
@@ -110,7 +109,6 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
     public int getCooldown() {
         return 400;
     }
-
 
 
 }

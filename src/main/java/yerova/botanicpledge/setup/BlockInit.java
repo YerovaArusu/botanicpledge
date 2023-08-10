@@ -12,14 +12,10 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.BlockSpecialFlower;
-import vazkii.botania.common.block.ModBlocks;
-import yerova.botanicpledge.common.blocks.ManaYggdralBufferBlock;
+import yerova.botanicpledge.common.blocks.ManaBufferBlock;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
-import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
-import yerova.botanicpledge.setup.ItemInit;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -28,20 +24,21 @@ import java.util.function.Supplier;
 public class BlockInit {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
 
-    public static final RegistryObject<Block> MANA_YGGDRAL_BUFFER = registerBlockWithoutBlockItem("mana_yggdral_buffer",
-            () -> new ManaYggdralBufferBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
+    public static final RegistryObject<Block> MANA_BUFFER = registerBlock("mana_buffer",
+            () -> new ManaBufferBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> RITUAL_CENTER = registerBlock("ritual_center",
+            () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+
+    public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlock("ritual_pedestal",
+            () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
 
     //Flower
-    public static final RegistryObject<Block> THUNDER_LILY  = registerBlock("thunder_lily", () ->
-            new BlockSpecialFlower(MobEffects.ABSORPTION,10, BlockBehaviour.Properties.copy(Blocks.POPPY), BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+    public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
+            new BlockSpecialFlower(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
-
-    //Ritual Blocks
-    public static final RegistryObject<Block> RITUAL_CENTER = registerBlockWithoutBlockItem("ritual_center",
-            () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
-
-    public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlockWithoutBlockItem("ritual_pedestal",
-            () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(ModBlocks.runeAltar).noOcclusion()));
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),

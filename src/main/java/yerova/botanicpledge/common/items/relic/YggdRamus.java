@@ -35,9 +35,9 @@ import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
-import yerova.botanicpledge.setup.TierInit;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
+import yerova.botanicpledge.setup.TierInit;
 
 import java.util.List;
 import java.util.Objects;
@@ -81,8 +81,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
             }
         }
     }
-
-
 
 
     @Override
@@ -216,13 +214,13 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         }
     }
 
-    public void sweepAttack(@NotNull Level level,@NotNull Player player, double knockbackStrength) {
-        if(!level.isClientSide) {
+    public void sweepAttack(@NotNull Level level, @NotNull Player player, double knockbackStrength) {
+        if (!level.isClientSide) {
             for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
                 if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(IXplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canHit(enemy, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
 
                     enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
-                    hurtEnemy(player.getMainHandItem(),enemy,player);
+                    hurtEnemy(player.getMainHandItem(), enemy, player);
 
                     YggdRamus.appendFireAspect(player, enemy);
                 }
@@ -288,7 +286,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
                 entity.setDeltaMovement(entity.getDeltaMovement().add(0, 1.0, 0));
 
             }
-            player.setDeltaMovement(player.getDeltaMovement().add(0,1.0D,0));
+            player.setDeltaMovement(player.getDeltaMovement().add(0, 1.0D, 0));
 
             //Particles
             if (level.isClientSide)

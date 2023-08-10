@@ -11,7 +11,10 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import top.theillusivec4.curios.api.SlotContext;
@@ -247,8 +250,8 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
 
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-            tooltip.add(new TextComponent("Shield: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double)attribute.getCurrentShield()/attribute.getMaxShield() *100))) + "%").withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TextComponent("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double)attribute.getCurrentCharge()/attribute.getMaxCharge() *100))) + "%").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("Shield: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentShield() / attribute.getMaxShield() * 100))) + "%").withStyle(ChatFormatting.GRAY));
+            tooltip.add(new TextComponent("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
 
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
@@ -303,7 +306,6 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         player.getAbilities().mayfly = false;
         player.onUpdateAbilities();
     }
-
 
 
     public static int getShieldValueAccordingToRank(ItemStack stack, int defaultValue) {

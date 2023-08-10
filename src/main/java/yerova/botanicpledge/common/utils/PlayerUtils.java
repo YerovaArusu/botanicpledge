@@ -6,8 +6,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 public class PlayerUtils {
 
 
@@ -39,7 +37,7 @@ public class PlayerUtils {
     }
 
 
-    public static boolean checkForArmorFromMod(@NotNull Player player,@NotNull String modIdToCheckFor) {
+    public static boolean checkForArmorFromMod(@NotNull Player player, @NotNull String modIdToCheckFor) {
         boolean toReturn = false;
         for (ItemStack stack : player.getArmorSlots()) {
             if (stack != ItemStack.EMPTY && stack != null && ForgeHooks.getDefaultCreatorModId(stack).equals(modIdToCheckFor)) {

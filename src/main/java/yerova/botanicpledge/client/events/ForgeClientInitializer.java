@@ -15,9 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.IWandHUD;
 import vazkii.botania.forge.CapabilityUtil;
-import yerova.botanicpledge.client.render.blocks.mana_ygdral_buffer_block.ManaYggdralBufferBlockRenderer;
-import yerova.botanicpledge.client.render.blocks.ritual_center_block.RitualCenterBlockRenderer;
-import yerova.botanicpledge.client.render.blocks.ritual_pedestal_block.RitualPedestalBlockRenderer;
+import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
+import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.setup.BlockEntityInit;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -59,7 +58,7 @@ public class ForgeClientInitializer {
     });
 
 
-        @SubscribeEvent
+    @SubscribeEvent
     public static void registerArmorRenderer(final EntityRenderersEvent.AddLayers evt) {
 
     }
@@ -67,9 +66,8 @@ public class ForgeClientInitializer {
 
     @SubscribeEvent
     public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers evt) {
-        evt.registerBlockEntityRenderer(BlockEntityInit.MANA_YGGDRAL_BUFFER_BLOCK_ENTITY.get(), ManaYggdralBufferBlockRenderer::new);
-        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterBlockRenderer::new);
-        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalBlockRenderer::new);
+        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
+        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
     }
 
     @SubscribeEvent

@@ -12,7 +12,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<CoreAttribute> CORE_ATTRIBUTE= CapabilityManager.get(new CapabilityToken<>() {});
+    public static Capability<CoreAttribute> CORE_ATTRIBUTE = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
 
     private final int maxCharge;
@@ -31,7 +32,7 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
     private final LazyOptional<CoreAttribute> optional = LazyOptional.of(this::createCoreAttribute);
 
     private @NotNull CoreAttribute createCoreAttribute() {
-        if (this.coreAttribute == null){
+        if (this.coreAttribute == null) {
             this.coreAttribute = new CoreAttribute(maxCharge, maxShield, defRegen, manaCost);
         }
         return this.coreAttribute;
@@ -40,7 +41,7 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
     @NotNull
     @Override
     public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        if(cap == CORE_ATTRIBUTE) return optional.cast();
+        if (cap == CORE_ATTRIBUTE) return optional.cast();
         return LazyOptional.empty();
     }
 

@@ -8,7 +8,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 public class EntityInit {
     public static final DeferredRegister<EntityType<?>> ENTITY = DeferredRegister.create(ForgeRegistries.ENTITIES, BotanicPledge.MOD_ID);

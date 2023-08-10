@@ -18,7 +18,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
-import software.bernie.geckolib3.GeckoLib;
 import top.theillusivec4.curios.api.SlotTypeMessage;
 import yerova.botanicpledge.client.KeyBindsInit;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
@@ -59,7 +58,6 @@ public class BotanicPledge {
         forgeBus.addListener(this::processIMC);
         forgeBus.addListener(this::doClientStuff);
 
-        GeckoLib.initialize();
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -88,6 +86,9 @@ public class BotanicPledge {
         EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(BlockInit.THUNDER_LILY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.MANA_BUFFER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_CENTER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_PEDESTAL.get(), RenderType.translucent());
 
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);

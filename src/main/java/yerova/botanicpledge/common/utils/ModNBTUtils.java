@@ -18,15 +18,15 @@ public class ModNBTUtils {
     }
 
     public static void setModTagValue(ItemStack stack, String tagName, int value) {
-        getModTag(stack).putInt(tagName,value);
+        getModTag(stack).putInt(tagName, value);
     }
 
     public static void setModTagValue(ItemStack stack, String tagName, double value) {
-        getModTag(stack).putDouble(tagName,value);
+        getModTag(stack).putDouble(tagName, value);
     }
 
     public static void setModTagValue(ItemStack stack, String tagName, boolean bool) {
-        getModTag(stack).putBoolean(tagName,bool);
+        getModTag(stack).putBoolean(tagName, bool);
     }
 
     public static CompoundTag getModTag(ItemStack stack) {

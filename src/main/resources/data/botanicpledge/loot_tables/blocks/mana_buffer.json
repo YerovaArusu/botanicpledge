@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "botanicpledge:mana_yggdral_buffer"
+          "name": "botanicpledge:mana_buffer"
         }
       ],
       "conditions": [

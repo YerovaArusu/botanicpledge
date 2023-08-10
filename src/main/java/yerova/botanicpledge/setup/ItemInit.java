@@ -9,9 +9,6 @@ import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.items.YggdraliumIngot;
-import yerova.botanicpledge.common.items.block_items.ManaYggdralBufferBlockItem;
-import yerova.botanicpledge.common.items.block_items.RitualCenterBlockItem;
-import yerova.botanicpledge.common.items.block_items.RitualPedestalBlockItem;
 import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
@@ -34,7 +31,6 @@ public class ItemInit {
     public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
     ));
-
 
 
     //cores
@@ -63,13 +59,4 @@ public class ItemInit {
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.RARE)));
 
 
-    //BlockItems
-    public static final RegistryObject<Item> MANA_YGGDRAL_BUFFER_BLOCK_ITEM = ITEMS.register("mana_yggdral_buffer",
-            () -> new ManaYggdralBufferBlockItem(BlockInit.MANA_YGGDRAL_BUFFER.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
-
-    public static final RegistryObject<Item> RITUAL_CORE_BLOCK_ITEM = ITEMS.register("ritual_center",
-            () -> new RitualCenterBlockItem(BlockInit.RITUAL_CENTER.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
-
-    public static final RegistryObject<Item> RITUAL_PEDESTAL_BLOCK_ITEM = ITEMS.register("ritual_pedestal",
-            () -> new RitualPedestalBlockItem(BlockInit.RITUAL_PEDESTAL.get(), new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant()));
 }

@@ -5,7 +5,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.system.CallbackI;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -78,12 +77,12 @@ public final class BPConstants {
     public static final String NO_RUNE_GEM = "no_rune_gem";
 
 
-    public static CompoundTag INIT_CORE_TAG(ItemStack stack ,int maxCharge, int maxShield) {
+    public static CompoundTag INIT_CORE_TAG(ItemStack stack, int maxCharge, int maxShield) {
         CompoundTag toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
 
         toReturn.putInt(BPConstants.CORE_RANK_TAG_NAME, 0);
-        toReturn.putInt(BPConstants.MAX_CHARGE_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack,maxCharge));
-        toReturn.putInt(BPConstants.MAX_SHIELD_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack,maxShield));
+        toReturn.putInt(BPConstants.MAX_CHARGE_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack, maxCharge));
+        toReturn.putInt(BPConstants.MAX_SHIELD_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack, maxShield));
         toReturn.putInt(BPConstants.CHARGE_TAG_NAME, 0);
         toReturn.putInt(BPConstants.SHIELD_TAG_NAME, 0);
 

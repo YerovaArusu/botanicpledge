@@ -14,13 +14,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
 import yerova.botanicpledge.api.BotanicPledgeAPI;
 import yerova.botanicpledge.api.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
@@ -34,11 +27,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IAnimatable {
-
-
-    private final AnimationFactory factory = new AnimationFactory(this);
-
+public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
 
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     private int counter = 0;
@@ -49,22 +38,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements IA
         super(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
 
 
-    }
-
-    @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller",
-                0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.ritual_core.idle", true));
-        return PlayState.CONTINUE;
     }
 
 

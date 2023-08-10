@@ -1,14 +1,10 @@
 package yerova.botanicpledge.common.items.relic;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
-import yerova.botanicpledge.common.utils.BPConstants;
 
 public class MarinasCore extends DivineCoreItem {
 
@@ -29,7 +25,7 @@ public class MarinasCore extends DivineCoreItem {
     }
 
     public static CoreAttributeProvider getCoreAttribute() {
-        return new CoreAttributeProvider(maxCharge, maxShield, defRegenPerTick,manaCost);
+        return new CoreAttributeProvider(maxCharge, maxShield, defRegenPerTick, manaCost);
     }
 
 }
