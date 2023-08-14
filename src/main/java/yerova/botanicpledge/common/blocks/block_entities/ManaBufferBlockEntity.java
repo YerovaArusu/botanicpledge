@@ -47,76 +47,84 @@ public class ManaBufferBlockEntity extends BlockEntity implements IManaReceiver,
 
     public ManaBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(BlockEntityInit.MANA_BUFFER_BLOCK_ENTITY.get(), blockPos, blockState);
-
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, ManaBufferBlockEntity e) {
-
-        if (level.getBlockEntity(blockPos) instanceof ManaBufferBlockEntity entity) {
-
-            if(level instanceof ServerLevel serverLevel) {
-                int color = 0x08e8de;
-
-                float r = (color >> 16 & 0xFF) / 255F;
-                float g = (color >> 8 & 0xFF) / 255F;
-                float b = (color & 0xFF) / 255F;
-
-                for (int i = 0; i < 5; i++) {
-                    WispParticleData data = WispParticleData.wisp(0.7F * ((float) e.mana / MAX_MANA), r, g, b, true);
-
-                    serverLevel.sendParticles(data,blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
-                            10,0, 0, 0,(float) (Math.random() - 0.5F) * 0.12F);
+        if(level.isClientSide) {
 
 
-                }
+
+        } else {
+
+            if (level.getBlockEntity(blockPos) instanceof ManaBufferBlockEntity entity) {
+
+                if(level instanceof ServerLevel serverLevel) {
+                    int color = 0x08e8de;
+
+                    float r = (color >> 16 & 0xFF) / 255F;
+                    float g = (color >> 8 & 0xFF) / 255F;
+                    float b = (color & 0xFF) / 255F;
+
+                    for (int i = 0; i < 5; i++) {
+                        WispParticleData data = WispParticleData.wisp(0.7F * ((float) e.mana / MAX_MANA), r, g, b, true);
+
+                        serverLevel.sendParticles(data,blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
+                                10,0, 0, 0,(float) (Math.random() - 0.95F) * 0.01F);
 
 
-                for (BlockPos poolPos : POOL_LOCATIONS) {
-                    if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof TilePool) {
+                    }
 
 
-                        TilePool tilePool = (TilePool) level.getBlockEntity(blockPos.offset(poolPos));
-                        int manaToGet = Math.min(TRANSFER_SPEED, tilePool.getCurrentMana());
-                        int spaceLeft = Math.max(0, MAX_MANA - tilePool.getCurrentMana());
-                        int current = Math.min(spaceLeft, manaToGet);
-                        tilePool.receiveMana(-current);
-                        ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
-                    } else if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof ManaBufferBlockEntity) {
-                        ManaBufferBlockEntity buffer = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(poolPos));
-                        int manaToGet = Math.min(TRANSFER_SPEED, buffer.getCurrentMana());
-                        int spaceLeft = Math.max(0, MAX_MANA - buffer.getCurrentMana());
-                        int current = Math.min(spaceLeft, manaToGet);
-                        buffer.receiveMana(-current);
-                        ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+                    for (BlockPos poolPos : POOL_LOCATIONS) {
+                        if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof TilePool) {
+
+
+                            TilePool tilePool = (TilePool) level.getBlockEntity(blockPos.offset(poolPos));
+                            int manaToGet = Math.min(TRANSFER_SPEED, tilePool.getCurrentMana());
+                            int spaceLeft = Math.max(0, MAX_MANA - tilePool.getCurrentMana());
+                            int current = Math.min(spaceLeft, manaToGet);
+                            tilePool.receiveMana(-current);
+                            ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+                        } else if (level.getBlockEntity(blockPos.offset(poolPos)) instanceof ManaBufferBlockEntity) {
+                            ManaBufferBlockEntity buffer = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(poolPos));
+                            int manaToGet = Math.min(TRANSFER_SPEED, buffer.getCurrentMana());
+                            int spaceLeft = Math.max(0, MAX_MANA - buffer.getCurrentMana());
+                            int current = Math.min(spaceLeft, manaToGet);
+                            buffer.receiveMana(-current);
+                            ((ManaBufferBlockEntity) level.getBlockEntity(blockPos)).receiveMana(current);
+                        }
+                    }
+
+                    if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof TilePool) {
+                        ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
+                        TilePool receiver = (TilePool) level.getBlockEntity(blockPos.offset(0, 1, 0));
+                        int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
+                        int space = Math.max(0, receiver.manaCap - receiver.getCurrentMana());
+                        int current = Math.min(space, manaToGet);
+
+                        sender.receiveMana(-current);
+                        receiver.receiveMana(current);
+                    } else if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof ManaBufferBlockEntity) {
+                        ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
+                        ManaBufferBlockEntity receiver = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(0, 1, 0));
+                        int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
+                        int space = Math.max(0, MAX_MANA - receiver.getCurrentMana());
+                        int current = Math.min(space, manaToGet);
+
+                        sender.receiveMana(-current);
+                        receiver.receiveMana(current);
                     }
                 }
 
-                if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof TilePool) {
-                    ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
-                    TilePool receiver = (TilePool) level.getBlockEntity(blockPos.offset(0, 1, 0));
-                    int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
-                    int space = Math.max(0, receiver.manaCap - receiver.getCurrentMana());
-                    int current = Math.min(space, manaToGet);
 
-                    sender.receiveMana(-current);
-                    receiver.receiveMana(current);
-                } else if (level.getBlockEntity(blockPos.offset(0, 1, 0)) instanceof ManaBufferBlockEntity) {
-                    ManaBufferBlockEntity sender = ((ManaBufferBlockEntity) level.getBlockEntity(blockPos));
-                    ManaBufferBlockEntity receiver = (ManaBufferBlockEntity) level.getBlockEntity(blockPos.offset(0, 1, 0));
-                    int manaToGet = Math.min(TRANSFER_SPEED, sender.getCurrentMana());
-                    int space = Math.max(0, MAX_MANA - receiver.getCurrentMana());
-                    int current = Math.min(space, manaToGet);
-
-                    sender.receiveMana(-current);
-                    receiver.receiveMana(current);
-                }
             }
 
 
         }
 
-
     }
+
+
 
     @Override
     public Level getManaReceiverLevel() {

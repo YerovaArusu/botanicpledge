@@ -50,6 +50,10 @@ public class EntityProjectileBase extends ThrowableProjectile {
         return this.thrower;
     }
 
+    public void setThrower(LivingEntity entity) {
+        this.thrower = entity;
+    }
+
     @Override
     protected void defineSynchedData() {
         entityData.define(ROTATION, 0F);
@@ -144,6 +148,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         cmp.putFloat(TAG_TARGETPOSX, this.getTargetPosX());
         cmp.putFloat(TAG_TARGETPOSY, this.getTargetPosY());
         cmp.putFloat(TAG_TARGETPOSZ, this.getTargetPosZ());
+
 
         super.addAdditionalSaveData(cmp);
     }

@@ -22,21 +22,21 @@ import yerova.botanicpledge.setup.EntityInit;
 
 import java.util.List;
 
-public class YggdFocus extends Entity {
+public class YggdFocusEntity extends Entity {
 
-    public static @NotNull YggdFocus getRegistry(EntityType<YggdFocus> EntityType, Level level) {
-        return new YggdFocus(EntityType, level);
+    public static @NotNull YggdFocusEntity getRegistry(EntityType<YggdFocusEntity> EntityType, Level level) {
+        return new YggdFocusEntity(EntityType, level);
     }
 
     private Player owner;
     private float damage = 1.5F;
 
-    public YggdFocus(EntityType<?> entityTypeIn, Level worldIn) {
+    public YggdFocusEntity(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
 
 
-    public YggdFocus(Level worldIn, Player owner) {
+    public YggdFocusEntity(Level worldIn, Player owner) {
         super(EntityInit.YGGD_FOCUS.get(), worldIn);
         this.owner = owner;
     }

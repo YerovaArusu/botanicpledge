@@ -1,6 +1,7 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -19,8 +20,11 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.SlotTypeMessage;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import yerova.botanicpledge.client.KeyBindsInit;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
+import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
+import yerova.botanicpledge.client.render.entities.MariasCoreRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
@@ -84,6 +88,10 @@ public class BotanicPledge {
 
         EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
+        EntityRenderers.register(EntityInit.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
+
+
+        CuriosRendererRegistry.register(ItemInit.MARIAS_CORE.get(), MariasCoreRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(BlockInit.THUNDER_LILY.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.MANA_BUFFER.get(), RenderType.translucent());

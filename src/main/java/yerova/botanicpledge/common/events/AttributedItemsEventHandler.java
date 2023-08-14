@@ -76,8 +76,12 @@ public class AttributedItemsEventHandler {
                 });
 
                 Vec3 vec3 = entity.getDeltaMovement();
-                jump.set(vec3.y + (1 + (jump.get() / 100)));
-                entity.setDeltaMovement(vec3.x, jump.get(), vec3.z);
+                if(jump.get() != 0.0) {
+                    jump.set(vec3.y + (1 + (jump.get() / 100)));
+                    entity.setDeltaMovement(vec3.x, jump.get(), vec3.z);
+                } else {
+                    entity.setDeltaMovement(vec3.x, vec3.y, vec3.z);
+                }
 
                 if (entity.isSprinting()) {
                     float f = entity.getYRot() * ((float) Math.PI / 180F);

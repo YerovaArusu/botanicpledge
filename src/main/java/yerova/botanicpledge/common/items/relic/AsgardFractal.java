@@ -1,5 +1,7 @@
 package yerova.botanicpledge.common.items.relic;
 
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -11,7 +13,11 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
+import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.common.utils.ModNBTUtils;
 import yerova.botanicpledge.setup.TierInit;
@@ -21,66 +27,68 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
 
-
-/*
-    TODO: finish this Weapon.
-    I have no clue how to finish this item, because i dont understand how Vectors work
-
-    Inspiration and Idea:
-    https://youtu.be/8qKTXf_-obk
-
- */
 public class AsgardFractal extends SwordItem implements LeftClickable {
-    private ArrayList<Entity> summonedBeings = new ArrayList<>();
 
 
     public AsgardFractal(Properties pProperties) {
         super(TierInit.YGGDRALIUM_TIER, 1, 0, pProperties);
+    }
 
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
+
+
+        List<LivingEntity> list = EntityUtils.getAttackableEnemiesAround(player, level, 20, new EntityUtils.AttackableEntitiesSelector());
+        int amount = 10;
+        if(!list.isEmpty()) {
+            for (int i = 0; i <= amount-1; i++) {
+
+                if (list.size() >= amount) {
+                    summonProjectile(level, player, list.get(i));
+                } else if (i<list.size()){
+                    summonProjectile(level,player, list.get(i));
+                } else if (i%(list.size()) > 0){
+                    summonProjectile(level,player, list.get(i%(list.size())));
+                } else {
+                    summonProjectile(level,player, list.get(0));
+                }
+            }
+        }
+
+
+        return super.use(level, player, pUsedHand);
+    }
+
+    public void summonProjectile(Level level,Player player, LivingEntity target){
+        double range = 4D;
+        double j = -Math.PI + 2 * Math.PI * Math.random();
+        double k;
+        double x, y, z;
+
+        k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+        x = player.getX() + range * Math.sin(k) * Math.cos(j);
+        y = player.getY() + range * Math.cos(k);
+        z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+        j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
+
+
+        AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target);
+
+        blade.setPos(x, y, z);
+        blade.setVariety(1);
+        blade.faceTarget(1);
+        blade.setNoGravity(true);
+        level.addFreshEntity(blade);
     }
 
 
     @Override
     public void LeftClick(Level level, Player player, ItemStack stack) {
-        getAttackableEnemiesAroundUser(player, level, 20).forEach(livingEntity -> {
-            moveEntityAroundPlayer(level, player, livingEntity);
-            level.addFreshEntity(new Arrow(level, livingEntity.getX(), livingEntity.getY() + 2, livingEntity.getZ()));
-        });
-    }
-
-    public void summonProjectiles() {
-
-    }
-
-    public void increaseProjectileNBT(ItemStack stack, int toIncreaseBy) {
-        if (ModNBTUtils.hasModTag(stack, BPConstants.PROJECTILE_COUNT_TRACKER_TAG_NAME)) {
-
-        }
-    }
-
-    public void moveEntityAroundPlayer(Level level, Player player, Entity entity) {
-        Vec3 v3 = player.position();
-
-        //level.addParticle(data, (double)worldPosition.getX() + Math.random(), (double)worldPosition.getY() + 0.8, (double)worldPosition.getZ() + Math.random(), 0.0, 0.02500000037252903, 0.0);
-
-        entity.setPos(player.getX() + (new Random().nextDouble(8) - 4), player.getY() + 1, player.getZ() + (new Random().nextDouble(8) - 4));
 
     }
 
 
-    public static List<LivingEntity> getAttackableEnemiesAroundUser(Player player, Level level, int radius) {
-        final TargetingConditions alertableTargeting = TargetingConditions.forCombat().range(radius).ignoreLineOfSight().selector(new AttackableEntitiesSelector());
-        return level.getNearbyEntities(LivingEntity.class, alertableTargeting, player,
-                new AABB(player.getX() - radius, player.getY() - radius, player.getZ() - radius,
-                        player.getX() + radius, player.getY() + radius, player.getZ() + radius));
-    }
 
-    public static class AttackableEntitiesSelector implements Predicate<LivingEntity> {
-        public boolean test(LivingEntity pEntity) {
-            if (pEntity instanceof Mob) {
-                return true;
-            } else return pEntity instanceof Player player && !player.isSpectator() && !player.isCreative();
-        }
-    }
 
 }

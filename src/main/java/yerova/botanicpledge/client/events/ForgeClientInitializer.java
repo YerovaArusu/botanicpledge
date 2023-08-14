@@ -9,12 +9,16 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelBakeEvent;
 import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ForgeModelBakery;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.IWandHUD;
+import vazkii.botania.client.core.handler.MiscellaneousModels;
 import vazkii.botania.forge.CapabilityUtil;
+import vazkii.botania.forge.mixin.client.ForgeAccessorModelBakery;
+import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
@@ -58,25 +62,23 @@ public class ForgeClientInitializer {
     });
 
 
-    @SubscribeEvent
-    public static void registerArmorRenderer(final EntityRenderersEvent.AddLayers evt) {
-
-    }
-
 
     @SubscribeEvent
     public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers evt) {
         evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
         evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
     }
-
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent evt) {
+        var resourceManager = ((ForgeAccessorModelBakery) (Object) ForgeModelBakery.instance()).getResourceManager();
+        ModelBakery.onModelRegister(resourceManager, ForgeModelBakery::addSpecialModel);
         BotanicPledgeItemProperties.init((item, id, prop) -> ItemProperties.register(item.asItem(), id, prop));
+
     }
 
     @SubscribeEvent
     public static void onModelBake(ModelBakeEvent evt) {
-        //Miscellaneous.INSTANCE.onModelBake(evt.getModelLoader(), evt.getModelRegistry());
+        ModelBakery.onModelBake(evt.getModelLoader(), evt.getModelRegistry());
     }
+
 }

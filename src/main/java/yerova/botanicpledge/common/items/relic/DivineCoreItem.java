@@ -1,12 +1,16 @@
 package yerova.botanicpledge.common.items.relic;
 
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -17,6 +21,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.IRelic;
@@ -35,9 +40,10 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class DivineCoreItem extends ItemRelic implements ICurioItem {
+public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     private static final String TAG_MANA = "mana";
+    private static final String TAG_COSMETIC_ITEM = "cosmeticItem";
     public static final int[] LEVELS = new int[]{
             0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, 2_000_000_000
     };
@@ -349,6 +355,7 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         return 0;
     }
 
+
     public static class ManaItem implements IManaItem {
         private final ItemStack stack;
 
@@ -413,5 +420,4 @@ public class DivineCoreItem extends ItemRelic implements ICurioItem {
         }
         return Rarity.UNCOMMON;
     }
-
 }

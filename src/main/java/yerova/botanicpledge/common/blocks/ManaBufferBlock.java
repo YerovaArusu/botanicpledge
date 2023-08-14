@@ -37,8 +37,12 @@ public class ManaBufferBlock extends BaseEntityBlock {
         return SHAPE;
     }
 
+    @Override
+    public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
+        return 16;
+    }
 
-    //Facing
+//Facing
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext placeContext) {

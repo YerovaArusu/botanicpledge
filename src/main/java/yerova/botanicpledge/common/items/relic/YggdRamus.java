@@ -33,7 +33,7 @@ import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
-import yerova.botanicpledge.common.entitites.projectiles.YggdFocus;
+import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
@@ -304,7 +304,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public void collectEnemiesAbility(Player player, Level level) {
         if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, MANA_COST_COLLECT_ENEMIES, true) || player.isCreative()) {
             Vec3 targetPos = player.position().add(player.getLookAngle().scale(5D));
-            YggdFocus focus = new YggdFocus(level, player);
+            YggdFocusEntity focus = new YggdFocusEntity(level, player);
             focus.setPos(targetPos.x, targetPos.y + 2, targetPos.z);
             if (!level.isClientSide)
                 level.addFreshEntity(focus);
