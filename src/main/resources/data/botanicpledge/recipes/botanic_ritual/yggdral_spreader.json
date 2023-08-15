@@ -1,37 +1,37 @@
 {
   "type": "botanicpledge:botanic_ritual",
   "reagent": {
-    "item": "minecraft:black_dye"
+    "item": "botania:gaia_spreader"
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:world_ash_branch"
     },
     {
       "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:world_ash_branch"
+    },
+    {
+      "item": "botanicpledge:world_ash_branch"
     },
     {
       "item": "botanicpledge:yggdralium_shard"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
-    },
-    {
-      "item": "botanicpledge:yggdralium_shard"
-    },
-    {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:world_ash_branch"
     },
     {
       "item": "botanicpledge:yggdralium_shard"
     }
   ],
   "output": {
-    "item": "botanicpledge:marinas_core"
+    "item": "botanicpledge:yggdral_spreader"
   },
-  "manaCost": 400000,
+  "manaCost": 100000,
   "keepNbtOfReagent": false
 }

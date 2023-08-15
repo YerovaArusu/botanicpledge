@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botania:flight_tiara"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "botania:elf_quartz"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "botania:elf_quartz"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "botania:elf_quartz"
+    },
+    {
+      "item": "botanicpledge:yggdralium_block"
+    },
+    {
+      "item": "botania:elf_quartz"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:marias_core"
+  },
+  "manaCost": 400000,
+  "keepNbtOfReagent": false
+}

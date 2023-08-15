@@ -3,6 +3,7 @@ package yerova.botanicpledge.setup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.BlockSpecialFlower;
 import yerova.botanicpledge.common.blocks.ManaBufferBlock;
+import yerova.botanicpledge.common.blocks.YggdralSpreader;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
@@ -21,8 +23,16 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static vazkii.botania.common.block.ModBlocks.livingwood;
+
 public class BlockInit {
+    private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
+
+
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, BotanicPledge.MOD_ID);
+
+    public static final RegistryObject<Block> YGGDRAL_SPREADER = registerBlock("yggdral_spreader",
+            () -> new YggdralSpreader(YggdralSpreader.Variant.YGGDRAL, BlockBehaviour.Properties.copy(livingwood).isValidSpawn(NO_SPAWN)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     public static final RegistryObject<Block> MANA_BUFFER = registerBlock("mana_buffer",
             () -> new ManaBufferBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);

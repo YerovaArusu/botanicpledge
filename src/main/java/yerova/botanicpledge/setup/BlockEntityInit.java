@@ -7,13 +7,20 @@ import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.api.block.IWandHUD;
 import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
 import vazkii.botania.common.block.tile.ModTiles;
+import vazkii.botania.common.block.tile.mana.TileSpreader;
 import yerova.botanicpledge.common.blocks.block_entities.ManaBufferBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.YggdralSpreaderBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.generating.ThunderLilyBLockEntity;
 
 public class BlockEntityInit {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BotanicPledge.MOD_ID);
+
+    public static final RegistryObject<BlockEntityType<YggdralSpreaderBlockEntity>> YGGDRAL_SPREADER =
+            BLOCK_ENTITIES.register("yggdral_spreader", () ->
+                    BlockEntityType.Builder.of(YggdralSpreaderBlockEntity::new, BlockInit.YGGDRAL_SPREADER.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<ManaBufferBlockEntity>> MANA_BUFFER_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("mana_buffer", () ->
                     BlockEntityType.Builder.of(ManaBufferBlockEntity::new, BlockInit.MANA_BUFFER.get()).build(null));
@@ -33,6 +40,7 @@ public class BlockEntityInit {
 
     public static void registerWandHudCaps(ModTiles.BECapConsumer<IWandHUD> consumer) {
         consumer.accept(be -> new ManaBufferBlockEntity.WandHud((ManaBufferBlockEntity) be), BlockEntityInit.MANA_BUFFER_BLOCK_ENTITY.get());
+        consumer.accept(be -> new YggdralSpreaderBlockEntity.WandHud((YggdralSpreaderBlockEntity) be), BlockEntityInit.YGGDRAL_SPREADER.get());
         consumer.accept(be -> new TileEntityGeneratingFlower.GeneratingWandHud<>((ThunderLilyBLockEntity) be), BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY.get());
     }
 

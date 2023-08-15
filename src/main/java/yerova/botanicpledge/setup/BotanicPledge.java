@@ -1,7 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -24,9 +23,10 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import yerova.botanicpledge.client.KeyBindsInit;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
 import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
-import yerova.botanicpledge.client.render.entities.MariasCoreRenderer;
+import yerova.botanicpledge.client.render.items.MariasCoreRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
+import yerova.botanicpledge.client.render.items.MarinasCoreRenderer;
 import yerova.botanicpledge.client.render.screen.ProtectorHUD;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.network.Networking;
@@ -92,11 +92,13 @@ public class BotanicPledge {
 
 
         CuriosRendererRegistry.register(ItemInit.MARIAS_CORE.get(), MariasCoreRenderer::new);
+        CuriosRendererRegistry.register(ItemInit.MARINAS_CORE.get(), MarinasCoreRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(BlockInit.THUNDER_LILY.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.MANA_BUFFER.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_CENTER.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_PEDESTAL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BlockInit.YGGDRAL_SPREADER.get(), RenderType.translucent());
 
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);

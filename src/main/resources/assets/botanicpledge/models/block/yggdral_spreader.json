@@ -1,0 +1,9 @@
+{
+  "parent": "botania:block/shapes/spreader",
+  "textures": {
+    "side": "botanicpledge:blocks/yggdral_spreader_side",
+    "back": "botanicpledge:blocks/yggdral_spreader_back",
+    "inside": "botanicpledge:blocks/yggdral_spreader_inside",
+    "outside": "botanicpledge:blocks/yggdral_spreader_outside"
+  }
+}

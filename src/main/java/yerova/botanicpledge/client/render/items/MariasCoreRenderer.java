@@ -1,4 +1,4 @@
-package yerova.botanicpledge.client.render.entities;
+package yerova.botanicpledge.client.render.items;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
