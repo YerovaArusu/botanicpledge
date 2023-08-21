@@ -53,41 +53,40 @@ public class RuneGemItem extends SimpleFoiledItem {
     }
 
     public static double getSocketValueByChance(String AttributeType) {
-        Random random = new Random();
         double value = switch (getRandomRarity()) {
             case (BPConstants.RARITY_EPIC) -> switch (AttributeType) {
-                case (BPConstants.ARMOR_TAG_NAME) -> value = random.nextDouble(1) + 7;
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> value = random.nextDouble(1) + 7;
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> value = random.nextDouble(1) + 4;
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> value = random.nextDouble(15) + 60;
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> value = random.nextDouble(15) + 60;
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(7,8);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(7,8);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(4,5);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(60,75);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(60,75);
                 default -> 0.0;
             };
             case (BPConstants.RARITY_RARE) -> switch (AttributeType) {
-                case (BPConstants.ARMOR_TAG_NAME) -> random.nextDouble(1) + 6;
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> random.nextDouble(1) + 6;
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> random.nextDouble(1) + 3;
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> random.nextDouble(15) + 45;
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> random.nextDouble(15) + 45;
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(6,7);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(6,7);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(3,4);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(45,60);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(45,60);
                 default -> 0.0;
             };
             case (BPConstants.RARITY_UNCOMMON) -> switch (AttributeType) {
-                case (BPConstants.ARMOR_TAG_NAME) -> random.nextDouble(1) + 5;
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> random.nextDouble(1) + 5;
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> random.nextDouble(1) + 2;
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> random.nextDouble(15) + 30;
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> random.nextDouble(15) + 30;
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(5,6);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(5,6);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(2,3);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(30,45);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(30,45);
                 default -> 0.0;
             };
             case (BPConstants.RARITY_COMMON) -> switch (AttributeType) {
-                case (BPConstants.ARMOR_TAG_NAME) -> random.nextDouble(5);
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> random.nextDouble(5);
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> random.nextDouble(2);
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> random.nextDouble(30);
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> random.nextDouble(30);
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(0,5);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(0,5);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(0,2);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(0,30);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(7,8);
                 default -> 0.0;
             };
-            default -> 0;
+            default -> 0.0;
         };
 
         return Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", value));
@@ -159,6 +158,10 @@ public class RuneGemItem extends SimpleFoiledItem {
         String attributeName = getRandomAttribute();
         tag.putDouble(attributeName, getSocketValueByChance(attributeName));
         return result;
+    }
+
+    public static double getRandomGemValueInRange(double start, double end) {
+        return ((end - start)/BPConstants.GEM_POSSIBLE_VALUES) * (new Random().nextInt(BPConstants.GEM_POSSIBLE_VALUES-1)+1);
     }
 
 }

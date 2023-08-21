@@ -27,10 +27,6 @@ public final class BPConstants {
     public static final int MANA_TO_SHIELD_CONVERSION_RATE = 40;
     public static final int MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE = 10;
 
-    public static final int MAX_CORE_RANK = 4;
-    public static final int MIN_CORE_RANK = 1;
-    public static final int BASIC_MANA_COST = 100;
-    public static final int CORE_MAX_LEVEL_INCREASE_PER_RANK = 10;
     public static final int CORE_RANK_REQUIRED_FOR_YGGD_RAMUS = 2;
 
     public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
@@ -43,25 +39,13 @@ public final class BPConstants {
     public static final String KNOCKBACK_RESISTANCE_TAG_NAME = "knockback_resistance";
     public static final String MOVEMENT_SPEED_TAG_NAME = "movement_speed";
     public static final String ATTACK_SPEED_TAG_NAME = "attack_speed";
-    public static final String MAY_FLY_TAG_NAME = "may_fly";
     public static final String JUMP_HEIGHT_TAG_NAME = "jump_height";
+    public static final int GEM_POSSIBLE_VALUES = 10;
 
-    public static final String MANA_EFFICIENCY_TAG_NAME = "mana_efficiency";
 
     public static final int MAX_SOCKETS = 4;
     public static final String SOCKET_PRE_TAG = "socket";
 
-    public static final double ARMOR_LEVEL_UP_VALUE = 0.5;
-    public static final double ARMOR_TOUGHNESS_LEVEL_UP_VALUE = 0.5;
-    public static final double MAX_HEALTH_LEVEL_UP_VALUE = 0.5;
-    public static final double ATTACK_DAMAGE_LEVEL_UP_VALUE = 0.4;
-    public static final double KNOCKBACK_RESISTANCE_LEVEL_UP_VALUE = 0.2;
-    public static final double MOVEMENT_SPEED_LEVEL_UP_VALUE = 0.05;
-    public static final double ATTACK_SPEED_LEVEL_UP_VALUE = 0.1;
-    public static final double MAY_FLY_LEVEL_UP_VALUE = 0;
-    public static final double JUMP_HEIGHT_LEVEL_UP_VALUE = 0.2;
-
-    public static final String PROJECTILE_COUNT_TRACKER_TAG_NAME = "projectile_count";
 
     public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";
 
@@ -76,33 +60,6 @@ public final class BPConstants {
 
     public static final String NO_RUNE_GEM = "no_rune_gem";
 
-
-    public static CompoundTag INIT_CORE_TAG(ItemStack stack, int maxCharge, int maxShield) {
-        CompoundTag toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-
-        toReturn.putInt(BPConstants.CORE_RANK_TAG_NAME, 0);
-        toReturn.putInt(BPConstants.MAX_CHARGE_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack, maxCharge));
-        toReturn.putInt(BPConstants.MAX_SHIELD_TAG_NAME, DivineCoreItem.getShieldValueAccordingToRank(stack, maxShield));
-        toReturn.putInt(BPConstants.CHARGE_TAG_NAME, 0);
-        toReturn.putInt(BPConstants.SHIELD_TAG_NAME, 0);
-
-
-        return toReturn;
-    }
-
-    public final static ArrayList<Attribute> ATTRIBUTE_LIST() {
-        ArrayList<Attribute> list = new ArrayList<Attribute>();
-        list.add(Attributes.ARMOR);
-        list.add(Attributes.ARMOR_TOUGHNESS);
-        list.add(Attributes.MAX_HEALTH);
-        list.add(Attributes.ATTACK_DAMAGE);
-        list.add(Attributes.KNOCKBACK_RESISTANCE);
-        list.add(Attributes.MOVEMENT_SPEED);
-        list.add(Attributes.ATTACK_SPEED);
-
-
-        return list;
-    }
 
     public static ArrayList<String> attributeNames() {
         ArrayList<String> list = new ArrayList<String>();
