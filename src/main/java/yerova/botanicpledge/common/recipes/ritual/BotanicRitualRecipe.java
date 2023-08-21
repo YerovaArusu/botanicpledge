@@ -50,26 +50,17 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
         this.id = new ResourceLocation(BotanicPledge.MOD_ID, result.getItem().getRegistryName().getPath());
     }
 
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result) {
-        this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), 0, false);
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, int manaCost) {
+        this(id, pedestalItems, reagent, result, manaCost, false);
     }
 
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, CompoundTag gemCompoundTag, int manaCost) {
-        this(id, pedestalItems, reagent, result, new HashMap<String, Integer>(), manaCost, false);
-    }
-
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, HashMap<String, Integer> additionalAttributes, int manaCost) {
-        this(id, pedestalItems, reagent, result, additionalAttributes, manaCost, false);
-    }
-
-    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, HashMap<String, Integer> additionalAttributes, int cost, boolean keepNbtOfReagent) {
+    public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, int cost, boolean keepNbtOfReagent) {
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
         this.result = result;
         manaCost = cost;
         this.id = id;
         this.keepNbtOfReagent = keepNbtOfReagent;
-        this.additionalAttributes = additionalAttributes;
     }
 
     public BotanicRitualRecipe() {
@@ -219,20 +210,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             //Mana Cost
             int cost = json.has("manaCost") ? GsonHelper.getAsInt(json, "manaCost") : 0;
 
-            //New LevelUp Handler
-            HashMap<String, Integer> attributes = new HashMap<>();
-            for (String s : BPConstants.attributeNames()) {
-                if (json.has(s)) {
-                    attributes.put(s, GsonHelper.getAsInt(json, s, 0));
-                }
-            }
-
-            if (json.has("may_fly")) {
-                attributes.put("may_fly", GsonHelper.getAsInt(json, "may_fly", 0));
-            }
-            if (json.has("jump_height")) {
-                attributes.put("jump_height", GsonHelper.getAsInt(json, "jump_height", 0));
-            }
 
             //Pedestal Items
             JsonArray pedestalItems = GsonHelper.getAsJsonArray(json, "pedestalItems");
@@ -244,7 +221,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
             }
 
-            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, cost);
         }
 
         @Nullable
@@ -253,8 +230,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             int length = buffer.readInt();
             Ingredient reagent = Ingredient.fromNetwork(buffer);
             ItemStack output = buffer.readItem();
-            HashMap<String, Integer> attributes = (HashMap<String, Integer>) buffer.readMap(i -> i.readUtf(0x1000), i -> Integer.parseInt(i.readUtf(0x1000)));
-
             List<Ingredient> stacks = new ArrayList<>();
 
             for (int i = 0; i < length; i++) {
@@ -267,7 +242,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             }
             int cost = buffer.readInt();
             boolean keepNbtOfReagent = buffer.readBoolean();
-            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, attributes, cost, keepNbtOfReagent);
+            return new BotanicRitualRecipe(recipeId, stacks, reagent, output, cost, keepNbtOfReagent);
         }
 
         @Override
@@ -276,8 +251,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             recipe.reagent.toNetwork(buf);
 
             buf.writeItem(recipe.result);
-
-            buf.writeMap(recipe.additionalAttributes, (o, v) -> o.writeUtf(v, 0x1000), (o, r) -> o.writeUtf(r.toString(), 0x1000));
 
             for (Ingredient i : recipe.pedestalItems) {
                 i.toNetwork(buf);

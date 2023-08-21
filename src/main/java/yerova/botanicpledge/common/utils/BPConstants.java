@@ -35,17 +35,17 @@ public final class BPConstants {
     public static final String ARMOR_TAG_NAME = "armor";
     public static final String ARMOR_TOUGHNESS_TAG_NAME = "armor_toughness";
     public static final String MAX_HEALTH_TAG_NAME = "max_health";
-    public static final String ATTACK_DAMAGE_TAG_NAME = "attack_damage";
+
     public static final String KNOCKBACK_RESISTANCE_TAG_NAME = "knockback_resistance";
     public static final String MOVEMENT_SPEED_TAG_NAME = "movement_speed";
     public static final String ATTACK_SPEED_TAG_NAME = "attack_speed";
+    public static final String ATTACK_DAMAGE_TAG_NAME = "attack_damage";
     public static final String JUMP_HEIGHT_TAG_NAME = "jump_height";
     public static final int GEM_POSSIBLE_VALUES = 10;
 
 
     public static final int MAX_SOCKETS = 4;
     public static final String SOCKET_PRE_TAG = "socket";
-
 
     public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";
 
@@ -61,16 +61,4 @@ public final class BPConstants {
     public static final String NO_RUNE_GEM = "no_rune_gem";
 
 
-    public static ArrayList<String> attributeNames() {
-        ArrayList<String> list = new ArrayList<String>();
-        list.add(ARMOR_TAG_NAME);
-        list.add(ARMOR_TOUGHNESS_TAG_NAME);
-        list.add(MAX_HEALTH_TAG_NAME);
-        list.add(ATTACK_DAMAGE_TAG_NAME);
-        list.add(KNOCKBACK_RESISTANCE_TAG_NAME);
-        list.add(MOVEMENT_SPEED_TAG_NAME);
-        list.add(ATTACK_SPEED_TAG_NAME);
-
-        return list;
-    }
 }

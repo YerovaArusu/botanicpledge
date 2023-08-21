@@ -95,6 +95,8 @@ public class RuneGemItem extends SimpleFoiledItem {
     public static String getRandomRarity() {
         int random = new Random().nextInt(10000);
 
+
+
         if (random <= 40) {
             return BPConstants.RARITY_EPIC;
         } else if (random <= 100) {
