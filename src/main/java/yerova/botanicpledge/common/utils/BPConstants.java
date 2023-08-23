@@ -18,7 +18,6 @@ public final class BPConstants {
     public static final String MAX_SHIELD_TAG_NAME = "MaxShield";
     public static final String CHARGE_TAG_NAME = "Charge";
     public static final String MAX_CHARGE_TAG_NAME = "MaxCharge";
-    public static final String CORE_RANK_TAG_NAME = "CoreRank";
     public static final String MANA_COST_TAG_NAME = "ManaCost";
     public static final String DEF_REGEN_TAG_NAME = "DefRegen";
 
@@ -43,7 +42,9 @@ public final class BPConstants {
     public static final String JUMP_HEIGHT_TAG_NAME = "jump_height";
     public static final int GEM_POSSIBLE_VALUES = 10;
 
-
+    public static final String GEM_TYPE_TAG_NAME = "gem_type";
+    public static final String GEM_TYPE_SWORD = "sword_type";
+    public static final String GEM_TYPE_CORE = "core_type";
     public static final int MAX_SOCKETS = 4;
     public static final String SOCKET_PRE_TAG = "socket";
 

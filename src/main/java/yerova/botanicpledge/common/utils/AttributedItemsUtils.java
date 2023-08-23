@@ -64,7 +64,7 @@ public class AttributedItemsUtils {
         }
     }
 
-    public static HashMap<Integer, Map.Entry<String, Double>> getCoreAttributeDefault() {
+    public static HashMap<Integer, Map.Entry<String, Double>> getBPAttributeDefault() {
         HashMap<Integer, Map.Entry<String, Double>> map = new HashMap<>();
 
         for (int i = 1; i < BPConstants.MAX_SOCKETS; i++) {

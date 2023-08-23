@@ -13,12 +13,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.system.CallbackI;
 import vazkii.botania.api.mana.ILensEffect;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
@@ -65,6 +67,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     private static final String TAG_DELAY = "delay";
     private static final String TAG_FAKE = "fake";
     private static final String TAG_TARGET_ENTITY_ID = "target_entity";
+    private double damage = 1;
 
 
     private static final EntityDataAccessor<Integer> VARIETY =
@@ -113,6 +116,16 @@ public class AsgardBladeEntity extends EntityProjectileBase {
                 setTargetPos(target.getOnPos().above().above());
                 faceEntity(target.getOnPos().above().above());
                 this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
+            } else {
+                remove(RemovalReason.DISCARDED);
+            }
+        }
+
+        if(!level.isClientSide && getThrower() !=null && getThrower() instanceof Player player) {
+            AABB attackBox = this.getBoundingBox().inflate(2);
+            for(LivingEntity entity :level.getEntitiesOfClass(LivingEntity.class,attackBox)) {
+                entity.hurt(DamageSource.playerAttack(player), (float) damage);
+                if (entity.getId() == this.getTarget_id()) this.remove(RemovalReason.DISCARDED);
             }
         }
 
@@ -128,6 +141,8 @@ public class AsgardBladeEntity extends EntityProjectileBase {
             remove(RemovalReason.DISCARDED);
             return;
         }
+
+
         super.tick();
     }
 
@@ -203,6 +218,13 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         entityData.set(FAKE, rot);
     }
 
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
+
+    public double getDamage() {
+        return this.damage;
+    }
 
     public static Vec3 calculateBladeVelocity(float xRot, float yRot) {
         float f = 1F;

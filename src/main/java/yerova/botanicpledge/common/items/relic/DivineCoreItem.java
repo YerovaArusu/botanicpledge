@@ -262,25 +262,25 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("Socket: +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+" + entry.getValue() + " " + new TranslatableComponent(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent(" +" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 

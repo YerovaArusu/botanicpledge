@@ -12,11 +12,10 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.api.mana.IManaItem;
 import vazkii.botania.forge.CapabilityUtil;
+import yerova.botanicpledge.common.capabilities.BPAttribute;
+import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
-import yerova.botanicpledge.common.items.relic.DivineCoreItem;
-import yerova.botanicpledge.common.items.relic.MariasCore;
-import yerova.botanicpledge.common.items.relic.MarinasCore;
-import yerova.botanicpledge.common.items.relic.YggdRamus;
+import yerova.botanicpledge.common.items.relic.*;
 import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.setup.ItemInit;
 
@@ -32,7 +31,8 @@ public class ForgeCommonInitializer {
     private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
             ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
             ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
-            ItemInit.YGGD_RAMUS.get(), YggdRamus::makeRelic
+            ItemInit.YGGD_RAMUS.get(), YggdRamus::makeRelic,
+            ItemInit.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic
     ));
 
     private static final Supplier<Map<Item, Function<ItemStack, IManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
@@ -67,12 +67,16 @@ public class ForgeCommonInitializer {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
         if (stack.getItem() instanceof MarinasCore)
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
+        if(stack.getItem() instanceof AsgardFractal){
+            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new BPAttributeProvider());
+        }
 
     }
 
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(CoreAttribute.class);
+        event.register(BPAttribute.class);
     }
 
 }

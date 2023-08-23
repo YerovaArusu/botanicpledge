@@ -31,8 +31,8 @@ public class EntityInit {
 
     public static final RegistryObject<EntityType<AsgardBladeEntity>> ASGARD_BLADE = ENTITY.register("asgard_blade",
             () -> EntityType.Builder.of(AsgardBladeEntity::getRegistry, MobCategory.MISC)
-                    .sized(2f, 2f)
-                    .setUpdateInterval(10)
+                    .sized(1f, 1f)
+                    .setUpdateInterval(1)
                     .setTrackingRange(64)
                     .setShouldReceiveVelocityUpdates(true)
                     .build(""));

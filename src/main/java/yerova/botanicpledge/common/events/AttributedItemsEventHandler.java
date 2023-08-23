@@ -76,7 +76,7 @@ public class AttributedItemsEventHandler {
                 });
 
                 Vec3 vec3 = entity.getDeltaMovement();
-                if(jump.get() != 0.0) {
+                if (jump.get() != 0.0) {
                     jump.set(vec3.y + (1 + (jump.get() / 100)));
                     entity.setDeltaMovement(vec3.x, jump.get(), vec3.z);
                 } else {
