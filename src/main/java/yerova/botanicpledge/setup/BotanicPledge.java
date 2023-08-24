@@ -46,7 +46,6 @@ public class BotanicPledge {
 
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
-        eventBus.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
 
 
         APIRegistry.setup();
@@ -84,6 +83,9 @@ public class BotanicPledge {
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
+
+        MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
+
 
         KeyBindsInit.register(event);
 

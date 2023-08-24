@@ -146,7 +146,7 @@ public class AsgardFractal extends SwordItem {
 
                 builder.put(Attributes.ATTACK_DAMAGE, modifier);
             } else {
-                builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ATTACK_DAMAGE_MODIFIER, AttributeModifier.Operation.ADDITION));
+                builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage(), AttributeModifier.Operation.ADDITION));
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {

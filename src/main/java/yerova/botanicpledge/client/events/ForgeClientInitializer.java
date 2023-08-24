@@ -36,8 +36,10 @@ import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ForgeClientInitializer {
 
+
     public static void attachBeCapabilities(AttachCapabilitiesEvent<BlockEntity> e) {
         var be = e.getObject();
+
 
         var makeWandHud = WAND_HUD.get().get(be.getType());
         if (makeWandHud != null) {

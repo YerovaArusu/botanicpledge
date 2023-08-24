@@ -47,34 +47,39 @@ public class RuneGemItem extends SimpleFoiledItem {
 
                     pPlayer.getMainHandItem().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-                        if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(),
-                                getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
+                        if (attribute.hasEmptySocket()) {
+                            if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
 
-                            PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
+                                PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
+                                pPlayer.sendMessage(new TextComponent("Core successfully upgraded!").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
+                            } else
+                                pPlayer.sendMessage(new TextComponent("Something went wrong!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                        } else {
+                            pPlayer.sendMessage(new TextComponent("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
                         }
+
+
                     });
                 }
-                if (pPlayer.getMainHandItem().getItem() instanceof AsgardFractal
-                        && RuneGemItem.getGemType(pPlayer.getOffhandItem()).equals(BPConstants.GEM_TYPE_SWORD)) {
+                if (pPlayer.getMainHandItem().getItem() instanceof AsgardFractal && RuneGemItem.getGemType(pPlayer.getOffhandItem()).equals(BPConstants.GEM_TYPE_SWORD)) {
                     pPlayer.getMainHandItem().getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
 
+                        if (attribute.hasEmptySocket()) {
+                            if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
 
-                        if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(),
-                                getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
-
-                            PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
+                                PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
+                                pPlayer.sendMessage(new TextComponent("Sword successfully upgraded!").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
+                            } else
+                                pPlayer.sendMessage(new TextComponent("Something went wrong!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                        } else {
+                            pPlayer.sendMessage(new TextComponent("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
                         }
                     });
                 }
-
             }
-
-
         }
-
         return super.use(pLevel, pPlayer, pUsedHand);
     }
-
     public static double getSocketValueByChance(String AttributeType) {
 
         double value = switch (getRandomRarity(10000)) {
@@ -136,11 +141,11 @@ public class RuneGemItem extends SimpleFoiledItem {
     public static String getRandomRarity(int bound) {
         int random = new Random().nextInt(bound);
 
-        if (random <= bound/250) {
+        if (random <= bound / 250) {
             return BPConstants.RARITY_EPIC;
-        } else if (random <= bound/100) {
+        } else if (random <= bound / 100) {
             return BPConstants.RARITY_RARE;
-        } else if (random <= bound/10) {
+        } else if (random <= bound / 10) {
             return BPConstants.RARITY_UNCOMMON;
         } else return BPConstants.RARITY_COMMON;
     }

@@ -18,7 +18,6 @@ public class KeyBindsInit {
 
 
     public static void register(final FMLClientSetupEvent event) {
-
         yggdRamusSwitchMode = create("yggd_ramus_switch_mode", KeyEvent.VK_V);
         ClientRegistry.registerKeyBinding(yggdRamusSwitchMode);
 
