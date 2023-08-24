@@ -6,13 +6,13 @@ import net.minecraft.world.level.ItemLike;
 import vazkii.botania.network.TriConsumer;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BotanicPledge;
-import yerova.botanicpledge.setup.ItemInit;
+import yerova.botanicpledge.setup.BPItems;
 
 
 public class BotanicPledgeItemProperties {
     public static void init(TriConsumer<ItemLike, ResourceLocation, ClampedItemPropertyFunction> consumer) {
 
-        consumer.accept(ItemInit.YGGD_RAMUS.get(), new ResourceLocation(BotanicPledge.MOD_ID, "ranged"),
+        consumer.accept(BPItems.YGGD_RAMUS.get(), new ResourceLocation(BotanicPledge.MOD_ID, "ranged"),
                 (stack, world, entity, seed) -> YggdRamus.isRanged(stack) ? 1 : 0);
 
     }

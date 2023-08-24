@@ -32,7 +32,7 @@ import vazkii.botania.common.handler.ModSounds;
 import vazkii.botania.common.helper.ColorHelper;
 import vazkii.botania.common.item.ItemTwigWand;
 import yerova.botanicpledge.common.blocks.block_entities.YggdralSpreaderBlockEntity;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -262,7 +262,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
     @javax.annotation.Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntityInit.YGGDRAL_SPREADER.get(), YggdralSpreaderBlockEntity::commonTick);
+        return createTickerHelper(type, BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderBlockEntity::commonTick);
     }
 
 }

@@ -15,8 +15,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.IWandHUD;
-import vazkii.botania.client.core.handler.MiscellaneousModels;
-import vazkii.botania.client.render.tile.RenderTileSpreader;
 import vazkii.botania.forge.CapabilityUtil;
 import vazkii.botania.forge.mixin.client.ForgeAccessorModelBakery;
 import yerova.botanicpledge.client.model.ModelBakery;
@@ -24,7 +22,7 @@ import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Collections;
@@ -50,12 +48,12 @@ public class ForgeClientInitializer {
 
     private static final Supplier<Map<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>> WAND_HUD = Suppliers.memoize(() -> {
         var ret = new IdentityHashMap<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>();
-        BlockEntityInit.registerWandHudCaps((factory, types) -> {
+        BPBlockEntities.registerWandHudCaps((factory, types) -> {
             for (var type : types) {
                 ret.put(type, factory);
             }
         });
-        BlockEntityInit.registerWandHudCaps((factory, types) -> {
+        BPBlockEntities.registerWandHudCaps((factory, types) -> {
             for (var type : types) {
                 ret.put(type, factory);
             }
@@ -67,9 +65,9 @@ public class ForgeClientInitializer {
 
     @SubscribeEvent
     public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers evt) {
-        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
-        evt.registerBlockEntityRenderer(BlockEntityInit.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
-        evt.registerBlockEntityRenderer(BlockEntityInit.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
     }
     @SubscribeEvent
     public static void onModelRegister(ModelRegistryEvent evt) {

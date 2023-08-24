@@ -18,7 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
-import yerova.botanicpledge.setup.EntityInit;
+import yerova.botanicpledge.setup.BPEntities;
 
 import java.util.List;
 
@@ -37,7 +37,7 @@ public class YggdFocusEntity extends Entity {
 
 
     public YggdFocusEntity(Level worldIn, Player owner) {
-        super(EntityInit.YGGD_FOCUS.get(), worldIn);
+        super(BPEntities.YGGD_FOCUS.get(), worldIn);
         this.owner = owner;
     }
 

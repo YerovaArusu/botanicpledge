@@ -25,7 +25,7 @@ import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
-import yerova.botanicpledge.setup.ItemInit;
+import yerova.botanicpledge.setup.BPItems;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -89,24 +89,6 @@ public class AttributedItemsEventHandler {
                 }
 
             }
-        }
-    }
-
-
-    @SubscribeEvent
-    public static void onEntityDeath(LivingDeathEvent event) {
-        Level level = event.getEntityLiving().level;
-        LivingEntity entity = event.getEntityLiving();
-
-
-        //Custom NBT lootHandler for the Gems
-        if (entity instanceof Zombie
-                && !level.isClientSide
-                && RuneGemItem.getRandomRarity().equals(BPConstants.RARITY_UNCOMMON)
-                && event.getSource().getEntity() instanceof Player player
-                && player.getUUID() != null) {
-            level.addFreshEntity(new ItemEntity(level, entity.getX(), entity.getY(), entity.getZ(),
-                    RuneGemItem.getNewAttributedGemStack(new ItemStack(ItemInit.SOCKET_GEM.get(), 1))));
         }
     }
 

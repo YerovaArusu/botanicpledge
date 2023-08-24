@@ -30,8 +30,7 @@ import vazkii.botania.common.block.tile.mana.IThrottledPacket;
 import vazkii.botania.common.block.tile.mana.TilePool;
 import vazkii.botania.common.item.ItemManaTablet;
 import vazkii.botania.common.item.ModItems;
-import vazkii.botania.common.proxy.IProxy;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -46,7 +45,7 @@ public class ManaBufferBlockEntity extends BlockEntity implements IManaReceiver,
     private int mana;
 
     public ManaBufferBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(BlockEntityInit.MANA_BUFFER_BLOCK_ENTITY.get(), blockPos, blockState);
+        super(BPBlockEntities.MANA_BUFFER_BLOCK_ENTITY.get(), blockPos, blockState);
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, ManaBufferBlockEntity e) {

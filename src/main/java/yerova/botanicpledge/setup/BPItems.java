@@ -1,6 +1,7 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -14,7 +15,7 @@ import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 
-public class ItemInit {
+public class BPItems {
     //Custom Rarity
     public static final Rarity UNIQUE = Rarity.create("Unique", ChatFormatting.AQUA);
 
@@ -25,20 +26,21 @@ public class ItemInit {
     //weapons
 
     public static final RegistryObject<Item> YGGD_RAMUS = ITEMS.register("yggd_ramus", () -> new YggdRamus(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
     public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(1,1,
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
 
     //cores
     public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("marias_core", () -> new MariasCore(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
     public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
-            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(ItemInit.UNIQUE).stacksTo(1)));
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
+
 
 
     //Items

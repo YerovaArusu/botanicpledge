@@ -40,7 +40,7 @@ import vazkii.botania.common.proxy.IProxy;
 import vazkii.botania.xplat.BotaniaConfig;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
-import yerova.botanicpledge.setup.EntityInit;
+import yerova.botanicpledge.setup.BPEntities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -103,7 +103,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     public YggdrafoliumEntity(Level world, LivingEntity thrower, BlockPos targetpos, float damage) {
-        super(EntityInit.YGGDRAFOLIUM.get(), world, thrower);
+        super(BPEntities.YGGDRAFOLIUM.get(), world, thrower);
         setTargetPos(targetpos);
         this.damage = damage;
         this.setOwner(thrower);
@@ -116,7 +116,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
 
 
     public YggdrafoliumEntity(Level level, BlockPos pos, float rotX, float rotY, boolean fake) {
-        this(EntityInit.YGGDRAFOLIUM.get(), level);
+        this(BPEntities.YGGDRAFOLIUM.get(), level);
 
         this.fake = fake;
 
@@ -133,7 +133,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     public YggdrafoliumEntity(Player player) {
-        super(EntityInit.YGGDRAFOLIUM.get(), player.level, player);
+        super(BPEntities.YGGDRAFOLIUM.get(), player.level, player);
 
         setBurstSourceCoords(NO_SOURCE);
         setRot(player.getYRot() + 180, -player.getXRot());

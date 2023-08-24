@@ -25,8 +25,8 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.ModBlocks;
 import vazkii.botania.common.item.ItemTwigWand;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.setup.BlockEntityInit;
-import yerova.botanicpledge.setup.BlockInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPBlocks;
 
 import java.util.HashMap;
 
@@ -61,15 +61,15 @@ public class RitualCenterBlock extends BaseEntityBlock {
     public static final HashMap<BlockPos, Block> ritualPedestals() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
-        blockList.put(new BlockPos(3, 0, 3), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(-3, 0, 3), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(3, 0, -3), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(-3, 0, -3), BlockInit.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(3, 0, 3), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(-3, 0, 3), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(3, 0, -3), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(-3, 0, -3), BPBlocks.RITUAL_PEDESTAL.get());
 
-        blockList.put(new BlockPos(0, 0, 4), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(0, 0, -4), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(4, 0, 0), BlockInit.RITUAL_PEDESTAL.get());
-        blockList.put(new BlockPos(-4, 0, 0), BlockInit.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(0, 0, 4), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(0, 0, -4), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(4, 0, 0), BPBlocks.RITUAL_PEDESTAL.get());
+        blockList.put(new BlockPos(-4, 0, 0), BPBlocks.RITUAL_PEDESTAL.get());
 
         return blockList;
     }
@@ -151,7 +151,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(),
+        return createTickerHelper(type, BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(),
                 RitualCenterBlockEntity::tick);
     }
 

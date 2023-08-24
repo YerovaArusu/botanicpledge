@@ -25,7 +25,7 @@ import java.util.function.Supplier;
 
 import static vazkii.botania.common.block.ModBlocks.livingwood;
 
-public class BlockInit {
+public class BPBlocks {
     private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
 
 
@@ -47,7 +47,7 @@ public class BlockInit {
 
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
-            new BlockSpecialFlower(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+            new BlockSpecialFlower(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
@@ -67,7 +67,7 @@ public class BlockInit {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab, String tooltipKey) {
-        return ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(),
+        return BPItems.ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(tab)) {
             @Override
             public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
@@ -84,7 +84,7 @@ public class BlockInit {
 
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab) {
-        return ItemInit.ITEMS.register(name, () -> new BlockItem(block.get(),
+        return BPItems.ITEMS.register(name, () -> new BlockItem(block.get(),
                 new Item.Properties().tab(tab)));
     }
 }

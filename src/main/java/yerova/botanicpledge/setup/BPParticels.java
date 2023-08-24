@@ -16,7 +16,7 @@ import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.client.particle.custom.YggdralParticlesType;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ParticleSetup {
+public class BPParticels {
     @ObjectHolder(BotanicPledge.MOD_ID + ":" + YggdralParticleData.NAME)
     public static ParticleType<ColorParticleTypeData> YGGDRAL_TYPE;
 

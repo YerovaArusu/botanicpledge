@@ -36,19 +36,16 @@ import vazkii.botania.api.internal.IManaBurst;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.*;
 import vazkii.botania.common.block.mana.BlockSpreader;
-import vazkii.botania.common.block.tile.ModTiles;
 import vazkii.botania.common.block.tile.TileExposedSimpleInventory;
 import vazkii.botania.common.block.tile.mana.IThrottledPacket;
 import vazkii.botania.common.entity.EntityManaBurst;
-import vazkii.botania.common.entity.EntityManaBurst.PositionProperties;
 import vazkii.botania.common.handler.ManaNetworkHandler;
 import vazkii.botania.common.handler.ModSounds;
 import vazkii.botania.common.helper.MathHelper;
 import vazkii.botania.common.item.ItemLexicon;
 import vazkii.botania.xplat.BotaniaConfig;
 import vazkii.botania.xplat.IXplatAbstractions;
-import yerova.botanicpledge.common.blocks.YggdralSpreader;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
@@ -130,7 +127,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         private boolean invalidTentativeBurst = false;
 
         public YggdralSpreaderBlockEntity(BlockPos pos, BlockState state) {
-            super(BlockEntityInit.YGGDRAL_SPREADER.get(), pos, state);
+            super(BPBlockEntities.YGGDRAL_SPREADER.get(), pos, state);
         }
 
         @Override

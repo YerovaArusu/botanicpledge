@@ -26,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
@@ -66,6 +67,7 @@ public class AsgardFractal extends SwordItem {
                 if (entity instanceof LivingEntity entity1) {
                     if (targetsNTime.isEmpty()
                             || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
+                        entity1.setGlowingTag(true);
                         targetsNTime.put(entity1, 0);
                     }
                 }
@@ -86,6 +88,12 @@ public class AsgardFractal extends SwordItem {
             } else {
 
             }
+
+            //Relic Handler
+            var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
+            if (relic != null) {
+                relic.tickBinding(player);
+            }
         }
         super.inventoryTick(stack, pLevel, pEntity, pSlotId, pIsSelected);
     }
@@ -99,13 +107,13 @@ public class AsgardFractal extends SwordItem {
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + new TranslatableComponent(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent("+ " + entry.getValue()+ " " + new TranslatableComponent(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + new TranslatableComponent(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent("+ " + entry.getValue()+" " + new TranslatableComponent(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
@@ -116,6 +124,7 @@ public class AsgardFractal extends SwordItem {
             }
         });
 
+        RelicImpl.addDefaultTooltip(stack, tooltip);
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
@@ -136,6 +145,8 @@ public class AsgardFractal extends SwordItem {
                 AttributeModifier modifier = new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage() + attributeValue, AttributeModifier.Operation.ADDITION);
 
                 builder.put(Attributes.ATTACK_DAMAGE, modifier);
+            } else {
+                builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", ATTACK_DAMAGE_MODIFIER, AttributeModifier.Operation.ADDITION));
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
@@ -195,7 +206,7 @@ public class AsgardFractal extends SwordItem {
         j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
 
 
-        AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target);
+        AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target, player.getMainHandItem().getMaxDamage());
         blade.setDamage(this.getDamage());
         blade.setPos(x, y, z);
         blade.setVariety(1);
@@ -203,6 +214,8 @@ public class AsgardFractal extends SwordItem {
         blade.setNoGravity(true);
         level.addFreshEntity(blade);
     }
+
+
 
     public static IRelic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);

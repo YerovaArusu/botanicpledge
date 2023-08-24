@@ -12,7 +12,7 @@ import vazkii.botania.api.subtile.RadiusDescriptor;
 import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
 import vazkii.botania.client.fx.WispParticleData;
 import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
 
@@ -22,7 +22,7 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
     private int burnTime = 0, cooldown = 0, cd = 0;
 
     public ThunderLilyBLockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntityInit.THUNDER_LILY_BLOCK_ENTITY.get(), pos, state);
+        super(BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY.get(), pos, state);
     }
 
     @Override

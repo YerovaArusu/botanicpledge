@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.helper.RenderHelper;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
-import yerova.botanicpledge.setup.ItemInit;
+import yerova.botanicpledge.setup.BPItems;
 
 public class AsgardBladeRenderer extends EntityRenderer<AsgardBladeEntity> {
     public AsgardBladeRenderer(EntityRendererProvider.Context pContext) {
@@ -48,7 +48,7 @@ public class AsgardBladeRenderer extends EntityRenderer<AsgardBladeEntity> {
         float alpha = weapon.getFake() ? Math.max(0F, 0.75F - weapon.tickCount * (0.75F / AsgardBladeEntity.LIVE_TICKS) * 1.5F) : 1F;
         BakedModel model = ModelBakery.asgardBlade;
         int color = 0xFFFFFF | ((int) (alpha * 255F)) << 24;
-        RenderHelper.renderItemCustomColor(mc.player, new ItemStack(ItemInit.ASGARD_FRACTAL.get()), color, matrixStackIn, pBuffer, 0xF000F0, OverlayTexture.NO_OVERLAY, model);
+        RenderHelper.renderItemCustomColor(mc.player, new ItemStack(BPItems.ASGARD_FRACTAL.get()), color, matrixStackIn, pBuffer, 0xF000F0, OverlayTexture.NO_OVERLAY, model);
 
         matrixStackIn.scale(1 / s, 1 / s, 1 / s);
         matrixStackIn.popPose();

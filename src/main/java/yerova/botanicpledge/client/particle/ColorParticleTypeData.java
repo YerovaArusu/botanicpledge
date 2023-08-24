@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
-import yerova.botanicpledge.setup.ParticleSetup;
+import yerova.botanicpledge.setup.BPParticels;
 
 public class ColorParticleTypeData implements ParticleOptions {
 
@@ -43,11 +43,11 @@ public class ColorParticleTypeData implements ParticleOptions {
     };
 
     public ColorParticleTypeData(float r, float g, float b, boolean disableDepthTest, float size, float alpha, int age) {
-        this(ParticleSetup.YGGDRAL_TYPE, new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
+        this(BPParticels.YGGDRAL_TYPE, new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
-        this(ParticleSetup.YGGDRAL_TYPE, color, disableDepthTest, size, alpha, age);
+        this(BPParticels.YGGDRAL_TYPE, color, disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest) {

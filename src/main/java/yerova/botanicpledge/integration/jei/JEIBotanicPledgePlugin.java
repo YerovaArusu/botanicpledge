@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeManager;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
-import yerova.botanicpledge.setup.BlockInit;
+import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
@@ -57,6 +57,6 @@ public class JEIBotanicPledgePlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
 
-        registry.addRecipeCatalyst(new ItemStack(BlockInit.RITUAL_CENTER.get()), BOTANIC_RITUAL_RECIPE_RECIPE_TYPE);
+        registry.addRecipeCatalyst(new ItemStack(BPBlocks.RITUAL_CENTER.get()), BOTANIC_RITUAL_RECIPE_RECIPE_TYPE);
     }
 }

@@ -19,35 +19,40 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.lwjgl.system.CallbackI;
-import vazkii.botania.api.mana.ILensEffect;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
 import vazkii.botania.common.proxy.IProxy;
 import vazkii.botania.xplat.BotaniaConfig;
-import yerova.botanicpledge.common.items.relic.AsgardFractal;
-import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.setup.BotanicPledge;
-import yerova.botanicpledge.setup.EntityInit;
+import yerova.botanicpledge.setup.BPEntities;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-import java.util.UUID;
 
 public class AsgardBladeEntity extends EntityProjectileBase {
 
+    private double damage = 1;
 
     public AsgardBladeEntity(EntityType<? extends EntityProjectileBase> type, Level worldIn) {
         super(type, worldIn);
     }
 
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target) {
-        super(EntityInit.ASGARD_BLADE.get(), world, thrower);
+        super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos(target.getX(),target.getY(), target.getZ()));
+        setTargetPos(new BlockPos(target.getX(), target.getY(), target.getZ()));
 
+        setTarget_id(target.getId());
+        setVariety((int) (10 * Math.random()));
+        setThrower(thrower);
+        setDamage(10);
+        this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
+
+    }
+
+    public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, int damage) {
+        super(BPEntities.ASGARD_BLADE.get(), world, thrower);
+        setThrower(thrower);
+        setTargetPos(new BlockPos(target.getX(), target.getY(), target.getZ()));
+        setDamage(damage);
         setTarget_id(target.getId());
         setVariety((int) (10 * Math.random()));
         setThrower(thrower);
@@ -67,7 +72,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     private static final String TAG_DELAY = "delay";
     private static final String TAG_FAKE = "fake";
     private static final String TAG_TARGET_ENTITY_ID = "target_entity";
-    private double damage = 1;
+    private static final String TAG_ORIGIN_STACK = "target_entity";
 
 
     private static final EntityDataAccessor<Integer> VARIETY =
@@ -121,11 +126,17 @@ public class AsgardBladeEntity extends EntityProjectileBase {
             }
         }
 
-        if(!level.isClientSide && getThrower() !=null && getThrower() instanceof Player player) {
+        if (getThrower() != null && getThrower() instanceof Player player) {
             AABB attackBox = this.getBoundingBox().inflate(2);
-            for(LivingEntity entity :level.getEntitiesOfClass(LivingEntity.class,attackBox)) {
-                entity.hurt(DamageSource.playerAttack(player), (float) damage);
-                if (entity.getId() == this.getTarget_id()) this.remove(RemovalReason.DISCARDED);
+            for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, attackBox)) {
+
+                entity.hurt(DamageSource.playerAttack(player), (float) getDamage());
+
+                if (entity.getId() == this.getTarget_id()) {
+                    this.remove(RemovalReason.DISCARDED);
+                    break;
+                }
+
             }
         }
 
@@ -137,7 +148,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
         if (getFake() || level.isClientSide && this.tickCount >= LIVE_TICKS && (
                 getThrower() == null || getThrower().isRemoved()
-                        || level.getEntity(getTarget_id()) == null) ||(level.getEntity(getTarget_id()) != null && level.getEntity(getTarget_id()).isRemoved()) ) {
+                        || level.getEntity(getTarget_id()) == null) || (level.getEntity(getTarget_id()) != null && level.getEntity(getTarget_id()).isRemoved())) {
             remove(RemovalReason.DISCARDED);
             return;
         }
@@ -150,9 +161,9 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         if (getThrower() != null) {
-            pResult.getEntity().hurt(DamageSource.playerAttack((Player) getThrower()), 20);
+            pResult.getEntity().hurt(DamageSource.playerAttack((Player) getThrower()), (float) getDamage());
         }
-        this.remove(RemovalReason.DISCARDED);
+        if (level.getEntity(getTarget_id()).equals(pResult)) this.remove(RemovalReason.DISCARDED);
         super.onHitEntity(pResult);
     }
 
@@ -163,7 +174,6 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     }
 
 
-
     @Override
     public void addAdditionalSaveData(CompoundTag cmp) {
         super.addAdditionalSaveData(cmp);
@@ -172,8 +182,8 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         cmp.putInt(TAG_DELAY, getDelay());
         cmp.putInt(TAG_TARGET_ENTITY_ID, getTarget_id());
         cmp.putBoolean(TAG_FAKE, getFake());
-    }
 
+    }
 
 
     @Override
@@ -184,7 +194,13 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         setDelay(cmp.getInt(TAG_DELAY));
         setTarget_id(cmp.getInt(TAG_TARGET_ENTITY_ID));
         setFake(cmp.getBoolean(TAG_FAKE));
+
+
     }
+
+
+
+
     private void setTarget_id(int anInt) {
         entityData.set(TARGET_ENTITY_ID, anInt);
     }

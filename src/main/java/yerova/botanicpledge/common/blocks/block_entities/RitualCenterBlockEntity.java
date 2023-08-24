@@ -21,7 +21,7 @@ import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
     boolean isCrafting = false;
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(BlockEntityInit.RITUAL_CENTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+        super(BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
 
 
     }

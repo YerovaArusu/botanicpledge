@@ -10,7 +10,7 @@ import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 
-public class EntityInit {
+public class BPEntities {
     public static final DeferredRegister<EntityType<?>> ENTITY = DeferredRegister.create(ForgeRegistries.ENTITIES, BotanicPledge.MOD_ID);
 
     public static final RegistryObject<EntityType<YggdFocusEntity>> YGGD_FOCUS = ENTITY.register("yggd_focus",

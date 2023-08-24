@@ -17,7 +17,7 @@ import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.items.relic.*;
 import yerova.botanicpledge.setup.BotanicPledge;
-import yerova.botanicpledge.setup.ItemInit;
+import yerova.botanicpledge.setup.BPItems;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -29,15 +29,17 @@ import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 public class ForgeCommonInitializer {
 
     private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
-            ItemInit.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
-            ItemInit.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
-            ItemInit.YGGD_RAMUS.get(), YggdRamus::makeRelic,
-            ItemInit.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic
+            BPItems.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
+            BPItems.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
+            BPItems.YGGD_RAMUS.get(), YggdRamus::makeRelic,
+            BPItems.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic
     ));
 
+
+
     private static final Supplier<Map<Item, Function<ItemStack, IManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
-            ItemInit.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
-            ItemInit.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
+            BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
+            BPItems.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
     ));
 
 

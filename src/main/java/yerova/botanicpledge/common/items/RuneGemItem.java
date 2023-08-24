@@ -77,7 +77,7 @@ public class RuneGemItem extends SimpleFoiledItem {
 
     public static double getSocketValueByChance(String AttributeType) {
 
-        double value = switch (getRandomRarity()) {
+        double value = switch (getRandomRarity(10000)) {
             case (BPConstants.RARITY_EPIC) -> switch (AttributeType) {
                 case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(7, 8);
                 case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(7, 8);
@@ -133,14 +133,14 @@ public class RuneGemItem extends SimpleFoiledItem {
         return Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", value));
     }
 
-    public static String getRandomRarity() {
-        int random = new Random().nextInt(10000);
+    public static String getRandomRarity(int bound) {
+        int random = new Random().nextInt(bound);
 
-        if (random <= 40) {
+        if (random <= bound/250) {
             return BPConstants.RARITY_EPIC;
-        } else if (random <= 100) {
+        } else if (random <= bound/100) {
             return BPConstants.RARITY_RARE;
-        } else if (random <= 1000) {
+        } else if (random <= bound/10) {
             return BPConstants.RARITY_UNCOMMON;
         } else return BPConstants.RARITY_COMMON;
     }

@@ -13,7 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
-import yerova.botanicpledge.setup.BlockInit;
+import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
@@ -32,7 +32,7 @@ public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitua
 
     public BotanicRitualRecipeCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 85);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(BlockInit.RITUAL_CENTER.get()));
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(BPBlocks.RITUAL_CENTER.get()));
     }
 
 

@@ -3,7 +3,7 @@ package yerova.botanicpledge.common.items;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
-import yerova.botanicpledge.setup.ItemInit;
+import yerova.botanicpledge.setup.BPItems;
 
 public class BotanicPledgeTab extends CreativeModeTab {
 
@@ -22,6 +22,6 @@ public class BotanicPledgeTab extends CreativeModeTab {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(ItemInit.MARIAS_CORE.get());
+        return new ItemStack(BPItems.MARIAS_CORE.get());
     }
 }

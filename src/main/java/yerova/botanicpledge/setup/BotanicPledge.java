@@ -51,10 +51,11 @@ public class BotanicPledge {
 
         APIRegistry.setup();
 
-        ItemInit.ITEMS.register(forgeBus);
-        EntityInit.ENTITY.register(forgeBus);
-        BlockInit.BLOCKS.register(forgeBus);
-        BlockEntityInit.BLOCK_ENTITIES.register(forgeBus);
+        BPItems.ITEMS.register(forgeBus);
+        BPEntities.ENTITY.register(forgeBus);
+        BPBlocks.BLOCKS.register(forgeBus);
+        BPBlockEntities.BLOCK_ENTITIES.register(forgeBus);
+        BPEnchantments.ENCHANTMENTS.register(forgeBus);
 
 
         forgeBus.addListener(this::setup);
@@ -86,19 +87,19 @@ public class BotanicPledge {
 
         KeyBindsInit.register(event);
 
-        EntityRenderers.register(EntityInit.YGGD_FOCUS.get(), YggdFocusRenderer::new);
-        EntityRenderers.register(EntityInit.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
-        EntityRenderers.register(EntityInit.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
+        EntityRenderers.register(BPEntities.YGGD_FOCUS.get(), YggdFocusRenderer::new);
+        EntityRenderers.register(BPEntities.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
+        EntityRenderers.register(BPEntities.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
 
 
-        CuriosRendererRegistry.register(ItemInit.MARIAS_CORE.get(), MariasCoreRenderer::new);
-        CuriosRendererRegistry.register(ItemInit.MARINAS_CORE.get(), MarinasCoreRenderer::new);
+        CuriosRendererRegistry.register(BPItems.MARIAS_CORE.get(), MariasCoreRenderer::new);
+        CuriosRendererRegistry.register(BPItems.MARINAS_CORE.get(), MarinasCoreRenderer::new);
 
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.THUNDER_LILY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.MANA_BUFFER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_CENTER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.RITUAL_PEDESTAL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BlockInit.YGGDRAL_SPREADER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.THUNDER_LILY.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.MANA_BUFFER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_CENTER.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_PEDESTAL.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.translucent());
 
 
         OverlayRegistry.registerOverlayAbove(HOTBAR_ELEMENT, "name", ProtectorHUD.PROTECTOR_HUD);

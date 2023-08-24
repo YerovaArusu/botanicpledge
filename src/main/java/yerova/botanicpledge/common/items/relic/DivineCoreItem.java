@@ -19,6 +19,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -51,6 +53,17 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     public DivineCoreItem(Properties props) {
         super(props);
+    }
+
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return true;
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return (enchantment == Enchantments.PROJECTILE_PROTECTION || enchantment == Enchantments.BLAST_PROTECTION || enchantment == Enchantments.FIRE_PROTECTION || enchantment ==Enchantments.ALL_DAMAGE_PROTECTION);
     }
 
     @Override

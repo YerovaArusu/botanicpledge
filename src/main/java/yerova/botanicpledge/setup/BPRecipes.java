@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
-public class RecipeRegistry {
+public class BPRecipes {
     public static final RecipeType<BotanicRitualRecipe> BOTANIC_RITUAL_TYPE = new ModRecipeType<>();
 
     public static final RecipeSerializer<BotanicRitualRecipe> BOTANIC_RITUAL_SERIALIZER = new BotanicRitualRecipe.Serializer();

@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.ManaBufferBlockEntity;
-import yerova.botanicpledge.setup.BlockEntityInit;
+import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class ManaBufferBlock extends BaseEntityBlock {
 
@@ -87,7 +87,7 @@ public class ManaBufferBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return createTickerHelper(pBlockEntityType, BlockEntityInit.MANA_BUFFER_BLOCK_ENTITY.get(),
+        return createTickerHelper(pBlockEntityType, BPBlockEntities.MANA_BUFFER_BLOCK_ENTITY.get(),
                 ManaBufferBlockEntity::tick);
     }
 }
