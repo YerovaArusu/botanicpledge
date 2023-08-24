@@ -9,6 +9,10 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
@@ -32,6 +36,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class AttributedItemsEventHandler {
+
 
 
     @SubscribeEvent
@@ -91,6 +96,7 @@ public class AttributedItemsEventHandler {
             }
         }
     }
+
 
     @SubscribeEvent
     public static void onWorldTick(TickEvent.WorldTickEvent e) {

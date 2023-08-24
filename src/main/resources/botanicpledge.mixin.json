@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "yerova.botanicpledge.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinLivingEntity"
+  ],
+  "server": [
+    "MixinLivingEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "refmap": "botanicpledge.mixin-refmap.json",
+  "minVersion": "0.8"
+}

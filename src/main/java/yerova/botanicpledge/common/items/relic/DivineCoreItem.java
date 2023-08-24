@@ -63,7 +63,11 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        return (enchantment == Enchantments.PROJECTILE_PROTECTION || enchantment == Enchantments.BLAST_PROTECTION || enchantment == Enchantments.FIRE_PROTECTION || enchantment ==Enchantments.ALL_DAMAGE_PROTECTION);
+        return enchantment.equals(Enchantments.PROJECTILE_PROTECTION)
+                || enchantment.equals(Enchantments.BLAST_PROTECTION)
+                || enchantment.equals(Enchantments.FIRE_PROTECTION)
+                || enchantment.equals(Enchantments.ALL_DAMAGE_PROTECTION)
+        ;
     }
 
     @Override
@@ -79,6 +83,13 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
             pItems.add(fullManaStack);
         }
     }
+
+    @Override
+    public int getEnchantmentValue() {
+        return 1;
+    }
+
+
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {

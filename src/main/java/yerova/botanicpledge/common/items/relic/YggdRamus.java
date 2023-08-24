@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
@@ -56,10 +57,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         return true;
     }
 
-    @Override
-    public int getEnchantmentValue() {
-        return super.getEnchantmentValue();
-    }
+
 
     public YggdRamus(Properties pProperties) {
         super(TierInit.YGGDRALIUM_TIER, -4, 0, pProperties);
@@ -269,6 +267,11 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         if (enchantmentLvl > 0 && !entity.isOnFire()) {
             entity.setSecondsOnFire(enchantmentLvl * 4);
         }
+    }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
     public static HitResult raytrace(Entity e, double distance, boolean fluids) {
