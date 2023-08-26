@@ -11,37 +11,24 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
-import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.common.utils.LeftClickable;
-import yerova.botanicpledge.common.utils.ModNBTUtils;
-import yerova.botanicpledge.setup.TierInit;
+import yerova.botanicpledge.setup.BPItemTiers;
 
-import java.security.spec.PSSParameterSpec;
-import java.time.temporal.ValueRange;
 import java.util.*;
-import java.util.function.Predicate;
 
 public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
@@ -52,7 +39,7 @@ public class AsgardFractal extends SwordItem {
 
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
-        super(TierInit.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        super(BPItemTiers.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
         ATTACK_DAMAGE_MODIFIER = pAttackDamageModifier;
         ATTACK_SPEED_MODIFIER = pAttackSpeedModifier;
     }
@@ -62,7 +49,7 @@ public class AsgardFractal extends SwordItem {
     public void inventoryTick(ItemStack stack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && player.getMainHandItem().equals(stack)) {
             if (!pLevel.isClientSide) {
-                Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 20);
+                Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 24);
 
                 if (entity instanceof LivingEntity entity1) {
                     if (targetsNTime.isEmpty()

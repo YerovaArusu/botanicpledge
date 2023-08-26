@@ -26,6 +26,7 @@ import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.RuneGemItem;
+import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -41,9 +42,19 @@ public class AttributedItemsEventHandler {
 
     @SubscribeEvent
     public static void handleDamage(LivingAttackEvent e) {
-        if (!e.getEntityLiving().level.isClientSide) {
 
-            if (e.getEntityLiving() instanceof Player player) {
+        if (!e.getEntityLiving().level.isClientSide) {
+            if (e.getEntityLiving() instanceof Player target && e.getSource().getEntity() instanceof Player attacker) {
+
+                //Soul Amulet Handler
+                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(attacker, "necklace")) {
+                    ItemStack stack = result.stack();
+                    if(stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsUUID(stack, target.getUUID())) {
+                        e.setCanceled(true);
+                    }
+                }
+
+                //Core Shield Handler
                 for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntityLiving(), "divine_core")) {
                     ItemStack stack = result.stack();
                     if (!e.isCanceled()) {
@@ -51,7 +62,7 @@ public class AttributedItemsEventHandler {
 
                             if (attribute.getCurrentShield() - e.getAmount() > 0) {
                                 attribute.removeCurrentShield((int) Math.ceil(e.getAmount()));
-                                player.level.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
+                                target.level.playSound(null, target.getX(), target.getY(), target.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
                                 e.setCanceled(true);
                             }
                         });

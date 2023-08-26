@@ -7,9 +7,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import yerova.botanicpledge.common.items.BotanicPledgeTab;
-import yerova.botanicpledge.common.items.RuneGemItem;
-import yerova.botanicpledge.common.items.YggdraliumIngot;
+import yerova.botanicpledge.common.items.*;
 import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.MariasCore;
 import yerova.botanicpledge.common.items.relic.MarinasCore;
@@ -29,7 +27,7 @@ public class BPItems {
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
-    public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(1,1,
+    public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(23,1,
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
@@ -41,6 +39,15 @@ public class BPItems {
     public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
             new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
+
+    public static final RegistryObject<Item> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmulet(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
+
+    public static final RegistryObject<Item> SOUL_Slicer = ITEMS.register("soul_slicer", () -> new SoulSlicer(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
+
+    public static final RegistryObject<Item> SOUL_SHARD = ITEMS.register("soul_shard", () -> new SoulShard(
+            new Item.Properties().tab(BotanicPledgeTab.BOTANIC_PLEDGE_TAB).fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
 
     //Items

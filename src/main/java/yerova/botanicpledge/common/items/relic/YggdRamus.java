@@ -38,7 +38,7 @@ import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.LeftClickable;
-import yerova.botanicpledge.setup.TierInit;
+import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.List;
 import java.util.Objects;
@@ -60,7 +60,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
 
     public YggdRamus(Properties pProperties) {
-        super(TierInit.YGGDRALIUM_TIER, -4, 0, pProperties);
+        super(BPItemTiers.YGGDRALIUM_TIER, -4, 0, pProperties);
     }
 
     @Override

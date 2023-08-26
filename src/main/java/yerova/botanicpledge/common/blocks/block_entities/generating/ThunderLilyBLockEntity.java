@@ -30,7 +30,7 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
         super.tickFlower();
 
         if (cd == 0) {
-            if (getLevel().random.nextInt(300) == 1) {
+            if (getLevel().random.nextInt(900) == 1) {
                 LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, getLevel());
                 bolt.setPos(getEffectivePos().getX(), getEffectivePos().getY(), getEffectivePos().getZ());
                 if (!getLevel().isClientSide)

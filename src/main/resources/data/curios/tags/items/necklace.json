@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "botania:mana_mirror"
+    "botania:mana_mirror",
+    "botanicpledge:soul_amulet"
   ]
 }
