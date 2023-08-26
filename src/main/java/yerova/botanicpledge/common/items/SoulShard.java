@@ -72,7 +72,7 @@ public class SoulShard extends Item {
                 UUID uuid = getSoulUUID(pPlayer.getMainHandItem());
                 String name = getSoulName(pPlayer.getMainHandItem());
 
-                if (stack.getItem() instanceof SoulAmulet && !SoulAmulet.amuletContainsUUID(stack, uuid)){
+                if (stack.getItem() instanceof SoulAmulet && !SoulAmulet.amuletContainsSoul(stack, uuid)){
                     SoulAmulet.applySoul(stack,uuid, name);
 
                     PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getMainHandItem(), 1);

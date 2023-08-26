@@ -18,12 +18,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.api.item.IRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
+import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.setup.BPItemTiers;
@@ -52,10 +55,20 @@ public class AsgardFractal extends SwordItem {
                 Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 24);
 
                 if (entity instanceof LivingEntity entity1) {
-                    if (targetsNTime.isEmpty()
-                            || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
-                        entity1.setGlowingTag(true);
-                        targetsNTime.put(entity1, 0);
+                    if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
+
+                        if (entity instanceof Player enemy) {
+                            for (SlotResult result: CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
+                                if (!(result.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
+                                    entity1.setGlowingTag(true);
+                                    targetsNTime.put(entity1, 0);
+                                }
+                            }
+                        } else {
+                            entity1.setGlowingTag(true);
+                            targetsNTime.put(entity1, 0);
+                        }
+
                     }
                 }
 

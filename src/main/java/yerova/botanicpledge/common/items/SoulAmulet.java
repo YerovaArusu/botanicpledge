@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.system.CallbackI;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import yerova.botanicpledge.common.utils.BPConstants;
@@ -135,7 +133,7 @@ public class SoulAmulet extends Item implements ICurioItem {
         return toReturn;
     }
 
-    public static boolean amuletContainsUUID(ItemStack amulet, UUID uuid) {
+    public static boolean amuletContainsSoul(ItemStack amulet, UUID uuid) {
         boolean toReturn = false;
         if (amulet.getItem() instanceof SoulAmulet) {
             toReturn = getAppliedSouls(amulet).containsKey(uuid);

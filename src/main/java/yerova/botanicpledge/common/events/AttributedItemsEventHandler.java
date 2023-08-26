@@ -5,19 +5,11 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.item.enchantment.ProtectionEnchantment;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -25,12 +17,10 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.common.handler.ModSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
-import yerova.botanicpledge.setup.BPItems;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -49,7 +39,7 @@ public class AttributedItemsEventHandler {
                 //Soul Amulet Handler
                 for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(attacker, "necklace")) {
                     ItemStack stack = result.stack();
-                    if(stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsUUID(stack, target.getUUID())) {
+                    if(stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsSoul(stack, target.getUUID())) {
                         e.setCanceled(true);
                     }
                 }
