@@ -6,10 +6,22 @@ import vazkii.botania.common.block.tile.mana.TilePool;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ManaUtils {
+    public static BlockPos[] getRitualManaPoolsPos(BlockPos pos) {
+        BlockPos[] pools = new BlockPos[4];
+        pools[0] = pos.offset(1, 0, 1);
+        pools[1] = pos.offset(-1, 0, -1);
+        pools[2] = pos.offset(-1, 0, 1);
+        pools[3] = pos.offset(1, 0, -1);
+
+        return pools;
+    }
+
 
     //TODO: Rework this
     @Nullable
@@ -20,6 +32,47 @@ public class ManaUtils {
         TilePool tile = (TilePool) world.getBlockEntity(loc.get());
         tile.receiveMana(-mana);
         return loc.get();
+    }
+
+    public static boolean hasEnoughManaInRitual(BlockPos pos, Level world, int mana) {
+
+        AtomicInteger currentMana = new AtomicInteger();
+        Arrays.stream(getRitualManaPoolsPos(pos)).forEach(pose -> {
+            if (world.getBlockEntity(pose) instanceof TilePool tilePool) {
+                currentMana.set(currentMana.get() + tilePool.getCurrentMana());
+            }
+        });
+
+        return currentMana.get() >= mana;
+
+    }
+
+    public static boolean takeManaFromMultipleSources(BlockPos pos, Level world, int mana) {
+        AtomicInteger rest = new AtomicInteger(mana);
+        AtomicInteger combinedMax = new AtomicInteger();
+
+        Arrays.stream(getRitualManaPoolsPos(pos)).forEach(pose -> {
+            if (world.getBlockEntity(pose) instanceof TilePool tilePool) {
+                combinedMax.set(combinedMax.get() + tilePool.getCurrentMana());
+            }
+        });
+
+
+        if (combinedMax.get() >= rest.get()) {
+            Arrays.stream(getRitualManaPoolsPos(pos)).forEach(pose -> {
+                if (world.getBlockEntity(pose) instanceof TilePool tilePool) {
+                    if (tilePool.getCurrentMana() < rest.get()) {
+                        rest.set(rest.get() - tilePool.getCurrentMana());
+                        tilePool.receiveMana(-tilePool.getCurrentMana());
+                    } else {
+                        tilePool.receiveMana(-rest.get());
+                    }
+
+                }
+            });
+            return true;
+        }
+        return false;
     }
 
 

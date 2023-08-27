@@ -120,7 +120,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
             return false;
         }
 
-        if (recipe.consumesMana()) ManaUtils.takeManaNearby(worldPosition, level, 2, recipe.getManaCost());
+        if (recipe.consumesMana()) ManaUtils.takeManaFromMultipleSources(worldPosition, level, recipe.getManaCost());
         this.isCrafting = true;
         updateBlock();
         return true;
@@ -129,7 +129,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
     public boolean craftingPossible(ItemStack stack, Player playerEntity) {
         if (stack.isEmpty()) return false;
         IBotanicRitualRecipe recipe = this.getRecipe(stack, playerEntity);
-        return recipe != null && (!recipe.consumesMana() || (recipe.consumesMana() && ManaUtils.hasManaNearby(worldPosition, level, 10, recipe.getManaCost())));
+        return recipe != null && (!recipe.consumesMana() || (recipe.consumesMana() && ManaUtils.hasEnoughManaInRitual(worldPosition, level, recipe.getManaCost())));
     }
 
 

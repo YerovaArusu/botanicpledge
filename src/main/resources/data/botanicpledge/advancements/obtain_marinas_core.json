@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "botanicpledge:marinas_core"
+    },
+    "title": "Choose the Hell",
+    "description": "Obtain Marinas Core",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "botanicpledge:botanicpledge",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botanicpledge:marinas_core"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

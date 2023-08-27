@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,9 +15,11 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.List;
+import java.util.Random;
 
 public class SoulSlicer extends SwordItem {
     public SoulSlicer(Properties pProperties) {
@@ -61,6 +64,7 @@ public class SoulSlicer extends SwordItem {
             pLevel.addFreshEntity(new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(),pPlayer.getZ(), SoulShard.createSoulShard(pPlayer)));
             pPlayer.sendMessage(new TextComponent("Obtained a soul shard of your own").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
             pPlayer.hurt(DamageSource.indirectMagic(pPlayer, pPlayer), getDamage());
+            PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getMainHandItem(), 1);
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }

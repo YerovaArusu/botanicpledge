@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "botanicpledge:marias_core"
+    },
+    "title": "Choose the Heavens",
+    "description": "Obtain Marias Core",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "botanicpledge:botanicpledge",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botanicpledge:marias_core"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

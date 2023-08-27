@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    "title": "The Beginning",
+    "description": "Obtain Yggdralium Shards",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "botanicpledge:textures/blocks/yggdralium_block.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "botanicpledge:yggdralium_shard"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
