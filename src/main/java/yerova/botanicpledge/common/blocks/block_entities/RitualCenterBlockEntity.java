@@ -42,8 +42,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
 
 
     public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {
-
-
         if (level.isClientSide) {
             if (entity.isCrafting) {
 

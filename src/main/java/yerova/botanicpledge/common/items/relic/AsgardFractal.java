@@ -73,8 +73,9 @@ public class AsgardFractal extends SwordItem {
                 }
 
                 //Target Time Handling
-                if (targetsNTime != null) {
-                    for (LivingEntity e : targetsNTime.keySet()) {
+                Set<LivingEntity> entities = targetsNTime.keySet();
+                if (entities != null) {
+                    for (LivingEntity e : entities) {
                         int ticks = targetsNTime.get(e);
                         if (ticks < MAX_TICK_AS_TARGET || e.isAlive()) {
                             targetsNTime.put(e, ++ticks);
@@ -84,8 +85,6 @@ public class AsgardFractal extends SwordItem {
                     }
                 }
 
-
-            } else {
 
             }
 
@@ -100,6 +99,9 @@ public class AsgardFractal extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
+
+        RelicImpl.addDefaultTooltip(stack, tooltip);
+        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
 
 
         stack.getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
@@ -124,8 +126,6 @@ public class AsgardFractal extends SwordItem {
             }
         });
 
-        RelicImpl.addDefaultTooltip(stack, tooltip);
-        super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
     }
 
     @Override

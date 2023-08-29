@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import vazkii.botania.client.core.handler.ClientTickHandler;
+import vazkii.botania.mixin.AccessorItemEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 
 public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlockEntity> {
@@ -29,11 +31,15 @@ public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlo
         if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
             tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getHeldStack());
         }
+
+
         ItemEntity entityItem = tileEntityIn.entity;
+
+        ((AccessorItemEntity) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
+        entityItem.setItem(tileEntityIn.getHeldStack());
+
         matrixStack.pushPose();
-        tileEntityIn.frames += 1.5f * Minecraft.getInstance().getDeltaFrameTime();
-        entityItem.setYHeadRot(tileEntityIn.frames);
-        //entityItem.age = (int) tileEntityIn.frames;
+
         Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, pPartialTick, 2.0f, matrixStack, pBufferSource, pPackedLight);
 
         matrixStack.popPose();
