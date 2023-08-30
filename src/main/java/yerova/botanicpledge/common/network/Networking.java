@@ -40,10 +40,10 @@ public class Networking {
                 .consumer(LeftClick::handle)
                 .add();
 
-        net.messageBuilder(YggRamusSwitchSkillToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(YggRamusSwitchSkillToServer::new)
-                .encoder(YggRamusSwitchSkillToServer::encode)
-                .consumer(YggRamusSwitchSkillToServer::handle)
+        net.messageBuilder(ItemButtonInteractionToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(ItemButtonInteractionToServer::new)
+                .encoder(ItemButtonInteractionToServer::encode)
+                .consumer(ItemButtonInteractionToServer::handle)
                 .add();
 
     }

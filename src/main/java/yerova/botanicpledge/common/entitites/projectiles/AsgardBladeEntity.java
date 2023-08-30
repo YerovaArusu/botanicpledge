@@ -48,7 +48,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
     }
 
-    public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, int damage) {
+    public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, float damage) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
         setTargetPos(new BlockPos(target.getX(), target.getY(), target.getZ()));

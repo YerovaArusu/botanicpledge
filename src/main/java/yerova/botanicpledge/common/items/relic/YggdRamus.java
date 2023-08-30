@@ -37,6 +37,7 @@ import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.setup.BPItemTiers;
 
@@ -179,7 +180,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
     public void shootProjectilesAbility(LivingEntity player) {
 
-        HitResult result = raytrace(player, 16, true);
+        HitResult result = EntityUtils.raytrace(player, 16, true);
         BlockPos targetPos = result.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) result).getEntity().getOnPos() : ((BlockHitResult) result).getBlockPos();
 
         double range = 4D;
@@ -274,9 +275,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 
-    public static HitResult raytrace(Entity e, double distance, boolean fluids) {
-        return e.pick(distance, 1, fluids);
-    }
+
 
     public void shootEnemiesIntoSkyAbility(Level level, Player player, int radius) {
 

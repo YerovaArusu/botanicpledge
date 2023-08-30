@@ -44,6 +44,8 @@ public final class BPConstants {
     public static final String JUMP_HEIGHT_TAG_NAME = "jump_height";
     public static final int GEM_POSSIBLE_VALUES = 10;
 
+    public static final String CURRENT_ABILITY_TAG = "current_ability";
+
     public static final String GEM_TYPE_TAG_NAME = "gem_type";
     public static final String GEM_TYPE_SWORD = "sword_type";
     public static final String GEM_TYPE_CORE = "core_type";

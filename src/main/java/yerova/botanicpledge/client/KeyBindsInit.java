@@ -14,12 +14,12 @@ import java.awt.event.KeyEvent;
 public class KeyBindsInit {
 
     //Change Mode of YggdRamus
-    public static KeyMapping yggdRamusSwitchMode;
+    public static KeyMapping switchSkillButton;
 
 
     public static void register(final FMLClientSetupEvent event) {
-        yggdRamusSwitchMode = create("yggd_ramus_switch_mode", KeyEvent.VK_V);
-        ClientRegistry.registerKeyBinding(yggdRamusSwitchMode);
+        switchSkillButton = create("yggd_ramus_switch_mode", KeyEvent.VK_V);
+        ClientRegistry.registerKeyBinding(switchSkillButton);
 
     }
 

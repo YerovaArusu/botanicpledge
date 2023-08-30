@@ -7,9 +7,8 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import yerova.botanicpledge.client.KeyBindsInit;
-import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.common.network.Networking;
-import yerova.botanicpledge.common.network.YggRamusSwitchSkillToServer;
+import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
@@ -34,8 +33,8 @@ public class InputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
         if (mc.screen == null) {
-            if (KeyBindsInit.yggdRamusSwitchMode.isDown() && mc.player != null && mc.player.getMainHandItem().getItem() instanceof YggdRamus) {
-                Networking.sendToServer(new YggRamusSwitchSkillToServer());
+            if (KeyBindsInit.switchSkillButton.isDown() && mc.player != null) {
+                Networking.sendToServer(new ItemButtonInteractionToServer());
             }
         }
 

@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.items.relic;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
@@ -17,6 +18,9 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -26,19 +30,23 @@ import vazkii.botania.xplat.IXplatAbstractions;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
+import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
+import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.setup.BPItemTiers;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.*;
 
-public class AsgardFractal extends SwordItem {
+public class AsgardFractal extends SwordItem implements LeftClickable {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
-    public final int MAX_ENTITIES = 10;
+    public static final int MAX_ENTITIES = 10;
     public final int MAX_TICK_AS_TARGET = 200;
     public float ATTACK_SPEED_MODIFIER;
     public float ATTACK_DAMAGE_MODIFIER;
+    public static final int MAX_ABILITIES = 6;
 
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
@@ -58,7 +66,7 @@ public class AsgardFractal extends SwordItem {
                     if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
 
                         if (entity instanceof Player enemy) {
-                            for (SlotResult result: CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
+                            for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
                                 if (!(result.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
                                     entity1.setGlowingTag(true);
                                     targetsNTime.put(entity1, 0);
@@ -73,14 +81,17 @@ public class AsgardFractal extends SwordItem {
                 }
 
                 //Target Time Handling
-                Set<LivingEntity> entities = targetsNTime.keySet();
-                if (entities != null) {
-                    for (LivingEntity e : entities) {
+                List<LivingEntity> entityList = targetsNTime.keySet().stream().toList();
+                if (entityList != null) {
+                    for (int i = 0; i < entityList.size(); i++) {
+                        LivingEntity e = entityList.get(i);
+
                         int ticks = targetsNTime.get(e);
                         if (ticks < MAX_TICK_AS_TARGET || e.isAlive()) {
                             targetsNTime.put(e, ++ticks);
                         } else {
                             targetsNTime.remove(e);
+                            e.setGlowingTag(false);
                         }
                     }
                 }
@@ -109,13 +120,13 @@ public class AsgardFractal extends SwordItem {
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+ " + entry.getValue()+ " " + new TranslatableComponent(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent("+ " + entry.getValue() + " " + new TranslatableComponent(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+ " + entry.getValue()+" " + new TranslatableComponent(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(new TextComponent("+ " + entry.getValue() + " " + new TranslatableComponent(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
@@ -152,9 +163,9 @@ public class AsgardFractal extends SwordItem {
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
                 double attributeValue = ATTACK_SPEED_MODIFIER;
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    attributeValue = attributeValue + (entry.getValue()/100);
+                    attributeValue = attributeValue + (entry.getValue() / 100);
                 }
-                builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier",attributeValue, AttributeModifier.Operation.ADDITION));
+                builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attributeValue, AttributeModifier.Operation.ADDITION));
             } else {
                 builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", ATTACK_SPEED_MODIFIER, AttributeModifier.Operation.ADDITION));
             }
@@ -171,56 +182,113 @@ public class AsgardFractal extends SwordItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
 
-        if (targetsNTime != null) {
-            LivingEntity[] attackables = targetsNTime.keySet().toArray(new LivingEntity[0]);
-            for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
-
-                if (attackables.length > 0) {
-                    if (attackables.length >= MAX_ENTITIES) {
-                        summonProjectile(level, player, attackables[i]);
-                    } else if (i < attackables.length) {
-                        summonProjectile(level, player, attackables[i]);
-                    } else if (i % (attackables.length) > 0) {
-                        summonProjectile(level, player, attackables[i % attackables.length]);
-                    } else {
-                        summonProjectile(level, player, attackables[0]);
-                    }
-                }
-            }
-            if (!level.isClientSide) targetsNTime = new HashMap<>();
-        }
+        activateCurrentSkill(level,player, player.getMainHandItem());
 
         return super.use(level, player, pUsedHand);
     }
 
-    public void summonProjectile(Level level, Player player, LivingEntity target) {
-        double range = 4D;
-        double j = -Math.PI + 2 * Math.PI * Math.random();
-        double k;
-        double x, y, z;
+    public static void summonProjectile(Level level, Player player, LivingEntity target) {
+        if(player.getMainHandItem().getItem() instanceof AsgardFractal) {
+            double range = 4D;
+            double j = -Math.PI + 2 * Math.PI * Math.random();
+            double k;
+            double x, y, z;
 
-        k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
-        x = player.getX() + range * Math.sin(k) * Math.cos(j);
-        y = player.getY() + range * Math.cos(k);
-        z = player.getZ() + range * Math.sin(k) * Math.sin(j);
-        j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
+            k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+            x = player.getX() + range * Math.sin(k) * Math.cos(j);
+            y = player.getY() + range * Math.cos(k);
+            z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+            j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
 
 
-        AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target, player.getMainHandItem().getMaxDamage());
-        blade.setDamage(this.getDamage());
-        blade.setPos(x, y, z);
-        blade.setVariety(1);
-        blade.faceTarget(1);
-        blade.setNoGravity(true);
-        level.addFreshEntity(blade);
+            float damage = ((AsgardFractal)player.getMainHandItem().getItem()).getDamage();
+
+            AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target, damage );
+            blade.setDamage(damage);
+            blade.setPos(x, y, z);
+            blade.setVariety(1);
+            blade.faceTarget(1);
+            blade.setNoGravity(true);
+            level.addFreshEntity(blade);
+        }
     }
-
 
 
     public static IRelic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
 
+    public static void switchToNextSkill(ItemStack stack){
+
+        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+        int i = 0;
+        if(tag.contains(BPConstants.CURRENT_ABILITY_TAG)) {
+            i =tag.getInt(BPConstants.CURRENT_ABILITY_TAG);
+            if (i >= MAX_ABILITIES) {
+                i = 0;
+            } else i++;
+        }
+
+        tag.putInt(BPConstants.CURRENT_ABILITY_TAG, i);
+    }
+
+    public static int getCurrentSkill(ItemStack stack) {
+        return stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.CURRENT_ABILITY_TAG) ?
+                stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.CURRENT_ABILITY_TAG) : 0;
+    }
+
+    public static void activateCurrentSkill(Level level, Player player,ItemStack stack) {
+        if (!(stack.getItem() instanceof AsgardFractal)) return;
+        switch (getCurrentSkill(stack)){
+            case 1 -> {
+                player.sendMessage(new TextComponent("Skill 1"), player.getUUID());
+                HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal)stack.getItem()).targetsNTime;
+
+                if (targetsNTime != null) {
+                    LivingEntity[] attackables = targetsNTime.keySet().toArray(new LivingEntity[0]);
+                    for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
+
+                        if (attackables.length > 0) {
+                            if (attackables.length >= MAX_ENTITIES) {
+                                summonProjectile(level, player, attackables[i]);
+                            } else if (i < attackables.length) {
+                                summonProjectile(level, player, attackables[i]);
+                            } else if (i % (attackables.length) > 0) {
+                                summonProjectile(level, player, attackables[i % attackables.length]);
+                            } else {
+                                summonProjectile(level, player, attackables[0]);
+                            }
+                        }
+                    }
+                    player.getCooldowns().addCooldown(stack.getItem(), 25);
+                    if (!level.isClientSide) ((AsgardFractal)stack.getItem()).targetsNTime = new HashMap<>();
+                }
+
+            }
+            case 2 -> {
+                player.sendMessage(new TextComponent("Skill 2"), player.getUUID());
+                HitResult result = EntityUtils.raytrace(player, 16, true);
+                YggdFocusEntity focus = new YggdFocusEntity(level, player);
+                focus.setPos(result.getLocation().x, result.getLocation().y, result.getLocation().z);
+
+                player.getCooldowns().addCooldown(stack.getItem(), 25);
+
+                if (!level.isClientSide)
+                    level.addFreshEntity(focus);
+            }
+            case 3 -> {player.sendMessage(new TextComponent("Skill 3"), player.getUUID());}
+            case 4 -> {player.sendMessage(new TextComponent("Skill 4"), player.getUUID());}
+            case 5 -> {player.sendMessage(new TextComponent("Skill 5"), player.getUUID());}
+            case 6 -> {player.sendMessage(new TextComponent("Skill6"), player.getUUID());}
+            default -> {player.sendMessage(new TextComponent("Skills Disabled"), player.getUUID());}
+
+        }
+    }
 
 
+    @Override
+    public void LeftClick(Level level, Player player, ItemStack stack) {
+
+
+    }
 }
