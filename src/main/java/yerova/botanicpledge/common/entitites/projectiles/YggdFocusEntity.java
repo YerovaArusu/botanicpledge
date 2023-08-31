@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.entitites.projectiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -79,18 +80,19 @@ public class YggdFocusEntity extends Entity {
         for (LivingEntity entity : getEntitiesAround()) {
             if (owner != null) {
                 if (entity instanceof Mob) {
-                    entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 3, false, false));
+                    entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 2, false, false));
                 }
                 if (entity == owner)
                     continue;
                 Vec3 vec = this.position().subtract(entity.position());
                 entity.setDeltaMovement(vec.normalize().scale(1.5D));
+
+                if (this.tickCount % 20 == 0) {
+                    entity.hurt(DamageSource.playerAttack(owner), 4);
+                }
             }
         }
 
-        if (this.tickCount % 15 == 0) {
-            //damageAllAround(damage);
-        }
 
         if (this.tickCount >= 80)
             remove(RemovalReason.KILLED);

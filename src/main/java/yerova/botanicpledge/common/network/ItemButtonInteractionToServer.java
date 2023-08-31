@@ -2,11 +2,9 @@ package yerova.botanicpledge.common.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.function.Supplier;
 
@@ -38,7 +36,7 @@ public class ItemButtonInteractionToServer {
                 }
 
                 if (player.getMainHandItem().getItem() instanceof AsgardFractal) {
-                    AsgardFractal.switchToNextSkill(player.getMainHandItem());
+                    AsgardFractal.switchSkill(player,player.getMainHandItem());
                 }
             }
         });
