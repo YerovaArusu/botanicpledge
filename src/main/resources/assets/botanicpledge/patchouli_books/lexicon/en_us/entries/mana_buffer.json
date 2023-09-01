@@ -1,0 +1,17 @@
+{
+  "name": "botanicpledge.mana_buffer",
+  "category": "botanicpledge:botanicpledge",
+  "icon": "botanicpledge:mana_buffer",
+  "priority": true,
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.mana_buffer"
+    },
+    {
+      "type": "text",
+      "text": "botanicpledge.page.mana_buffer1"
+    }
+  ]
+}

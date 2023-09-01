@@ -7,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.damagesource.DamageSource;
@@ -22,14 +23,20 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
+import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.IXplatAbstractions;
+import yerova.botanicpledge.client.particle.ParticleColor;
+import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
@@ -38,6 +45,7 @@ import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.common.utils.LeftClickable;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.*;
@@ -48,7 +56,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
     public final int MAX_TICK_AS_TARGET = 200;
     public float ATTACK_SPEED_MODIFIER;
     public float ATTACK_DAMAGE_MODIFIER;
-    public static final int MAX_ABILITIES = 6;
+    public static final int MAX_ABILITIES = 4;
 
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
@@ -62,26 +70,25 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
     public void inventoryTick(ItemStack stack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && player.getMainHandItem().equals(stack)) {
             if (!pLevel.isClientSide) {
-                Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 24);
+                if (getCurrentSkill(stack) == 1) {
+                    Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 24);
+                    if (entity instanceof LivingEntity entity1) {
+                        if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
 
-                if (entity instanceof LivingEntity entity1) {
-                    if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
-
-                        if (entity instanceof Player enemy) {
-                            for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
-                                if (!(result.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
-                                    entity1.setGlowingTag(true);
-                                    targetsNTime.put(entity1, 0);
+                            if (entity instanceof Player enemy) {
+                                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
+                                    if (!(result.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
+                                        entity1.setGlowingTag(true);
+                                        targetsNTime.put(entity1, 0);
+                                    }
                                 }
+                            } else {
+                                entity1.setGlowingTag(true);
+                                targetsNTime.put(entity1, 0);
                             }
-                        } else {
-                            entity1.setGlowingTag(true);
-                            targetsNTime.put(entity1, 0);
                         }
-
                     }
                 }
-
                 //Target Time Handling
                 List<LivingEntity> entityList = targetsNTime.keySet().stream().toList();
                 if (entityList != null) {
@@ -97,9 +104,8 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                         }
                     }
                 }
-
-
             }
+
 
             //Relic Handler
             var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
@@ -119,6 +125,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
         stack.getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
 
+            tooltip.add(new TextComponent("Current Selected Skill: " + getCurrentSkill(stack)).withStyle(ChatFormatting.GOLD));
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
@@ -182,7 +189,10 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
-        activateCurrentSkill(level, player, player.getMainHandItem());
+
+        if(ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 80_000, true)){
+            activateCurrentSkill(level, player, player.getMainHandItem());
+        }
         return super.use(level, player, pUsedHand);
     }
 
@@ -197,8 +207,6 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
             x = player.getX() + range * Math.sin(k) * Math.cos(j);
             y = player.getY() + range * Math.cos(k);
             z = player.getZ() + range * Math.sin(k) * Math.sin(j);
-            j += 2 * Math.PI * Math.random() * 0.08F + 2 * Math.PI * 0.17F;
-
 
             float damage = ((AsgardFractal) player.getMainHandItem().getItem()).getDamage();
 
@@ -262,7 +270,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                             } else {
                                 summonProjectile(level, player, attackables[0]);
                             }
-                        }
+                        } else player.displayClientMessage(new TextComponent("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
                     }
                     player.getCooldowns().addCooldown(stack.getItem(), 25);
                     if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
@@ -290,7 +298,6 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                     if (entity == player)
                         continue;
 
-
                     Vec3 vect = entity.position().subtract(player.position());
                     entity.setDeltaMovement(vect.scale(4.5D));
                     entity.hurt(DamageSource.playerAttack(player), 20);
@@ -299,14 +306,11 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                 player.getCooldowns().addCooldown(stack.getItem(), 40);
 
             }
+
             case 4 -> {
-                player.displayClientMessage(new TextComponent("Activated Ability 4:"), true);
-            }
-            case 5 -> {
-                player.displayClientMessage(new TextComponent("Activated Ability 5:"), true);
-            }
-            case 6 -> {
-                player.displayClientMessage(new TextComponent("Activated Ability 6:"), true);
+                player.displayClientMessage(new TextComponent("Activated \"Swing Attack\""), true);
+                PlayerUtils.sweepAttack(level, player,stack,0.4F);
+
             }
             default -> {
                 player.displayClientMessage(new TextComponent("No Ability Selected:"), true);
@@ -314,6 +318,8 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
         }
     }
+
+
 
 
     @Override

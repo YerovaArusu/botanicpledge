@@ -1,0 +1,13 @@
+{
+  "name": "botanicpledge.soul_slicer",
+  "category": "botanicpledge:botanicpledge",
+  "icon": "botanicpledge:soul_slicer",
+  "priority": true,
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.soul_slicer"
+    }
+  ]
+}
