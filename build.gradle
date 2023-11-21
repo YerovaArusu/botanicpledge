@@ -184,8 +184,6 @@ jar {
                 "MixinConfigs" : "botanicpledge.mixin.json"
         ])
     }
-
-    rename 'mixin.refmap.json',' botanicpledge.mixin-refmap.json'
 }
 
 jar.finalizedBy('reobfJar')
