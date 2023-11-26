@@ -3,7 +3,7 @@ package yerova.botanicpledge.common.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -53,8 +53,8 @@ public class SoulShard extends Item {
         UUID uuid  = SoulShard.getSoulUUID(pStack);
 
         if (name != null && uuid != null) {
-            TextComponent t = new TextComponent("Contains the soul of ");
-            t.append(new TextComponent(name).withStyle(ChatFormatting.AQUA));
+            MutableComponent t = Component.literal("Contains the soul of ");
+            t.append(Component.literal(name).withStyle(ChatFormatting.AQUA));
 
             pTooltipComponents.add(t);
         }

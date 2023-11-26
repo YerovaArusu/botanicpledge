@@ -1,7 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
@@ -12,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import vazkii.botania.common.block.BlockSpecialFlower;
+import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.ManaBufferBlock;
 import yerova.botanicpledge.common.blocks.YggdralSpreader;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
@@ -23,7 +22,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static vazkii.botania.common.block.ModBlocks.livingwood;
+import static vazkii.botania.common.block.BotaniaBlocks.livingwood;
 
 public class BPBlocks {
     private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
@@ -47,7 +46,7 @@ public class BPBlocks {
 
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
-            new BlockSpecialFlower(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+            new ForgeSpecialFlowerBlock(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
@@ -68,10 +67,10 @@ public class BPBlocks {
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab, String tooltipKey) {
         return BPItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(tab)) {
+                new Item.Properties()) {
             @Override
             public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-                pTooltip.add(new TranslatableComponent(tooltipKey));
+                pTooltip.add(Component.translatable(tooltipKey));
             }
         });
     }
@@ -85,6 +84,6 @@ public class BPBlocks {
     private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block,
                                                                             CreativeModeTab tab) {
         return BPItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().tab(tab)));
+                new Item.Properties()));
     }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "botanicpledge:items/marias_core"
+    "layer0": "botanicpledge:item/marias_core"
   }
 }

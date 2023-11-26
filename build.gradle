@@ -32,9 +32,13 @@ compileJava {
 }
 
 minecraft {
-    mappings channel: 'parchment', version: '2022.09.04-1.18.2'
+    mappings channel: 'parchment', version: '2023.09.03-1.20.1'
+
+    accessTransformer = file('src/main/resources/META-INF/access-transformer.cfg')
 
     runs {
+
+
         client {
             workingDirectory project.file('run')
 
@@ -89,7 +93,6 @@ minecraft {
             args "-mixin.config=botanicpledge.mixin.json"
 
 
-
             mods {
                 botanicpledge {
                     source sourceSets.main
@@ -110,12 +113,13 @@ minecraft {
 
             args '--mod', 'botanicpledge', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'),
 
-            mods {
-                botanicpledge {
-                    source sourceSets.main
-                }
-            }
+                    mods {
+                        botanicpledge {
+                            source sourceSets.main
+                        }
+                    }
         }
+
     }
 }
 
@@ -132,32 +136,41 @@ repositories {
 
     //just enough Items
     maven {
-        name = "Progwml6 maven"
+        // location of the maven that hosts JEI files before January 2023
+        name = "Progwml6's maven"
+        url = "https://dvs1.progwml6.com/files/maven/"
+    }
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
         url = "https://maven.blamejared.com/"
     }
     maven {
+        // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "https://modmaven.dev"
     }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.1'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+
     //botania
-    implementation fg.deobf("vazkii.botania:Botania:1.18.2-435")
+    implementation fg.deobf("vazkii.botania:Botania:1.20.1-441-FORGE")
 
     //curios
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:1.18.2-5.0.9.0")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.2+1.20.1")
 
     //patchouli
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.18.2-71.1")
-
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-83-FORGE")
 
     //just enough items
-    // compile against the JEI API but do not include it at runtime
-    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
-    // at runtime, use the full JEI jar
-    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
+
+    compileOnly(fg.deobf("mezz.jei:jei-1.20.1-common-api:15.2.0.27"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.2.0.27"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-1.20.1-forge:15.2.0.27"))
+
 
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
@@ -179,9 +192,9 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "Yerova",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-                "TweakOrder": 0,
-                "MixinConfigs" : "botanicpledge.mixin.json"
+                "TweakClass"              : "org.spongepowered.asm.launch.MixinTweaker",
+                "TweakOrder"              : 0,
+                "MixinConfigs"            : "botanicpledge.mixin.json"
         ])
     }
 }

@@ -1,7 +1,7 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "botanicpledge:items/asgard_fractal"
+    "layer0": "botanicpledge:item/asgard_fractal"
   },
   "display": {
     "thirdperson_righthand": {

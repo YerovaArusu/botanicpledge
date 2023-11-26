@@ -10,15 +10,16 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 public class RitualPedestalBlock extends BaseEntityBlock {
 
@@ -39,15 +40,16 @@ public class RitualPedestalBlock extends BaseEntityBlock {
         return new RitualPedestalBlockEntity(blockPos, state);
     }
 
-
+    //TODO:FIX THIS SHIT!
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (handIn != InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
         if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
             if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                if (world.getBlockState(pos.above()).getMaterial() != Material.AIR)
+                if (world.getBlockState(pos.above()).getProperties() != Blocks.AIR.defaultBlockState().getProperties())
                     return InteractionResult.SUCCESS;
+
                 ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                 world.addFreshEntity(item);
                 tile.setHeldStack(ItemStack.EMPTY);

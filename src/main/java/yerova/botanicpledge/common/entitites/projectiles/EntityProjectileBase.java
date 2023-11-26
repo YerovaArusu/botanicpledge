@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.entitites.projectiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -13,7 +14,6 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -82,7 +82,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         this.setTargetPosX((float) vec.x);
         this.setTargetPosY((float) vec.y);
         this.setTargetPosZ((float) vec.z);
-        this.setTargetPos(new BlockPos(vec));
+        this.setTargetPos(new BlockPos((int) vec.x,(int) vec.y,(int) vec.z));
     }
 
     public void faceEntity(float vx, float vy, float vz) {
@@ -215,11 +215,13 @@ public class EntityProjectileBase extends ThrowableProjectile {
         entityData.set(TARGET_POS_Z, f);
     }
 
-    @NotNull
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
+
+
+
 
 
 }

@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "1": "botanicpledge:blocks/ritual_center",
-    "particle": "botanicpledge:blocks/ritual_center"
+    "1": "botanicpledge:block/ritual_center",
+    "particle": "botanicpledge:block/ritual_center"
   },
   "elements": [
     {

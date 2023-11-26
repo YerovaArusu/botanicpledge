@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,31 +30,36 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import vazkii.botania.api.BotaniaAPI;
 import vazkii.botania.api.BotaniaAPIClient;
-import vazkii.botania.api.block.IWandBindable;
-import vazkii.botania.api.block.IWandHUD;
-import vazkii.botania.api.block.IWandable;
-import vazkii.botania.api.internal.IManaBurst;
+import vazkii.botania.api.block.WandBindable;
+import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.api.block.Wandable;
+import vazkii.botania.api.internal.ManaBurst;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.*;
-import vazkii.botania.common.block.mana.BlockSpreader;
-import vazkii.botania.common.block.tile.TileExposedSimpleInventory;
-import vazkii.botania.common.block.tile.mana.IThrottledPacket;
-import vazkii.botania.common.entity.EntityManaBurst;
+import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
+import vazkii.botania.common.block.block_entity.ExposedSimpleInventoryBlockEntity;
+import vazkii.botania.common.block.mana.ManaSpreaderBlock;
+import vazkii.botania.common.entity.ManaBurstEntity;
+import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.handler.ManaNetworkHandler;
-import vazkii.botania.common.handler.ModSounds;
 import vazkii.botania.common.helper.MathHelper;
-import vazkii.botania.common.item.ItemLexicon;
+import vazkii.botania.common.item.LexicaBotaniaItem;
+import vazkii.botania.common.item.lens.LensItem;
 import vazkii.botania.xplat.BotaniaConfig;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.xplat.XplatAbstractions;
+import yerova.botanicpledge.common.blocks.YggdralSpreader;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 
-public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory implements IWandBindable, IKeyLocked, IThrottledPacket, IManaSpreader, IWandable {
+public class YggdralSpreaderBlockEntity extends ExposedSimpleInventoryBlockEntity implements WandBindable, KeyLocked, ThrottledPacket, ManaSpreader, Wandable {
         private static final int TICKS_ALLOWED_WITHOUT_PINGBACK = 20;
         private static final double PINGBACK_EXPIRED_SEARCH_DISTANCE = 0.5;
 
@@ -110,8 +116,8 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         private boolean requestsClientUpdate = false;
         private boolean hasReceivedInitialPacket = false;
 
-        private IManaReceiver receiver = null;
-        private IManaReceiver receiverLastTick = null;
+        private ManaReceiver receiver = null;
+        private ManaReceiver receiverLastTick = null;
 
         private boolean poweredLastTick = true;
         public boolean canShootBurst = true;
@@ -123,7 +129,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         public double lastPingbackY = Integer.MIN_VALUE;
         public double lastPingbackZ = 0;
 
-        private List<EntityManaBurst.PositionProperties> lastTentativeBurst;
+        private List<ManaBurstEntity.PositionProperties> lastTentativeBurst;
         private boolean invalidTentativeBurst = false;
 
         public YggdralSpreaderBlockEntity(BlockPos pos, BlockState state) {
@@ -147,6 +153,8 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             BotaniaAPI.instance().getManaNetworkInstance().fireManaNetworkEvent(this, ManaBlockType.COLLECTOR, ManaNetworkAction.REMOVE);
         }
 
+
+
         public static void commonTick(Level level, BlockPos worldPosition, BlockState state, YggdralSpreaderBlockEntity self) {
             boolean inNetwork = ManaNetworkHandler.instance.isCollectorIn(level, self);
             boolean wasInNetwork = inNetwork;
@@ -159,11 +167,11 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             for (Direction dir : Direction.values()) {
                 var relPos = worldPosition.relative(dir);
                 if (level.hasChunkAt(relPos)) {
-                    var receiverAt = IXplatAbstractions.INSTANCE.findManaReceiver(level, relPos,
+                    var receiverAt = XplatAbstractions.INSTANCE.findManaReceiver(level, relPos,
                             level.getBlockState(relPos), level.getBlockEntity(relPos), dir.getOpposite());
-                    if (receiverAt instanceof IManaPool pool) {
-                        if (wasInNetwork && (pool != self.receiver || self.getVariant() == BlockSpreader.Variant.REDSTONE)) {
-                            if (pool instanceof IKeyLocked locked && !locked.getOutputKey().equals(self.getInputKey())) {
+                    if (receiverAt instanceof ManaPool pool) {
+                        if (wasInNetwork && (pool != self.receiver || self.getVariant() == ManaSpreaderBlock.Variant.REDSTONE)) {
+                            if (pool instanceof KeyLocked locked && !locked.getOutputKey().equals(self.getInputKey())) {
                                 continue;
                             }
 
@@ -191,10 +199,10 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
                     double z = self.lastPingbackZ;
                     AABB aabb = new AABB(x, y, z, x, y, z).inflate(PINGBACK_EXPIRED_SEARCH_DISTANCE, PINGBACK_EXPIRED_SEARCH_DISTANCE, PINGBACK_EXPIRED_SEARCH_DISTANCE);
                     @SuppressWarnings("unchecked")
-                    List<IManaBurst> bursts = (List<IManaBurst>) (List<?>) level.getEntitiesOfClass(ThrowableProjectile.class, aabb, Predicates.instanceOf(IManaBurst.class));
-                    IManaBurst found = null;
+                    List<ManaBurst> bursts = (List<ManaBurst>) (List<?>) level.getEntitiesOfClass(ThrowableProjectile.class, aabb, Predicates.instanceOf(ManaBurst.class));
+                    ManaBurst found = null;
                     UUID identity = self.getIdentifier();
-                    for (IManaBurst burst : bursts) {
+                    for (ManaBurst burst : bursts) {
                         if (burst != null && identity.equals(burst.getShooterUUID())) {
                             found = burst;
                             break;
@@ -213,17 +221,17 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
 
             boolean shouldShoot = !powered;
 
-            boolean redstoneSpreader = self.getVariant() == BlockSpreader.Variant.REDSTONE;
+            boolean redstoneSpreader = self.getVariant() == ManaSpreaderBlock.Variant.REDSTONE;
             if (redstoneSpreader) {
                 shouldShoot = powered && !self.poweredLastTick;
             }
 
-            if (shouldShoot && self.receiver instanceof IKeyLocked locked) {
+            if (shouldShoot && self.receiver instanceof KeyLocked locked) {
                 shouldShoot = locked.getInputKey().equals(self.getOutputKey());
             }
 
             ItemStack lens = self.getItemHandler().getItem(0);
-            ILensControl control = self.getLensController(lens);
+            ControlLensItem control = self.getControlLensItemler(lens);
             if (control != null) {
                 if (redstoneSpreader) {
                     if (shouldShoot) {
@@ -342,7 +350,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
                     var pos = new BlockPos(x, y, z);
                     var state = level.getBlockState(pos);
                     var be = level.getBlockEntity(pos);
-                    receiver = IXplatAbstractions.INSTANCE.findManaReceiver(level, pos, state, be, null);
+                    receiver = XplatAbstractions.INSTANCE.findManaReceiver(level, pos, state, be, null);
                 } else {
                     receiver = null;
                 }
@@ -382,7 +390,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             if (!player.isShiftKeyDown()) {
                 VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this);
             } else {
-                BlockHitResult bpos = ItemLexicon.doRayTrace(level, player, ClipContext.Fluid.NONE);
+                BlockHitResult bpos = LexicaBotaniaItem.doRayTrace(level, player, ClipContext.Fluid.NONE);
                 if (!level.isClientSide) {
                     double x = bpos.getLocation().x - getBlockPos().getX() - 0.5;
                     double y = bpos.getLocation().y - getBlockPos().getY() - 0.5;
@@ -418,7 +426,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
                 return true;
             }
 
-            for (EntityManaBurst.PositionProperties props : lastTentativeBurst) {
+            for (ManaBurstEntity.PositionProperties props : lastTentativeBurst) {
                 if (!props.contentsEqual(level)) {
                     invalidTentativeBurst = props.isInvalidIn(level);
                     return !invalidTentativeBurst;
@@ -429,10 +437,10 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         }
 
         private void tryShootBurst() {
-            boolean redstone = getVariant() == BlockSpreader.Variant.REDSTONE;
+            boolean redstone = getVariant() == ManaSpreaderBlock.Variant.REDSTONE;
             if ((receiver != null || redstone) && !invalidTentativeBurst) {
                 if (canShootBurst && (redstone || receiver.canReceiveManaFromBursts() && !receiver.isFull())) {
-                    EntityManaBurst burst = getBurst(false);
+                    ManaBurstEntity burst = getBurst(false);
                     if (burst != null) {
                         if (!level.isClientSide) {
                             mana -= burst.getStartingMana();
@@ -440,7 +448,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
                             level.addFreshEntity(burst);
                             burst.ping();
                             if (!BotaniaConfig.common().silentSpreaders()) {
-                                level.playSound(null, worldPosition, ModSounds.spreaderFire, SoundSource.BLOCKS, 0.05F * (paddingColor != null ? 0.2F : 1F), 0.7F + 0.3F * (float) Math.random());
+                                level.playSound(null, worldPosition, BotaniaSounds.spreaderFire, SoundSource.BLOCKS, 0.05F * (paddingColor != null ? 0.2F : 1F), 0.7F + 0.3F * (float) Math.random());
                             }
                         }
                     }
@@ -448,25 +456,25 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             }
         }
 
-        public BlockSpreader.Variant getVariant() {
+        public ManaSpreaderBlock.Variant getVariant() {
             Block b = getBlockState().getBlock();
-            if (b instanceof BlockSpreader spreader) {
+            if (b instanceof ManaSpreaderBlock spreader) {
                 return spreader.variant;
             } else {
-                return BlockSpreader.Variant.MANA;
+                return ManaSpreaderBlock.Variant.MANA;
             }
         }
 
         public void checkForReceiver() {
             ItemStack stack = getItemHandler().getItem(0);
-            ILensControl control = getLensController(stack);
+            ControlLensItem control = getControlLensItemler(stack);
             if (control != null && !control.allowBurstShooting(stack, this, false)) {
                 return;
             }
 
-            EntityManaBurst fakeBurst = getBurst(true);
+            ManaBurstEntity fakeBurst = getBurst(true);
             fakeBurst.setScanBeam();
-            IManaReceiver receiver = fakeBurst.getCollidedTile(true);
+            ManaReceiver receiver = fakeBurst.getCollidedTile(true);
 
             if (receiver != null && receiver.getManaReceiverLevel().hasChunkAt(receiver.getManaReceiverPos())) {
                 this.receiver = receiver;
@@ -477,25 +485,25 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         }
 
         @Override
-        public IManaBurst runBurstSimulation() {
-            EntityManaBurst fakeBurst = getBurst(true);
+        public ManaBurst runBurstSimulation() {
+            ManaBurstEntity fakeBurst = getBurst(true);
             fakeBurst.setScanBeam();
             fakeBurst.getCollidedTile(true);
             return fakeBurst;
         }
 
-        private EntityManaBurst getBurst(boolean fake) {
-            BlockSpreader.Variant variant = getVariant();
+        private ManaBurstEntity getBurst(boolean fake) {
+            ManaSpreaderBlock.Variant variant = getVariant();
             float gravity = 0F;
             BurstProperties props = new BurstProperties(variant.burstMana, variant.preLossTicks, variant.lossPerTick, gravity, variant.motionModifier, variant.color);
 
             ItemStack lens = getItemHandler().getItem(0);
-            if (!lens.isEmpty() && lens.getItem() instanceof ILensEffect lensEffect) {
+            if (!lens.isEmpty() && lens.getItem() instanceof LensEffectItem lensEffect) {
                 lensEffect.apply(lens, props, level);
             }
 
             if (getCurrentMana() >= props.maxMana || fake) {
-                EntityManaBurst burst = new EntityManaBurst(getLevel(), getBlockPos(), getRotationX(), getRotationY(), fake);
+                ManaBurstEntity burst = new ManaBurstEntity(getLevel(), getBlockPos(), getRotationX(), getRotationY(), fake);
                 burst.setSourceLens(lens);
 
                 if (mapmakerOverride) {
@@ -521,8 +529,8 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             return null;
         }
 
-        public ILensControl getLensController(ItemStack stack) {
-            if (!stack.isEmpty() && stack.getItem() instanceof ILensControl control) {
+        public ControlLensItem getControlLensItemler(ItemStack stack) {
+            if (!stack.isEmpty() && stack.getItem() instanceof ControlLensItem control) {
                 if (control.isControlLens(stack)) {
                     return control;
                 }
@@ -531,59 +539,53 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             return null;
         }
 
-        public static class WandHud implements IWandHUD {
-            private final YggdralSpreaderBlockEntity spreader;
+    public static class WandHud implements WandHUD {
+        public final YggdralSpreaderBlockEntity spreader;
 
-            public WandHud(YggdralSpreaderBlockEntity spreader) {
-                this.spreader = spreader;
-            }
-
-            @Override
-            public void renderHUD(PoseStack ms, Minecraft mc) {
-                String name = new ItemStack(spreader.getBlockState().getBlock()).getHoverName().getString();
-                int color = spreader.getVariant().hudColor;
-                BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, spreader.getCurrentMana(),
-                        spreader.getMaxMana(), name);
-
-                ItemStack lens = spreader.getItemHandler().getItem(0);
-                if (!lens.isEmpty()) {
-                    Component lensName = lens.getHoverName();
-                    int width = 16 + mc.font.width(lensName) / 2;
-                    int x = mc.getWindow().getGuiScaledWidth() / 2 - width;
-                    int y = mc.getWindow().getGuiScaledHeight() / 2 + 50;
-
-                    mc.font.drawShadow(ms, lensName, x + 20, y + 5, color);
-                    mc.getItemRenderer().renderAndDecorateItem(lens, x, y);
-                }
-
-                if (spreader.receiver != null) {
-                    var receiverPos = spreader.receiver.getManaReceiverPos();
-                    ItemStack recieverStack = new ItemStack(spreader.level.getBlockState(receiverPos).getBlock());
-                    if (!recieverStack.isEmpty()) {
-                        String stackName = recieverStack.getHoverName().getString();
-                        int width = 16 + mc.font.width(stackName) / 2;
-                        int x = mc.getWindow().getGuiScaledWidth() / 2 - width;
-                        int y = mc.getWindow().getGuiScaledHeight() / 2 + 30;
-
-                        mc.font.drawShadow(ms, stackName, x + 20, y + 5, color);
-                        mc.getItemRenderer().renderAndDecorateItem(recieverStack, x, y);
-                    }
-                }
-
-                RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
-            }
+        public WandHud(YggdralSpreaderBlockEntity spreader) {
+            this.spreader = spreader;
         }
+
+        @Override
+        public void renderHUD(GuiGraphics gui, Minecraft mc) {
+            String spreaderName = new ItemStack(spreader.getBlockState().getBlock()).getHoverName().getString();
+
+
+
+            ItemStack lensStack = spreader.getItemHandler().getItem(0);
+            ItemStack recieverStack = spreader.receiver == null ? ItemStack.EMPTY : new ItemStack(spreader.level.getBlockState(spreader.receiver.getManaReceiverPos()).getBlock());
+
+            int width = 4 + Collections.max(Arrays.asList(
+                    102, // Mana bar width
+                    mc.font.width(spreaderName),
+                    RenderHelper.itemWithNameWidth(mc, lensStack),
+                    RenderHelper.itemWithNameWidth(mc, recieverStack)
+            ));
+            int height = 22 + (lensStack.isEmpty() ? 0 : 18) + (recieverStack.isEmpty() ? 0 : 18);
+
+            int centerX = mc.getWindow().getGuiScaledWidth() / 2;
+            int centerY = mc.getWindow().getGuiScaledHeight() / 2;
+            RenderHelper.renderHUDBox(gui, centerX - width / 2, centerY + 8, centerX + width / 2, centerY + 8 + height);
+
+            int color = spreader.getVariant().hudColor;
+            BotaniaAPIClient.instance().drawSimpleManaHUD(gui, color, spreader.getCurrentMana(), spreader.getMaxMana(), spreaderName);
+            RenderHelper.renderItemWithNameCentered(gui, mc, recieverStack, centerY + 30, color);
+            RenderHelper.renderItemWithNameCentered(gui, mc, lensStack, centerY + (recieverStack.isEmpty() ? 30 : 48), color);
+        }
+    }
 
         @Override
         public void onClientDisplayTick() {
             if (level != null) {
-                EntityManaBurst burst = getBurst(true);
+                ManaBurstEntity burst = getBurst(true);
                 burst.getCollidedTile(false);
             }
         }
 
-        @Override
-        public float getManaYieldMultiplier(IManaBurst burst) {
+
+
+    @Override
+        public float getManaYieldMultiplier(ManaBurst burst) {
             return 1F;
         }
 
@@ -597,7 +599,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
 
                 @Override
                 public boolean canPlaceItem(int index, ItemStack stack) {
-                    return !stack.isEmpty() && stack.getItem() instanceof ILens;
+                    return !stack.isEmpty() && stack.getItem() instanceof LensItem;
                 }
             };
         }
@@ -644,7 +646,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
 
         @Override
         public boolean bindTo(Player player, ItemStack wand, BlockPos pos, Direction side) {
-            VoxelShape shape = player.level.getBlockState(pos).getShape(player.level, pos);
+            VoxelShape shape = player.level().getBlockState(pos).getShape(player.level(), pos);
             AABB axis = shape.isEmpty() ? new AABB(pos) : shape.bounds().move(pos);
 
             Vec3 thisVec = Vec3.atCenterOf(getBlockPos());
@@ -725,7 +727,9 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
             setChanged();
         }
 
-        @Override
+
+
+    @Override
         public void setCanShoot(boolean canShoot) {
             canShootBurst = canShoot;
         }
@@ -751,7 +755,7 @@ public class YggdralSpreaderBlockEntity extends TileExposedSimpleInventory imple
         }
 
         @Override
-        public void pingback(IManaBurst burst, UUID expectedIdentity) {
+        public void pingback(ManaBurst burst, UUID expectedIdentity) {
             if (getIdentifier().equals(expectedIdentity)) {
                 pingbackTicks = TICKS_ALLOWED_WITHOUT_PINGBACK;
                 Entity e = burst.entity();

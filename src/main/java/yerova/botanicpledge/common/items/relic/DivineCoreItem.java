@@ -1,21 +1,13 @@
 package yerova.botanicpledge.common.items.relic;
 
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
@@ -23,17 +15,15 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
-import vazkii.botania.api.item.IRelic;
-import vazkii.botania.api.mana.IManaItem;
+import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.helper.ItemNBTHelper;
-import vazkii.botania.common.item.relic.ItemRelic;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.common.lib.ModTags;
+import vazkii.botania.common.item.relic.RelicItem;
+import vazkii.botania.common.lib.BotaniaTags;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
@@ -42,10 +32,9 @@ import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
+public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
 
     private static final String TAG_MANA = "mana";
-    private static final String TAG_COSMETIC_ITEM = "cosmeticItem";
     public static final int[] LEVELS = new int[]{
             0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, 2_000_000_000
     };
@@ -67,28 +56,15 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
                 || enchantment.equals(Enchantments.BLAST_PROTECTION)
                 || enchantment.equals(Enchantments.FIRE_PROTECTION)
                 || enchantment.equals(Enchantments.ALL_DAMAGE_PROTECTION)
-        ;
+                ;
     }
 
-    @Override
-    public void fillItemCategory(CreativeModeTab pCategory, NonNullList<ItemStack> pItems) {
-        if (allowdedIn(pCategory)) {
-            ItemStack emptyManaStack = new ItemStack(this);
-            setMana(emptyManaStack, 0);
-            pItems.add(emptyManaStack);
 
-
-            ItemStack fullManaStack = new ItemStack(this);
-            setMana(fullManaStack, MAX_LEVEL_MANA);
-            pItems.add(fullManaStack);
-        }
-    }
 
     @Override
     public int getEnchantmentValue() {
         return 1;
     }
-
 
 
     @Override
@@ -112,7 +88,7 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
         }
     }
 
-    public static IRelic makeRelic(ItemStack stack) {
+    public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
 
@@ -280,42 +256,42 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-            tooltip.add(new TextComponent("Shield: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentShield() / attribute.getMaxShield() * 100))) + "%").withStyle(ChatFormatting.GRAY));
-            tooltip.add(new TextComponent("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.literal("Shield: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentShield() / attribute.getMaxShield() * 100))) + "%").withStyle(ChatFormatting.GRAY));
+            tooltip.add(Component.literal("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
 
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + " " + new TranslatableComponent(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent(" +" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(" +" + entry.getValue() + "% " + Component.translatable(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+" + entry.getValue() + "% " + new TranslatableComponent(BPConstants.JUMP_HEIGHT_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+" + entry.getValue() + "% " + Component.translatable(BPConstants.JUMP_HEIGHT_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.NO_RUNE_GEM))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.NO_RUNE_GEM)).toList()) {
-                    tooltip.add(new TextComponent(new TranslatableComponent(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
         });
@@ -380,7 +356,7 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
     }
 
 
-    public static class ManaItem implements IManaItem {
+    public static class ManaItem implements vazkii.botania.api.mana.ManaItem {
         private final ItemStack stack;
 
         public ManaItem(ItemStack stack) {
@@ -409,7 +385,7 @@ public abstract class DivineCoreItem extends ItemRelic implements ICurioItem {
 
         @Override
         public boolean canReceiveManaFromItem(ItemStack otherStack) {
-            return !otherStack.is(ModTags.Items.TERRA_PICK_BLACKLIST);
+            return !otherStack.is(BotaniaTags.Items.TERRA_PICK_BLACKLIST);
         }
 
         @Override

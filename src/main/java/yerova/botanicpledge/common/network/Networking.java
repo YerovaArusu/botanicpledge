@@ -31,19 +31,19 @@ public class Networking {
         net.messageBuilder(SyncProtector.class, id(), NetworkDirection.PLAY_TO_CLIENT)
                 .decoder(SyncProtector::new)
                 .encoder(SyncProtector::encode)
-                .consumer(SyncProtector::handle)
+                .consumerMainThread(SyncProtector::handle)
                 .add();
 
         net.messageBuilder(LeftClick.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(LeftClick::new)
                 .encoder(LeftClick::encode)
-                .consumer(LeftClick::handle)
+                .consumerMainThread(LeftClick::handle)
                 .add();
 
         net.messageBuilder(ItemButtonInteractionToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ItemButtonInteractionToServer::new)
                 .encoder(ItemButtonInteractionToServer::encode)
-                .consumer(ItemButtonInteractionToServer::handle)
+                .consumerMainThread(ItemButtonInteractionToServer::handle)
                 .add();
 
     }

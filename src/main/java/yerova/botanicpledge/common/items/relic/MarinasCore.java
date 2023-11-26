@@ -4,7 +4,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.utils.AttributedItemsUtils;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 
 public class MarinasCore extends DivineCoreItem {
 
@@ -21,7 +21,7 @@ public class MarinasCore extends DivineCoreItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         super.curioTick(slotContext, stack);
-        AttributedItemsUtils.handleShieldRegenOnCurioTick(slotContext.entity(), stack);
+        BPItemUtils.handleShieldRegenOnCurioTick(slotContext.entity(), stack);
     }
 
     public static CoreAttributeProvider getCoreAttribute() {

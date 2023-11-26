@@ -4,10 +4,14 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import yerova.botanicpledge.setup.BPParticels;
+
+import java.util.Locale;
 
 public class ColorParticleTypeData implements ParticleOptions {
 
@@ -43,11 +47,11 @@ public class ColorParticleTypeData implements ParticleOptions {
     };
 
     public ColorParticleTypeData(float r, float g, float b, boolean disableDepthTest, float size, float alpha, int age) {
-        this(BPParticels.YGGDRAL_TYPE, new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
+        this(BPParticels.YGGDRAL_TYPE.get(), new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
-        this(BPParticels.YGGDRAL_TYPE, color, disableDepthTest, size, alpha, age);
+        this(BPParticels.YGGDRAL_TYPE.get(), color, disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest) {
@@ -74,8 +78,11 @@ public class ColorParticleTypeData implements ParticleOptions {
         packetBuffer.writeUtf(color.serialize());
     }
 
-    @Override
+
     public String writeToString() {
-        return type.getRegistryName().toString() + " " + color.serialize();
+        return String.format(Locale.ROOT, "%s %.2f %s",
+                BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()), this.size, color.toString());
     }
+
+
 }

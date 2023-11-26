@@ -2,17 +2,15 @@ package yerova.botanicpledge.common.items;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.utils.PlayerUtils;
@@ -28,7 +26,7 @@ public class SoulSlicer extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(new TextComponent("Single-Use only!").withStyle(ChatFormatting.DARK_RED));
+        pTooltipComponents.add(Component.literal("Single-Use only!").withStyle(ChatFormatting.DARK_RED));
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
@@ -54,16 +52,19 @@ public class SoulSlicer extends SwordItem {
     }
 
     @Override
-    public int getItemEnchantability(ItemStack stack) {
-        return  0;
+    public int getEnchantmentValue(ItemStack stack) {
+        return 0;
     }
+
+
+
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if(!pLevel.isClientSide) {
             pLevel.addFreshEntity(new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(),pPlayer.getZ(), SoulShard.createSoulShard(pPlayer)));
-            pPlayer.sendMessage(new TextComponent("Obtained a soul shard of your own").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
-            pPlayer.hurt(DamageSource.indirectMagic(pPlayer, pPlayer), getDamage());
+            pPlayer.sendSystemMessage(Component.literal("Obtained a soul shard of your own").withStyle(ChatFormatting.AQUA));
+            pPlayer.hurt(pLevel.damageSources().indirectMagic(pPlayer, pPlayer), getDamage());
             PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getMainHandItem(), 1);
         }
         return super.use(pLevel, pPlayer, pUsedHand);
@@ -73,8 +74,8 @@ public class SoulSlicer extends SwordItem {
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
 
         if(entity instanceof Player enemy) {
-            player.level.addFreshEntity(new ItemEntity(player.level, player.getX(), player.getY(),player.getZ(), SoulShard.createSoulShard(enemy)));
-            player.sendMessage(new TextComponent("Obtained a soul shard from " + enemy.getUUID()).withStyle(ChatFormatting.AQUA), player.getUUID());
+            player.level().addFreshEntity(new ItemEntity(player.level(), player.getX(), player.getY(),player.getZ(), SoulShard.createSoulShard(enemy)));
+            player.sendSystemMessage(Component.literal("Obtained a soul shard from " + enemy.getUUID()).withStyle(ChatFormatting.AQUA));
         }
         return super.onLeftClickEntity(stack, player, entity);
     }

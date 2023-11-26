@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "botanicpledge:items/yggd_ramus_ranged"
+    "layer0": "botanicpledge:item/yggd_ramus_ranged"
   }
 }

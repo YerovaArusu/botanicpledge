@@ -39,6 +39,7 @@
   "tooltip_core_rank": "Current Rank: %1$s of %2$s",
   "tooltip_stat_low_level": "Your Core Rank is not high enough",
   "switch_weapon_mode_tooltip": "Press %1$s to switch Mode",
+  "category.botanicpledge" : "Botanic Pledge",
   "itemGroup.botanicpledge": "Botanic Pledge",
   "curios.identifier.divine_core": "Divine Core",
   "lexicon.botanicpledge.title": "Botanic Pledge",
@@ -62,5 +63,9 @@
   "botanicpledge.page.mana_buffer1": "It even requires a fully working Botanic Ritual. You use about 1 full Mana Pool... Lets hope it is worth the price",
   "botanicpledge.page.soul_slicer": "Crafting this item allows the player to obtain Soul Shards. These souls can be applied (to the worn Soul Amulet) by simply right-clicking the Item.",
   "botanicpledge.multiblock.botanic_ritual": "Botanic Ritual",
-  "enchantment.botanicpledge.rune_collector.desc": "Allows the player to obtain Rune Gems"
+  "botanicpledge.attribute.mana_damage": "Mana Damage",
+  "botanicpledge.attribute.mana_protection": "Mana Protection",
+  "enchantment.botanicpledge.rune_collector.desc": "Allows the player to obtain Rune Gems",
+  "enchantment.botanicpledge.mana_damage.desc": "Increases Mana Damage",
+  "enchantment.botanicpledge.protection.desc": "Increases Mana Protection"
 }

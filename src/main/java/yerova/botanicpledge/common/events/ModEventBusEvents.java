@@ -1,26 +1,36 @@
 package yerova.botanicpledge.common.events;
 
-import net.minecraft.core.Registry;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraftforge.common.loot.GlobalLootModifierSerializer;
-import net.minecraftforge.event.RegistryEvent;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.EnchantedBookItem;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
-import yerova.botanicpledge.setup.BotanicPledge;
+import yerova.botanicpledge.client.render.screen.ProtectorHUD;
+import yerova.botanicpledge.setup.*;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
 
+
     @SubscribeEvent
-    public static void registerModifierSerializers(final RegistryEvent.Register<GlobalLootModifierSerializer<?>> event) { //@Nonnull nicht vergessen später wieder zu adden
-        event.getRegistry().registerAll();
+    public static void onEntityAttributeModificationEvent(final EntityAttributeModificationEvent event) {
+        event.add(EntityType.PLAYER, BPAttributes.MANA_DAMAGE.get());
+    }
+
+
+
+
+
+    @SubscribeEvent
+    public static void registerGameOverlay(RegisterGuiOverlaysEvent event) {
+        event.registerAboveAll("hotbar", ProtectorHUD.PROTECTOR_HUD);
     }
 
     @SubscribeEvent
-    public static void registerRecipeTypes(final RegistryEvent.Register<RecipeSerializer<?>> event) {
-        Registry.register(Registry.RECIPE_TYPE, BotanicRitualRecipe.Type.ID, BotanicRitualRecipe.Type.INSTANCE);
-
+    public static void addToBotanicPLedgeTab(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey() == BPTabs.MAIN_TAB.getKey()) BPItems.ITEMS.getEntries().forEach(item -> event.accept(item.get()));
     }
 
 

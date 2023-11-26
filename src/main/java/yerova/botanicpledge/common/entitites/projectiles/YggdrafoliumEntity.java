@@ -11,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,16 +30,16 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import vazkii.botania.api.internal.IManaBurst;
+import vazkii.botania.api.internal.ManaBurst;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.*;
 import vazkii.botania.client.fx.SparkleParticleData;
 import vazkii.botania.client.fx.WispParticleData;
-import vazkii.botania.common.block.tile.mana.IThrottledPacket;
-import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
-import vazkii.botania.common.proxy.IProxy;
+import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
+import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
+import vazkii.botania.common.proxy.Proxy;
 import vazkii.botania.xplat.BotaniaConfig;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BPEntities;
 
@@ -46,7 +47,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBurst {
+import static vazkii.botania.api.internal.ManaBurst.NO_SOURCE;
+
+public class YggdrafoliumEntity extends EntityProjectileBase implements ManaBurst {
 
     private static final String TAG_TICKS_EXISTED = "ticksExisted";
     private static final String TAG_COLOR = "color";
@@ -133,7 +136,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     public YggdrafoliumEntity(Player player) {
-        super(BPEntities.YGGDRAFOLIUM.get(), player.level, player);
+        super(BPEntities.YGGDRAFOLIUM.get(), player.level(), player);
 
         setBurstSourceCoords(NO_SOURCE);
         setRot(player.getYRot() + 180, -player.getXRot());
@@ -167,7 +170,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     @Override
     public void tick() {
         setTicksExisted(getTicksExisted() + 1);
-        if ((!level.isClientSide || fake)
+        if ((!level().isClientSide || fake)
                 && !hasLeftSource()
                 && !blockPosition().equals(getBurstSourceBlockPos())) {
             // XXX: Should this check by bounding box instead of simply blockPosition()?
@@ -182,7 +185,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             ping();
         }
 
-        ILensEffect lens = getLensInstance();
+        LensEffectItem lens = getLensInstance();
         if (lens != null) {
             lens.updateBurst(this, getSourceLens());
         }
@@ -220,7 +223,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         return false;
     }
 
-    private IManaReceiver collidedTile = null;
+    private ManaReceiver collidedTile = null;
     private boolean noParticles = false;
 
     @Override
@@ -337,11 +340,11 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     public void particles() {
-        if (!isAlive() || !level.isClientSide) {
+        if (!isAlive() || !level().isClientSide) {
             return;
         }
 
-        ILensEffect lens = getLensInstance();
+        LensEffectItem lens = getLensInstance();
         if (lens != null && !lens.doParticles(this, getSourceLens())) {
             return;
         }
@@ -362,15 +365,15 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
 
             if (!noParticles && shouldDoFakeParticles()) {
                 SparkleParticleData data = SparkleParticleData.fake(0.4F * size, r, g, b, 1);
-                level.addParticle(data, true, getX(), getY(), getZ(), 0, 0, 0);
+                level().addParticle(data, true, getX(), getY(), getZ(), 0, 0, 0);
             }
         } else {
-            Player player = IProxy.INSTANCE.getClientPlayer();
-            boolean depth = player == null || !ItemMonocle.hasMonocle(player);
+            Player player = Proxy.INSTANCE.getClientPlayer();
+            boolean depth = player == null || !ManaseerMonocleItem.hasMonocle(player);
 
             if (BotaniaConfig.client().subtlePowerSystem()) {
                 WispParticleData data = WispParticleData.wisp(0.1F * size, r, g, b, depth);
-                IProxy.INSTANCE.addParticleForceNear(level, data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
+                Proxy.INSTANCE.addParticleForceNear(level(), data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
             } else {
                 float or = r;
                 float og = g;
@@ -397,7 +400,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
                     }
                     size = osize + ((float) Math.random() - 0.5F) * 0.065F + (float) Math.sin(new Random(uuid.getMostSignificantBits()).nextInt(9001)) * 0.4F;
                     WispParticleData data = WispParticleData.wisp(0.2F * size, r, g, b, depth);
-                    IProxy.INSTANCE.addParticleForceNear(level, data, iterX, iterY, iterZ,
+                    Proxy.INSTANCE.addParticleForceNear(level(), data, iterX, iterY, iterZ,
                             (float) -getDeltaMovement().x() * 0.01F,
                             (float) -getDeltaMovement().y() * 0.01F,
                             (float) -getDeltaMovement().z() * 0.01F);
@@ -414,7 +417,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
                 } while (Math.abs(diffVec.length()) > distance);
 
                 WispParticleData data = WispParticleData.wisp(0.1F * size, or, og, ob, depth);
-                level.addParticle(data, iterX, iterY, iterZ, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F);
+                level().addParticle(data, iterX, iterY, iterZ, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F);
             }
         }
     }
@@ -433,14 +436,14 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             return;
         }
         lastCollision = collidePos.immutable();
-        BlockEntity tile = level.getBlockEntity(collidePos);
-        BlockState state = level.getBlockState(collidePos);
+        BlockEntity tile = level().getBlockEntity(collidePos);
+        BlockState state = level().getBlockState(collidePos);
         Block block = state.getBlock();
 
-        var ghost = IXplatAbstractions.INSTANCE.findManaGhost(level, collidePos, state, tile);
-        var ghostBehaviour = ghost != null ? ghost.getGhostBehaviour() : IManaCollisionGhost.Behaviour.RUN_ALL;
+        var ghost = XplatAbstractions.INSTANCE.findManaGhost(level(), collidePos, state, tile);
+        var ghostBehaviour = ghost != null ? ghost.getGhostBehaviour() : ManaCollisionGhost.Behaviour.RUN_ALL;
 
-        if (ghostBehaviour == IManaCollisionGhost.Behaviour.SKIP_ALL
+        if (ghostBehaviour == ManaCollisionGhost.Behaviour.SKIP_ALL
                 || block instanceof BushBlock
                 || block instanceof LeavesBlock) {
             return;
@@ -451,12 +454,12 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             return;
         }
 
-        var receiver = IXplatAbstractions.INSTANCE.findManaReceiver(level, collidePos, state, tile, hit.getDirection());
+        var receiver = XplatAbstractions.INSTANCE.findManaReceiver(level(), collidePos, state, tile, hit.getDirection());
         collidedTile = receiver;
 
-        if (!fake && !noParticles && !level.isClientSide) {
+        if (!fake && !noParticles && !level().isClientSide) {
             if (receiver != null && receiver.canReceiveManaFromBursts() && onReceiverImpact(receiver)) {
-                if (tile instanceof IThrottledPacket throttledPacket) {
+                if (tile instanceof ThrottledPacket throttledPacket) {
                     throttledPacket.markDispatchable();
                 } else if (tile != null) {
                     VanillaPacketDispatcher.dispatchTEToNearbyPlayers(tile);
@@ -464,12 +467,12 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             }
         }
 
-        var trigger = IXplatAbstractions.INSTANCE.findManaTrigger(level, collidePos, state, tile);
+        var trigger = XplatAbstractions.INSTANCE.findManaTrigger(level(), collidePos, state, tile);
         if (trigger != null) {
             trigger.onBurstCollision(this);
         }
 
-        if (ghostBehaviour == IManaCollisionGhost.Behaviour.RUN_RECEIVER_TRIGGER) {
+        if (ghostBehaviour == ManaCollisionGhost.Behaviour.RUN_RECEIVER_TRIGGER) {
             return;
         }
 
@@ -488,7 +491,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         if (hit.getEntity() == getOwner()) {
             return;
         } else {
-            hit.getEntity().hurt(new DamageSource("Yggdrafolium"), damage);
+            hit.getEntity().hurt(level().damageSources().playerAttack((Player) getOwner()), damage);
             if (getOwner() instanceof Player player && player.getMainHandItem().getItem() instanceof YggdRamus) {
                 YggdRamus.appendFireAspect(player, hit.getEntity());
             }
@@ -500,7 +503,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     private void onHitCommon(HitResult hit) {
 
         if (isAlive()) {
-            if (!fake && level.isClientSide) {
+            if (!fake && level().isClientSide) {
                 int color = getColor();
                 float r = (color >> 16 & 0xFF) / 255F;
                 float g = (color >> 8 & 0xFF) / 255F;
@@ -513,23 +516,23 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
                 if (!BotaniaConfig.client().subtlePowerSystem()) {
                     for (int i = 0; i < 4; i++) {
                         WispParticleData data = WispParticleData.wisp(0.15F * size, r, g, b);
-                        level.addParticle(data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.04F, (float) (Math.random() - 0.5F) * 0.04F, (float) (Math.random() - 0.5F) * 0.04F);
+                        level().addParticle(data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.04F, (float) (Math.random() - 0.5F) * 0.04F, (float) (Math.random() - 0.5F) * 0.04F);
                     }
                 }
                 SparkleParticleData data = SparkleParticleData.sparkle((float) 4, r, g, b, 2);
-                level.addParticle(data, getX(), getY(), getZ(), 0, 0, 0);
+                level().addParticle(data, getX(), getY(), getZ(), 0, 0, 0);
             }
 
             explodeAndDie();
         }
     }
 
-    private boolean onReceiverImpact(IManaReceiver receiver) {
+    private boolean onReceiverImpact(ManaReceiver receiver) {
         if (hasWarped()) {
             return false;
         }
 
-        ILensEffect lens = getLensInstance();
+        LensEffectItem lens = getLensInstance();
         int mana = getMana();
 
         if (lens != null) {
@@ -537,7 +540,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
             mana = lens.getManaToTransfer(this, stack, receiver);
         }
 
-        if (receiver instanceof IManaCollector collector) {
+        if (receiver instanceof ManaCollector collector) {
             mana *= collector.getManaYieldMultiplier(this);
         }
 
@@ -564,9 +567,9 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     @Nullable
-    private IManaSpreader getShooter() {
-        var receiver = IXplatAbstractions.INSTANCE.findManaReceiver(level, getBurstSourceBlockPos(), null);
-        return receiver instanceof IManaSpreader spreader ? spreader : null;
+    private ManaSpreader getShooter() {
+        var receiver = XplatAbstractions.INSTANCE.findManaReceiver(level(), getBurstSourceBlockPos(), null);
+        return receiver instanceof ManaSpreader spreader ? spreader : null;
     }
 
     @Override
@@ -682,9 +685,9 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         _ticksExisted = ticks;
     }
 
-    private ILensEffect getLensInstance() {
+    private LensEffectItem getLensInstance() {
         ItemStack lens = getSourceLens();
-        if (!lens.isEmpty() && lens.getItem() instanceof ILensEffect effect) {
+        if (!lens.isEmpty() && lens.getItem() instanceof LensEffectItem effect) {
             return effect;
         }
 
@@ -790,6 +793,11 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
         }
     }
 
+    @Override
+    public boolean alwaysAccepts() {
+        return super.alwaysAccepts();
+    }
+
     public record PositionProperties(BlockPos coords, BlockState state) {
         public static YggdrafoliumEntity.PositionProperties fromEntity(Entity entity) {
             return new YggdrafoliumEntity.PositionProperties(entity.blockPosition(), entity.getFeetBlockState());
@@ -818,8 +826,8 @@ public class YggdrafoliumEntity extends EntityProjectileBase implements IManaBur
     }
 
     private void explodeAndDie() {
-        if (!level.isClientSide) {
-            level.explode(this, getX(), getY(), getZ(), 2F, Explosion.BlockInteraction.NONE);
+        if (!level().isClientSide) {
+            level().explode(this, getX(), getY(), getZ(), 2F, Level.ExplosionInteraction.NONE);
             discard();
         }
     }

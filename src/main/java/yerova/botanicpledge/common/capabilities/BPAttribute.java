@@ -1,7 +1,7 @@
 package yerova.botanicpledge.common.capabilities;
 
 import net.minecraft.nbt.CompoundTag;
-import yerova.botanicpledge.common.utils.AttributedItemsUtils;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class BPAttribute {
     private HashMap<Integer, Map.Entry<String, Double>> sockets;
 
     public BPAttribute() {
-        this.sockets = AttributedItemsUtils.getBPAttributeDefault();
+        this.sockets = BPItemUtils.getBPAttributeDefault();
     }
 
     public int getIndexOfSocketAttribute(String s) {

@@ -3,10 +3,14 @@
   "package": "yerova.botanicpledge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinLivingEntity"
+    "MixinLivingEntity",
+    "MixinItemStack",
+    "SwordItemMixin"
   ],
   "server": [
-    "MixinLivingEntity"
+    "MixinLivingEntity",
+    "MixinItemStack",
+    "SwordItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

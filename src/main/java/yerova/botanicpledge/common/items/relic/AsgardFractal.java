@@ -5,12 +5,8 @@ import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -23,20 +19,16 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-import vazkii.botania.api.BotaniaAPI;
-import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.xplat.IXplatAbstractions;
-import yerova.botanicpledge.client.particle.ParticleColor;
-import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
+import vazkii.botania.xplat.XplatAbstractions;
+
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
@@ -71,7 +63,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
         if (pEntity instanceof Player player && player.getMainHandItem().equals(stack)) {
             if (!pLevel.isClientSide) {
                 if (getCurrentSkill(stack) == 1) {
-                    Entity entity = EntityUtils.getPlayerPOVHitResult(player.level, player, 24);
+                    Entity entity = EntityUtils.getPlayerPOVHitResult(player.level(), player, 24);
                     if (entity instanceof LivingEntity entity1) {
                         if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
 
@@ -108,7 +100,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
 
             //Relic Handler
-            var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
+            var relic = XplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
                 relic.tickBinding(player);
             }
@@ -125,23 +117,23 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
         stack.getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
 
-            tooltip.add(new TextComponent("Current Selected Skill: " + getCurrentSkill(stack)).withStyle(ChatFormatting.GOLD));
+            tooltip.add(Component.literal("Current Selected Skill: " + getCurrentSkill(stack)).withStyle(ChatFormatting.GOLD));
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+ " + entry.getValue() + " " + new TranslatableComponent(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+ " + entry.getValue() + " " + Component.translatable(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(new TextComponent("+ " + entry.getValue() + " " + new TranslatableComponent(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+ " + entry.getValue() + " " +Component.translatable(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.NO_RUNE_GEM))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.NO_RUNE_GEM)).toList()) {
-                    tooltip.add(new TextComponent(new TranslatableComponent(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
         });
@@ -221,7 +213,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
     }
 
 
-    public static IRelic makeRelic(ItemStack stack) {
+    public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
 
@@ -240,7 +232,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                 } else i--;
             }
         }
-        player.displayClientMessage(new TextComponent("Selected Ability: " + i).withStyle(ChatFormatting.GOLD), true);
+        player.displayClientMessage(Component.literal("Selected Ability: " + i).withStyle(ChatFormatting.GOLD), true);
         tag.putInt(BPConstants.CURRENT_ABILITY_TAG, i);
     }
 
@@ -253,7 +245,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
         if (!(stack.getItem() instanceof AsgardFractal)) return;
         switch (getCurrentSkill(stack)) {
             case 1 -> {
-                player.displayClientMessage(new TextComponent("Activated \"Shoot Blades\""), true);
+                player.displayClientMessage(Component.literal("Activated \"Shoot Blades\""), true);
                 HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal) stack.getItem()).targetsNTime;
 
                 if (targetsNTime != null) {
@@ -270,7 +262,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                             } else {
                                 summonProjectile(level, player, attackables[0]);
                             }
-                        } else player.displayClientMessage(new TextComponent("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
+                        } else player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
                     }
                     player.getCooldowns().addCooldown(stack.getItem(), 25);
                     if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
@@ -278,7 +270,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
             }
             case 2 -> {
-                player.displayClientMessage(new TextComponent("Activated \"Enemy Collector\""), true);
+                player.displayClientMessage(Component.literal("Activated \"Enemy Collector\""), true);
                 HitResult result = EntityUtils.raytrace(player, 16, true);
                 YggdFocusEntity focus = new YggdFocusEntity(level, player);
                 focus.setPos(result.getLocation().x, result.getLocation().y, result.getLocation().z);
@@ -289,7 +281,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                     level.addFreshEntity(focus);
             }
             case 3 -> {
-                player.displayClientMessage(new TextComponent("Activated \"Push Back\""), true);
+                player.displayClientMessage(Component.literal("Activated \"Push Back\""), true);
 
                 for (LivingEntity entity : EntityUtils.getAttackableEnemiesAround(player, level, 8, new EntityUtils.AttackableEntitiesSelector())) {
                     if (entity instanceof Mob) {
@@ -300,7 +292,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
                     Vec3 vect = entity.position().subtract(player.position());
                     entity.setDeltaMovement(vect.scale(4.5D));
-                    entity.hurt(DamageSource.playerAttack(player), 20);
+                    entity.hurt(level.damageSources().playerAttack(player), 20);
                 }
 
                 player.getCooldowns().addCooldown(stack.getItem(), 40);
@@ -308,12 +300,12 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
             }
 
             case 4 -> {
-                player.displayClientMessage(new TextComponent("Activated \"Swing Attack\""), true);
+                player.displayClientMessage(Component.literal("Activated \"Swing Attack\""), true);
                 PlayerUtils.sweepAttack(level, player,stack,0.4F);
 
             }
             default -> {
-                player.displayClientMessage(new TextComponent("No Ability Selected:"), true);
+                player.displayClientMessage(Component.literal("No Ability Selected:"), true);
             }
 
         }

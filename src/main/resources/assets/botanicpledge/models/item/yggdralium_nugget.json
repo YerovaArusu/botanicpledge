@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "botanicpledge:items/yggdralium_nugget"
+    "layer0": "botanicpledge:item/yggdralium_nugget"
   }
 }

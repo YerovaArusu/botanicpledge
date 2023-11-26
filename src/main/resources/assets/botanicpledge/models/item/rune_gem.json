@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "botanicpledge:items/rune_gem"
+    "layer0": "botanicpledge:item/rune_gem"
   }
 }

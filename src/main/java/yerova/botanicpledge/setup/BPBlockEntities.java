@@ -1,12 +1,13 @@
 package yerova.botanicpledge.setup;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import vazkii.botania.api.block.IWandHUD;
-import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
-import vazkii.botania.common.block.tile.ModTiles;
+import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.api.block_entity.BindableSpecialFlowerBlockEntity;
+import vazkii.botania.common.block.block_entity.BotaniaBlockEntities;
 import yerova.botanicpledge.common.blocks.block_entities.ManaBufferBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
@@ -14,7 +15,7 @@ import yerova.botanicpledge.common.blocks.block_entities.YggdralSpreaderBlockEnt
 import yerova.botanicpledge.common.blocks.block_entities.generating.ThunderLilyBLockEntity;
 
 public class BPBlockEntities {
-    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, BotanicPledge.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, BotanicPledge.MOD_ID);
 
     public static final RegistryObject<BlockEntityType<YggdralSpreaderBlockEntity>> YGGDRAL_SPREADER =
             BLOCK_ENTITIES.register("yggdral_spreader", () ->
@@ -37,10 +38,10 @@ public class BPBlockEntities {
                     BlockEntityType.Builder.of(ThunderLilyBLockEntity::new, BPBlocks.THUNDER_LILY.get()).build(null));
 
 
-    public static void registerWandHudCaps(ModTiles.BECapConsumer<IWandHUD> consumer) {
+    public static void registerWandHudCaps(BotaniaBlockEntities.BECapConsumer<WandHUD> consumer) {
         consumer.accept(be -> new ManaBufferBlockEntity.WandHud((ManaBufferBlockEntity) be), BPBlockEntities.MANA_BUFFER_BLOCK_ENTITY.get());
         consumer.accept(be -> new YggdralSpreaderBlockEntity.WandHud((YggdralSpreaderBlockEntity) be), BPBlockEntities.YGGDRAL_SPREADER.get());
-        consumer.accept(be -> new TileEntityGeneratingFlower.GeneratingWandHud<>((ThunderLilyBLockEntity) be), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY.get());
+        consumer.accept(be -> new BindableSpecialFlowerBlockEntity.BindableFlowerWandHud<>((ThunderLilyBLockEntity) be), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY.get());
     }
 
 }

@@ -3,8 +3,7 @@ package yerova.botanicpledge.common.recipes.ritual;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.Registry;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -19,7 +18,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
@@ -28,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BotanicRitualRecipe implements IBotanicRitualRecipe {
+public class BotanicRitualRecipe implements IBotanicRitualRecipe{
 
 
     public Ingredient reagent; // Used in the arcane pedestal
@@ -38,16 +36,14 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     public int manaCost;
     public boolean keepNbtOfReagent = false;
     public HashMap<String, Integer> additionalAttributes = null;
-    public CompoundTag gemCompoundTag = null;
 
-    public static final String RECIPE_ID = "botanic_ritual";
 
-    public BotanicRitualRecipe(ItemStack result, Ingredient reagent, List<Ingredient> pedestalItems) {
+    public BotanicRitualRecipe(ItemStack result, Ingredient reagent, List<Ingredient> pedestalItems, ResourceLocation id) {
         this.reagent = reagent;
         this.pedestalItems = pedestalItems;
         this.result = result;
         manaCost = 0;
-        this.id = new ResourceLocation(BotanicPledge.MOD_ID, result.getItem().getRegistryName().getPath());
+        this.id = id;
     }
 
     public BotanicRitualRecipe(ResourceLocation id, List<Ingredient> pedestalItems, Ingredient reagent, ItemStack result, int manaCost) {
@@ -91,11 +87,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
         }
         return stack;
-    }
-
-    @Override
-    public HashMap<String, Integer> getAdditionalAttributes() {
-        return this.additionalAttributes;
     }
 
 
@@ -145,16 +136,17 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
     @Override
     public boolean matches(RitualCenterBlockEntity tile, Level worldIn) {
+        if(worldIn.isClientSide) return false;
         return isMatch(tile.getPedestalItems(), tile.heldStack, tile, null);
+    }
+
+    @Override
+    public ItemStack assemble(RitualCenterBlockEntity pContainer, RegistryAccess pRegistryAccess) {
+        return this.result;
     }
 
     public boolean matches(RitualCenterBlockEntity tile, Level worldIn, @Nullable Player playerEntity) {
         return isMatch(tile.getPedestalItems(), tile.heldStack, tile, playerEntity);
-    }
-
-    @Override
-    public ItemStack assemble(RitualCenterBlockEntity inv) {
-        return this.result;
     }
 
     @Override
@@ -163,9 +155,10 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
     }
 
     @Override
-    public ItemStack getResultItem() {
+    public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
         return this.result == null ? ItemStack.EMPTY : result;
     }
+
 
     @Override
     public ResourceLocation getId() {
@@ -179,22 +172,18 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
     @Override
     public RecipeType<?> getType() {
-        return Registry.RECIPE_TYPE.get(new ResourceLocation(BotanicPledge.MOD_ID, RECIPE_ID));
+        return Type.INSTANCE;
     }
 
     public static class Type implements RecipeType<BotanicRitualRecipe> {
-        private Type() {
-        }
-
         public static final BotanicRitualRecipe.Type INSTANCE = new BotanicRitualRecipe.Type();
-        public static final String ID = "botanic_ritual";
+        public static final ResourceLocation ID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
     }
 
 
     public static class Serializer implements RecipeSerializer<BotanicRitualRecipe> {
         public static final BotanicRitualRecipe.Serializer INSTANCE = new BotanicRitualRecipe.Serializer();
-        public static final ResourceLocation ID =
-                new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
+        public static final ResourceLocation ID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
 
 
         @Override
@@ -259,21 +248,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
             buf.writeBoolean(recipe.keepNbtOfReagent);
         }
 
-        @Override
-        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
-            return INSTANCE;
-        }
 
-        @Nullable
-        @Override
-        public ResourceLocation getRegistryName() {
-            return ID;
-        }
-
-        @Override
-        public Class<RecipeSerializer<?>> getRegistryType() {
-            return BotanicRitualRecipe.Serializer.castClass(RecipeSerializer.class);
-        }
 
         @SuppressWarnings("unchecked") // Need this wrapper, because generics
         private static <G> Class<G> castClass(Class<?> cls) {

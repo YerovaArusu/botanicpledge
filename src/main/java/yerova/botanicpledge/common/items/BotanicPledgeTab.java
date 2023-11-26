@@ -1,18 +1,18 @@
 package yerova.botanicpledge.common.items;
 
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import yerova.botanicpledge.setup.BPItems;
 
-public class BotanicPledgeTab extends CreativeModeTab {
+import java.util.function.Supplier;
 
+public class BotanicPledgeTab extends CreativeModeTab {
     public static final BotanicPledgeTab BOTANIC_PLEDGE_TAB = new BotanicPledgeTab("botanicpledge");
 
     public BotanicPledgeTab(String label) {
-        super(label);
-        hideTitle();
-        setBackgroundSuffix(label + ".png");
+        super(builder().backgroundSuffix(label + ".png").title(Component.literal(label)));
     }
 
     @Override
@@ -21,7 +21,11 @@ public class BotanicPledgeTab extends CreativeModeTab {
     }
 
     @Override
-    public ItemStack makeIcon() {
+    public ItemStack getIconItem() {
         return new ItemStack(BPItems.MARIAS_CORE.get());
     }
+
+
+
+
 }

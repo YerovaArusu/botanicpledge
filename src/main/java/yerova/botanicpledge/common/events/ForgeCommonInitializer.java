@@ -4,18 +4,22 @@ import com.google.common.base.Suppliers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeCapabilities;
-import vazkii.botania.api.item.IRelic;
-import vazkii.botania.api.mana.IManaItem;
+import vazkii.botania.api.item.Relic;
+import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
+import yerova.botanicpledge.client.particle.ColorParticleTypeData;
+import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.items.relic.*;
+import yerova.botanicpledge.setup.BPParticels;
 import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.setup.BPItems;
 
@@ -28,21 +32,19 @@ import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID)
 public class ForgeCommonInitializer {
 
-    private static final Supplier<Map<Item, Function<ItemStack, IRelic>>> RELIC = Suppliers.memoize(() -> Map.of(
+    private static final Supplier<Map<Item, Function<ItemStack, Relic>>> RELIC = Suppliers.memoize(() -> Map.of(
             BPItems.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
-            BPItems.YGGD_RAMUS.get(), YggdRamus::makeRelic,
-            BPItems.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic
+            BPItems.YGGD_RAMUS.get(), DivineCoreItem::makeRelic,
+            BPItems.ASGARD_FRACTAL.get(),AsgardFractal::makeRelic
     ));
 
 
 
-    private static final Supplier<Map<Item, Function<ItemStack, IManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
+    private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
             BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
             BPItems.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
     ));
-
-
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
 
         ItemStack stack = e.getObject();
@@ -57,6 +59,10 @@ public class ForgeCommonInitializer {
                     CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_ITEM, makeManaItem.apply(stack)));
         }
 
+    }
+    @SubscribeEvent
+    public static void particleRegister(RegisterParticleProvidersEvent event) {
+        event.registerSpecial(BPParticels.YGGDRAL_TYPE.get(), YggdralParticleData::createData);
     }
 
     @SubscribeEvent

@@ -1,7 +1,7 @@
 package yerova.botanicpledge.common.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -11,22 +11,23 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.common.block.ModBlocks;
-import vazkii.botania.common.item.ItemTwigWand;
+import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.HashMap;
 
@@ -44,10 +45,10 @@ public class RitualCenterBlock extends BaseEntityBlock {
         blockList.putAll(manaPools());
         blockList.putAll(ritualPedestals());
 
-        blockList.put(new BlockPos(1, 1, 1), ModBlocks.gaiaPylon);
-        blockList.put(new BlockPos(-1, 1, 1), ModBlocks.gaiaPylon);
-        blockList.put(new BlockPos(1, 1, -1), ModBlocks.gaiaPylon);
-        blockList.put(new BlockPos(-1, 1, -1), ModBlocks.gaiaPylon);
+        blockList.put(new BlockPos(1, 1, 1), BotaniaBlocks.gaiaPylon);
+        blockList.put(new BlockPos(-1, 1, 1), BotaniaBlocks.gaiaPylon);
+        blockList.put(new BlockPos(1, 1, -1), BotaniaBlocks.gaiaPylon);
+        blockList.put(new BlockPos(-1, 1, -1), BotaniaBlocks.gaiaPylon);
 
 
         return blockList;
@@ -77,10 +78,10 @@ public class RitualCenterBlock extends BaseEntityBlock {
     public static final HashMap<BlockPos, Block> manaPools() {
         HashMap<BlockPos, Block> blockList = new HashMap<BlockPos, Block>();
 
-        blockList.put(new BlockPos(1, 0, 1), ModBlocks.manaPool);
-        blockList.put(new BlockPos(-1, 0, 1), ModBlocks.manaPool);
-        blockList.put(new BlockPos(1, 0, -1), ModBlocks.manaPool);
-        blockList.put(new BlockPos(-1, 0, -1), ModBlocks.manaPool);
+        blockList.put(new BlockPos(1, 0, 1), BotaniaBlocks.manaPool);
+        blockList.put(new BlockPos(-1, 0, 1), BotaniaBlocks.manaPool);
+        blockList.put(new BlockPos(1, 0, -1), BotaniaBlocks.manaPool);
+        blockList.put(new BlockPos(-1, 0, -1), BotaniaBlocks.manaPool);
 
         return blockList;
     }
@@ -106,14 +107,15 @@ public class RitualCenterBlock extends BaseEntityBlock {
                 tile.attemptCraft(tile.getHeldStack(), player);
             }
 
+
             if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                if (world.getBlockState(pos.above()).getMaterial() != Material.AIR)
+                if (world.getBlockState(pos.above()).getProperties() != Blocks.AIR.defaultBlockState().getProperties())
                     return InteractionResult.SUCCESS;
                 ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                 world.addFreshEntity(item);
                 tile.setHeldStack(ItemStack.EMPTY);
             } else if (!player.getInventory().getSelected().isEmpty()
-                    && !(player.getItemInHand(handIn).getItem() instanceof ItemTwigWand)) {
+                    && !(player.getItemInHand(handIn).getItem() instanceof WandOfTheForestItem)) {
                 if (tile.getHeldStack() != null) {
                     ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
                     world.addFreshEntity(item);
@@ -132,7 +134,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
     public static boolean completedStructure(Player player, BlockPos blockPos, Level level, InteractionHand interactionHand) {
         boolean allChecked = true;
-        if (player.getItemInHand(interactionHand).getItem() instanceof ItemTwigWand) {
+        if (player.getItemInHand(interactionHand).getItem() instanceof WandOfTheForestItem) {
             for (BlockPos s : ritualBlocks().keySet()) {
                 BlockPos checkPos = blockPos.offset(s);
                 if (!level.getBlockState(checkPos).getBlock().equals(ritualBlocks().get(s))) {
@@ -141,7 +143,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
                 }
             }
             if (!allChecked) {
-                player.sendMessage(new TextComponent("Structure not Complete"), player.getUUID());
+                player.sendSystemMessage(Component.literal("Structure not Complete"));
             }
 
         }

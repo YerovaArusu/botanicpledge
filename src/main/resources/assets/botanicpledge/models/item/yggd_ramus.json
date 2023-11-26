@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "botanicpledge:items/yggd_ramus"
+    "layer0": "botanicpledge:item/yggd_ramus"
   },
   "overrides": [
     {

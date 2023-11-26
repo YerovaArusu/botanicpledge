@@ -2,21 +2,22 @@ package yerova.botanicpledge.client.events;
 
 
 import com.google.common.base.Suppliers;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelBakeEvent;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.model.ForgeModelBakery;
+import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
-import vazkii.botania.api.block.IWandHUD;
+import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.forge.CapabilityUtil;
-import vazkii.botania.forge.mixin.client.ForgeAccessorModelBakery;
+import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
@@ -48,8 +49,8 @@ public class ForgeClientInitializer {
         }
     }
 
-    private static final Supplier<Map<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>> WAND_HUD = Suppliers.memoize(() -> {
-        var ret = new IdentityHashMap<BlockEntityType<?>, Function<BlockEntity, IWandHUD>>();
+    private static final Supplier<Map<BlockEntityType<?>, Function<BlockEntity, WandHUD>>> WAND_HUD = Suppliers.memoize(() -> {
+        var ret = new IdentityHashMap<BlockEntityType<?>, Function<BlockEntity, WandHUD>>();
         BPBlockEntities.registerWandHudCaps((factory, types) -> {
             for (var type : types) {
                 ret.put(type, factory);
@@ -72,16 +73,22 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
     }
     @SubscribeEvent
-    public static void onModelRegister(ModelRegistryEvent evt) {
-        var resourceManager = ((ForgeAccessorModelBakery) (Object) ForgeModelBakery.instance()).getResourceManager();
-        ModelBakery.onModelRegister(resourceManager, ForgeModelBakery::addSpecialModel);
+    public static void onModelRegister(ModelEvent.RegisterAdditional evt) {
+        var resourceManager = Minecraft.getInstance().getResourceManager();
+        ModelBakery.onModelRegister(resourceManager, evt::register);
         BotanicPledgeItemProperties.init((item, id, prop) -> ItemProperties.register(item.asItem(), id, prop));
 
     }
 
     @SubscribeEvent
-    public static void onModelBake(ModelBakeEvent evt) {
-        ModelBakery.onModelBake(evt.getModelLoader(), evt.getModelRegistry());
+    public static void onModelBake(ModelEvent.ModifyBakingResult evt) {
+        ModelBakery.onModelBake(evt.getModelBakery(), evt.getModels());
+    }
+
+    @SubscribeEvent
+    public static void registerKeys(RegisterKeyMappingsEvent event) {
+        event.register(KeyBindings.INSTANCE.switchSkillButton);
+
     }
 
 }

@@ -3,13 +3,11 @@ package yerova.botanicpledge.client.model;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraftforge.client.model.data.IDynamicBakedModel;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 public class ModelBakery {
 

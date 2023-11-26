@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "1": "botanicpledge:blocks/ritual_pedestal",
-    "particle": "botanicpledge:blocks/ritual_pedestal"
+    "1": "botanicpledge:block/ritual_pedestal",
+    "particle": "botanicpledge:block/ritual_pedestal"
   },
   "elements": [
     {

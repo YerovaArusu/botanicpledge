@@ -9,19 +9,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
-import yerova.botanicpledge.api.BotanicPledgeAPI;
-import yerova.botanicpledge.api.utils.ManaUtils;
+import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
+import yerova.botanicpledge.common.recipes.ritual.RecipeUtils;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
     public void clearItems(BlockEntity entity) {
         for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
             if (level.getBlockEntity(entity.getBlockPos().offset(blockPos)) instanceof RitualPedestalBlockEntity tile && tile.getHeldStack() != null) {
-                tile.setHeldStack(tile.getHeldStack().getContainerItem());
+                tile.setHeldStack(tile.getHeldStack().getCraftingRemainingItem());
                 BlockState state = level.getBlockState(blockPos);
                 level.sendBlockUpdated(blockPos, state, state, 3);
             }
@@ -105,15 +106,16 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
 
     public IBotanicRitualRecipe getRecipe(ItemStack stack, @Nullable Player playerEntity) {
         List<ItemStack> pedestalItems = getPedestalItems();
-        return BotanicPledgeAPI.getInstance().getBotanicRitualRecipes(level).stream().filter(r -> r.isMatch(pedestalItems, stack, this, playerEntity)).findFirst().orElse(null);
+        return RecipeUtils.getBotanicRitualRecipes(level).stream().filter(r -> r.isMatch(pedestalItems, stack, this, playerEntity)).findFirst().orElse(null);
     }
 
     public boolean attemptCraft(ItemStack catalyst, @Nullable Player playerEntity) {
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
         if (recipe == null) return false;
 
-        if (isCrafting)
+        if (isCrafting)  {
             return false;
+        }
         if (!craftingPossible(catalyst, playerEntity)) {
             return false;
         }
@@ -236,7 +238,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, final @Nullable Direction side) {
-        if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+        if (cap == ForgeCapabilities.ITEM_HANDLER) {
             return itemHandler.cast();
         }
         return super.getCapability(cap, side);

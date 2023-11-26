@@ -13,9 +13,6 @@ import java.util.List;
 public interface IBotanicRitualRecipe extends Recipe<RitualCenterBlockEntity> {
     boolean isMatch(List<ItemStack> pedestalItems, ItemStack reagent, RitualBaseBlockEntity ritualBaseBlockEntity, @Nullable Player player);
 
-    /**
-     * Tile sensitive result
-     */
     ItemStack getResult(List<ItemStack> pedestalItems, ItemStack reagent, RitualBaseBlockEntity ritualBaseBlockEntity);
 
     default boolean consumesMana() {
@@ -24,5 +21,4 @@ public interface IBotanicRitualRecipe extends Recipe<RitualCenterBlockEntity> {
 
     int getManaCost();
 
-    HashMap<String, Integer> getAdditionalAttributes();
 }

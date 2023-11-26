@@ -1,10 +1,10 @@
 {
   "parent": "botania:block/shapes/spreader_item",
   "textures": {
-    "side": "botanicpledge:blocks/yggdral_spreader_side",
-    "back": "botanicpledge:blocks/yggdral_spreader_back",
-    "inside": "botanicpledge:blocks/yggdral_spreader_inside",
-    "outside": "botanicpledge:blocks/yggdral_spreader_outside",
-    "core": "botanicpledge:blocks/yggdral_spreader_core"
+    "side": "botanicpledge:block/yggdral_spreader_side",
+    "back": "botanicpledge:block/yggdral_spreader_back",
+    "inside": "botanicpledge:block/yggdral_spreader_inside",
+    "outside": "botanicpledge:block/yggdral_spreader_outside",
+    "core": "botanicpledge:block/yggdral_spreader_core"
   }
 }

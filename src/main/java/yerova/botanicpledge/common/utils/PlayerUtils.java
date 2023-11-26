@@ -1,7 +1,6 @@
 package yerova.botanicpledge.common.utils;
 
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -9,10 +8,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
-import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 
 import java.util.Objects;
@@ -61,12 +59,12 @@ public class PlayerUtils {
     public static void sweepAttack(@NotNull Level level, @NotNull Player player, ItemStack stack,double knockbackStrength) {
         if (!level.isClientSide) {
             for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getSweepHitBox(player.getMainHandItem(), player))) {
-                if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(IXplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canHit(enemy, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
+                if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canAttack(enemy)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
 
                     enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
                     //((AsgardFractal)stack.getItem()).hurtEnemy(player.getMainHandItem(), enemy, player);
 
-                    enemy.hurt(DamageSource.playerAttack(player), 16);
+                    enemy.hurt(level.damageSources().playerAttack(player), 16);
 
                     YggdRamus.appendFireAspect(player, enemy);
                 }

@@ -1,6 +1,6 @@
 {
   "parent": "botania:block/shapes/spreader_core",
   "textures": {
-    "core": "botanicpledge:blocks/yggdral_spreader_core"
+    "core": "botanicpledge:block/yggdral_spreader_core"
   }
 }

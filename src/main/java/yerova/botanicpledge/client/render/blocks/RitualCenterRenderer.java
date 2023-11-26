@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.handler.ClientTickHandler;
-import vazkii.botania.mixin.AccessorItemEntity;
+import vazkii.botania.mixin.ItemEntityAccessor;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 
 public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlockEntity> {
@@ -35,7 +35,7 @@ public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlo
 
         ItemEntity entityItem = tileEntityIn.entity;
 
-        ((AccessorItemEntity) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
+        ((ItemEntityAccessor) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
         entityItem.setItem(tileEntityIn.getHeldStack());
 
         matrixStack.pushPose();

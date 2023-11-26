@@ -25,19 +25,19 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import vazkii.botania.api.mana.ILens;
-import vazkii.botania.api.state.BotaniaStateProps;
-import vazkii.botania.common.block.BlockModWaterloggable;
-import vazkii.botania.common.handler.ModSounds;
+import vazkii.botania.api.state.BotaniaStateProperties;
+import vazkii.botania.common.block.BotaniaWaterloggedBlock;
+import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.ColorHelper;
-import vazkii.botania.common.item.ItemTwigWand;
+import vazkii.botania.common.item.WandOfTheForestItem;
+import vazkii.botania.common.item.lens.LensItem;
 import yerova.botanicpledge.common.blocks.block_entities.YggdralSpreaderBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class YggdralSpreader extends BlockModWaterloggable implements EntityBlock {
+public class YggdralSpreader extends BotaniaWaterloggedBlock implements EntityBlock {
     private static final VoxelShape SHAPE = box(2, 2, 2, 14, 14, 14);
     private static final VoxelShape SHAPE_PADDING = box(1, 1, 1, 15, 15, 15);
     private static final VoxelShape SHAPE_SCAFFOLDING = box(0, 0, 0, 16, 16, 16);
@@ -68,20 +68,20 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
 
     public YggdralSpreader(YggdralSpreader.Variant v, BlockBehaviour.Properties builder) {
         super(builder);
-        registerDefaultState(defaultBlockState().setValue(BotaniaStateProps.HAS_SCAFFOLDING, false));
+        registerDefaultState(defaultBlockState().setValue(BotaniaStateProperties.HAS_SCAFFOLDING, false));
         this.variant = v;
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
-        builder.add(BotaniaStateProps.HAS_SCAFFOLDING);
+        builder.add(BotaniaStateProperties.HAS_SCAFFOLDING);
     }
 
     @Nonnull
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
-        if (blockState.getValue(BotaniaStateProps.HAS_SCAFFOLDING)) {
+        if (blockState.getValue(BotaniaStateProperties.HAS_SCAFFOLDING)) {
             return SHAPE_SCAFFOLDING;
         }
         BlockEntity be = blockGetter.getBlockEntity(blockPos);
@@ -139,13 +139,13 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
         }
 
         ItemStack heldItem = player.getItemInHand(hand);
-        if (heldItem.getItem() instanceof ItemTwigWand) {
+        if (heldItem.getItem() instanceof WandOfTheForestItem) {
             return InteractionResult.PASS;
         }
         boolean mainHandEmpty = player.getMainHandItem().isEmpty();
 
         ItemStack lens = spreader.getItemHandler().getItem(0);
-        boolean playerHasLens = heldItem.getItem() instanceof ILens;
+        boolean playerHasLens = heldItem.getItem() instanceof LensItem;
         boolean lensIsSame = playerHasLens && ItemStack.isSameItemSameTags(heldItem, lens);
         ItemStack wool = spreader.paddingColor != null
                 ? new ItemStack(ColorHelper.WOOL_MAP.apply(spreader.paddingColor))
@@ -155,7 +155,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
         boolean playerHasScaffolding = !heldItem.isEmpty() && heldItem.is(Items.SCAFFOLDING);
         boolean shouldInsert = (playerHasLens && !lensIsSame)
                 || (playerHasWool && !woolIsSame)
-                || (playerHasScaffolding && !state.getValue(BotaniaStateProps.HAS_SCAFFOLDING));
+                || (playerHasScaffolding && !state.getValue(BotaniaStateProperties.HAS_SCAFFOLDING));
 
         if (shouldInsert) {
             if (playerHasLens) {
@@ -168,7 +168,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
                 }
 
                 spreader.getItemHandler().setItem(0, toInsert);
-                world.playSound(player, pos, ModSounds.spreaderAddLens, SoundSource.BLOCKS, 1F, 1F);
+                world.playSound(player, pos, BotaniaSounds.spreaderAddLens, SoundSource.BLOCKS, 1F, 1F);
             } else if (playerHasWool) {
                 Block woolBlock = Block.byItem(heldItem.getItem());
 
@@ -180,29 +180,29 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
 
                 spreader.paddingColor = ColorHelper.getWoolColor(woolBlock);
                 spreader.setChanged();
-                world.playSound(player, pos, ModSounds.spreaderCover, SoundSource.BLOCKS, 1F, 1F);
+                world.playSound(player, pos, BotaniaSounds.spreaderCover, SoundSource.BLOCKS, 1F, 1F);
             } else { // playerHasScaffolding
-                world.setBlockAndUpdate(pos, state.setValue(BotaniaStateProps.HAS_SCAFFOLDING, true));
+                world.setBlockAndUpdate(pos, state.setValue(BotaniaStateProperties.HAS_SCAFFOLDING, true));
                 world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
                 if (!player.getAbilities().instabuild) {
                     heldItem.shrink(1);
                 }
 
-                world.playSound(player, pos, ModSounds.spreaderScaffold, SoundSource.BLOCKS, 1F, 1F);
+                world.playSound(player, pos, BotaniaSounds.spreaderScaffold, SoundSource.BLOCKS, 1F, 1F);
             }
             return InteractionResult.SUCCESS;
         }
 
-        if (state.getValue(BotaniaStateProps.HAS_SCAFFOLDING) && player.isSecondaryUseActive()) {
+        if (state.getValue(BotaniaStateProperties.HAS_SCAFFOLDING) && player.isSecondaryUseActive()) {
             if (!player.getAbilities().instabuild) {
                 ItemStack scaffolding = new ItemStack(Items.SCAFFOLDING);
                 player.getInventory().placeItemBackInInventory(scaffolding);
             }
-            world.setBlockAndUpdate(pos, state.setValue(BotaniaStateProps.HAS_SCAFFOLDING, false));
+            world.setBlockAndUpdate(pos, state.setValue(BotaniaStateProperties.HAS_SCAFFOLDING, false));
             world.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 
-            world.playSound(player, pos, ModSounds.spreaderUnScaffold, SoundSource.BLOCKS, 1F, 1F);
+            world.playSound(player, pos, BotaniaSounds.spreaderUnScaffold, SoundSource.BLOCKS, 1F, 1F);
 
             return InteractionResult.SUCCESS;
         }
@@ -210,7 +210,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
             player.getInventory().placeItemBackInInventory(lens);
             spreader.getItemHandler().setItem(0, ItemStack.EMPTY);
 
-            world.playSound(player, pos, ModSounds.spreaderRemoveLens, SoundSource.BLOCKS, 1F, 1F);
+            world.playSound(player, pos, BotaniaSounds.spreaderRemoveLens, SoundSource.BLOCKS, 1F, 1F);
 
             return InteractionResult.SUCCESS;
         }
@@ -219,7 +219,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
             spreader.paddingColor = null;
             spreader.setChanged();
 
-            world.playSound(player, pos, ModSounds.spreaderUncover, SoundSource.BLOCKS, 1F, 1F);
+            world.playSound(player, pos, BotaniaSounds.spreaderUncover, SoundSource.BLOCKS, 1F, 1F);
 
             return InteractionResult.SUCCESS;
         }
@@ -242,7 +242,7 @@ public class YggdralSpreader extends BlockModWaterloggable implements EntityBloc
                 Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), padding);
             }
 
-            if (state.getValue(BotaniaStateProps.HAS_SCAFFOLDING)) {
+            if (state.getValue(BotaniaStateProperties.HAS_SCAFFOLDING)) {
                 ItemStack scaffolding = new ItemStack(Items.SCAFFOLDING);
                 Containers.dropItemStack(world, pos.getX(), pos.getY(), pos.getZ(), scaffolding);
             }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "botanicpledge:items/soul_slicer"
+    "layer0": "botanicpledge:item/soul_slicer"
   }
 }

@@ -13,62 +13,60 @@ import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
-import vazkii.botania.common.handler.ModSounds;
+import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.SoulAmulet;
-import yerova.botanicpledge.common.utils.AttributedItemsUtils;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.integration.curios.BPCurios;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class AttributedItemsEventHandler {
-
+public class BPItemEventHandler {
 
 
     @SubscribeEvent
-    public static void handleDamage(LivingAttackEvent e) {
+    public static void handleCoreDamage(LivingAttackEvent e) {
 
-        if (!e.getEntityLiving().level.isClientSide) {
-            if (e.getEntityLiving() instanceof Player target && e.getSource().getEntity() instanceof Player attacker) {
 
-                //Soul Amulet Handler
-                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(attacker, "necklace")) {
-                    ItemStack stack = result.stack();
-                    if(stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsSoul(stack, target.getUUID())) {
+        if (!e.getEntity().level().isClientSide) {
+
+            BPCurios.getDivineCoreCurio(e.getEntity()).forEach(slotResult -> {
+                ItemStack stack = slotResult.stack();
+                if (!e.isCanceled()) {
+                    stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+                        if (attribute.getCurrentShield() - e.getAmount() > 0) {
+                            attribute.removeCurrentShield((int) Math.ceil(e.getAmount()));
+                            e.getEntity().level().playSound(null, e.getEntity().getX(), e.getEntity().getY(), e.getEntity().getZ(), BotaniaSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
+                            e.setCanceled(true);
+                        }
+                    });
+                }
+            });
+
+
+            if (e.getEntity() instanceof Player target && e.getSource().getEntity() instanceof Player attacker) {
+
+                BPCurios.getCurio(e.getEntity(), "necklace").forEach(slotResult -> {
+                    ItemStack stack = slotResult.stack();
+                    if (stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsSoul(stack, target.getUUID())) {
                         e.setCanceled(true);
                     }
-                }
+                });
 
-                //Core Shield Handler
-                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(e.getEntityLiving(), "divine_core")) {
-                    ItemStack stack = result.stack();
-                    if (!e.isCanceled()) {
-                        stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-
-                            if (attribute.getCurrentShield() - e.getAmount() > 0) {
-                                attribute.removeCurrentShield((int) Math.ceil(e.getAmount()));
-                                target.level.playSound(null, target.getX(), target.getY(), target.getZ(), ModSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
-                                e.setCanceled(true);
-                            }
-                        });
-                    }
-                }
             }
         }
     }
 
     @SubscribeEvent
-    public static void handleDivineCoreJumps(LivingEvent.LivingJumpEvent evt) {
+    public static void handleCoreJumps(LivingEvent.LivingJumpEvent evt) {
 
-        LivingEntity entity = evt.getEntityLiving();
-        for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(evt.getEntityLiving(), "divine_core")) {
-            ItemStack stack = result.stack();
-
+        LivingEntity entity = evt.getEntity();
+        BPCurios.getDivineCoreCurio(entity).forEach(slotResult ->{
+            ItemStack stack = slotResult.stack();
             if (!evt.isCanceled()) {
                 AtomicReference<Double> jump = new AtomicReference<>(0.0);
                 stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
@@ -95,21 +93,21 @@ public class AttributedItemsEventHandler {
                 }
 
             }
-        }
+        });
     }
 
 
     @SubscribeEvent
-    public static void onWorldTick(TickEvent.WorldTickEvent e) {
+    public static void SyncShield(TickEvent.LevelTickEvent e) {
 
         // Don't do anything client side
-        if (e.world.isClientSide) {
+        if (e.level.isClientSide) {
             return;
         }
         if (e.phase == TickEvent.Phase.START) {
-            for (Player player : e.world.players()) {
+            for (Player player : e.level.players()) {
                 if (player instanceof ServerPlayer serverPlayer) {
-                    AttributedItemsUtils.SyncShieldValuesToClient(serverPlayer);
+                    BPItemUtils.SyncShieldValuesToClient(serverPlayer);
                 }
             }
         }

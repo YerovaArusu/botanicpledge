@@ -8,13 +8,13 @@ import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.api.subtile.RadiusDescriptor;
-import vazkii.botania.api.subtile.TileEntityGeneratingFlower;
+import vazkii.botania.api.block_entity.RadiusDescriptor;
+import vazkii.botania.api.block_entity.GeneratingFlowerBlockEntity;
 import vazkii.botania.client.fx.WispParticleData;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
-public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
+public class ThunderLilyBLockEntity extends GeneratingFlowerBlockEntity {
 
     public static final int MAX_MANA = 64_000;
     public static final int COLOR_HEX = 0x0000CD;
@@ -46,8 +46,8 @@ public class ThunderLilyBLockEntity extends TileEntityGeneratingFlower {
         }
 
         for (LightningBolt bolt : getLevel().getEntitiesOfClass(LightningBolt.class,
-                new AABB(getEffectivePos().offset(AREA.minX - 1, AREA.minY - 1, AREA.minZ - 1),
-                        getEffectivePos().offset(AREA.maxX + 1, AREA.maxY + 1, AREA.maxZ + 1)))) {
+                new AABB(getEffectivePos().offset((int) AREA.minX - 1, (int) AREA.minY - 1, (int) AREA.minZ - 1),
+                        getEffectivePos().offset((int) AREA.maxX + 1, (int) AREA.maxY + 1, (int) AREA.maxZ + 1)))) {
             if (!bolt.isRemoved()) {
                 if (cooldown == 0) {
                     burnTime += 1500;

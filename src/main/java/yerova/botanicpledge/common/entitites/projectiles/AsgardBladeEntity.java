@@ -3,11 +3,11 @@ package yerova.botanicpledge.common.entitites.projectiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,8 +20,8 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.client.fx.WispParticleData;
-import vazkii.botania.common.item.equipment.bauble.ItemMonocle;
-import vazkii.botania.common.proxy.IProxy;
+import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
+import vazkii.botania.common.proxy.Proxy;
 import vazkii.botania.xplat.BotaniaConfig;
 import yerova.botanicpledge.setup.BPEntities;
 
@@ -38,7 +38,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos(target.getX(), target.getY(), target.getZ()));
+        setTargetPos(new BlockPos((int) target.getX(),(int) target.getY(),(int) target.getZ()));
 
         setTarget_id(target.getId());
         setVariety((int) (10 * Math.random()));
@@ -51,7 +51,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, float damage) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos(target.getX(), target.getY(), target.getZ()));
+        setTargetPos(new BlockPos((int)target.getX(),(int) target.getY(),(int) target.getZ()));
         setDamage(damage);
         setTarget_id(target.getId());
         setVariety((int) (10 * Math.random()));
@@ -116,7 +116,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
         if (getTarget_id() != 0) {
 
-            Entity target = level.getEntity(getTarget_id());
+            Entity target = level().getEntity(getTarget_id());
             if (target != null) {
                 setTargetPos(target.getOnPos().above().above());
                 faceEntity(target.getOnPos().above().above());
@@ -128,9 +128,9 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
         if (getThrower() != null && getThrower() instanceof Player player) {
             AABB attackBox = this.getBoundingBox().inflate(2);
-            for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, attackBox)) {
+            for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, attackBox)) {
 
-                entity.hurt(DamageSource.playerAttack(player), (float) getDamage());
+                entity.hurt(level().damageSources().playerAttack(player), (float) getDamage());
 
                 if (entity.getId() == this.getTarget_id()) {
                     this.remove(RemovalReason.DISCARDED);
@@ -146,9 +146,9 @@ public class AsgardBladeEntity extends EntityProjectileBase {
             return;
         }
 
-        if (getFake() || level.isClientSide && this.tickCount >= LIVE_TICKS && (
+        if (getFake() || level().isClientSide && this.tickCount >= LIVE_TICKS && (
                 getThrower() == null || getThrower().isRemoved()
-                        || level.getEntity(getTarget_id()) == null) || (level.getEntity(getTarget_id()) != null && level.getEntity(getTarget_id()).isRemoved())) {
+                        || level().getEntity(getTarget_id()) == null) || (level().getEntity(getTarget_id()) != null && level().getEntity(getTarget_id()).isRemoved())) {
             remove(RemovalReason.DISCARDED);
             return;
         }
@@ -161,9 +161,9 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
         if (getThrower() != null) {
-            pResult.getEntity().hurt(DamageSource.playerAttack((Player) getThrower()), (float) getDamage());
+            pResult.getEntity().hurt(level().damageSources().playerAttack((Player) getThrower()), (float) getDamage());
         }
-        if (level.getEntity(getTarget_id()).equals(pResult)) this.remove(RemovalReason.DISCARDED);
+        if (level().getEntity(getTarget_id()).equals(pResult)) this.remove(RemovalReason.DISCARDED);
         super.onHitEntity(pResult);
     }
 
@@ -251,7 +251,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     }
 
     public void particles() {
-        if (!isAlive() || !level.isClientSide) {
+        if (!isAlive() || !level().isClientSide) {
             return;
         }
 
@@ -263,12 +263,12 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         float size = osize;
 
 
-        Player player = IProxy.INSTANCE.getClientPlayer();
-        boolean depth = player == null || !ItemMonocle.hasMonocle(player);
+        Player player = Proxy.INSTANCE.getClientPlayer();
+        boolean depth = player == null || !ManaseerMonocleItem.hasMonocle(player);
 
         if (BotaniaConfig.client().subtlePowerSystem()) {
             WispParticleData data = WispParticleData.wisp(0.1F * size, r, g, b, depth);
-            IProxy.INSTANCE.addParticleForceNear(level, data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
+            Proxy.INSTANCE.addParticleForceNear(level(), data, getX(), getY(), getZ(), (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.02F, (float) (Math.random() - 0.5F) * 0.01F);
         } else {
             float or = r;
             float og = g;
@@ -295,7 +295,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
                 }
                 size = osize + ((float) Math.random() - 0.5F) * 0.065F + (float) Math.sin(new Random(uuid.getMostSignificantBits()).nextInt(9001)) * 0.4F;
                 WispParticleData data = WispParticleData.wisp(0.2F * size, r, g, b, depth);
-                IProxy.INSTANCE.addParticleForceNear(level, data, iterX, iterY, iterZ,
+                Proxy.INSTANCE.addParticleForceNear(level(), data, iterX, iterY, iterZ,
                         (float) -getDeltaMovement().x() * 0.01F,
                         (float) -getDeltaMovement().y() * 0.01F,
                         (float) -getDeltaMovement().z() * 0.01F);
@@ -310,15 +310,14 @@ public class AsgardBladeEntity extends EntityProjectileBase {
             } while (Math.abs(diffVec.length()) > distance);
 
             WispParticleData data = WispParticleData.wisp(0.1F * size, or, og, ob, depth);
-            level.addParticle(data, iterX, iterY, iterZ, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F);
+            level().addParticle(data, iterX, iterY, iterZ, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F, (float) (Math.random() - 0.5F) * 0.06F);
 
         }
     }
 
 
-    @NotNull
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

@@ -3,8 +3,7 @@ package yerova.botanicpledge.common.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -51,11 +50,11 @@ public class RuneGemItem extends SimpleFoiledItem {
                             if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
 
                                 PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
-                                pPlayer.sendMessage(new TextComponent("Core successfully upgraded!").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
+                                pPlayer.sendSystemMessage(Component.literal("Core successfully upgraded!").withStyle(ChatFormatting.AQUA));
                             } else
-                                pPlayer.sendMessage(new TextComponent("Something went wrong!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                                pPlayer.sendSystemMessage(Component.literal("Something went wrong!").withStyle(ChatFormatting.DARK_RED));
                         } else {
-                            pPlayer.sendMessage(new TextComponent("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                            pPlayer.sendSystemMessage(Component.literal("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED));
                         }
 
 
@@ -68,11 +67,11 @@ public class RuneGemItem extends SimpleFoiledItem {
                             if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
 
                                 PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
-                                pPlayer.sendMessage(new TextComponent("Sword successfully upgraded!").withStyle(ChatFormatting.AQUA), pPlayer.getUUID());
+                                pPlayer.sendSystemMessage(Component.literal("Sword successfully upgraded!").withStyle(ChatFormatting.AQUA));
                             } else
-                                pPlayer.sendMessage(new TextComponent("Something went wrong!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                                pPlayer.sendSystemMessage(Component.literal("Something went wrong!").withStyle(ChatFormatting.DARK_RED));
                         } else {
-                            pPlayer.sendMessage(new TextComponent("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED), pPlayer.getUUID());
+                            pPlayer.sendSystemMessage(Component.literal("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED));
                         }
                     });
                 }
@@ -182,17 +181,18 @@ public class RuneGemItem extends SimpleFoiledItem {
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 
-        TextComponent header = new TextComponent("When applied on ");
-        header.append(new TranslatableComponent(getGemType(pStack)).withStyle(ChatFormatting.GOLD));
+
+        MutableComponent header = Component.literal("When applied on:");
+        header.append(Component.literal(getGemType(pStack)).withStyle(ChatFormatting.GOLD));
         header.append(":");
         pTooltipComponents.add(header);
 
         String attributeName = getGemAttributeName(pStack);
-        TextComponent textComponent;
+        MutableComponent textComponent;
         if (attributeName.equals(BPConstants.NO_RUNE_GEM)) {
-            textComponent = new TextComponent(new TranslatableComponent(attributeName).getString());
+            textComponent = Component.literal(Component.translatable(attributeName).getString());
         } else {
-            textComponent = new TextComponent(" + " + new TranslatableComponent(attributeName).getString() + ": " + getGemAttributeValue(pStack));
+            textComponent = Component.literal(" + " + Component.translatable(attributeName).getString() + ": " + getGemAttributeValue(pStack));
             if (attributeName.equals(BPConstants.JUMP_HEIGHT_TAG_NAME) || attributeName.equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)) {
                 textComponent.append("%");
             }

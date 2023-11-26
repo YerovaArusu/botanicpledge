@@ -6,7 +6,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import yerova.botanicpledge.client.KeyBindsInit;
+import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -16,7 +16,7 @@ public class InputEvents {
 
 
     @SubscribeEvent
-    public static void onKeyPresses(InputEvent.KeyInputEvent event) {
+    public static void onKeyPresses(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
 
@@ -25,7 +25,7 @@ public class InputEvents {
 
 
     @SubscribeEvent
-    public static void onMouseClicked(InputEvent.MouseInputEvent event) {
+    public static void onMouseClicked(InputEvent.MouseButton event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
         onInput(mc, event.getButton(), event.getAction());
@@ -33,7 +33,7 @@ public class InputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
         if (mc.screen == null) {
-            if (KeyBindsInit.switchSkillButton.isDown() && mc.player != null) {
+            if (KeyBindings.INSTANCE.switchSkillButton.isDown() && mc.player != null) {
                 Networking.sendToServer(new ItemButtonInteractionToServer());
             }
         }

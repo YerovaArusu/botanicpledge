@@ -5,13 +5,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -27,11 +24,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.api.item.IRelic;
+import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.xplat.IXplatAbstractions;
+import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
@@ -70,7 +67,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
 
             //Relic Handler
-            var relic = IXplatAbstractions.INSTANCE.findRelic(stack);
+            var relic = XplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
                 relic.tickBinding(player);
             }
@@ -86,12 +83,12 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         if (world == null) return;
         if (!(DivineCoreItem.getLevel(stack) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS)) {
-            tooltip.add(new TranslatableComponent("tooltip_stat_low_level").withStyle(ChatFormatting.DARK_RED));
+            tooltip.add(Component.literal("tooltip_stat_low_level").withStyle(ChatFormatting.DARK_RED));
         }
 
         RelicImpl.addDefaultTooltip(stack, tooltip);
 
-        tooltip.add(new TranslatableComponent("switch_weapon_mode_tooltip", new TextComponent("V").withStyle(ChatFormatting.YELLOW)));
+        tooltip.add(Component.translatable("switch_weapon_mode_tooltip", Component.literal("V").withStyle(ChatFormatting.YELLOW)));
         super.appendHoverText(stack, world, tooltip, flags);
 
     }
@@ -123,7 +120,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         return InteractionResult.SUCCESS;
     }
 
-    public static IRelic makeRelic(ItemStack stack) {
+    public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
 
@@ -138,7 +135,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
             if (YggdRamus.isRanged(player.getMainHandItem())) {
                 //TODO: do something on Ranged Mode
             } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
-                this.sweepAttack(player.getLevel(), player, 0.4F);
+                this.sweepAttack(player.level(), player, 0.4F);
             }
         }
 
@@ -155,7 +152,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         if (YggdRamus.isRanged(player.getMainHandItem())) {
             //TODO: do something on Ranged Mode
         } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
-            this.sweepAttack(player.getLevel(), player, 0.4F);
+            this.sweepAttack(player.level(), player, 0.4F);
         }
     }
 
@@ -172,7 +169,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
                 return true;
             } else if (pEntity instanceof Player player) {
                 return !(player.getMainHandItem().getItem() instanceof YggdRamus && player.getUUID().
-                        equals(Objects.requireNonNull(IXplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID()));
+                        equals(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID()));
             } else return false;
         }
     }
@@ -189,7 +186,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         double x, y, z;
         for (int i = 0; i < this.SUMMON_AMOUNT_PER_CLICK - 1; i++) {
             if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), ((Player) player), MANA_COST_PER_SHOT, true)) {
-                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level, player, targetPos, this.getDamage() / 8);
+                YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level(), player, targetPos, this.getDamage() / 8);
                 k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
                 x = player.getX() + range * Math.sin(k) * Math.cos(j);
                 y = player.getY() + range * Math.cos(k);
@@ -208,7 +205,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
 
                 sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
 
-                player.level.addFreshEntity(sword);
+                player.level().addFreshEntity(sword);
             }
         }
     }
@@ -216,7 +213,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
     public void sweepAttack(@NotNull Level level, @NotNull Player player, double knockbackStrength) {
         if (!level.isClientSide) {
             for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
-                if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(IXplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canHit(enemy, 0)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
+                if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canAttack(enemy)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
 
                     enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
                     hurtEnemy(player.getMainHandItem(), enemy, player);
@@ -283,7 +280,7 @@ public class YggdRamus extends SwordItem implements LeftClickable {
             for (LivingEntity entity : getAttackableEnemiesAroundUser(player, level, radius)) {
 
                 //Lift and damage
-                entity.hurt(DamageSource.playerAttack(player), getDamage() / 2);
+                entity.hurt(level.damageSources().playerAttack(player), getDamage() / 2);
                 YggdRamus.appendFireAspect(player, entity);
                 entity.setDeltaMovement(entity.getDeltaMovement().add(0, 1.0, 0));
 

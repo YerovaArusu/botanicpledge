@@ -9,7 +9,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.handler.ClientTickHandler;
-import vazkii.botania.mixin.AccessorItemEntity;
+import vazkii.botania.mixin.ItemEntityAccessor;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 
 public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedestalBlockEntity> {
@@ -35,7 +35,7 @@ public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedesta
         ItemEntity entityItem = tileEntityIn.entity;
         matrixStack.pushPose();
 
-        ((AccessorItemEntity) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
+        ((ItemEntityAccessor) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
         entityItem.setItem(tileEntityIn.getHeldStack());
 
         Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, pPartialTick, 2.0f, matrixStack, pBufferSource, pPackedLight);

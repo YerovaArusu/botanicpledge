@@ -28,7 +28,6 @@ public final class BPConstants {
 
     public static final int CORE_RANK_REQUIRED_FOR_YGGD_RAMUS = 2;
 
-    public static final DamageSource HEALTH_SET_DMG_SRC = new DamageSource("health_set");
     public static final String TAG_CORE_UUID = "coreUUID";
 
     public static final String ARMOR_TAG_NAME = "armor";

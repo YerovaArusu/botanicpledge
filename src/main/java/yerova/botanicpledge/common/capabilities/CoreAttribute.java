@@ -1,12 +1,7 @@
 package yerova.botanicpledge.common.capabilities;
 
 import net.minecraft.nbt.CompoundTag;
-import yerova.botanicpledge.common.utils.AttributedItemsUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CoreAttribute extends BPAttribute {
     private int maxCharge;

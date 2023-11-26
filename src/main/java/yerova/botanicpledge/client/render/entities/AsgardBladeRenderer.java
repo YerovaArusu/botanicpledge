@@ -1,8 +1,6 @@
 package yerova.botanicpledge.client.render.entities;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -13,7 +11,9 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import org.joml.Quaternionf;
 import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.common.helper.VecHelper;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
 import yerova.botanicpledge.setup.BPItems;
@@ -40,9 +40,9 @@ public class AsgardBladeRenderer extends EntityRenderer<AsgardBladeEntity> {
         matrixStackIn.pushPose();
         float s = 0.8F;
         matrixStackIn.scale(s, s, s);
-        matrixStackIn.mulPose(new Quaternion(Vector3f.YP.rotationDegrees(weapon.getRotation() + 90F)));
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(weapon.getPitch()));
-        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-45));
+        matrixStackIn.mulPose(new Quaternionf(VecHelper.rotateY(weapon.getRotation() + 90F)));
+        matrixStackIn.mulPose(VecHelper.rotateZ(weapon.getPitch()));
+        matrixStackIn.mulPose(VecHelper.rotateZ(-45));
 
 
         float alpha = weapon.getFake() ? Math.max(0F, 0.75F - weapon.tickCount * (0.75F / AsgardBladeEntity.LIVE_TICKS) * 1.5F) : 1F;

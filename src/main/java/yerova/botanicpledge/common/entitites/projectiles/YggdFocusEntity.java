@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.entitites.projectiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -45,26 +46,26 @@ public class YggdFocusEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (level.isClientSide) {
-            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+        if (level().isClientSide) {
+            level().addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
                     this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     0, 0, 0);
 
-            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+            level().addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
                     this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     0, 0, 0);
 
-            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+            level().addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
                     this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     0, 0, 0);
 
-            level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
+            level().addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
                     this.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getY() + 1.5 + ParticleUtils.inRange(-0.2, 0.2),
                     this.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
@@ -88,7 +89,7 @@ public class YggdFocusEntity extends Entity {
                 entity.setDeltaMovement(vec.normalize().scale(1.5D));
 
                 if (this.tickCount % 20 == 0) {
-                    entity.hurt(DamageSource.playerAttack(owner), 4);
+                    entity.hurt(level().damageSources().playerAttack(owner), 4);
                 }
             }
         }
@@ -100,9 +101,9 @@ public class YggdFocusEntity extends Entity {
 
 
     public List<LivingEntity> getEntitiesAround() {
-        BlockPos source = new BlockPos(getX(), getY(), getZ());
+        BlockPos source = new BlockPos((int)getX(),(int) getY(),(int) getZ());
         float range = 6F;
-        return level.getEntitiesOfClass(LivingEntity.class,
+        return level().getEntitiesOfClass(LivingEntity.class,
                 new AABB(source.getX() + 0.5 - range, source.getY() + 0.5 - range, source.getZ() + 0.5 - range,
                         source.getX() + 0.5 + range, source.getY() + 0.5 + range, source.getZ() + 0.5 + range));
     }
@@ -124,7 +125,7 @@ public class YggdFocusEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

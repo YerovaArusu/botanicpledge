@@ -6,8 +6,8 @@
     64
   ],
   "textures": {
-    "1": "botanicpledge:blocks/mana_buffer",
-    "particle": "botanicpledge:blocks/mana_buffer"
+    "1": "botanicpledge:block/mana_buffer",
+    "particle": "botanicpledge:block/mana_buffer"
   },
   "elements": [
     {

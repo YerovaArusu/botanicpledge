@@ -24,11 +24,11 @@ public class ManaSweepParticleData implements ParticleProvider<ColorParticleType
     }
 
     public static ParticleOptions createData(ParticleColor color) {
-        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE, color, false);
+        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE.get(), color, false);
     }
 
     public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest, float size) {
-        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE, color, disableDepthTest, size, 0.75f, 36);
+        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE.get(), color, disableDepthTest, size, 0.75f, 36);
     }
 
     public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {

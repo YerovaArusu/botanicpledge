@@ -31,7 +31,7 @@ public class LeftClick {
         ctx.enqueueWork(() -> {
 
             if (leftClickedItem.getItem() instanceof LeftClickable) {
-                ((LeftClickable) leftClickedItem.getItem()).LeftClick(player.level, player, leftClickedItem);
+                ((LeftClickable) leftClickedItem.getItem()).LeftClick(player.level(), player, leftClickedItem);
             }
         });
         return ctx.getPacketHandled();

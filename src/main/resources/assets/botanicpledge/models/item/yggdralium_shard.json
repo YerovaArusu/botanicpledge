@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "botanicpledge:items/yggdralium_shard"
+    "layer0": "botanicpledge:item/yggdralium_shard"
   }
 }

@@ -6,14 +6,15 @@ import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
+import net.minecraft.resources.ResourceLocation;
 import yerova.botanicpledge.setup.BPBlocks;
+import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
@@ -21,34 +22,27 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitualRecipe> {
-    public final static ResourceLocation UID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
-    public final static ResourceLocation TEXTURE =
-            new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/core_altar/core_altar_jei_integration.png");
+public class BPRitualCategory implements IRecipeCategory<BotanicRitualRecipe> {
 
+    public final static ResourceLocation UID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
+    public final static ResourceLocation TEXTURE = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/core_altar/core_altar_jei_integration.png");
+    public static final RecipeType<BotanicRitualRecipe>  BOTANIC_RITUAL_RECIPE_TYPE = new RecipeType<>(UID, BotanicRitualRecipe.class);
     private final IDrawable background;
     private final IDrawable icon;
 
-
-    public BotanicRitualRecipeCategory(IGuiHelper helper) {
-        this.background = helper.createDrawable(TEXTURE, 0, 0, 176, 85);
-        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM, new ItemStack(BPBlocks.RITUAL_CENTER.get()));
-    }
-
-
-    @Override
-    public ResourceLocation getUid() {
-        return UID;
+    public BPRitualCategory(IGuiHelper helper) {
+        this.background = helper.createDrawable(TEXTURE, 0, 0,176, 85);
+        this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(BPBlocks.RITUAL_CENTER.get()));
     }
 
     @Override
-    public Class<? extends BotanicRitualRecipe> getRecipeClass() {
-        return BotanicRitualRecipe.class;
+    public RecipeType<BotanicRitualRecipe> getRecipeType() {
+        return BOTANIC_RITUAL_RECIPE_TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return new TextComponent("Botanic Ritual");
+        return Component.literal("Botanic Ritual");
     }
 
     @Override
@@ -80,7 +74,7 @@ public class BotanicRitualRecipeCategory implements IRecipeCategory<BotanicRitua
 
         }
         for (Point p : RecipeSlots().get(RecipeIngredientRole.OUTPUT)) {
-            builder.addSlot(RecipeIngredientRole.OUTPUT, p.x, p.y).addItemStack(recipe.getResultItem());
+            builder.addSlot(RecipeIngredientRole.OUTPUT, p.x, p.y).addItemStack(recipe.getResultItem(null));
         }
 
 

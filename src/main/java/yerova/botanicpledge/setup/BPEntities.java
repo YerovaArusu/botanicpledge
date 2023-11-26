@@ -11,7 +11,7 @@ import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 
 public class BPEntities {
-    public static final DeferredRegister<EntityType<?>> ENTITY = DeferredRegister.create(ForgeRegistries.ENTITIES, BotanicPledge.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, BotanicPledge.MOD_ID);
 
     public static final RegistryObject<EntityType<YggdFocusEntity>> YGGD_FOCUS = ENTITY.register("yggd_focus",
             () -> EntityType.Builder.of(YggdFocusEntity::getRegistry, MobCategory.MISC)

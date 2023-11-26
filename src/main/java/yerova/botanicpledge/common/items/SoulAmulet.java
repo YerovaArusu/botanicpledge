@@ -3,7 +3,6 @@ package yerova.botanicpledge.common.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -47,10 +46,10 @@ public class SoulAmulet extends Item implements ICurioItem {
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         if (pLevel != null) {
-            pTooltipComponents.add(new TextComponent("Protecting:"));
+            pTooltipComponents.add(Component.literal("Protecting:"));
 
             getAppliedSouls(pStack).forEach((uuid, name) -> {
-                pTooltipComponents.add(new TextComponent(" - " + name).withStyle(ChatFormatting.GOLD));
+                pTooltipComponents.add(Component.literal(" - " + name).withStyle(ChatFormatting.GOLD));
             });
         }
 
