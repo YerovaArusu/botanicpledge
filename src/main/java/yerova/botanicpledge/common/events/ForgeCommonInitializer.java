@@ -1,6 +1,10 @@
 package yerova.botanicpledge.common.events;
 
 import com.google.common.base.Suppliers;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,13 +17,10 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
-import yerova.botanicpledge.client.particle.ColorParticleTypeData;
-import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.items.relic.*;
-import yerova.botanicpledge.setup.BPParticels;
 import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.setup.BPItems;
 
@@ -59,10 +60,6 @@ public class ForgeCommonInitializer {
                     CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_ITEM, makeManaItem.apply(stack)));
         }
 
-    }
-    @SubscribeEvent
-    public static void particleRegister(RegisterParticleProvidersEvent event) {
-        event.registerSpecial(BPParticels.YGGDRAL_TYPE.get(), YggdralParticleData::createData);
     }
 
     @SubscribeEvent

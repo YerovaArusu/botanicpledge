@@ -4,13 +4,18 @@ package yerova.botanicpledge.client.events;
 import com.google.common.base.Suppliers;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,6 +29,7 @@ import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPParticels;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Collections;
@@ -71,6 +77,16 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
+    }
+
+    @SubscribeEvent
+    public static void particleRegister(RegisterParticleProvidersEvent event) {
+        BPParticels.FactoryHandler.registerFactories(new BPParticels.FactoryHandler.Consumer() {
+            @Override
+            public <T extends ParticleOptions> void register(ParticleType<T> type, Function<SpriteSet, ParticleProvider<T>> constructor) {
+                event.registerSpriteSet(type, constructor::apply);
+            }
+        });
     }
     @SubscribeEvent
     public static void onModelRegister(ModelEvent.RegisterAdditional evt) {

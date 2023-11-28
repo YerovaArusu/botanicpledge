@@ -15,7 +15,6 @@ public class YggdralParticles extends TextureSheetParticle {
     public float colorB = 0;
     public float initScale = 0;
     public float initAlpha = 0;
-
     public boolean disableDepthTest;
 
     public YggdralParticles(ClientLevel worldIn, double x, double y, double z, double vx, double vy, double vz, float r, float g, float b, float a, float scale, int lifetime, SpriteSet sprite, boolean disableDepthTest) {
