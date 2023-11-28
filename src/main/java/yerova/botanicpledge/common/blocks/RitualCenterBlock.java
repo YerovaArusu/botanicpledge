@@ -25,6 +25,7 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -98,34 +99,26 @@ public class RitualCenterBlock extends BaseEntityBlock {
 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult blockHitResult) {
-        if (handIn != InteractionHand.MAIN_HAND)
-            return InteractionResult.PASS;
-        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
+        if (!world.isClientSide) {
+            if (world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
 
-
-            if (completedStructure(player, pos, world, handIn)) {
-                tile.attemptCraft(tile.getHeldStack(), player);
-            }
-
-
-            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                if (world.getBlockState(pos.above()).getProperties() != Blocks.AIR.defaultBlockState().getProperties())
-                    return InteractionResult.SUCCESS;
-                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                world.addFreshEntity(item);
-                tile.setHeldStack(ItemStack.EMPTY);
-            } else if (!player.getInventory().getSelected().isEmpty()
-                    && !(player.getItemInHand(handIn).getItem() instanceof WandOfTheForestItem)) {
-                if (tile.getHeldStack() != null) {
-                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                    world.addFreshEntity(item);
+                if (completedStructure(player, pos, world, handIn)) {
+                    tile.attemptCraft(tile.getHeldStack(), player);
                 }
-                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
 
+                if (tile.getHeldStack() != null || tile.getHeldStack() != ItemStack.EMPTY) {
+                    if (!player.addItem(tile.getHeldStack())) {
+                        ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                        world.addFreshEntity(item);
+                        tile.setHeldStack(ItemStack.EMPTY);
+                    } else tile.setHeldStack(ItemStack.EMPTY);
+
+                    if (!player.getItemInHand(handIn).isEmpty()) {
+                        tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
+                    }
+                }
             }
-            world.sendBlockUpdated(pos, state, state, 1);
-
-
+            world.sendBlockUpdated(pos, state, state, 2);
         }
         return InteractionResult.SUCCESS;
 

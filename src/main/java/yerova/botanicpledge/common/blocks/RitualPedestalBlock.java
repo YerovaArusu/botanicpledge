@@ -1,6 +1,7 @@
 package yerova.botanicpledge.common.blocks;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -29,6 +30,7 @@ public class RitualPedestalBlock extends BaseEntityBlock {
 
 
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
+
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;
@@ -40,28 +42,26 @@ public class RitualPedestalBlock extends BaseEntityBlock {
         return new RitualPedestalBlockEntity(blockPos, state);
     }
 
-    //TODO:FIX THIS SHIT!
+
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (handIn != InteractionHand.MAIN_HAND)
-            return InteractionResult.PASS;
-        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
-            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
-                if (world.getBlockState(pos.above()).getProperties() != Blocks.AIR.defaultBlockState().getProperties())
-                    return InteractionResult.SUCCESS;
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player cPlayer, InteractionHand handIn, BlockHitResult hit) {
+        if (!world.isClientSide) {
+            ServerPlayer player = (ServerPlayer) cPlayer;
 
-                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                world.addFreshEntity(item);
-                tile.setHeldStack(ItemStack.EMPTY);
-            } else if (!player.getInventory().getSelected().isEmpty()) {
-                if (tile.getHeldStack() != null) {
-                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                    world.addFreshEntity(item);
+            if (world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
+                if (tile.getHeldStack() != null || tile.getHeldStack() != ItemStack.EMPTY) {
+                    if (!player.addItem(tile.getHeldStack())) {
+                        ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                        world.addFreshEntity(item);
+                        tile.setHeldStack(ItemStack.EMPTY);
+                    } else tile.setHeldStack(ItemStack.EMPTY);
+
+                    if (!player.getItemInHand(handIn).isEmpty()) {
+                        tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
+                    }
                 }
-
-                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
-
             }
+
             world.sendBlockUpdated(pos, state, state, 2);
         }
         return InteractionResult.SUCCESS;
