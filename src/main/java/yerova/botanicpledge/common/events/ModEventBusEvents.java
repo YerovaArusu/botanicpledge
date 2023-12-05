@@ -13,16 +13,6 @@ import yerova.botanicpledge.setup.*;
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
 
-
-    @SubscribeEvent
-    public static void onEntityAttributeModificationEvent(final EntityAttributeModificationEvent event) {
-        event.add(EntityType.PLAYER, BPAttributes.MANA_DAMAGE.get());
-    }
-
-
-
-
-
     @SubscribeEvent
     public static void registerGameOverlay(RegisterGuiOverlaysEvent event) {
         event.registerAboveAll("hotbar", ProtectorHUD.PROTECTOR_HUD);

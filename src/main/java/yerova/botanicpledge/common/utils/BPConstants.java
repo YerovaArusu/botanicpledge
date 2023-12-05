@@ -36,7 +36,6 @@ public final class BPConstants {
     public static final String SOUL_SHARD_UUID_TAG_NAME = "soul_uuid";
     public static final String SOUL_SHARD_NAME_TAG_NAME = "soul_name";
 
-    public static final String KNOCKBACK_RESISTANCE_TAG_NAME = "knockback_resistance";
     public static final String MOVEMENT_SPEED_TAG_NAME = "movement_speed";
     public static final String ATTACK_SPEED_TAG_NAME = "attack_speed";
     public static final String ATTACK_DAMAGE_TAG_NAME = "attack_damage";

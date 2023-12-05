@@ -129,12 +129,13 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         if (getThrower() != null && getThrower() instanceof Player player) {
             AABB attackBox = this.getBoundingBox().inflate(2);
             for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, attackBox)) {
+                if(entity != getThrower()) {
+                    entity.hurt(level().damageSources().playerAttack(player), (float) getDamage());
 
-                entity.hurt(level().damageSources().playerAttack(player), (float) getDamage());
-
-                if (entity.getId() == this.getTarget_id()) {
-                    this.remove(RemovalReason.DISCARDED);
-                    break;
+                    if (entity.getId() == this.getTarget_id()) {
+                        this.remove(RemovalReason.DISCARDED);
+                        break;
+                    }
                 }
 
             }
@@ -160,7 +161,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
     @Override
     protected void onHitEntity(EntityHitResult pResult) {
-        if (getThrower() != null) {
+        if (getThrower() != null && pResult.getEntity() != getThrower()) {
             pResult.getEntity().hurt(level().damageSources().playerAttack((Player) getThrower()), (float) getDamage());
         }
         if (level().getEntity(getTarget_id()).equals(pResult)) this.remove(RemovalReason.DISCARDED);

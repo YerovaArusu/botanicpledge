@@ -16,6 +16,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
+import yerova.botanicpledge.integration.curios.BPCurios;
 import yerova.botanicpledge.setup.BPItems;
 
 import java.util.List;
@@ -66,18 +67,17 @@ public class SoulShard extends Item {
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if(pPlayer.getMainHandItem().getItem() instanceof SoulShard) {
-            for (SlotResult result: CuriosApi.getCuriosHelper().findCurios(pPlayer, "necklace").stream().toList()) {
-                ItemStack stack = result.stack();
 
+            BPCurios.getCurio(pPlayer, "necklace").forEach(slotResult -> {
+                ItemStack stack = slotResult.stack();
                 UUID uuid = getSoulUUID(pPlayer.getMainHandItem());
                 String name = getSoulName(pPlayer.getMainHandItem());
-
                 if (stack.getItem() instanceof SoulAmulet && !SoulAmulet.amuletContainsSoul(stack, uuid)){
                     SoulAmulet.applySoul(stack,uuid, name);
 
                     PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getMainHandItem(), 1);
                 }
-            }
+            });
         }
 
         return super.use(pLevel, pPlayer, pUsedHand);

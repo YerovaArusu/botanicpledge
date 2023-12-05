@@ -35,14 +35,13 @@ import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class YggdRamus extends SwordItem implements LeftClickable {
+public class YggdRamus extends SwordItem {
 
     public final int MANA_COST_FOR_THROW_INTO_AIR = 40_000;
     public final int MANA_COST_PER_SHOT = 10_000;
@@ -143,18 +142,6 @@ public class YggdRamus extends SwordItem implements LeftClickable {
         return super.onLeftClickEntity(stack, player, entity);
     }
 
-
-    @Override
-    public void LeftClick(Level level, Player player, ItemStack stack) {
-        if (!(DivineCoreItem.getLevel(stack) < BPConstants.CORE_RANK_REQUIRED_FOR_YGGD_RAMUS))
-            return;
-
-        if (YggdRamus.isRanged(player.getMainHandItem())) {
-            //TODO: do something on Ranged Mode
-        } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
-            this.sweepAttack(player.level(), player, 0.4F);
-        }
-    }
 
     public List<LivingEntity> getAttackableEnemiesAroundUser(Player player, Level level, int radius) {
         final TargetingConditions alertableTargeting = TargetingConditions.forCombat().range(radius).ignoreLineOfSight().selector(new AttackableEntitiesSelector());

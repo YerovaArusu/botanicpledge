@@ -34,12 +34,6 @@ public class Networking {
                 .consumerMainThread(SyncProtector::handle)
                 .add();
 
-        net.messageBuilder(LeftClick.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(LeftClick::new)
-                .encoder(LeftClick::encode)
-                .consumerMainThread(LeftClick::handle)
-                .add();
-
         net.messageBuilder(ItemButtonInteractionToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(ItemButtonInteractionToServer::new)
                 .encoder(ItemButtonInteractionToServer::encode)

@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
+import yerova.botanicpledge.integration.curios.BPCurios;
 
 import java.util.List;
 
@@ -53,8 +54,9 @@ public abstract class MixinLivingEntity {
             } else {
                 int k = EnchantmentHelper.getDamageProtection(l.getArmorSlots(), pDamageSource);
                 if (l instanceof ServerPlayer player) {
-                    List<ItemStack> stacks = CuriosApi.getCuriosHelper().findCurios(player, "divine_core").stream().map(SlotResult::stack).toList();
-                    k += EnchantmentHelper.getDamageProtection(stacks, pDamageSource);
+                    k += EnchantmentHelper.getDamageProtection(
+                            BPCurios.getDivineCoreCurio(player).stream().map(SlotResult::stack).toList(),
+                            pDamageSource);
                 }
                 if (k > 0) {
                     pDamageAmount = CombatRules.getDamageAfterMagicAbsorb(pDamageAmount, (float) k);

@@ -103,7 +103,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
             if (world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
 
                 if (completedStructure(player, pos, world, handIn)) {
-                    tile.attemptCraft(tile.getHeldStack(), player);
+                    if (tile.attemptCraft(tile.getHeldStack(), player)) return InteractionResult.SUCCESS;
                 }
 
                 if (tile.getHeldStack() != null || tile.getHeldStack() != ItemStack.EMPTY) {

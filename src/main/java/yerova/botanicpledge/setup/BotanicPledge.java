@@ -15,7 +15,6 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
 import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
 import yerova.botanicpledge.client.render.items.MariasCoreRenderer;
@@ -37,16 +36,10 @@ public class BotanicPledge {
         IEventBus forgeBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
 
-
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
-
-
-        
-
 
         BPParticels.PARTICLES.register(forgeBus);
         BPEnchantments.ENCHANTMENTS.register(forgeBus);
-        BPAttributes.ATTRIBUTES.register(forgeBus);
 
         BPTabs.TABS.register(forgeBus);
         BPRecipes.SERIALIZERS.register(forgeBus);
@@ -91,11 +84,6 @@ public class BotanicPledge {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_CENTER.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_PEDESTAL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.translucent());
-
-
-
-
-
 
 
     }

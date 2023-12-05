@@ -1,7 +1,5 @@
 package yerova.botanicpledge.common.items.relic;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -10,39 +8,32 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
 
-import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.common.utils.LeftClickable;
 import yerova.botanicpledge.common.utils.PlayerUtils;
+import yerova.botanicpledge.integration.curios.BPCurios;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.*;
 
-public class AsgardFractal extends SwordItem implements LeftClickable {
+public class AsgardFractal extends SwordItem{
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
     public static final int MAX_ENTITIES = 10;
     public final int MAX_TICK_AS_TARGET = 200;
@@ -68,12 +59,14 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
                         if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
 
                             if (entity instanceof Player enemy) {
-                                for (SlotResult result : CuriosApi.getCuriosHelper().findCurios(player, "necklace")) {
-                                    if (!(result.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
+
+                                BPCurios.getCurio(player,"necklace").forEach(slotResult -> {
+                                    if (!(slotResult.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
                                         entity1.setGlowingTag(true);
                                         targetsNTime.put(entity1, 0);
                                     }
-                                }
+                                });
+
                             } else {
                                 entity1.setGlowingTag(true);
                                 targetsNTime.put(entity1, 0);
@@ -140,44 +133,6 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
 
     }
 
-    @Override
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
-
-
-        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-
-        if (stack.getCapability(BPAttributeProvider.ATTRIBUTE).isPresent()) {
-            BPAttribute attribute = stack.getCapability(BPAttributeProvider.ATTRIBUTE).resolve().get();
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
-                double attributeValue = 0.0;
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
-                    attributeValue += entry.getValue();
-                }
-                AttributeModifier modifier = new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage() + attributeValue, AttributeModifier.Operation.ADDITION);
-                builder.put(Attributes.ATTACK_DAMAGE, modifier);
-            } else {
-                builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getDamage(), AttributeModifier.Operation.ADDITION));
-            }
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
-                double attributeValue = ATTACK_SPEED_MODIFIER;
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    attributeValue = attributeValue + (entry.getValue() / 100);
-                }
-                builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attributeValue, AttributeModifier.Operation.ADDITION));
-            } else {
-                builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", ATTACK_SPEED_MODIFIER, AttributeModifier.Operation.ADDITION));
-            }
-        }
-
-        ImmutableMultimap<Attribute, AttributeModifier> modifiers = builder.build().isEmpty() ?
-                (ImmutableMultimap<Attribute, AttributeModifier>) super.getAttributeModifiers(slot, stack) : builder.build();
-
-
-        return slot == EquipmentSlot.MAINHAND ? modifiers : super.getDefaultAttributeModifiers(slot);
-    }
-
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
@@ -242,7 +197,7 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
     }
 
     public static void activateCurrentSkill(Level level, Player player, ItemStack stack) {
-        if (!(stack.getItem() instanceof AsgardFractal)) return;
+        if (!(stack.getItem() instanceof AsgardFractal) || level.isClientSide) return;
         switch (getCurrentSkill(stack)) {
             case 1 -> {
                 player.displayClientMessage(Component.literal("Activated \"Shoot Blades\""), true);
@@ -309,14 +264,5 @@ public class AsgardFractal extends SwordItem implements LeftClickable {
             }
 
         }
-    }
-
-
-
-
-    @Override
-    public void LeftClick(Level level, Player player, ItemStack stack) {
-
-
     }
 }
