@@ -3,6 +3,9 @@
   "output": {
     "item": "botanicpledge:thunder_lily"
   },
+  "reagent": {
+    "tag": "botania:seed_apothecary_reagent"
+  },
   "ingredients": [
     {
       "tag": "botania:petals/light_blue"
