@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.world_ash_branches",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:world_ash_branch",
   "priority": true,
   "sortnum": 2,

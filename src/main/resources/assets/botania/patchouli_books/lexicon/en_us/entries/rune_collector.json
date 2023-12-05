@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.rune_collector",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "minecraft:enchanted_book",
   "priority": true,
   "sortnum": 6,

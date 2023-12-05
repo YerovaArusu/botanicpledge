@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.botanic_ritual",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:ritual_center",
   "priority": true,
   "sortnum": 3,

@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.start",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:marias_core",
   "priority": true,
   "sortnum": 1,

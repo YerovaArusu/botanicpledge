@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.runes",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:rune_gem",
   "priority": true,
   "sortnum": 5,

@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.mana_buffer",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:mana_buffer",
   "priority": true,
   "sortnum": 4,

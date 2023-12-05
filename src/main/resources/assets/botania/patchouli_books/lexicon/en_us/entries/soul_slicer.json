@@ -1,6 +1,6 @@
 {
   "name": "botanicpledge.soul_slicer",
-  "category": "botanicpledge:botanicpledge",
+  "category": "botania:botanicpledge",
   "icon": "botanicpledge:soul_slicer",
   "priority": true,
   "sortnum": 7,
