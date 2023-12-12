@@ -47,6 +47,8 @@ public class BPItems {
     public static final RegistryObject<Item> SOUL_SHARD = ITEMS.register("soul_shard", () -> new SoulShard(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
+    public static final RegistryObject<Item> CONQUERING_SASH = ITEMS.register("conquering_sash", () -> new ConqueringSashItem(
+            new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
     //Items
     public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdralium_ingot", () -> new Item(

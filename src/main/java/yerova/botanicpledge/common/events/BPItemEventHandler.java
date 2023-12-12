@@ -11,14 +11,16 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.integration.curios.BPCurios;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Map;
@@ -34,7 +36,7 @@ public class BPItemEventHandler {
 
         if (!e.getEntity().level().isClientSide) {
 
-            BPCurios.getDivineCoreCurio(e.getEntity()).forEach(slotResult -> {
+            ItemHelper.getDivineCoreCurio(e.getEntity()).forEach(slotResult -> {
                 ItemStack stack = slotResult.stack();
                 if (!e.isCanceled()) {
                     stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
@@ -50,7 +52,7 @@ public class BPItemEventHandler {
 
             if (e.getEntity() instanceof Player target && e.getSource().getEntity() instanceof Player attacker) {
 
-                BPCurios.getCurio(e.getEntity(), "necklace").forEach(slotResult -> {
+                ItemHelper.getCurio(e.getEntity(), "necklace").forEach(slotResult -> {
                     ItemStack stack = slotResult.stack();
                     if (stack.getItem() instanceof SoulAmulet && SoulAmulet.amuletContainsSoul(stack, target.getUUID())) {
                         e.setCanceled(true);
@@ -62,10 +64,14 @@ public class BPItemEventHandler {
     }
 
     @SubscribeEvent
-    public static void handleCoreJumps(LivingEvent.LivingJumpEvent evt) {
+    public static void handlePlayerJumps(LivingEvent.LivingJumpEvent evt) {
 
         LivingEntity entity = evt.getEntity();
-        BPCurios.getDivineCoreCurio(entity).forEach(slotResult ->{
+
+        //Handle Conquering Sash
+        ConqueringSashItem.onPlayerJump(entity);
+
+        ItemHelper.getDivineCoreCurio(entity).forEach(slotResult ->{
             ItemStack stack = slotResult.stack();
             if (!evt.isCanceled()) {
                 AtomicReference<Double> jump = new AtomicReference<>(0.0);
@@ -94,6 +100,13 @@ public class BPItemEventHandler {
 
             }
         });
+    }
+
+    @SubscribeEvent
+    public static void onFall(LivingFallEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            ConqueringSashItem.onPlayerFall(player, event.getDistance());
+        }
     }
 
 

@@ -7,18 +7,13 @@ import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-import yerova.botanicpledge.integration.curios.BPCurios;
-
-import java.util.List;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 
 
 @Mixin(LivingEntity.class)
@@ -55,7 +50,7 @@ public abstract class MixinLivingEntity {
                 int k = EnchantmentHelper.getDamageProtection(l.getArmorSlots(), pDamageSource);
                 if (l instanceof ServerPlayer player) {
                     k += EnchantmentHelper.getDamageProtection(
-                            BPCurios.getDivineCoreCurio(player).stream().map(SlotResult::stack).toList(),
+                            ItemHelper.getDivineCoreCurio(player).stream().map(SlotResult::stack).toList(),
                             pDamageSource);
                 }
                 if (k > 0) {

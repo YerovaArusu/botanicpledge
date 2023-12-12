@@ -28,7 +28,7 @@ import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.common.utils.PlayerUtils;
-import yerova.botanicpledge.integration.curios.BPCurios;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.*;
@@ -60,7 +60,7 @@ public class AsgardFractal extends SwordItem{
 
                             if (entity instanceof Player enemy) {
 
-                                BPCurios.getCurio(player,"necklace").forEach(slotResult -> {
+                                ItemHelper.getCurio(player,"necklace").forEach(slotResult -> {
                                     if (!(slotResult.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
                                         entity1.setGlowingTag(true);
                                         targetsNTime.put(entity1, 0);

@@ -12,11 +12,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotResult;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
-import yerova.botanicpledge.integration.curios.BPCurios;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItems;
 
 import java.util.List;
@@ -68,7 +66,7 @@ public class SoulShard extends Item {
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         if(pPlayer.getMainHandItem().getItem() instanceof SoulShard) {
 
-            BPCurios.getCurio(pPlayer, "necklace").forEach(slotResult -> {
+            ItemHelper.getCurio(pPlayer, "necklace").forEach(slotResult -> {
                 ItemStack stack = slotResult.stack();
                 UUID uuid = getSoulUUID(pPlayer.getMainHandItem());
                 String name = getSoulName(pPlayer.getMainHandItem());
@@ -84,11 +82,23 @@ public class SoulShard extends Item {
     }
 
     public static UUID getSoulUUID(ItemStack stack) {
-        return stack.getItem() instanceof SoulShard ? stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getUUID(BPConstants.SOUL_SHARD_UUID_TAG_NAME) : null;
-    }
+        UUID toReturn = UUID.randomUUID();
+        if (stack.getItem() instanceof SoulShard){
+            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_UUID_TAG_NAME)){
+                toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getUUID(BPConstants.SOUL_SHARD_UUID_TAG_NAME);
+            }
+        }
+        return toReturn;
+     }
 
     public static String getSoulName(ItemStack stack) {
-        return stack.getItem() instanceof SoulShard ? stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getString(BPConstants.SOUL_SHARD_NAME_TAG_NAME) : null;
+        String toReturn = "EMPTY";
+        if (stack.getItem() instanceof SoulShard){
+            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_NAME_TAG_NAME)){
+                toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getString(BPConstants.SOUL_SHARD_NAME_TAG_NAME);
+            }
+        }
+      return toReturn;
     }
 
 

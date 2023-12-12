@@ -1,21 +1,14 @@
 package yerova.botanicpledge.common.utils;
 
-import com.google.common.collect.ImmutableMultimap;
-import com.google.common.collect.Multimap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.Lazy;
 import vazkii.botania.api.mana.ManaItemHandler;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.SyncProtector;
-import yerova.botanicpledge.integration.curios.BPCurios;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +42,7 @@ public class BPItemUtils {
 
     public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
         AtomicBoolean success = new AtomicBoolean(false);
-        BPCurios.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
+        ItemHelper.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
             if (!(slotResult.stack().getItem() instanceof DivineCoreItem)) return;
             slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {Networking.sendToPlayer(new SyncProtector(attribute.getCurrentCharge(), attribute.getMaxCharge(), attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
                 success.set(true);
