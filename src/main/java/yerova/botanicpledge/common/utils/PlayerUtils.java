@@ -65,9 +65,6 @@ public class PlayerUtils {
                 if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canAttack(enemy)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
 
                     enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
-                    //((AsgardFractal)stack.getItem()).hurtEnemy(player.getMainHandItem(), enemy, player);
-
-
                     enemy.hurt(level.damageSources().playerAttack(player), 16);
 
                     YggdRamus.appendFireAspect(player, enemy);

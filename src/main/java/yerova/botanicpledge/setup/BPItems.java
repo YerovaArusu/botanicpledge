@@ -1,17 +1,13 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.common.items.*;
-import yerova.botanicpledge.common.items.relic.AsgardFractal;
-import yerova.botanicpledge.common.items.relic.MariasCore;
-import yerova.botanicpledge.common.items.relic.MarinasCore;
-import yerova.botanicpledge.common.items.relic.YggdRamus;
+import yerova.botanicpledge.common.items.relic.*;
 
 public class BPItems {
     //Custom Rarity
@@ -48,6 +44,9 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
     public static final RegistryObject<Item> CONQUERING_SASH = ITEMS.register("conquering_sash", () -> new ConqueringSashItem(
+            new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
+
+    public static final RegistryObject<Item> AESIR_RING = ITEMS.register("aesir_ring", () -> new RingOfAesir(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
     //Items

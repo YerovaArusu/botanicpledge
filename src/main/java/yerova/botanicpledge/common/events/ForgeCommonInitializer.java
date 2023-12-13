@@ -37,7 +37,8 @@ public class ForgeCommonInitializer {
             BPItems.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.YGGD_RAMUS.get(), DivineCoreItem::makeRelic,
-            BPItems.ASGARD_FRACTAL.get(),AsgardFractal::makeRelic
+            BPItems.ASGARD_FRACTAL.get(),AsgardFractal::makeRelic,
+            BPItems.AESIR_RING.get(), RingOfAesir::makeRelic
     ));
 
 

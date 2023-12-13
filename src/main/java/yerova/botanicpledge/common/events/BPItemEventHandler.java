@@ -12,12 +12,15 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
+import vazkii.botania.common.item.relic.RingOfOdinItem;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
+import yerova.botanicpledge.common.items.relic.RingOfAesir;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.integration.curios.ItemHelper;
@@ -60,7 +63,17 @@ public class BPItemEventHandler {
                 });
 
             }
+
+            if (e.getEntity() instanceof Player player && RingOfAesir.onPlayerAttacked(player, e.getSource())) {
+                    e.setCanceled(true);
+            }
+
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock e) {
+        RingOfAesir.onPlayerInteract(e.getEntity(), e.getLevel(), e.getHand(),e.getHitVec());
     }
 
     @SubscribeEvent
@@ -108,6 +121,7 @@ public class BPItemEventHandler {
             ConqueringSashItem.onPlayerFall(player, event.getDistance());
         }
     }
+
 
     @SubscribeEvent
     public static void SyncShield(TickEvent.LevelTickEvent e) {

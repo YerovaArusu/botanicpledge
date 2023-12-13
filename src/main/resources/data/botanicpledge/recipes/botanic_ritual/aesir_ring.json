@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "minecraft:gold_block"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "minecraft:quartz_block"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botania:odin_ring"
+    },
+    {
+      "item": "botania:loki_ring"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botania:thor_ring"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:aesir_ring"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}
