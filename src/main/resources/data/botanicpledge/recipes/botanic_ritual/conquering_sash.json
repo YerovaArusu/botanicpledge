@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botania:super_travel_belt"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "item": "botanicpledge:yggdralium_shard"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:conquering_sash"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}
