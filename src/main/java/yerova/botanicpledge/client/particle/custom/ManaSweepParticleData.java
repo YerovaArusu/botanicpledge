@@ -7,7 +7,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import yerova.botanicpledge.client.particle.ColorParticleTypeData;
 import yerova.botanicpledge.client.particle.ParticleColor;
-import yerova.botanicpledge.setup.BPParticels;
+import yerova.botanicpledge.setup.BPParticles;
 
 public class ManaSweepParticleData implements ParticleProvider<ColorParticleTypeData> {
 
@@ -24,18 +24,12 @@ public class ManaSweepParticleData implements ParticleProvider<ColorParticleType
     }
 
     public static ParticleOptions createData(ParticleColor color) {
-        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE.get(), color, false);
+        return new ColorParticleTypeData(BPParticles.MANA_SWEEP_TYPE.get(), color, false);
     }
 
     public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest, float size) {
-        return new ColorParticleTypeData(BPParticels.MANA_SWEEP_TYPE.get(), color, disableDepthTest, size, 0.75f, 36);
+        return new ColorParticleTypeData(BPParticles.MANA_SWEEP_TYPE.get(), color, disableDepthTest, size, 0.75f, 36);
     }
 
-    public static ParticleOptions createData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
-        return new ColorParticleTypeData(color, disableDepthTest, size, alpha, age);
-    }
 
-    public static ParticleOptions createData(ParticleColor color, float size, float alpha, int age) {
-        return new ColorParticleTypeData(color, false, size, alpha, age);
-    }
 }

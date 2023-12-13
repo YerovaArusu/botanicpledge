@@ -197,7 +197,7 @@ public class AsgardFractal extends SwordItem{
     }
 
     public static void activateCurrentSkill(Level level, Player player, ItemStack stack) {
-        if (!(stack.getItem() instanceof AsgardFractal) || level.isClientSide) return;
+        if (!(stack.getItem() instanceof AsgardFractal) ) return;
         switch (getCurrentSkill(stack)) {
             case 1 -> {
                 player.displayClientMessage(Component.literal("Activated \"Shoot Blades\""), true);
@@ -257,7 +257,7 @@ public class AsgardFractal extends SwordItem{
             case 4 -> {
                 player.displayClientMessage(Component.literal("Activated \"Swing Attack\""), true);
                 PlayerUtils.sweepAttack(level, player,stack,0.4F);
-
+                player.getCooldowns().addCooldown(stack.getItem(), 10);
             }
             default -> {
                 player.displayClientMessage(Component.literal("No Ability Selected:"), true);

@@ -1,5 +1,7 @@
 package yerova.botanicpledge.common.utils;
 
+import net.minecraft.network.protocol.game.ClientboundHurtAnimationPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -58,28 +60,29 @@ public class PlayerUtils {
     }
     public static void sweepAttack(@NotNull Level level, @NotNull Player player, ItemStack stack,double knockbackStrength) {
         if (!level.isClientSide) {
+
             for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getSweepHitBox(player.getMainHandItem(), player))) {
                 if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canAttack(enemy)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
 
                     enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
                     //((AsgardFractal)stack.getItem()).hurtEnemy(player.getMainHandItem(), enemy, player);
 
+
                     enemy.hurt(level.damageSources().playerAttack(player), 16);
 
                     YggdRamus.appendFireAspect(player, enemy);
                 }
             }
+        } else {
             double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
             double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-            if (level.isClientSide) {
                 level.addParticle(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)),
                         player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 1.0D, 1.0D, 1.0D);
-            }
         }
     }
     @NotNull
     public static AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
-        return player.getBoundingBox().inflate(3.0D, 1D, 3.0D);
+        return player.getBoundingBox().inflate(5.0D, 2D, 5.0D);
     }
 
 }

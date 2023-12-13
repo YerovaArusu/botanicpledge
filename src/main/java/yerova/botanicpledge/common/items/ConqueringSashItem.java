@@ -24,7 +24,7 @@ public class ConqueringSashItem extends BaubleItem {
     private static final AttributeModifier STEP_BOOST = new AttributeModifier(
             STEP_BOOST_UUID,
             "botanicpledge:conquering_belt",
-            2.6, AttributeModifier.Operation.ADDITION);
+            0.65, AttributeModifier.Operation.ADDITION);
 
     private static final int COST = 16;
     private static final int COST_INTERVAL = 10;
@@ -40,7 +40,7 @@ public class ConqueringSashItem extends BaubleItem {
     }
 
     public ConqueringSashItem(Properties props) {
-        this(props, 1.2F, 0.8F, 8F);
+        this(props, 0.4F, 0.8F, 8F);
     }
 
     public static float onPlayerFall(Player entity, float dist) {
@@ -74,9 +74,9 @@ public class ConqueringSashItem extends BaubleItem {
             if (tryConsumeMana(player)) {
                 if (player.level().isClientSide) {
                     ConqueringSashItem beltItem = (ConqueringSashItem) belt.getItem();
-                    if ((player.onGround() || player.getAbilities().flying) && player.zza > 0F && !player.isInWaterOrBubble()) {
+                    if ((player.onGround() || player.getAbilities().flying || player.isInWaterOrBubble()) && player.zza > 0F) {
                         float speed = beltItem.getSpeed(belt);
-                        player.moveRelative(player.getAbilities().flying ? speed : speed, new Vec3(0, 0, 1));
+                        player.moveRelative(player.isInWaterOrBubble() ? speed/2 : speed, new Vec3(0, 0, 1));
                         beltItem.onMovedTick(belt, player);
 
                         if (player.tickCount % COST_INTERVAL == 0) {

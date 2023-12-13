@@ -35,7 +35,9 @@ import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.setup.BPItemTiers;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 import java.util.Objects;
@@ -119,10 +121,6 @@ public class YggdRamus extends SwordItem {
         return InteractionResult.SUCCESS;
     }
 
-    public static Relic makeRelic(ItemStack stack) {
-        return new RelicImpl(stack, null);
-    }
-
     @Override
     public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
         super.readShareTag(stack, nbt);
@@ -134,14 +132,11 @@ public class YggdRamus extends SwordItem {
             if (YggdRamus.isRanged(player.getMainHandItem())) {
                 //TODO: do something on Ranged Mode
             } else if (!(YggdRamus.isRanged(player.getMainHandItem()))) {
-                this.sweepAttack(player.level(), player, 0.4F);
+                PlayerUtils.sweepAttack(player.level(), player, stack, 0.4);
             }
         }
-
-
         return super.onLeftClickEntity(stack, player, entity);
     }
-
 
     public List<LivingEntity> getAttackableEnemiesAroundUser(Player player, Level level, int radius) {
         final TargetingConditions alertableTargeting = TargetingConditions.forCombat().range(radius).ignoreLineOfSight().selector(new AttackableEntitiesSelector());
@@ -197,25 +192,6 @@ public class YggdRamus extends SwordItem {
         }
     }
 
-    public void sweepAttack(@NotNull Level level, @NotNull Player player, double knockbackStrength) {
-        if (!level.isClientSide) {
-            for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, this.getSweepHitBox(player.getMainHandItem(), player))) {
-                if (enemy != level.getPlayerByUUID(Objects.requireNonNull(Objects.requireNonNull(XplatAbstractions.INSTANCE.findRelic(player.getMainHandItem())).getSoulbindUUID())) && player.canAttack(enemy)) { // Original check was dist < 3, range is 3, so vanilla used padding=0
-
-                    enemy.knockback(knockbackStrength, (double) Mth.sin(player.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(player.getYRot() * ((float) Math.PI / 180F))));
-                    hurtEnemy(player.getMainHandItem(), enemy, player);
-
-                    YggdRamus.appendFireAspect(player, enemy);
-                }
-            }
-            double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
-            double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-            if (level.isClientSide) {
-                level.addParticle(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)),
-                        player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 1.0D, 1.0D, 1.0D);
-            }
-        }
-    }
 
     @SoftImplement("IForgeItem")
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
@@ -227,10 +203,6 @@ public class YggdRamus extends SwordItem {
         return !after.is(this) || isRanged(before) != isRanged(after);
     }
 
-    @NotNull
-    public AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
-        return player.getBoundingBox().inflate(3.0D, 1D, 3.0D);
-    }
 
     public static boolean isRanged(ItemStack stack) {
         boolean returner = false;

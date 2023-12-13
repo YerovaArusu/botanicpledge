@@ -109,7 +109,6 @@ public class BPItemEventHandler {
         }
     }
 
-
     @SubscribeEvent
     public static void SyncShield(TickEvent.LevelTickEvent e) {
 

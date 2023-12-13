@@ -13,7 +13,7 @@ import yerova.botanicpledge.client.particle.custom.*;
 import java.util.function.Function;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class BPParticels {
+public class BPParticles {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, BotanicPledge.MOD_ID);
 
@@ -26,7 +26,7 @@ public class BPParticels {
             <T extends ParticleOptions> void register(ParticleType<T> type, Function<SpriteSet, ParticleProvider<T>> constructor);
         }
 
-        public static void registerFactories(BPParticels.FactoryHandler.Consumer consumer) {
+        public static void registerFactories(BPParticles.FactoryHandler.Consumer consumer) {
             consumer.register(YGGDRAL_TYPE.get(), YggdralParticleData::new);
             consumer.register(MANA_SWEEP_TYPE.get(), ManaSweepParticleData::new);
         }

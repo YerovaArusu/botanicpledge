@@ -2,7 +2,6 @@ package yerova.botanicpledge.client.events;
 
 
 import com.google.common.base.Suppliers;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -29,7 +28,7 @@ import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.setup.BPBlockEntities;
-import yerova.botanicpledge.setup.BPParticels;
+import yerova.botanicpledge.setup.BPParticles;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Collections;
@@ -81,7 +80,7 @@ public class ForgeClientInitializer {
 
     @SubscribeEvent
     public static void particleRegister(RegisterParticleProvidersEvent event) {
-        BPParticels.FactoryHandler.registerFactories(new BPParticels.FactoryHandler.Consumer() {
+        BPParticles.FactoryHandler.registerFactories(new BPParticles.FactoryHandler.Consumer() {
             @Override
             public <T extends ParticleOptions> void register(ParticleType<T> type, Function<SpriteSet, ParticleProvider<T>> constructor) {
                 event.registerSpriteSet(type, constructor::apply);

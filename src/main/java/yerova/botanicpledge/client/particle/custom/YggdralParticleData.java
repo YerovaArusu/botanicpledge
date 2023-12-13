@@ -7,7 +7,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import yerova.botanicpledge.client.particle.ColorParticleTypeData;
 import yerova.botanicpledge.client.particle.ParticleColor;
-import yerova.botanicpledge.setup.BPParticels;
+import yerova.botanicpledge.setup.BPParticles;
 
 public class YggdralParticleData implements ParticleProvider<ColorParticleTypeData> {
     private final SpriteSet spriteSet;
@@ -23,7 +23,7 @@ public class YggdralParticleData implements ParticleProvider<ColorParticleTypeDa
     }
 
     public static ParticleOptions createData(ParticleColor color) {
-        return new ColorParticleTypeData(BPParticels.YGGDRAL_TYPE.get(), color, false);
+        return new ColorParticleTypeData(BPParticles.YGGDRAL_TYPE.get(), color, false);
     }
 
 

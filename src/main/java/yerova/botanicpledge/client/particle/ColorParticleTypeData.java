@@ -4,12 +4,11 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
-import yerova.botanicpledge.setup.BPParticels;
+import yerova.botanicpledge.setup.BPParticles;
 
 import java.util.Locale;
 
@@ -47,11 +46,11 @@ public class ColorParticleTypeData implements ParticleOptions {
     };
 
     public ColorParticleTypeData(float r, float g, float b, boolean disableDepthTest, float size, float alpha, int age) {
-        this(BPParticels.YGGDRAL_TYPE.get(), new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
+        this(BPParticles.YGGDRAL_TYPE.get(), new ParticleColor(r, g, b), disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleColor color, boolean disableDepthTest, float size, float alpha, int age) {
-        this(BPParticels.YGGDRAL_TYPE.get(), color, disableDepthTest, size, alpha, age);
+        this(BPParticles.YGGDRAL_TYPE.get(), color, disableDepthTest, size, alpha, age);
     }
 
     public ColorParticleTypeData(ParticleType<ColorParticleTypeData> particleTypeData, ParticleColor color, boolean disableDepthTest) {

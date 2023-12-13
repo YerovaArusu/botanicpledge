@@ -38,7 +38,7 @@ public class BotanicPledge {
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
 
-        BPParticels.PARTICLES.register(forgeBus);
+        BPParticles.PARTICLES.register(forgeBus);
         BPEnchantments.ENCHANTMENTS.register(forgeBus);
 
         BPTabs.TABS.register(forgeBus);
