@@ -26,19 +26,19 @@ side = "BOTH"
 [[dependencies.botanicpledge]]
 modId = "botania"
 mandatory = true
-versionRange = "[1.20.1-441-FORGE]"
+versionRange = "[1.20.1-441-FORGE,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.botanicpledge]]
 modId = "curios"
 mandatory = true
-versionRange = "[5.4.2+1.20.1]"
+versionRange = "[5.4.2+1.20.1,)"
 ordering = "NONE"
 side = "BOTH"
 [[dependencies.botanicpledge]]
 modId = "patchouli"
 mandatory = true
-versionRange = "[1.20.1-83-FORGE]"
+versionRange = "[1.20.1-83-FORGE,)"
 ordering = "NONE"
 side = "BOTH"
