@@ -2,31 +2,46 @@ package yerova.botanicpledge.client.events;
 
 
 import com.google.common.base.Suppliers;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.client.gui.HUDHandler;
+import vazkii.botania.common.block.block_entity.PetalApothecaryBlockEntity;
+import vazkii.botania.common.block.block_entity.RunicAltarBlockEntity;
+import vazkii.botania.common.block.block_entity.corporea.CorporeaCrystalCubeBlockEntity;
+import vazkii.botania.common.block.block_entity.mana.ManaPoolBlockEntity;
+import vazkii.botania.common.helper.PlayerHelper;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.WandOfTheForestItem;
 import vazkii.botania.forge.CapabilityUtil;
+import vazkii.botania.xplat.ClientXplatAbstractions;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
+import yerova.botanicpledge.client.utils.ClientUtils;
+import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -37,6 +52,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static vazkii.botania.client.gui.HUDHandler.tryOptifineWarning;
 import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -70,6 +86,48 @@ public class ForgeClientInitializer {
     });
 
 
+    @SubscribeEvent
+    public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
+        e.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "hud",
+                (Fgui, gui, partialTick, width, height) -> {
+
+                    PoseStack ms = gui.pose();
+                    Minecraft mc = Minecraft.getInstance();
+                    if (mc.options.hideGui) {
+                        return;
+                    }
+                    ProfilerFiller profiler = mc.getProfiler();
+
+                    if (mc.hitResult instanceof BlockHitResult result) {
+                        BlockPos bpos = result.getBlockPos();
+
+                        BlockState state = mc.level.getBlockState(bpos);
+                        BlockEntity tile = mc.level.getBlockEntity(bpos);
+
+                        if (PlayerHelper.hasAnyHeldItem(mc.player)) {
+                            if (PlayerHelper.hasHeldItemClass(mc.player, WandOfTheForestItem.class)) {
+                                tryOptifineWarning();
+                                var hud = ClientXplatAbstractions.INSTANCE.findWandHud(mc.level, bpos, state, tile);
+                                if (hud != null) {
+                                    profiler.push("wandItem");
+                                    hud.renderHUD(gui, mc);
+                                    profiler.pop();
+                                }
+                            }
+                            if (tile instanceof ManaPoolBlockEntity pool && !mc.player.getMainHandItem().isEmpty()) {
+                                ClientUtils.renderPoolRecipeHUD(gui, pool, mc.player.getMainHandItem());
+                            }
+                        }
+                        if (!PlayerHelper.hasHeldItem(mc.player, BotaniaItems.lexicon)) {
+                            if (tile instanceof RitualCenterBlockEntity altar) {
+                                RitualCenterBlockEntity.Hud.render(altar, gui, mc);
+                            }
+                        }
+                    }
+
+                });
+    }
+
 
     @SubscribeEvent
     public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers evt) {
@@ -87,6 +145,7 @@ public class ForgeClientInitializer {
             }
         });
     }
+
     @SubscribeEvent
     public static void onModelRegister(ModelEvent.RegisterAdditional evt) {
         var resourceManager = Minecraft.getInstance().getResourceManager();

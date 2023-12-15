@@ -1,5 +1,10 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,6 +19,20 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
+import vazkii.botania.api.BotaniaAPIClient;
+import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.api.block.Wandable;
+import vazkii.botania.api.internal.VanillaPacketDispatcher;
+import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.gui.HUDHandler;
+import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.botania.common.block.block_entity.RunicAltarBlockEntity;
+import vazkii.botania.common.crafting.BotaniaRecipeTypes;
+import vazkii.botania.common.helper.PlayerHelper;
+import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.ManaTabletItem;
+import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
@@ -28,7 +47,7 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
+public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wandable {
 
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     private int counter = 0;
@@ -259,6 +278,59 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity {
             }
         }
         return pedestalItems;
+    }
+
+    @Override
+    public boolean onUsedByWand(@Nullable Player player, ItemStack stack, Direction side) {
+        if (player == null || player.isShiftKeyDown()) {
+            VanillaPacketDispatcher.dispatchTEToNearbyPlayers(this);
+        }
+        return true;
+    }
+
+    public static class Hud {
+        public static void render(RitualCenterBlockEntity center, GuiGraphics gui, Minecraft mc) {
+            PoseStack ms = gui.pose();
+            int xc = mc.getWindow().getGuiScaledWidth() / 2;
+            int yc = mc.getWindow().getGuiScaledHeight() / 2;
+
+            List<ItemStack> pedestals = center.getPedestalItems();
+            ItemStack reagent = center.getHeldStack();
+
+
+            float angle = -90;
+            int radius = 48;
+            int amt = 0;
+            for (int i = 0; i < pedestals.size(); i++) {
+                if (pedestals.get(i).isEmpty()) {
+                    break;
+                }
+                amt++;
+            }
+
+
+            if(!reagent.isEmpty()) {
+                ms.pushPose();
+                ms.translate(xc-8, yc-8, 0);
+                gui.renderFakeItem(reagent, 0, 0);
+                ms.popPose();
+            }
+
+            if (amt > 0) {
+                float anglePer = 360F / amt;
+
+                for (int i = 0; i < amt; i++) {
+                    double xPos = xc + Math.cos(angle * Math.PI / 180D) * radius - 8;
+                    double yPos = yc + Math.sin(angle * Math.PI / 180D) * radius - 8;
+                    ms.pushPose();
+                    ms.translate(xPos, yPos, 0);
+                    gui.renderFakeItem(pedestals.get(i), 0, 0);
+                    ms.popPose();
+
+                    angle += anglePer;
+                }
+            }
+        }
     }
 
 
