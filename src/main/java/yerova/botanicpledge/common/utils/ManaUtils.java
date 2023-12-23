@@ -19,16 +19,17 @@ public class ManaUtils {
     }
 
     public static boolean hasEnoughManaInRitual(BlockPos pos, Level world, int mana) {
+        return getAvailableManaInRitual(pos,world) >= mana;
+    }
 
+    public static int getAvailableManaInRitual(BlockPos pos, Level world) {
         AtomicInteger currentMana = new AtomicInteger();
         Arrays.stream(getRitualManaPoolsPos(pos)).forEach(pose -> {
             if (world.getBlockEntity(pose) instanceof ManaPoolBlockEntity tilePool) {
                 currentMana.set(currentMana.get() + tilePool.getCurrentMana());
             }
         });
-
-        return currentMana.get() >= mana;
-
+        return currentMana.get();
     }
 
     public static boolean takeManaFromMultipleSources(BlockPos pos, Level world, int mana) {

@@ -33,6 +33,7 @@ import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.ManaTabletItem;
 import vazkii.botania.common.item.WandOfTheForestItem;
+import yerova.botanicpledge.client.utils.ClientUtils;
 import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
@@ -296,7 +297,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
 
             List<ItemStack> pedestals = center.getPedestalItems();
             ItemStack reagent = center.getHeldStack();
-
+            IBotanicRitualRecipe recipe = center.getRecipe(reagent, mc.player);
 
             float angle = -90;
             int radius = 48;
@@ -307,7 +308,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                 }
                 amt++;
             }
-
 
             if(!reagent.isEmpty()) {
                 ms.pushPose();
@@ -330,6 +330,26 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                     angle += anglePer;
                 }
             }
+
+            if (recipe != null) {
+
+                int manaRequired = recipe.getManaCost();
+                int manaAvailable = ManaUtils.getAvailableManaInRitual(center.worldPosition, center.level);
+                if (manaRequired > 0) {
+                    int x = mc.getWindow().getGuiScaledWidth() / 2 - mc.font.width("") / 2;
+                    int y = mc.getWindow().getGuiScaledHeight() / 2 + (int) (1.5*radius);
+
+                    ClientUtils.drawManaHUD(gui, x, y, 0x4444FF, manaAvailable, recipe.getManaCost(), "");
+
+                }
+
+
+                ms.pushPose();
+                ms.translate(xc + (radius *2) -8, yc -8, 0);
+                gui.renderFakeItem(recipe.getResult(pedestals, reagent, center), 0, 0);
+                ms.popPose();
+            }
+
         }
     }
 

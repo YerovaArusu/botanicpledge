@@ -24,33 +24,20 @@ public class ClientUtils {
         return new ModelLayerLocation(new ResourceLocation(BotanicPledge.MOD_ID, name), layer);
     }
 
-    public static void renderPoolRecipeHUD(GuiGraphics gui, ManaPoolBlockEntity tile, ItemStack stack) {
+    public static void drawManaHUD(GuiGraphics gui,int x, int y, int color, int mana, int maxMana, String name) {
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         Minecraft mc = Minecraft.getInstance();
-        ProfilerFiller profiler = mc.getProfiler();
 
-        profiler.push("poolRecipe");
-        ManaInfusionRecipe recipe = tile.getMatchingRecipe(stack, tile.getLevel().getBlockState(tile.getBlockPos().below()));
-        if (recipe != null) {
-            int x = mc.getWindow().getGuiScaledWidth() / 2 - 11;
-            int y = mc.getWindow().getGuiScaledHeight() / 2 + 10;
 
-            int u = tile.getCurrentMana() >= recipe.getManaToConsume() ? 0 : 22;
-            int v = mc.player.getName().getString().equals("haighyorkie") && mc.player.isShiftKeyDown() ? 23 : 8;
+        gui.drawString(mc.font, name, x, y, color);
 
-            RenderSystem.enableBlend();
-            RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        x = mc.getWindow().getGuiScaledWidth() / 2 - 51;
+        y += 10;
 
-            RenderHelper.drawTexturedModalRect(gui, HUDHandler.manaBar, x, y, u, v, 22, 15);
-            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        HUDHandler.renderManaBar(gui, x, y, color, 1F, mana, maxMana);
 
-            gui.renderItem(stack, x - 20, y);
-            ItemStack result = recipe.getResultItem(mc.level.registryAccess());
-            gui.renderItem(result, x + 26, y);
-            gui.renderItemDecorations(mc.font, result, x + 26, y);
-
-            RenderSystem.disableBlend();
-        }
-        profiler.pop();
+        RenderSystem.disableBlend();
     }
 
 }

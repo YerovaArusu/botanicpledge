@@ -90,34 +90,15 @@ public class ForgeClientInitializer {
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
         e.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "hud",
                 (Fgui, gui, partialTick, width, height) -> {
-
-                    PoseStack ms = gui.pose();
                     Minecraft mc = Minecraft.getInstance();
                     if (mc.options.hideGui) {
                         return;
                     }
-                    ProfilerFiller profiler = mc.getProfiler();
 
                     if (mc.hitResult instanceof BlockHitResult result) {
                         BlockPos bpos = result.getBlockPos();
-
-                        BlockState state = mc.level.getBlockState(bpos);
                         BlockEntity tile = mc.level.getBlockEntity(bpos);
 
-                        if (PlayerHelper.hasAnyHeldItem(mc.player)) {
-                            if (PlayerHelper.hasHeldItemClass(mc.player, WandOfTheForestItem.class)) {
-                                tryOptifineWarning();
-                                var hud = ClientXplatAbstractions.INSTANCE.findWandHud(mc.level, bpos, state, tile);
-                                if (hud != null) {
-                                    profiler.push("wandItem");
-                                    hud.renderHUD(gui, mc);
-                                    profiler.pop();
-                                }
-                            }
-                            if (tile instanceof ManaPoolBlockEntity pool && !mc.player.getMainHandItem().isEmpty()) {
-                                ClientUtils.renderPoolRecipeHUD(gui, pool, mc.player.getMainHandItem());
-                            }
-                        }
                         if (!PlayerHelper.hasHeldItem(mc.player, BotaniaItems.lexicon)) {
                             if (tile instanceof RitualCenterBlockEntity altar) {
                                 RitualCenterBlockEntity.Hud.render(altar, gui, mc);
