@@ -14,6 +14,6 @@ public class BPRecipes {
 
 
     public static final RegistryObject<RecipeSerializer<BotanicRitualRecipe>> BOTANIC_RITUAL_RECIPE =
-            SERIALIZERS.register("botanic_ritual", ()-> BotanicRitualRecipe.Serializer.INSTANCE);
+            SERIALIZERS.register("botanic_ritual", () -> BotanicRitualRecipe.Serializer.INSTANCE);
 
 }

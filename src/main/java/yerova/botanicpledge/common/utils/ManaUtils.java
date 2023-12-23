@@ -19,7 +19,7 @@ public class ManaUtils {
     }
 
     public static boolean hasEnoughManaInRitual(BlockPos pos, Level world, int mana) {
-        return getAvailableManaInRitual(pos,world) >= mana;
+        return getAvailableManaInRitual(pos, world) >= mana;
     }
 
     public static int getAvailableManaInRitual(BlockPos pos, Level world) {

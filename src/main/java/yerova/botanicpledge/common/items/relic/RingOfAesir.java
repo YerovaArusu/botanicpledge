@@ -60,6 +60,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
     private static final String TAG_Z_ORIGIN = "zOrigin";
 
     private static boolean recCall = false;
+
     public RingOfAesir(Properties props) {
         super(props);
     }
@@ -83,6 +84,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
                 new AttributeModifier(getBaubleUUID(stack), "Aesir Ring", 30, AttributeModifier.Operation.ADDITION));
         return attributes;
     }
+
     public static boolean onPlayerAttacked(Player player, DamageSource src) {
         return (src.is(BotaniaTags.DamageTypes.RING_OF_ODIN_IMMUNE))
                 && !EquipmentHandler.findOrEmpty(BPItems.AESIR_RING.get(), player).isEmpty();
@@ -257,7 +259,6 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
 
         return null;
     }
-
 
 
     private static BlockPos getBindingCenter(ItemStack stack) {

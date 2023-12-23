@@ -38,7 +38,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos((int) target.getX(),(int) target.getY(),(int) target.getZ()));
+        setTargetPos(new BlockPos((int) target.getX(), (int) target.getY(), (int) target.getZ()));
 
         setTarget_id(target.getId());
         setVariety((int) (10 * Math.random()));
@@ -51,7 +51,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, float damage) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos((int)target.getX(),(int) target.getY(),(int) target.getZ()));
+        setTargetPos(new BlockPos((int) target.getX(), (int) target.getY(), (int) target.getZ()));
         setDamage(damage);
         setTarget_id(target.getId());
         setVariety((int) (10 * Math.random()));
@@ -86,7 +86,6 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
     private static final EntityDataAccessor<Boolean> FAKE =
             SynchedEntityData.defineId(AsgardBladeEntity.class, EntityDataSerializers.BOOLEAN);
-
 
 
     @Override
@@ -129,7 +128,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         if (getThrower() != null && getThrower() instanceof Player player) {
             AABB attackBox = this.getBoundingBox().inflate(2);
             for (LivingEntity entity : level().getEntitiesOfClass(LivingEntity.class, attackBox)) {
-                if(entity != getThrower()) {
+                if (entity != getThrower()) {
                     entity.hurt(level().damageSources().playerAttack(player), (float) getDamage());
 
                     if (entity.getId() == this.getTarget_id()) {
@@ -198,8 +197,6 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
 
     }
-
-
 
 
     private void setTarget_id(int anInt) {

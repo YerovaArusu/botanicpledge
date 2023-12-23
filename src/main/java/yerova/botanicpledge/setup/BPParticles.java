@@ -6,9 +6,14 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.client.particle.ColorParticleTypeData;
-import yerova.botanicpledge.client.particle.custom.*;
+import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
+import yerova.botanicpledge.client.particle.custom.ManaSweepParticleType;
+import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
+import yerova.botanicpledge.client.particle.custom.YggdralParticlesType;
 
 import java.util.function.Function;
 
@@ -31,7 +36,6 @@ public class BPParticles {
             consumer.register(MANA_SWEEP_TYPE.get(), ManaSweepParticleData::new);
         }
     }
-
 
 
 }

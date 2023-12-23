@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BotanicRitualRecipe implements IBotanicRitualRecipe{
+public class BotanicRitualRecipe implements IBotanicRitualRecipe {
 
 
     public Ingredient reagent; // Used in the arcane pedestal
@@ -136,7 +136,7 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
 
     @Override
     public boolean matches(RitualCenterBlockEntity tile, Level worldIn) {
-        if(worldIn.isClientSide) return false;
+        if (worldIn.isClientSide) return false;
         return isMatch(tile.getPedestalItems(), tile.heldStack, tile, null);
     }
 
@@ -247,7 +247,6 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe{
             buf.writeInt(recipe.manaCost);
             buf.writeBoolean(recipe.keepNbtOfReagent);
         }
-
 
 
         @SuppressWarnings("unchecked") // Need this wrapper, because generics

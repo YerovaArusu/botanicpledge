@@ -47,9 +47,9 @@ public class MariasCoreRenderer implements ICurioRenderer {
             for (int i = 0; i < 2; i++) {
                 matrixStack.pushPose();
 
-                if(j == 0) {
+                if (j == 0) {
                     matrixStack.mulPose(VecHelper.rotateY(i == 0 ? flap : 180 - flap));
-                } else matrixStack.mulPose(VecHelper.rotateY(i == 0 ? flap - 180: -flap));
+                } else matrixStack.mulPose(VecHelper.rotateY(i == 0 ? flap - 180 : -flap));
 
 
                 matrixStack.translate(-0.5, j == 0 ? 0.7 : -1.7, 0);

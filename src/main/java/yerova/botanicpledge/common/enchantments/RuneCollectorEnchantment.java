@@ -27,20 +27,18 @@ public class RuneCollectorEnchantment extends Enchantment {
     }
 
 
-
     @Override
     public void doPostAttack(LivingEntity pAttacker, Entity entity, int pLevel) {
-        int bound = pLevel > 1 ? 10_000 - (pLevel-1)*800 : 10_000;
+        int bound = pLevel > 1 ? 10_000 - (pLevel - 1) * 800 : 10_000;
 
-        if (!entity.isAlive() && entity instanceof Zombie &&pAttacker instanceof Player player && !player.level().isClientSide &&
+        if (!entity.isAlive() && entity instanceof Zombie && pAttacker instanceof Player player && !player.level().isClientSide &&
                 RuneGemItem.getRandomRarity(bound).equals(BPConstants.RARITY_UNCOMMON) && player.getUUID() != null) {
 
-                player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(),
-                        RuneGemItem.getNewAttributedGemStack(new ItemStack(BPItems.SOCKET_GEM.get(), 1))));
+            player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(),
+                    RuneGemItem.getNewAttributedGemStack(new ItemStack(BPItems.SOCKET_GEM.get(), 1))));
         }
         super.doPostAttack(pAttacker, entity, pLevel);
     }
-
 
 
     @Override

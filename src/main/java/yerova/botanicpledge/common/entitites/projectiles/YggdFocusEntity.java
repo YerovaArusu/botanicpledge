@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -101,7 +100,7 @@ public class YggdFocusEntity extends Entity {
 
 
     public List<LivingEntity> getEntitiesAround() {
-        BlockPos source = new BlockPos((int)getX(),(int) getY(),(int) getZ());
+        BlockPos source = new BlockPos((int) getX(), (int) getY(), (int) getZ());
         float range = 6F;
         return level().getEntitiesOfClass(LivingEntity.class,
                 new AABB(source.getX() + 0.5 - range, source.getY() + 0.5 - range, source.getZ() + 0.5 - range,

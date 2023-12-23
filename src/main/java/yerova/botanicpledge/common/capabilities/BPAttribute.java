@@ -1,8 +1,8 @@
 package yerova.botanicpledge.common.capabilities;
 
 import net.minecraft.nbt.CompoundTag;
-import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public class BPAttribute {
 
     public boolean setSocketAttribute(int index, String AttributeName, double AttributeValue) {
         boolean toReturn = false;
-        if(index <= BPConstants.MAX_SOCKETS && hasEmptySocket()) {
+        if (index <= BPConstants.MAX_SOCKETS && hasEmptySocket()) {
             sockets.put(index, Map.entry(AttributeName, AttributeValue));
             toReturn = true;
         }

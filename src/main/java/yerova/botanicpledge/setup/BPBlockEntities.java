@@ -3,7 +3,6 @@ package yerova.botanicpledge.setup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block_entity.BindableSpecialFlowerBlockEntity;

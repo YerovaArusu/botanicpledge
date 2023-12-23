@@ -11,7 +11,6 @@ import java.util.function.Supplier;
 public class ItemButtonInteractionToServer {
 
 
-
     public ItemButtonInteractionToServer() {
     }
 
@@ -27,8 +26,6 @@ public class ItemButtonInteractionToServer {
         ctx.enqueueWork(() -> {
 
 
-
-
             if (player != null) {
 
                 if (player.getMainHandItem().getItem() instanceof YggdRamus) {
@@ -36,7 +33,7 @@ public class ItemButtonInteractionToServer {
                 }
 
                 if (player.getMainHandItem().getItem() instanceof AsgardFractal) {
-                    AsgardFractal.switchSkill(player,player.getMainHandItem());
+                    AsgardFractal.switchSkill(player, player.getMainHandItem());
                 }
             }
         });

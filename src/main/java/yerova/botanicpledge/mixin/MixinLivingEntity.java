@@ -31,15 +31,15 @@ public abstract class MixinLivingEntity {
             if (l.hasEffect(MobEffects.DAMAGE_RESISTANCE) && !pDamageSource.is(DamageTypeTags.BYPASSES_RESISTANCE)) {
                 int i = (l.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
                 int j = 25 - i;
-                float f = pDamageAmount * (float)j;
+                float f = pDamageAmount * (float) j;
                 float f1 = pDamageAmount;
                 pDamageAmount = Math.max(f / 25.0F, 0.0F);
                 float f2 = f1 - pDamageAmount;
                 if (f2 > 0.0F && f2 < 3.4028235E37F) {
                     if (l instanceof ServerPlayer) {
-                        ((ServerPlayer)l).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_RESISTED), Math.round(f2 * 10.0F));
+                        ((ServerPlayer) l).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_RESISTED), Math.round(f2 * 10.0F));
                     } else if (pDamageSource.getEntity() instanceof ServerPlayer) {
-                        ((ServerPlayer)pDamageSource.getEntity()).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_DEALT_RESISTED), Math.round(f2 * 10.0F));
+                        ((ServerPlayer) pDamageSource.getEntity()).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_DEALT_RESISTED), Math.round(f2 * 10.0F));
                     }
                 }
             }

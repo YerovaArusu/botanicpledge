@@ -1,7 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -19,5 +18,5 @@ public class BPEnchantments {
             () -> new RuneCollectorEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND));
 
     public static final RegistryObject<Enchantment> MANA_PROTECTION_ENCHANTMENT = ENCHANTMENTS.register("mana_protection",
-            () -> new RuneCollectorEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.HEAD,EquipmentSlot.CHEST, EquipmentSlot.LEGS,EquipmentSlot.FEET));
+            () -> new RuneCollectorEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
 }

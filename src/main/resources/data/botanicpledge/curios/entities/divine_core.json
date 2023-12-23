@@ -1,4 +1,8 @@
 {
-  "entities": ["player"],
-  "slots": ["divine_core"]
+  "entities": [
+    "player"
+  ],
+  "slots": [
+    "divine_core"
+  ]
 }

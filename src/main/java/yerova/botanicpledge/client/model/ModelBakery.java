@@ -30,7 +30,7 @@ public class ModelBakery {
         asgardBlade = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
         mariaWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/maria_wings"));
         marinaWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/marina_wings"));
-        yggralSpreaderCore = map.get(new ResourceLocation(BotanicPledge.MOD_ID,"block/yggdral_spreader_core"));
+        yggralSpreaderCore = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         yggdralSpreaderScaffolding = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
     }
 

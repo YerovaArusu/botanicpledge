@@ -5,7 +5,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,20 +23,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
-import yerova.botanicpledge.client.particle.ParticleColor;
-import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.setup.BPItemTiers;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +50,6 @@ public class YggdRamus extends SwordItem {
     public boolean isEnchantable(ItemStack pStack) {
         return true;
     }
-
 
 
     public YggdRamus(Properties pProperties) {
@@ -230,7 +224,6 @@ public class YggdRamus extends SwordItem {
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
-
 
 
     public void shootEnemiesIntoSkyAbility(Level level, Player player, int radius) {

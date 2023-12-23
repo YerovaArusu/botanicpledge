@@ -6,8 +6,6 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import yerova.botanicpledge.setup.BPItems;
 
-import java.util.function.Supplier;
-
 public class BotanicPledgeTab extends CreativeModeTab {
     public static final BotanicPledgeTab BOTANIC_PLEDGE_TAB = new BotanicPledgeTab("botanicpledge");
 
@@ -24,8 +22,6 @@ public class BotanicPledgeTab extends CreativeModeTab {
     public ItemStack getIconItem() {
         return new ItemStack(BPItems.MARIAS_CORE.get());
     }
-
-
 
 
 }

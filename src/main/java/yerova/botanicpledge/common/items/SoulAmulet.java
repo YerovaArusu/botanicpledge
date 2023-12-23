@@ -64,7 +64,7 @@ public class SoulAmulet extends Item implements ICurioItem {
             Map.Entry<UUID, String> soul = getLastSoulAndRemoveFromList(pPlayer.getMainHandItem());
 
             pLevel.addFreshEntity(new ItemEntity(pLevel, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(),
-                    SoulShard.createSoulShard(soul.getKey(),soul.getValue())));
+                    SoulShard.createSoulShard(soul.getKey(), soul.getValue())));
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }

@@ -11,7 +11,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -20,7 +23,6 @@ import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
-
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
@@ -31,9 +33,11 @@ import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItemTiers;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class AsgardFractal extends SwordItem{
+public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
     public static final int MAX_ENTITIES = 10;
     public final int MAX_TICK_AS_TARGET = 200;
@@ -60,7 +64,7 @@ public class AsgardFractal extends SwordItem{
 
                             if (entity instanceof Player enemy) {
 
-                                ItemHelper.getCurio(player,"necklace").forEach(slotResult -> {
+                                ItemHelper.getCurio(player, "necklace").forEach(slotResult -> {
                                     if (!(slotResult.stack().getItem() instanceof SoulAmulet || SoulAmulet.amuletContainsSoul(stack, enemy.getUUID()))) {
                                         entity1.setGlowingTag(true);
                                         targetsNTime.put(entity1, 0);
@@ -120,7 +124,7 @@ public class AsgardFractal extends SwordItem{
 
             if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
                 for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal("+ " + entry.getValue() + " " +Component.translatable(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
+                    tooltip.add(Component.literal("+ " + entry.getValue() + " " + Component.translatable(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
                 }
             }
 
@@ -137,7 +141,7 @@ public class AsgardFractal extends SwordItem{
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
 
-        if(ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 80_000, true)){
+        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 80_000, true)) {
             activateCurrentSkill(level, player, player.getMainHandItem());
         }
         return super.use(level, player, pUsedHand);
@@ -197,7 +201,7 @@ public class AsgardFractal extends SwordItem{
     }
 
     public static void activateCurrentSkill(Level level, Player player, ItemStack stack) {
-        if (!(stack.getItem() instanceof AsgardFractal) ) return;
+        if (!(stack.getItem() instanceof AsgardFractal)) return;
         switch (getCurrentSkill(stack)) {
             case 1 -> {
                 player.displayClientMessage(Component.literal("Activated \"Shoot Blades\""), true);
@@ -217,7 +221,8 @@ public class AsgardFractal extends SwordItem{
                             } else {
                                 summonProjectile(level, player, attackables[0]);
                             }
-                        } else player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
+                        } else
+                            player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
                     }
                     player.getCooldowns().addCooldown(stack.getItem(), 25);
                     if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
@@ -256,7 +261,7 @@ public class AsgardFractal extends SwordItem{
 
             case 4 -> {
                 player.displayClientMessage(Component.literal("Activated \"Swing Attack\""), true);
-                PlayerUtils.sweepAttack(level, player,stack,0.4F);
+                PlayerUtils.sweepAttack(level, player, stack, 0.4F);
                 player.getCooldowns().addCooldown(stack.getItem(), 10);
             }
             default -> {

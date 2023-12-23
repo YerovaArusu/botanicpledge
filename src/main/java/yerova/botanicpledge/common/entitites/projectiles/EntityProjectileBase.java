@@ -82,7 +82,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         this.setTargetPosX((float) vec.x);
         this.setTargetPosY((float) vec.y);
         this.setTargetPosZ((float) vec.z);
-        this.setTargetPos(new BlockPos((int) vec.x,(int) vec.y,(int) vec.z));
+        this.setTargetPos(new BlockPos((int) vec.x, (int) vec.y, (int) vec.z));
     }
 
     public void faceEntity(float vx, float vy, float vz) {
@@ -219,9 +219,6 @@ public class EntityProjectileBase extends ThrowableProjectile {
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
-
-
-
 
 
 }

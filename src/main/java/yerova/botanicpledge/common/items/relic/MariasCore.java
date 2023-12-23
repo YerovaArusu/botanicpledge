@@ -1,14 +1,10 @@
 package yerova.botanicpledge.common.items.relic;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import top.theillusivec4.curios.api.SlotContext;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPItemUtils;
-
-import java.util.UUID;
 
 
 public class MariasCore extends DivineCoreItem {
@@ -38,7 +34,6 @@ public class MariasCore extends DivineCoreItem {
     public static CoreAttributeProvider getCoreAttribute() {
         return new CoreAttributeProvider(maxCharge, maxShield, defRegenPerTick, manaCost);
     }
-
 
 
 }

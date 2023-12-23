@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.ItemLike;
 import vazkii.botania.network.TriConsumer;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.setup.BPItems;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 
 public class BotanicPledgeItemProperties {

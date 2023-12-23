@@ -11,7 +11,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -25,16 +24,15 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.HashMap;
 
 public class RitualCenterBlock extends BaseEntityBlock {
 
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
+
     @Override
     public VoxelShape getShape(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, CollisionContext collisionContext) {
         return SHAPE;

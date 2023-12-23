@@ -1,14 +1,6 @@
 package yerova.botanicpledge.common.utils;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
-import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.setup.BotanicPledge;
-
-import java.util.ArrayList;
 
 public final class BPConstants {
 

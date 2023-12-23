@@ -9,12 +9,10 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +24,7 @@ public class EntityUtils {
     public static HitResult raytrace(Entity e, double distance, boolean fluids) {
         return e.pick(distance, 1, fluids);
     }
+
     public static List<LivingEntity> getAttackableEnemiesAround(@NotNull LivingEntity entity, Level level, int radius, Predicate<LivingEntity> entitiesSelector) {
         final TargetingConditions alertableTargeting = TargetingConditions.forCombat().range(radius).ignoreLineOfSight().selector(entitiesSelector);
         return level.getNearbyEntities(LivingEntity.class, alertableTargeting, entity,
@@ -97,8 +96,8 @@ public class EntityUtils {
     public static boolean hasIdMatch(Set<LivingEntity> entities, Entity entity) {
         boolean toReturn = false;
 
-        for (LivingEntity e: entities) {
-            if(e.getId() == entity.getId()) {
+        for (LivingEntity e : entities) {
+            if (e.getId() == entity.getId()) {
                 toReturn = true;
                 break;
             }

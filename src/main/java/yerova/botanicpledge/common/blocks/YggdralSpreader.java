@@ -228,7 +228,6 @@ public class YggdralSpreader extends BotaniaWaterloggedBlock implements EntityBl
     }
 
 
-
     @Override
     public void onRemove(@Nonnull BlockState state, @Nonnull Level world, @Nonnull BlockPos pos, @Nonnull BlockState newState, boolean isMoving) {
         if (!state.is(newState.getBlock())) {

@@ -25,7 +25,7 @@ public class SoulShard extends Item {
         super(pProperties);
     }
 
-    public static ItemStack createSoulShard(Player player){
+    public static ItemStack createSoulShard(Player player) {
         ItemStack stack = new ItemStack(BPItems.SOUL_SHARD.get());
         CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
         tag.putUUID(BPConstants.SOUL_SHARD_UUID_TAG_NAME, player.getUUID());
@@ -34,7 +34,7 @@ public class SoulShard extends Item {
         return stack;
     }
 
-    public static ItemStack createSoulShard(UUID playerUUID, String name){
+    public static ItemStack createSoulShard(UUID playerUUID, String name) {
         ItemStack stack = new ItemStack(BPItems.SOUL_SHARD.get());
         CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
         tag.putUUID(BPConstants.SOUL_SHARD_UUID_TAG_NAME, playerUUID);
@@ -46,10 +46,10 @@ public class SoulShard extends Item {
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        if(pStack.getTag() == null) return;
+        if (pStack.getTag() == null) return;
 
         String name = SoulShard.getSoulName(pStack);
-        UUID uuid  = SoulShard.getSoulUUID(pStack);
+        UUID uuid = SoulShard.getSoulUUID(pStack);
 
         if (name != null && uuid != null) {
             MutableComponent t = Component.literal("Contains the soul of ");
@@ -64,14 +64,14 @@ public class SoulShard extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if(pPlayer.getMainHandItem().getItem() instanceof SoulShard) {
+        if (pPlayer.getMainHandItem().getItem() instanceof SoulShard) {
 
             ItemHelper.getCurio(pPlayer, "necklace").forEach(slotResult -> {
                 ItemStack stack = slotResult.stack();
                 UUID uuid = getSoulUUID(pPlayer.getMainHandItem());
                 String name = getSoulName(pPlayer.getMainHandItem());
-                if (stack.getItem() instanceof SoulAmulet && !SoulAmulet.amuletContainsSoul(stack, uuid)){
-                    SoulAmulet.applySoul(stack,uuid, name);
+                if (stack.getItem() instanceof SoulAmulet && !SoulAmulet.amuletContainsSoul(stack, uuid)) {
+                    SoulAmulet.applySoul(stack, uuid, name);
 
                     PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getMainHandItem(), 1);
                 }
@@ -83,22 +83,22 @@ public class SoulShard extends Item {
 
     public static UUID getSoulUUID(ItemStack stack) {
         UUID toReturn = UUID.randomUUID();
-        if (stack.getItem() instanceof SoulShard){
-            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_UUID_TAG_NAME)){
+        if (stack.getItem() instanceof SoulShard) {
+            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_UUID_TAG_NAME)) {
                 toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getUUID(BPConstants.SOUL_SHARD_UUID_TAG_NAME);
             }
         }
         return toReturn;
-     }
+    }
 
     public static String getSoulName(ItemStack stack) {
         String toReturn = "EMPTY";
-        if (stack.getItem() instanceof SoulShard){
-            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_NAME_TAG_NAME)){
+        if (stack.getItem() instanceof SoulShard) {
+            if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.SOUL_SHARD_NAME_TAG_NAME)) {
                 toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getString(BPConstants.SOUL_SHARD_NAME_TAG_NAME);
             }
         }
-      return toReturn;
+        return toReturn;
     }
 
 

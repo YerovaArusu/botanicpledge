@@ -1,10 +1,8 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,30 +17,17 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.opengl.GL11;
-import vazkii.botania.api.BotaniaAPIClient;
-import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
-import vazkii.botania.client.core.helper.RenderHelper;
-import vazkii.botania.client.gui.HUDHandler;
-import vazkii.botania.common.block.BotaniaBlocks;
-import vazkii.botania.common.block.block_entity.RunicAltarBlockEntity;
-import vazkii.botania.common.crafting.BotaniaRecipeTypes;
-import vazkii.botania.common.helper.PlayerHelper;
-import vazkii.botania.common.item.BotaniaItems;
-import vazkii.botania.common.item.ManaTabletItem;
-import vazkii.botania.common.item.WandOfTheForestItem;
-import yerova.botanicpledge.client.utils.ClientUtils;
-import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
+import yerova.botanicpledge.client.utils.ClientUtils;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
 import yerova.botanicpledge.common.recipes.ritual.RecipeUtils;
+import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.setup.BPBlockEntities;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -133,7 +118,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
         IBotanicRitualRecipe recipe = this.getRecipe(catalyst, playerEntity);
         if (recipe == null) return false;
 
-        if (isCrafting)  {
+        if (isCrafting) {
             return false;
         }
         if (!craftingPossible(catalyst, playerEntity)) {
@@ -309,9 +294,9 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                 amt++;
             }
 
-            if(!reagent.isEmpty()) {
+            if (!reagent.isEmpty()) {
                 ms.pushPose();
-                ms.translate(xc-8, yc-8, 0);
+                ms.translate(xc - 8, yc - 8, 0);
                 gui.renderFakeItem(reagent, 0, 0);
                 ms.popPose();
             }
@@ -337,7 +322,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                 int manaAvailable = ManaUtils.getAvailableManaInRitual(center.worldPosition, center.level);
                 if (manaRequired > 0) {
                     int x = mc.getWindow().getGuiScaledWidth() / 2 - mc.font.width("") / 2;
-                    int y = mc.getWindow().getGuiScaledHeight() / 2 + (int) (1.5*radius);
+                    int y = mc.getWindow().getGuiScaledHeight() / 2 + (int) (1.5 * radius);
 
                     ClientUtils.drawManaHUD(gui, x, y, 0x4444FF, manaAvailable, recipe.getManaCost(), "");
 
@@ -345,7 +330,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
 
 
                 ms.pushPose();
-                ms.translate(xc + (radius *2) -8, yc -8, 0);
+                ms.translate(xc + (radius * 2) - 8, yc - 8, 0);
                 gui.renderFakeItem(recipe.getResult(pedestals, reagent, center), 0, 0);
                 ms.popPose();
             }

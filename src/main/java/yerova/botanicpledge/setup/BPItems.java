@@ -21,7 +21,7 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
-    public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(23,1,
+    public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("asgard_fractal", () -> new AsgardFractal(23, 1,
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 

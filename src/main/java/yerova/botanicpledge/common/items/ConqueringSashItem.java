@@ -7,14 +7,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import vazkii.botania.api.mana.ManaItemHandler;
-import vazkii.botania.client.render.AccessoryRenderRegistry;
 import vazkii.botania.common.handler.EquipmentHandler;
 import vazkii.botania.common.item.equipment.bauble.BaubleItem;
 import vazkii.botania.common.item.equipment.bauble.CirrusAmuletItem;
-import vazkii.botania.common.item.equipment.bauble.SojournersSashItem;
-import vazkii.botania.common.proxy.Proxy;
 import vazkii.botania.xplat.XplatAbstractions;
-
 
 import java.util.UUID;
 
@@ -32,6 +28,7 @@ public class ConqueringSashItem extends BaubleItem {
     public final float speed;
     public final float jump;
     public final float fallBuffer;
+
     public ConqueringSashItem(Properties props, float speed, float jump, float fallBuffer) {
         super(props);
         this.speed = speed;
@@ -76,7 +73,7 @@ public class ConqueringSashItem extends BaubleItem {
                     ConqueringSashItem beltItem = (ConqueringSashItem) belt.getItem();
                     if ((player.onGround() || player.getAbilities().flying || player.isInWaterOrBubble()) && player.zza > 0F) {
                         float speed = beltItem.getSpeed(belt);
-                        player.moveRelative(player.isInWaterOrBubble() ? speed/2 : speed, new Vec3(0, 0, 1));
+                        player.moveRelative(player.isInWaterOrBubble() ? speed / 2 : speed, new Vec3(0, 0, 1));
                         beltItem.onMovedTick(belt, player);
 
                         if (player.tickCount % COST_INTERVAL == 0) {
@@ -107,9 +104,11 @@ public class ConqueringSashItem extends BaubleItem {
         return speed;
     }
 
-    public void onMovedTick(ItemStack stack, Player player) {}
+    public void onMovedTick(ItemStack stack, Player player) {
+    }
 
-    public void onNotMovingTick(ItemStack stack, Player player) {}
+    public void onNotMovingTick(ItemStack stack, Player player) {
+    }
 
 
     public static void onPlayerJump(LivingEntity living) {

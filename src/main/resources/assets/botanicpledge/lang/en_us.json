@@ -41,7 +41,7 @@
   "tooltip_core_rank": "Current Rank: %1$s of %2$s",
   "tooltip_stat_low_level": "Your Core Rank is not high enough",
   "switch_weapon_mode_tooltip": "Press %1$s to switch Mode",
-  "category.botanicpledge" : "Botanic Pledge",
+  "category.botanicpledge": "Botanic Pledge",
   "itemGroup.botanicpledge": "Botanic Pledge",
   "curios.identifier.divine_core": "Divine Core",
   "lexicon.botanicpledge.title": "Botanic Pledge",

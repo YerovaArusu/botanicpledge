@@ -19,7 +19,6 @@ import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 import java.util.Locale;
@@ -79,6 +78,7 @@ public class RuneGemItem extends SimpleFoiledItem {
         }
         return super.use(pLevel, pPlayer, pUsedHand);
     }
+
     public static double getSocketValueByChance(String AttributeType) {
 
         double value = switch (getRandomRarity(10000)) {

@@ -13,9 +13,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.ManaBufferBlock;
-import yerova.botanicpledge.common.blocks.YggdralSpreader;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
+import yerova.botanicpledge.common.blocks.YggdralSpreader;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 
 import javax.annotation.Nullable;

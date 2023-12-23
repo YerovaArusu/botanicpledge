@@ -16,13 +16,12 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
-import vazkii.botania.common.item.relic.RingOfOdinItem;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.items.relic.RingOfAesir;
-import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -65,7 +64,7 @@ public class BPItemEventHandler {
             }
 
             if (e.getEntity() instanceof Player player && RingOfAesir.onPlayerAttacked(player, e.getSource())) {
-                    e.setCanceled(true);
+                e.setCanceled(true);
             }
 
         }
@@ -73,7 +72,7 @@ public class BPItemEventHandler {
 
     @SubscribeEvent
     public static void onPlayerInteract(PlayerInteractEvent.RightClickBlock e) {
-        RingOfAesir.onPlayerInteract(e.getEntity(), e.getLevel(), e.getHand(),e.getHitVec());
+        RingOfAesir.onPlayerInteract(e.getEntity(), e.getLevel(), e.getHand(), e.getHitVec());
     }
 
     @SubscribeEvent
@@ -84,7 +83,7 @@ public class BPItemEventHandler {
         //Handle Conquering Sash
         ConqueringSashItem.onPlayerJump(entity);
 
-        ItemHelper.getDivineCoreCurio(entity).forEach(slotResult ->{
+        ItemHelper.getDivineCoreCurio(entity).forEach(slotResult -> {
             ItemStack stack = slotResult.stack();
             if (!evt.isCanceled()) {
                 AtomicReference<Double> jump = new AtomicReference<>(0.0);

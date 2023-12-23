@@ -27,7 +27,6 @@ import vazkii.botania.common.lib.BotaniaTags;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
-import yerova.botanicpledge.integration.curios.ItemHelper;
 
 import javax.annotation.Nonnull;
 import java.util.*;
@@ -59,7 +58,6 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
                 || enchantment.equals(Enchantments.ALL_DAMAGE_PROTECTION)
                 ;
     }
-
 
 
     @Override

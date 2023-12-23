@@ -27,5 +27,4 @@ public class YggdralParticleData implements ParticleProvider<ColorParticleTypeDa
     }
 
 
-
 }

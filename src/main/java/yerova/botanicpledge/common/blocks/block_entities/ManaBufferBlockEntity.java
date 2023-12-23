@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.blocks.block_entities;
 
 import com.google.common.base.Predicates;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
@@ -50,15 +49,14 @@ public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, 
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, ManaBufferBlockEntity e) {
-        if(level.isClientSide) {
-
+        if (level.isClientSide) {
 
 
         } else {
 
             if (level.getBlockEntity(blockPos) instanceof ManaBufferBlockEntity entity) {
 
-                if(level instanceof ServerLevel serverLevel) {
+                if (level instanceof ServerLevel serverLevel) {
                     int color = 0x08e8de;
 
                     float r = (color >> 16 & 0xFF) / 255F;
@@ -68,8 +66,8 @@ public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, 
                     for (int i = 0; i < 5; i++) {
                         WispParticleData data = WispParticleData.wisp(0.7F * ((float) e.mana / MAX_MANA), r, g, b, true);
 
-                        serverLevel.sendParticles(data,blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
-                                10,0, 0, 0,(float) (Math.random() - 0.95F) * 0.01F);
+                        serverLevel.sendParticles(data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
+                                10, 0, 0, 0, (float) (Math.random() - 0.95F) * 0.01F);
 
 
                     }
@@ -123,7 +121,6 @@ public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, 
         }
 
     }
-
 
 
     @Override
@@ -246,14 +243,14 @@ public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, 
             RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
             RenderSystem.setShaderTexture(0, HUDHandler.manaBar);
-            RenderHelper.drawTexturedModalRect(ms, HUDHandler.manaBar,x, y, u, v, 22, 15);
+            RenderHelper.drawTexturedModalRect(ms, HUDHandler.manaBar, x, y, u, v, 22, 15);
             RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
 
             ItemStack tablet = new ItemStack(BotaniaItems.manaTablet);
             ManaTabletItem.setStackCreative(tablet);
 
             RenderHelper.renderItemWithNameCentered(ms, mc, tablet, x - 20, color);
-            RenderHelper.renderItemWithNameCentered(ms, mc, poolStack, x +26, color);
+            RenderHelper.renderItemWithNameCentered(ms, mc, poolStack, x + 26, color);
 
 
             RenderSystem.disableBlend();

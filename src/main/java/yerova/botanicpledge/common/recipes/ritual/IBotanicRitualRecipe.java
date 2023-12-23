@@ -7,7 +7,6 @@ import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
 
 public interface IBotanicRitualRecipe extends Recipe<RitualCenterBlockEntity> {

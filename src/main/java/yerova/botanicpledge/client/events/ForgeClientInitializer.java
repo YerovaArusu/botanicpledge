@@ -2,7 +2,6 @@ package yerova.botanicpledge.client.events;
 
 
 import com.google.common.base.Suppliers;
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
@@ -10,11 +9,8 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
@@ -24,23 +20,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.WandHUD;
-import vazkii.botania.client.gui.HUDHandler;
-import vazkii.botania.common.block.block_entity.PetalApothecaryBlockEntity;
-import vazkii.botania.common.block.block_entity.RunicAltarBlockEntity;
-import vazkii.botania.common.block.block_entity.corporea.CorporeaCrystalCubeBlockEntity;
-import vazkii.botania.common.block.block_entity.mana.ManaPoolBlockEntity;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.BotaniaItems;
-import vazkii.botania.common.item.WandOfTheForestItem;
 import vazkii.botania.forge.CapabilityUtil;
-import vazkii.botania.xplat.ClientXplatAbstractions;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
-import yerova.botanicpledge.client.utils.ClientUtils;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
@@ -52,7 +40,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static vazkii.botania.client.gui.HUDHandler.tryOptifineWarning;
 import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

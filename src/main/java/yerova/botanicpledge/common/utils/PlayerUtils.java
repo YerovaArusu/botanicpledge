@@ -1,7 +1,5 @@
 package yerova.botanicpledge.common.utils;
 
-import net.minecraft.network.protocol.game.ClientboundHurtAnimationPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -58,7 +56,8 @@ public class PlayerUtils {
         }
         return toReturn;
     }
-    public static void sweepAttack(@NotNull Level level, @NotNull Player player, ItemStack stack,double knockbackStrength) {
+
+    public static void sweepAttack(@NotNull Level level, @NotNull Player player, ItemStack stack, double knockbackStrength) {
         if (!level.isClientSide) {
 
             for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getSweepHitBox(player.getMainHandItem(), player))) {
@@ -73,10 +72,11 @@ public class PlayerUtils {
         } else {
             double d0 = (double) (-Mth.sin(player.getYRot() * ((float) Math.PI / 180F)));
             double d1 = (double) Mth.cos(player.getYRot() * ((float) Math.PI / 180F));
-                level.addParticle(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)),
-                        player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 1.0D, 1.0D, 1.0D);
+            level.addParticle(ManaSweepParticleData.createData(new ParticleColor(66, 214, 227)),
+                    player.getX() + d0, player.getY(0.5D), player.getZ() + d1, 1.0D, 1.0D, 1.0D);
         }
     }
+
     @NotNull
     public static AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
         return player.getBoundingBox().inflate(5.0D, 2D, 5.0D);

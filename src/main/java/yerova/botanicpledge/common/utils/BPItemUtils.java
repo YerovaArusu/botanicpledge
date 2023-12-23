@@ -44,7 +44,8 @@ public class BPItemUtils {
         AtomicBoolean success = new AtomicBoolean(false);
         ItemHelper.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
             if (!(slotResult.stack().getItem() instanceof DivineCoreItem)) return;
-            slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {Networking.sendToPlayer(new SyncProtector(attribute.getCurrentCharge(), attribute.getMaxCharge(), attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
+            slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+                Networking.sendToPlayer(new SyncProtector(attribute.getCurrentCharge(), attribute.getMaxCharge(), attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
                 success.set(true);
             });
         });

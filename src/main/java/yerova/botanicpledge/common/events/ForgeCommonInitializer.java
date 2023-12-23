@@ -1,14 +1,9 @@
 package yerova.botanicpledge.common.events;
 
 import com.google.common.base.Suppliers;
-import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -21,8 +16,8 @@ import yerova.botanicpledge.common.capabilities.BPAttribute;
 import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.items.relic.*;
-import yerova.botanicpledge.setup.BotanicPledge;
 import yerova.botanicpledge.setup.BPItems;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -37,16 +32,16 @@ public class ForgeCommonInitializer {
             BPItems.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.YGGD_RAMUS.get(), DivineCoreItem::makeRelic,
-            BPItems.ASGARD_FRACTAL.get(),AsgardFractal::makeRelic,
+            BPItems.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic,
             BPItems.AESIR_RING.get(), RingOfAesir::makeRelic
     ));
-
 
 
     private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
             BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
             BPItems.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
     ));
+
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
 
         ItemStack stack = e.getObject();
@@ -73,7 +68,7 @@ public class ForgeCommonInitializer {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
         if (stack.getItem() instanceof MarinasCore)
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
-        if(stack.getItem() instanceof AsgardFractal){
+        if (stack.getItem() instanceof AsgardFractal) {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new BPAttributeProvider());
         }
 
