@@ -25,6 +25,10 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
+    public static final RegistryObject<Item> FIRST_RELIC = ITEMS.register("first_relic", () -> new FirstRelic(
+            new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
+    ));
+
 
     //cores
     public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("marias_core", () -> new MariasCore(

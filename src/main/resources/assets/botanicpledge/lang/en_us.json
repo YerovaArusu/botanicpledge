@@ -17,6 +17,7 @@
   "item.botanicpledge.soul_slicer": "Soul Slicer",
   "item.botanicpledge.conquering_sash": "Conquering Sash",
   "item.botanicpledge.aesir_ring": "Ring of Aesir",
+  "item.botanicpledge.first_relic": "First Relic",
   "block.botanicpledge.ritual_pedestal": "Ritual Pedestal",
   "block.botanicpledge.ritual_center": "Ritual Center",
   "block.botanicpledge.yggdralium_block": "Yggdralium Block",
@@ -68,6 +69,6 @@
   "botanicpledge.attribute.mana_damage": "Mana Damage",
   "botanicpledge.attribute.mana_protection": "Mana Protection",
   "enchantment.botanicpledge.rune_collector.desc": "Allows the player to obtain Rune Gems",
-  "enchantment.botanicpledge.mana_damage.desc": "Increases Mana Damage",
-  "enchantment.botanicpledge.protection.desc": "Increases Mana Protection"
+  "category.botanicpledge.botanicpledge": "Botanic Pledge",
+  "key.botanicpledge.interaction_button": "Interaction Button"
 }
