@@ -34,11 +34,11 @@ public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlo
 
 
         ItemEntity entityItem = tileEntityIn.entity;
+        matrixStack.pushPose();
 
         ((ItemEntityAccessor) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
         entityItem.setItem(tileEntityIn.getHeldStack());
 
-        matrixStack.pushPose();
 
         Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, pPartialTick, 2.0f, matrixStack, pBufferSource, pPackedLight);
 

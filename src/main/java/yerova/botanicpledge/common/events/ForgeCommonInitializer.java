@@ -4,18 +4,21 @@ import com.google.common.base.Suppliers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeCapabilities;
+import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
-import yerova.botanicpledge.common.capabilities.BPAttribute;
-import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
+import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.AttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.items.relic.*;
+import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -62,7 +65,6 @@ public class ForgeCommonInitializer {
     @SubscribeEvent
     public static void addItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
 
-
         ItemStack stack = e.getObject();
 
         if (stack.getItem() instanceof MariasCore)
@@ -70,7 +72,19 @@ public class ForgeCommonInitializer {
         if (stack.getItem() instanceof MarinasCore)
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
         if (stack.getItem() instanceof AsgardFractal) {
-            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new BPAttributeProvider());
+            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new AttributeProvider(4, Attribute.Rune.EquipmentType.SWORD));
+        }
+
+    }
+
+    @SubscribeEvent
+    public static void addBECaps(AttachCapabilitiesEvent<BlockEntity> e) {
+        BlockEntity blockEntity = e.getObject();
+
+
+        if (blockEntity.getType() == BPBlockEntities.MODIFICATION_TABLE.get()) {
+            e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE,
+                    (Wandable) blockEntity));
         }
 
     }
@@ -78,7 +92,7 @@ public class ForgeCommonInitializer {
     @SubscribeEvent
     public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(CoreAttribute.class);
-        event.register(BPAttribute.class);
+        event.register(Attribute.class);
     }
 
 }

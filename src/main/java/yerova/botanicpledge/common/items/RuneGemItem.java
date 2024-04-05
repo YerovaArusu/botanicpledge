@@ -11,18 +11,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.capabilities.Capability;
+import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
+import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.AttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
+import yerova.botanicpledge.setup.BPItems;
+import yerova.botanicpledge.setup.BotanicPledge;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import java.util.*;
 
 public class RuneGemItem extends SimpleFoiledItem {
     public RuneGemItem(Properties pProperties) {
@@ -35,54 +38,10 @@ public class RuneGemItem extends SimpleFoiledItem {
         return true;
     }
 
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-        if (!pLevel.isClientSide) {
-            if (pPlayer.getOffhandItem().getItem() instanceof RuneGemItem) {
-                if (pPlayer.getMainHandItem().getItem() instanceof DivineCoreItem
-                        && RuneGemItem.getGemType(pPlayer.getOffhandItem()).equals(BPConstants.GEM_TYPE_CORE)) {
-
-                    pPlayer.getMainHandItem().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-
-                        if (attribute.hasEmptySocket()) {
-                            if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
-
-                                PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
-                                pPlayer.sendSystemMessage(Component.literal("Core successfully upgraded!").withStyle(ChatFormatting.AQUA));
-                            } else
-                                pPlayer.sendSystemMessage(Component.literal("Something went wrong!").withStyle(ChatFormatting.DARK_RED));
-                        } else {
-                            pPlayer.sendSystemMessage(Component.literal("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED));
-                        }
-
-
-                    });
-                }
-                if (pPlayer.getMainHandItem().getItem() instanceof AsgardFractal && RuneGemItem.getGemType(pPlayer.getOffhandItem()).equals(BPConstants.GEM_TYPE_SWORD)) {
-                    pPlayer.getMainHandItem().getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
-
-                        if (attribute.hasEmptySocket()) {
-                            if (attribute.setSocketAttribute(attribute.getEmptySocketIndex(), getGemAttributeName(pPlayer.getOffhandItem()), RuneGemItem.getGemAttributeValue(pPlayer.getOffhandItem()))) {
-
-                                PlayerUtils.removeItemFromInventory(pPlayer, pPlayer.getOffhandItem(), 1);
-                                pPlayer.sendSystemMessage(Component.literal("Sword successfully upgraded!").withStyle(ChatFormatting.AQUA));
-                            } else
-                                pPlayer.sendSystemMessage(Component.literal("Something went wrong!").withStyle(ChatFormatting.DARK_RED));
-                        } else {
-                            pPlayer.sendSystemMessage(Component.literal("No Empty Slot found!").withStyle(ChatFormatting.DARK_RED));
-                        }
-                    });
-                }
-            }
-        }
-        return super.use(pLevel, pPlayer, pUsedHand);
-    }
-
-    public static double getSocketValueByChance(String AttributeType) {
+    public static double getSocketValueByChance(Attribute.Rune.StatType stat) {
 
         double value = switch (getRandomRarity(10000)) {
-            case (BPConstants.RARITY_EPIC) -> switch (AttributeType) {
+            case (BPConstants.RARITY_EPIC) -> switch (stat.name().toLowerCase()) {
                 case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(7, 8);
                 case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(7, 8);
                 case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(4, 5);
@@ -94,7 +53,7 @@ public class RuneGemItem extends SimpleFoiledItem {
 
                 default -> 0.0;
             };
-            case (BPConstants.RARITY_RARE) -> switch (AttributeType) {
+            case (BPConstants.RARITY_RARE) -> switch (stat.name().toLowerCase()) {
                 case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(6, 7);
                 case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(6, 7);
                 case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(3, 4);
@@ -106,7 +65,7 @@ public class RuneGemItem extends SimpleFoiledItem {
 
                 default -> 0.0;
             };
-            case (BPConstants.RARITY_UNCOMMON) -> switch (AttributeType) {
+            case (BPConstants.RARITY_UNCOMMON) -> switch (stat.name().toLowerCase()) {
                 case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(5, 6);
                 case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(5, 6);
                 case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(2, 3);
@@ -118,7 +77,7 @@ public class RuneGemItem extends SimpleFoiledItem {
 
                 default -> 0.0;
             };
-            case (BPConstants.RARITY_COMMON) -> switch (AttributeType) {
+            case (BPConstants.RARITY_COMMON) -> switch (stat.name().toLowerCase()) {
                 case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(0, 5);
                 case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(0, 5);
                 case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(0, 2);
@@ -149,45 +108,36 @@ public class RuneGemItem extends SimpleFoiledItem {
         } else return BPConstants.RARITY_COMMON;
     }
 
-    public static String getRandomItemType() {
-        int rN = new Random().nextInt(2);
-        String toReturn = BPConstants.GEM_TYPE_CORE;
-        if (rN == 1) toReturn = BPConstants.GEM_TYPE_SWORD;
-        return toReturn;
+    public static Attribute.Rune.EquipmentType getRandomItemType() {
+        return Attribute.Rune.EquipmentType.
+                values()[new Random().nextInt(Attribute.Rune.EquipmentType.values().length) - 1];
     }
 
-    public static String getRandomAttribute(String itemType) {
-        int rN;
-        String toReturn = BPConstants.NO_RUNE_GEM;
-        switch (itemType) {
-            case (BPConstants.GEM_TYPE_CORE) -> {
-                rN = new Random().nextInt(6);
-                if (rN == 1) toReturn = BPConstants.ARMOR_TAG_NAME;
-                if (rN == 2) toReturn = BPConstants.ARMOR_TOUGHNESS_TAG_NAME;
-                if (rN == 3) toReturn = BPConstants.MAX_HEALTH_TAG_NAME;
-                if (rN == 4) toReturn = BPConstants.JUMP_HEIGHT_TAG_NAME;
-                if (rN == 5) toReturn = BPConstants.MOVEMENT_SPEED_TAG_NAME;
-            }
-            case (BPConstants.GEM_TYPE_SWORD) -> {
-                rN = new Random().nextInt(2);
-                if (rN == 0) toReturn = BPConstants.ATTACK_DAMAGE_TAG_NAME;
-                if (rN == 1) toReturn = BPConstants.ATTACK_SPEED_TAG_NAME;
-            }
-        }
-        return toReturn;
+    public static Attribute.Rune.StatType getRandomAttribute(Attribute.Rune.EquipmentType itemType) {
+        return switch (itemType) {
+            case DIVINE_CORE -> Arrays.stream(Attribute.Rune.StatType.values())
+                    .filter(stat -> stat != Attribute.Rune.StatType.ATTACK_SPEED &&
+                            stat != Attribute.Rune.StatType.ATTACK_DAMAGE &&
+                            stat != Attribute.Rune.StatType.NONE)
+                    .findAny().orElse(Attribute.Rune.StatType.NONE);
+            case SWORD -> Arrays.stream(Attribute.Rune.StatType.values())
+                    .filter(stat -> stat == Attribute.Rune.StatType.ATTACK_SPEED || stat == Attribute.Rune.StatType.ATTACK_DAMAGE)
+                    .findAny().orElse(Attribute.Rune.StatType.NONE);
+            default -> Attribute.Rune.StatType.NONE;
+        };
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 
-
-        MutableComponent header = Component.literal("When applied on:");
-        header.append(Component.literal(getGemType(pStack)).withStyle(ChatFormatting.GOLD));
+        MutableComponent header = Component.literal("When applied on: ");
+        header.append(Component.literal(getGemEquipmentType(pStack).name().toLowerCase()).withStyle(ChatFormatting.GOLD));
         header.append(":");
         pTooltipComponents.add(header);
 
-        String attributeName = getGemAttributeName(pStack);
+        String attributeName = getGemAttributeType(pStack).toString().toLowerCase();
+
         MutableComponent textComponent;
         if (attributeName.equals(BPConstants.NO_RUNE_GEM)) {
             textComponent = Component.literal(Component.translatable(attributeName).getString());
@@ -198,56 +148,45 @@ public class RuneGemItem extends SimpleFoiledItem {
             }
         }
         pTooltipComponents.add(textComponent.withStyle(ChatFormatting.BLUE));
+
     }
 
     public static double getGemAttributeValue(ItemStack stack) {
-        if (!(stack.getItem() instanceof RuneGemItem)) return 0.0;
-        double toReturn = 0.0;
-        for (String s : stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getAllKeys()
-                .stream().filter(s -> !s.equals(BPConstants.GEM_TYPE_TAG_NAME)).toList()) {
-            double tmp = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getDouble(s);
-            if (tmp >= 0.0) {
-                toReturn = tmp;
-                break;
-            }
-        }
-        return toReturn;
+        if (!(stack.getItem() instanceof RuneGemItem) && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).get("gem_stat_value") == null) return 0.0;
+        return stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getDouble("gem_stat_value");
     }
 
-    public static String getGemType(ItemStack stack) {
-        if (!(stack.getItem() instanceof RuneGemItem)) return BPConstants.NO_RUNE_GEM;
-        String toReturn = BPConstants.NO_RUNE_GEM;
-        if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.GEM_TYPE_TAG_NAME)) {
-            toReturn = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getString(BPConstants.GEM_TYPE_TAG_NAME);
+
+    public static Attribute.Rune.EquipmentType getGemEquipmentType(ItemStack stack) {
+        if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).get("gem_equipment_type") != null) {
+            return Optional.of(Attribute.Rune.EquipmentType.valueOf(stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME)
+                            .getString("gem_equipment_type")
+                            .toUpperCase()))
+                    .orElse(Attribute.Rune.EquipmentType.NONE);
         }
-        return toReturn;
+        return Attribute.Rune.EquipmentType.NONE;
     }
 
-    public static String getGemAttributeName(ItemStack stack) {
-        if (!(stack.getItem() instanceof RuneGemItem)) return BPConstants.NO_RUNE_GEM;
-        String toReturn = BPConstants.NO_RUNE_GEM;
-        for (String s : stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getAllKeys()) {
-            if (!s.equals(BPConstants.GEM_TYPE_TAG_NAME)) {
-                toReturn = s;
-                break;
-            }
+    public static Attribute.Rune.StatType getGemAttributeType(ItemStack stack) {
+
+        if (stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).get("gem_stat_type") != null) {
+            return Optional.of(Attribute.Rune.StatType.valueOf(stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME)
+                            .getString("gem_stat_type")
+                            .toUpperCase()))
+                    .orElse(Attribute.Rune.StatType.NONE);
         }
-        ;
-        return toReturn;
+        return Attribute.Rune.StatType.NONE;
     }
 
-    public static ItemStack getNewAttributedGemStack(ItemStack result) {
-        CompoundTag tag = result.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-        String gemType = getRandomItemType();
-        String attributeName = getRandomAttribute(gemType);
+    public static ItemStack getNewAttributedGemStack() {
+        Attribute.Rune.EquipmentType et = getRandomItemType();
+        Attribute.Rune.StatType st = getRandomAttribute(et);
+        Attribute.Rune rune = new Attribute.Rune(et, getRandomAttribute(et), getSocketValueByChance(st));
 
-        tag.putString(BPConstants.GEM_TYPE_TAG_NAME, gemType);
-        tag.putDouble(attributeName, getSocketValueByChance(attributeName));
-        return result;
+        return rune.getAsStack();
     }
 
     public static double getRandomGemValueInRange(double start, double end) {
-        return ((double) (end - start) / (double) BPConstants.GEM_POSSIBLE_VALUES) * ((double) new Random().nextInt(BPConstants.GEM_POSSIBLE_VALUES + 1) - 1);
+        return ((double) (end - start) / (double) BPConstants.GEM_POSSIBLE_VALUES) * ((double) new Random().nextInt(BPConstants.GEM_POSSIBLE_VALUES - 1) + 1);
     }
-
 }

@@ -24,6 +24,7 @@ import vazkii.botania.common.helper.ItemNBTHelper;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.common.item.relic.RelicItem;
 import vazkii.botania.common.lib.BotaniaTags;
+import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
@@ -58,6 +59,8 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
                 || enchantment.equals(Enchantments.ALL_DAMAGE_PROTECTION)
                 ;
     }
+
+
 
 
     @Override
@@ -115,50 +118,24 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
 
                 stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
-                        double attributeValue = 0.0;
-                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
-                            attributeValue += entry.getValue();
-                        }
-                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
-                        if (!player.getAttribute(Attributes.ARMOR).hasModifier(modifier)) {
-                            player.getAttribute(Attributes.ARMOR).addPermanentModifier(modifier);
-                        }
+                    AttributeModifier armor = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR), AttributeModifier.Operation.ADDITION);
+                    if (!player.getAttribute(Attributes.ARMOR).hasModifier(armor)) {
+                        player.getAttribute(Attributes.ARMOR).addPermanentModifier(armor);
                     }
 
-                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
-                        double attributeValue = 0.0;
-                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
-                            attributeValue += entry.getValue();
-                        }
-                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
-                        if (!player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(modifier)) {
-                            player.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(modifier);
-                        }
+                    AttributeModifier toughness = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR_TOUGHNESS), AttributeModifier.Operation.ADDITION);
+                    if (!player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(toughness)) {
+                        player.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(toughness);
                     }
 
-                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
-                        double attributeValue = 0.0;
-                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
-                            attributeValue += entry.getValue();
-                        }
-                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attributeValue, AttributeModifier.Operation.ADDITION);
-                        if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(modifier)) {
-                            player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(modifier);
-                        }
+                    AttributeModifier maxHealth = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.MAX_HEALTH), AttributeModifier.Operation.ADDITION);
+                    if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(maxHealth)) {
+                        player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(maxHealth);
                     }
 
-                    if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
-                        double attributeValue = 0.0;
-                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
-                            attributeValue += entry.getValue();
-                        }
-
-                        AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME, 1 + (attributeValue / 100), AttributeModifier.Operation.MULTIPLY_TOTAL);
-                        if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(modifier)) {
-                            player.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(modifier);
-
-                        }
+                    AttributeModifier speed = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME,(attribute.sumRunesOfType(Attribute.Rune.StatType.MOVEMENT_SPEED)/100), AttributeModifier.Operation.MULTIPLY_TOTAL);
+                    if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speed)) {
+                        player.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(speed);
                     }
                 });
 
@@ -183,49 +160,26 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
 
                     stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
 
-                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
-                            double attributeValue = 0.0;
-                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
-                                attributeValue += entry.getValue();
-                            }
-                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
-                            if (player.getAttribute(Attributes.ARMOR).hasModifier(modifier)) {
-                                player.getAttribute(Attributes.ARMOR).removeModifier(modifier);
-                            }
+                        AttributeModifier armor = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR), AttributeModifier.Operation.ADDITION);
+                        if (player.getAttribute(Attributes.ARMOR).hasModifier(armor)) {
+                            player.getAttribute(Attributes.ARMOR).removeModifier(armor);
                         }
 
-                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
-                            double attributeValue = 0.0;
-                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
-                                attributeValue += entry.getValue();
-                            }
-                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
-                            if (player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(modifier)) {
-                                player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(modifier);
-                            }
+                        AttributeModifier toughness = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR_TOUGHNESS), AttributeModifier.Operation.ADDITION);
+                        if (player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(toughness)) {
+                            player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(toughness);
                         }
 
-                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
-                            double attributeValue = 0.0;
-                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
-                                attributeValue += entry.getValue();
-                            }
-                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", attributeValue, AttributeModifier.Operation.ADDITION);
-                            if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(modifier)) {
-                                player.getAttribute(Attributes.MAX_HEALTH).removeModifier(modifier);
-                            }
+                        AttributeModifier maxHealth = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.MAX_HEALTH), AttributeModifier.Operation.ADDITION);
+                        if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(maxHealth)) {
+                            player.getAttribute(Attributes.MAX_HEALTH).removeModifier(maxHealth);
                         }
 
-                        if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
-                            double attributeValue = 0.0;
-                            for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
-                                attributeValue += entry.getValue();
-                            }
-                            AttributeModifier modifier = new AttributeModifier(getCoreUUID(stack), "Divine Core", 1 + (attributeValue / 100), AttributeModifier.Operation.MULTIPLY_TOTAL);
-                            if (player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(modifier)) {
-                                player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(modifier);
-                            }
+                        AttributeModifier speed = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME,1 + (attribute.sumRunesOfType(Attribute.Rune.StatType.MOVEMENT_SPEED)/100), AttributeModifier.Operation.MULTIPLY_TOTAL);
+                        if (player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speed)) {
+                            player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(speed);
                         }
+
                     });
                     this.stopFlying(player);
 
@@ -259,39 +213,12 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
             tooltip.add(Component.literal("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
 
 
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.ARMOR_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
+            attribute.getAllRunes().forEach(rune -> {
+                tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
+            });
 
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ARMOR_TOUGHNESS_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.ARMOR_TOUGHNESS_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MAX_HEALTH_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal(" +" + entry.getValue() + " " + Component.translatable(BPConstants.MAX_HEALTH_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.MOVEMENT_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal(" +" + entry.getValue() + "% " + Component.translatable(BPConstants.MOVEMENT_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal("+" + entry.getValue() + "% " + Component.translatable(BPConstants.JUMP_HEIGHT_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.NO_RUNE_GEM))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.NO_RUNE_GEM)).toList()) {
-                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
-                }
+            if (attribute.hasEmptySocket()) {
+                tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes()-attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
             }
         });
 

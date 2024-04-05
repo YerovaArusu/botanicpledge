@@ -39,7 +39,7 @@ public final class BPConstants {
     public static final String GEM_TYPE_TAG_NAME = "gem_type";
     public static final String GEM_TYPE_SWORD = "sword_type";
     public static final String GEM_TYPE_CORE = "core_type";
-    public static final int MAX_SOCKETS = 4;
+
     public static final String SOCKET_PRE_TAG = "socket";
 
     public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";

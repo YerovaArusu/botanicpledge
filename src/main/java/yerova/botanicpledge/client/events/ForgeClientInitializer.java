@@ -25,10 +25,12 @@ import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
+import yerova.botanicpledge.client.render.blocks.ModificationTableRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
+import yerova.botanicpledge.common.blocks.block_entities.ModificationTableBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
@@ -90,18 +92,21 @@ public class ForgeClientInitializer {
                             if (tile instanceof RitualCenterBlockEntity altar) {
                                 RitualCenterBlockEntity.Hud.render(altar, gui, mc);
                             }
+                            if (tile instanceof ModificationTableBlockEntity altar) {
+                                ModificationTableBlockEntity.Hud.render(altar, gui, mc);
+                            }
                         }
                     }
-
                 });
     }
 
 
     @SubscribeEvent
     public static void registerRenderer(final EntityRenderersEvent.RegisterRenderers evt) {
-        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(), RitualCenterRenderer::new);
-        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL_BLOCK_ENTITY.get(), RitualPedestalRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_CENTER.get(), RitualCenterRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL.get(), RitualPedestalRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationTableRenderer::new);
     }
 
     @SubscribeEvent
@@ -119,7 +124,6 @@ public class ForgeClientInitializer {
         var resourceManager = Minecraft.getInstance().getResourceManager();
         ModelBakery.onModelRegister(resourceManager, evt::register);
         BotanicPledgeItemProperties.init((item, id, prop) -> ItemProperties.register(item.asItem(), id, prop));
-
     }
 
     @SubscribeEvent

@@ -3,7 +3,7 @@ package yerova.botanicpledge.common.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import yerova.botanicpledge.common.utils.BPConstants;
 
-public class CoreAttribute extends BPAttribute {
+public class CoreAttribute extends Attribute {
     private int maxCharge;
     private int maxShield;
     private int currentCharge;
@@ -12,8 +12,8 @@ public class CoreAttribute extends BPAttribute {
     private int manaCostPerTick;
 
 
-    public CoreAttribute(int maxCharge, int maxShield, int defRegenPerTick, int manaCostPerTick) {
-        super();
+    public CoreAttribute(int maxCharge, int maxShield, int defRegenPerTick, int manaCostPerTick, int maxRunes, Rune.EquipmentType requiredType) {
+        super(maxRunes, requiredType);
         this.maxCharge = maxCharge;
         this.maxShield = maxShield;
         this.defRegenPerTick = defRegenPerTick;

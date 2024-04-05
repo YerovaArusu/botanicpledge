@@ -7,10 +7,7 @@ import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block_entity.BindableSpecialFlowerBlockEntity;
 import vazkii.botania.common.block.block_entity.BotaniaBlockEntities;
-import yerova.botanicpledge.common.blocks.block_entities.ManaBufferBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.YggdralSpreaderBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.*;
 import yerova.botanicpledge.common.blocks.block_entities.generating.ThunderLilyBLockEntity;
 
 public class BPBlockEntities {
@@ -24,13 +21,18 @@ public class BPBlockEntities {
             BLOCK_ENTITIES.register("mana_buffer", () ->
                     BlockEntityType.Builder.of(ManaBufferBlockEntity::new, BPBlocks.MANA_BUFFER.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<RitualCenterBlockEntity>> RITUAL_CENTER_BLOCK_ENTITY =
+    public static final RegistryObject<BlockEntityType<RitualCenterBlockEntity>> RITUAL_CENTER =
             BLOCK_ENTITIES.register("ritual_center", () ->
                     BlockEntityType.Builder.of(RitualCenterBlockEntity::new, BPBlocks.RITUAL_CENTER.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<RitualPedestalBlockEntity>> RITUAL_PEDESTAL_BLOCK_ENTITY =
+    public static final RegistryObject<BlockEntityType<RitualPedestalBlockEntity>> RITUAL_PEDESTAL =
             BLOCK_ENTITIES.register("ritual_pedestal", () ->
                     BlockEntityType.Builder.of(RitualPedestalBlockEntity::new, BPBlocks.RITUAL_PEDESTAL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<ModificationTableBlockEntity>> MODIFICATION_TABLE =
+            BLOCK_ENTITIES.register("modification_table", () ->
+                    BlockEntityType.Builder.of(ModificationTableBlockEntity::new, BPBlocks.MODIFICATION_TABLE.get()).build(null));
+
 
     public static final RegistryObject<BlockEntityType<ThunderLilyBLockEntity>> THUNDER_LILY_BLOCK_ENTITY =
             BLOCK_ENTITIES.register("thunder_lily", () ->

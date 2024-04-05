@@ -12,10 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
-import yerova.botanicpledge.common.blocks.ManaBufferBlock;
-import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.blocks.RitualPedestalBlock;
-import yerova.botanicpledge.common.blocks.YggdralSpreader;
+import yerova.botanicpledge.common.blocks.*;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
 
 import javax.annotation.Nullable;
@@ -42,6 +39,10 @@ public class BPBlocks {
 
     public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlock("ritual_pedestal",
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> MODIFICATION_TABLE = registerBlock("modification_table",
+            () -> new ModificationTableBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
 
 
     //Flower

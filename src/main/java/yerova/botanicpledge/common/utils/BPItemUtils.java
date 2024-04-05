@@ -55,15 +55,6 @@ public class BPItemUtils {
         }
     }
 
-    public static HashMap<Integer, Map.Entry<String, Double>> getBPAttributeDefault() {
-        HashMap<Integer, Map.Entry<String, Double>> map = new HashMap<>();
-
-        for (int i = 1; i < BPConstants.MAX_SOCKETS; i++) {
-            map.put(i, Map.entry(BPConstants.NO_RUNE_GEM, 0.0));
-        }
-
-        return map;
-    }
 
 
 }

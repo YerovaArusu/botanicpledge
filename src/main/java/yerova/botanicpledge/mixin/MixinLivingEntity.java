@@ -19,7 +19,7 @@ import yerova.botanicpledge.integration.curios.ItemHelper;
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
 
-    @Inject(at = @At(value = "HEAD"), method = "getDamageAfterMagicAbsorb", cancellable = true)
+    @Inject(at = @At(value = "RETURN"), method = "getDamageAfterMagicAbsorb", cancellable = true)
     private void onGetDamageAfterMagicAbsorb(DamageSource pDamageSource, float pDamageAmount, CallbackInfoReturnable<Float> cir) {
         cir.cancel();
 

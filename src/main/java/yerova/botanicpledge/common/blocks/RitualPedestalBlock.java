@@ -40,30 +40,31 @@ public class RitualPedestalBlock extends BaseEntityBlock {
         return new RitualPedestalBlockEntity(blockPos, state);
     }
 
-
+    /*
+        Copied and adapted from:
+        https://github.com/baileyholl/Ars-Nouveau/blob/main/src/main/java/com/hollingsworth/arsnouveau/common/block/ArcanePedestal.java
+     */
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player cPlayer, InteractionHand handIn, BlockHitResult hit) {
-        if (!world.isClientSide) {
-            ServerPlayer player = (ServerPlayer) cPlayer;
-
-            if (world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
-                if (tile.getHeldStack() != null || tile.getHeldStack() != ItemStack.EMPTY) {
-                    if (!player.addItem(tile.getHeldStack())) {
-                        ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                        world.addFreshEntity(item);
-                        tile.setHeldStack(ItemStack.EMPTY);
-                    } else tile.setHeldStack(ItemStack.EMPTY);
-
-                    if (!player.getItemInHand(handIn).isEmpty()) {
-                        tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
-                    }
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (handIn != InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualPedestalBlockEntity tile) {
+            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
+                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                world.addFreshEntity(item);
+                tile.setHeldStack(ItemStack.EMPTY);
+            } else if (!player.getInventory().getSelected().isEmpty()) {
+                if (tile.getHeldStack() != null) {
+                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                    world.addFreshEntity(item);
                 }
+                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
             }
-
             world.sendBlockUpdated(pos, state, state, 2);
         }
         return InteractionResult.SUCCESS;
     }
+
 
     @Override
     public RenderShape getRenderShape(BlockState pState) {

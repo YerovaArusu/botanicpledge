@@ -1,5 +1,7 @@
 package yerova.botanicpledge.common.items.relic;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -8,8 +10,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -23,7 +28,8 @@ import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
-import yerova.botanicpledge.common.capabilities.BPAttributeProvider;
+import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.AttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
 import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.items.SoulAmulet;
@@ -35,7 +41,7 @@ import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.UUID;
 
 public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
@@ -106,33 +112,50 @@ public class AsgardFractal extends SwordItem {
     }
 
     @Override
+    public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+
+        ImmutableMultimap.Builder<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+
+        if (stack.getCapability(AttributeProvider.ATTRIBUTE).isPresent()) {
+            Attribute attribute = stack.getCapability(AttributeProvider.ATTRIBUTE).resolve().get();
+
+
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID,
+                    BPConstants.ATTACK_DAMAGE_TAG_NAME,
+                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_DAMAGE) +
+                            this.defaultModifiers.get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum(),
+                    AttributeModifier.Operation.ADDITION));
+
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID,
+                    BPConstants.ATTACK_SPEED_TAG_NAME,
+                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED) +
+                            this.defaultModifiers.get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum(),
+                    AttributeModifier.Operation.ADDITION));
+        }
+
+        return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getDefaultAttributeModifiers(slot);
+    }
+
+
+    @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
 
         RelicImpl.addDefaultTooltip(stack, tooltip);
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
 
 
-        stack.getCapability(BPAttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
+        stack.getCapability(AttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
 
             tooltip.add(Component.literal("Current Selected Skill: " + getCurrentSkill(stack)).withStyle(ChatFormatting.GOLD));
 
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_DAMAGE_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal("+ " + entry.getValue() + " " + Component.translatable(BPConstants.ATTACK_DAMAGE_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
+            attribute.getAllRunes().forEach(rune -> {
+                tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
+            });
+
+            if (attribute.hasEmptySocket()) {
+                tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes() - attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
             }
 
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.ATTACK_SPEED_TAG_NAME)).toList()) {
-                    tooltip.add(Component.literal("+ " + entry.getValue() + " " + Component.translatable(BPConstants.ATTACK_SPEED_TAG_NAME).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
-
-            if (attribute.getAttributesNamesAndValues().stream().anyMatch(entry -> entry.getKey().equals(BPConstants.NO_RUNE_GEM))) {
-                for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.NO_RUNE_GEM)).toList()) {
-                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString()).withStyle(ChatFormatting.BLUE));
-                }
-            }
         });
 
     }
@@ -269,5 +292,20 @@ public class AsgardFractal extends SwordItem {
             }
 
         }
+    }
+
+    public static UUID getUUID(ItemStack stack) {
+        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
+        String tagCoreUuidMostLegacy = "coreUUIDMost";
+        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
+        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
+            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
+            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
+        }
+        if (!tag.hasUUID(BPConstants.TAG_CORE_UUID)) {
+            UUID uuid = UUID.randomUUID();
+            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
+        }
+        return tag.getUUID(BPConstants.TAG_CORE_UUID);
     }
 }

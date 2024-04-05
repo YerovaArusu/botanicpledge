@@ -11,23 +11,26 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class BPAttributeProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static Capability<BPAttribute> ATTRIBUTE = CapabilityManager.get(new CapabilityToken<>() {
+public class AttributeProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public static Capability<Attribute> ATTRIBUTE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
+    private int maxRunes;
+    private Attribute.Rune.EquipmentType requiredType;
 
-    public BPAttributeProvider() {
-
+    public AttributeProvider(int maxRunes, Attribute.Rune.EquipmentType requiredType) {
+        this.maxRunes = maxRunes;
+        this.requiredType = requiredType;
     }
 
-    private BPAttribute bPAttribute = null;
-    private final LazyOptional<BPAttribute> optional = LazyOptional.of(this::createBPAttribute);
+    private Attribute attribute = null;
+    private final LazyOptional<Attribute> optional = LazyOptional.of(this::createAttribute);
 
-    private @NotNull BPAttribute createBPAttribute() {
-        if (this.bPAttribute == null) {
-            this.bPAttribute = new BPAttribute();
+    private @NotNull Attribute createAttribute() {
+        if (this.attribute == null) {
+            this.attribute = new Attribute(maxRunes, requiredType);
         }
-        return this.bPAttribute;
+        return this.attribute;
     }
 
     @NotNull
@@ -40,12 +43,12 @@ public class BPAttributeProvider implements ICapabilityProvider, INBTSerializabl
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        createBPAttribute().saveNBTData(nbt);
+        createAttribute().saveNBTData(nbt);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        createBPAttribute().loadNBTData(nbt);
+        createAttribute().loadNBTData(nbt);
     }
 }

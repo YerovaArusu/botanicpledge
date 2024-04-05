@@ -41,7 +41,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
     boolean isCrafting = false;
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
-        super(BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(), p_155229_, p_155230_);
+        super(BPBlockEntities.RITUAL_CENTER.get(), p_155229_, p_155230_);
 
 
     }

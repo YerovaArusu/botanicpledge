@@ -35,7 +35,7 @@ import yerova.botanicpledge.setup.BPBlockEntities;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, SparkAttachable, ThrottledPacket, Wandable {
+public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, ThrottledPacket, Wandable {
     public static final int MAX_MANA = 264_000_000;
     public static final int TRANSFER_SPEED = 16000;
     private static final BlockPos[] POOL_LOCATIONS = {new BlockPos(1, 0, 0), new BlockPos(0, 0, 1),
@@ -144,43 +144,6 @@ public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, 
         tag.putInt(TAG_MANA, mana);
     }
 
-
-    @Override
-    public boolean canAttachSpark(ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void attachSpark(ManaSpark entity) {
-        SparkAttachable.super.attachSpark(entity);
-    }
-
-    @Override
-    public int getAvailableSpaceForMana() {
-        int space = Math.max(0, MAX_MANA - getCurrentMana());
-        if (space > 0) {
-            return space;
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
-    public ManaSpark getAttachedSpark() {
-
-        List<Entity> sparks = level.getEntitiesOfClass(Entity.class, new AABB(worldPosition.above(), worldPosition.above().offset(1, 1, 1)), Predicates.instanceOf(ManaSpark.class));
-        if (sparks.size() == 1) {
-            Entity e = sparks.get(0);
-            return (ManaSpark) e;
-        }
-
-        return null;
-    }
-
-    @Override
-    public boolean areIncomingTranfersDone() {
-        return false;
-    }
 
     @Override
     public boolean isFull() {

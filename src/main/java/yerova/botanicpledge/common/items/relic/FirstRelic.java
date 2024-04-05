@@ -19,6 +19,14 @@ import yerova.botanicpledge.setup.BotanicPledge;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*
+    Inspiration for this Item comes from the Buddhist Relic in the Extra Botany (Version 1.16.5)
+    https://legacy.curseforge.com/minecraft/mc-mods/extrabotany
+
+    Of course my Solution is better because it can also save enchantments and other Tags applied to the selected
+    Item.
+ */
 public class FirstRelic extends RelicItem {
 
 

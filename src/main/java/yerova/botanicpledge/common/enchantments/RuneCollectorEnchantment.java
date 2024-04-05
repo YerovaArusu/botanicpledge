@@ -35,7 +35,7 @@ public class RuneCollectorEnchantment extends Enchantment {
                 RuneGemItem.getRandomRarity(bound).equals(BPConstants.RARITY_UNCOMMON) && player.getUUID() != null) {
 
             player.level().addFreshEntity(new ItemEntity(player.level(), entity.getX(), entity.getY(), entity.getZ(),
-                    RuneGemItem.getNewAttributedGemStack(new ItemStack(BPItems.SOCKET_GEM.get(), 1))));
+                    RuneGemItem.getNewAttributedGemStack()));
         }
         super.doPostAttack(pAttacker, entity, pLevel);
     }

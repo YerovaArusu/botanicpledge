@@ -95,33 +95,35 @@ public class RitualCenterBlock extends BaseEntityBlock {
         return new RitualCenterBlockEntity(blockPos, blockState);
     }
 
+    /*
+    Copied and adapted from:
+    https://github.com/baileyholl/Ars-Nouveau/blob/main/src/main/java/com/hollingsworth/arsnouveau/common/block/ArcanePedestal.java
+ */
     @Override
-    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult blockHitResult) {
-        if (!world.isClientSide) {
-            if (world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (handIn != InteractionHand.MAIN_HAND)
+            return InteractionResult.PASS;
+        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
 
-                if (completedStructure(player, pos, world, handIn)) {
-                    if (tile.attemptCraft(tile.getHeldStack(), player)) return InteractionResult.SUCCESS;
+            if (completedStructure(player, pos, world, handIn)) {
+                if (tile.attemptCraft(tile.getHeldStack(), player)) return InteractionResult.SUCCESS;
+            }
+
+            if (tile.getHeldStack() != null && player.getItemInHand(handIn).isEmpty()) {
+                ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                world.addFreshEntity(item);
+                tile.setHeldStack(ItemStack.EMPTY);
+            } else if (!player.getInventory().getSelected().isEmpty()) {
+                if (tile.getHeldStack() != null) {
+                    ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
+                    world.addFreshEntity(item);
                 }
-
-                if (tile.getHeldStack() != null || tile.getHeldStack() != ItemStack.EMPTY) {
-                    if (!player.addItem(tile.getHeldStack())) {
-                        ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
-                        world.addFreshEntity(item);
-                        tile.setHeldStack(ItemStack.EMPTY);
-                    } else tile.setHeldStack(ItemStack.EMPTY);
-
-                    if (!player.getItemInHand(handIn).isEmpty()) {
-                        tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
-                    }
-                }
+                tile.setHeldStack(player.getInventory().removeItem(player.getInventory().selected, 1));
             }
             world.sendBlockUpdated(pos, state, state, 2);
         }
         return InteractionResult.SUCCESS;
-
     }
-
 
     public static boolean completedStructure(Player player, BlockPos blockPos, Level level, InteractionHand interactionHand) {
         boolean allChecked = true;
@@ -144,7 +146,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BPBlockEntities.RITUAL_CENTER_BLOCK_ENTITY.get(),
+        return createTickerHelper(type, BPBlockEntities.RITUAL_CENTER.get(),
                 RitualCenterBlockEntity::tick);
     }
 

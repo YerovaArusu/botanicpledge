@@ -13,10 +13,4 @@ public class BPEnchantments {
 
     public static final RegistryObject<Enchantment> RUNE_COLLECTOR_ENCHANTMENT = ENCHANTMENTS.register("rune_collector",
             () -> new RuneCollectorEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
-
-    public static final RegistryObject<Enchantment> MANA_EDGE_ENCHANTMENT = ENCHANTMENTS.register("mana_edge",
-            () -> new RuneCollectorEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.MAINHAND));
-
-    public static final RegistryObject<Enchantment> MANA_PROTECTION_ENCHANTMENT = ENCHANTMENTS.register("mana_protection",
-            () -> new RuneCollectorEnchantment(Enchantment.Rarity.RARE, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET));
 }

@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
+import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
@@ -88,12 +89,9 @@ public class BPItemEventHandler {
             if (!evt.isCanceled()) {
                 AtomicReference<Double> jump = new AtomicReference<>(0.0);
                 stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                    if (attribute.hasSocketAttribute(BPConstants.JUMP_HEIGHT_TAG_NAME)) {
-                        double jumpHeight = 0;
-                        for (Map.Entry<String, Double> entry : attribute.getAttributesNamesAndValues().stream().filter(e -> e.getKey().equals(BPConstants.JUMP_HEIGHT_TAG_NAME)).toList()) {
-                            jumpHeight += entry.getValue();
-                        }
-                        jump.set(jumpHeight);
+
+                    if (attribute.hasRuneType(Attribute.Rune.StatType.JUMP_HEIGHT)) {
+                        jump.set(attribute.sumRunesOfType(Attribute.Rune.StatType.JUMP_HEIGHT));
                     }
                 });
 

@@ -21,10 +21,7 @@ public class ItemHelper {
         } else return new ArrayList<>();
     }
 
-    public static ArrayList<Map.Entry<String, Double>> getCoreAttributes(ItemStack stack) {
-        return stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent() ?
-                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get().getAttributesNamesAndValues() : new ArrayList<>();
-    }
+
 
 
 }

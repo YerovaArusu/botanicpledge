@@ -25,7 +25,6 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     public ItemStack heldStack = ItemStack.EMPTY;
     public ItemEntity entity;
-    public float frames;
 
 
     public RitualBaseBlockEntity(BlockEntityType<?> type, BlockPos blockPos, BlockState state) {
