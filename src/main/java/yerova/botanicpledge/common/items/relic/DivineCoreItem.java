@@ -1,7 +1,10 @@
 package yerova.botanicpledge.common.items.relic;
 
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -25,12 +28,16 @@ import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.common.item.relic.RelicItem;
 import vazkii.botania.common.lib.BotaniaTags;
 import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
@@ -59,8 +66,6 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
                 || enchantment.equals(Enchantments.ALL_DAMAGE_PROTECTION)
                 ;
     }
-
-
 
 
     @Override
@@ -94,98 +99,43 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
         return new RelicImpl(stack, null);
     }
 
-    public static UUID getCoreUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-        String tagCoreUuidMostLegacy = "coreUUIDMost";
-        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
-        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
-            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
-            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
-        }
-        if (!tag.hasUUID(BPConstants.TAG_CORE_UUID)) {
-            UUID uuid = UUID.randomUUID();
-            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
-        }
-        return tag.getUUID(BPConstants.TAG_CORE_UUID);
+    @Override
+    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+        if (slotContext.entity() instanceof Player player) this.startFlying(player);
     }
 
     @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+    public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+        ImmutableMultimap.Builder<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> builder = new ImmutableMultimap.Builder<>();
 
-        if (slotContext.entity() instanceof Player player) {
-            //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
-            if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
+        if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
+            CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
 
-                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+            builder.put(Attributes.ARMOR,
+                    new AttributeModifier(uuid, BPConstants.ARMOR_TAG_NAME,
+                            attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR), AttributeModifier.Operation.ADDITION));
 
-                    AttributeModifier armor = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR), AttributeModifier.Operation.ADDITION);
-                    if (!player.getAttribute(Attributes.ARMOR).hasModifier(armor)) {
-                        player.getAttribute(Attributes.ARMOR).addPermanentModifier(armor);
-                    }
+            builder.put(Attributes.ARMOR_TOUGHNESS,
+                    new AttributeModifier(uuid, BPConstants.ARMOR_TOUGHNESS_TAG_NAME,
+                            attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR_TOUGHNESS), AttributeModifier.Operation.ADDITION));
 
-                    AttributeModifier toughness = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR_TOUGHNESS), AttributeModifier.Operation.ADDITION);
-                    if (!player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(toughness)) {
-                        player.getAttribute(Attributes.ARMOR_TOUGHNESS).addPermanentModifier(toughness);
-                    }
+            builder.put(Attributes.MAX_HEALTH,
+                    new AttributeModifier(uuid, BPConstants.MAX_HEALTH_TAG_NAME,
+                            attribute.sumRunesOfType(Attribute.Rune.StatType.MAX_HEALTH), AttributeModifier.Operation.ADDITION));
 
-                    AttributeModifier maxHealth = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.MAX_HEALTH), AttributeModifier.Operation.ADDITION);
-                    if (!player.getAttribute(Attributes.MAX_HEALTH).hasModifier(maxHealth)) {
-                        player.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(maxHealth);
-                    }
+            builder.put(Attributes.MOVEMENT_SPEED,
+                    new AttributeModifier(uuid, BPConstants.MOVEMENT_SPEED_TAG_NAME,
+                            attribute.sumRunesOfType(Attribute.Rune.StatType.MOVEMENT_SPEED) / 100, AttributeModifier.Operation.ADDITION));
 
-                    AttributeModifier speed = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME,(attribute.sumRunesOfType(Attribute.Rune.StatType.MOVEMENT_SPEED)/100), AttributeModifier.Operation.MULTIPLY_TOTAL);
-                    if (!player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speed)) {
-                        player.getAttribute(Attributes.MOVEMENT_SPEED).addPermanentModifier(speed);
-                    }
-                });
-
-                this.startFlying(player);
-            }
         }
+
+
+        return builder.build().isEmpty() ? ICurioItem.super.getAttributeModifiers(slotContext, uuid, stack) : builder.build();
     }
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-
-            //Draconic Evolution Armor should not be used together with this mod, because it might lead to total unbalance of Power
-            if (!PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID)) {
-                AtomicInteger newCost = new AtomicInteger();
-                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(a -> newCost.set(a.getManaCostPerTick()));
-                AtomicInteger oldCost = new AtomicInteger();
-                stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(a -> oldCost.set(a.getManaCostPerTick()));
-
-
-                if (newStack == ItemStack.EMPTY || oldCost.get() != newCost.get()) {
-
-                    stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-
-                        AttributeModifier armor = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR), AttributeModifier.Operation.ADDITION);
-                        if (player.getAttribute(Attributes.ARMOR).hasModifier(armor)) {
-                            player.getAttribute(Attributes.ARMOR).removeModifier(armor);
-                        }
-
-                        AttributeModifier toughness = new AttributeModifier(getCoreUUID(stack), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.ARMOR_TOUGHNESS), AttributeModifier.Operation.ADDITION);
-                        if (player.getAttribute(Attributes.ARMOR_TOUGHNESS).hasModifier(toughness)) {
-                            player.getAttribute(Attributes.ARMOR_TOUGHNESS).removeModifier(toughness);
-                        }
-
-                        AttributeModifier maxHealth = new AttributeModifier(getCoreUUID(stack), BPConstants.MAX_HEALTH_TAG_NAME, attribute.sumRunesOfType(Attribute.Rune.StatType.MAX_HEALTH), AttributeModifier.Operation.ADDITION);
-                        if (player.getAttribute(Attributes.MAX_HEALTH).hasModifier(maxHealth)) {
-                            player.getAttribute(Attributes.MAX_HEALTH).removeModifier(maxHealth);
-                        }
-
-                        AttributeModifier speed = new AttributeModifier(getCoreUUID(stack), BPConstants.MOVEMENT_SPEED_TAG_NAME,1 + (attribute.sumRunesOfType(Attribute.Rune.StatType.MOVEMENT_SPEED)/100), AttributeModifier.Operation.MULTIPLY_TOTAL);
-                        if (player.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(speed)) {
-                            player.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(speed);
-                        }
-
-                    });
-                    this.stopFlying(player);
-
-                }
-            }
-        }
+        if (slotContext.entity() instanceof Player player) this.stopFlying(player);
     }
 
     @Override
@@ -213,13 +163,17 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
             tooltip.add(Component.literal("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
 
 
-            attribute.getAllRunes().forEach(rune -> {
-                tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
-            });
 
-            if (attribute.hasEmptySocket()) {
-                tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes()-attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
-            }
+
+                attribute.getAllRunes().forEach(rune -> {
+                    tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
+                });
+
+                if (attribute.hasEmptySocket()) {
+                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes() - attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
+                }
+
+
         });
 
         super.appendHoverText(stack, world, tooltip, flags);

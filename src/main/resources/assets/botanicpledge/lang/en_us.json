@@ -71,5 +71,6 @@
   "botanicpledge.attribute.mana_protection": "Mana Protection",
   "enchantment.botanicpledge.rune_collector.desc": "Allows the player to obtain Rune Gems",
   "category.botanicpledge.botanicpledge": "Botanic Pledge",
-  "key.botanicpledge.interaction_button": "Interaction Button"
+  "key.botanicpledge.interaction_button": "Interaction Button",
+  "curios.modifiers.divine_core": "When equipped:"
 }
