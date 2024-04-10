@@ -120,16 +120,16 @@ public class AsgardFractal extends SwordItem {
             Attribute attribute = stack.getCapability(AttributeProvider.ATTRIBUTE).resolve().get();
 
 
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(Item.BASE_ATTACK_DAMAGE_UUID,
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"),
                     BPConstants.ATTACK_DAMAGE_TAG_NAME,
                     attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_DAMAGE) +
-                            this.defaultModifiers.get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum(),
+                            getDefaultAttributeModifiers(slot).get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum(),
                     AttributeModifier.Operation.ADDITION));
 
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(Item.BASE_ATTACK_SPEED_UUID,
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"),
                     BPConstants.ATTACK_SPEED_TAG_NAME,
                     attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED) +
-                            this.defaultModifiers.get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum(),
+                            getDefaultAttributeModifiers(slot).get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum(),
                     AttributeModifier.Operation.ADDITION));
         }
 
