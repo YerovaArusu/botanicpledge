@@ -1,9 +1,0 @@
-{
-  "parent": "minecraft:block/orientable",
-  "textures": {
-    "front": "botanicpledge:block/modification_table_front",
-    "side": "botanicpledge:block/modification_table_side",
-    "top": "botanicpledge:block/modification_table_top",
-    "bottom": "botanicpledge:block/modification_table_bottom"
-  }
-}

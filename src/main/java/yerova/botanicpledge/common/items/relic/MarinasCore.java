@@ -12,7 +12,7 @@ public class MarinasCore extends DivineCoreItem {
     private static final int maxShield = 340;
     private static final int defRegenPerTick = 3;
     private static final int maxCharge = 1_000_000;
-    private static final int manaCost = 100;
+    private static final int manaCost = 10;
 
     public MarinasCore(Item.Properties properties) {
         super(properties);

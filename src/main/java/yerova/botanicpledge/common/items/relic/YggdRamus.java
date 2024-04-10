@@ -172,14 +172,10 @@ public class YggdRamus extends SwordItem {
                 sword.faceTarget(1.0F);
 
                 sword.setColor(0x08e8de);
-                sword.setStartingMana(MANA_COST_PER_SHOT);
-                sword.setMinManaLoss(1);
-                sword.setManaLossPerTick(1F);
-                sword.setMana(MANA_COST_PER_SHOT);
+
                 sword.setGravity(0F);
                 sword.setDeltaMovement(sword.getDeltaMovement().scale(0.8));
 
-                sword.setSourceLens(player.getItemInHand(player.getUsedItemHand()).copy());
 
                 player.level().addFreshEntity(sword);
             }

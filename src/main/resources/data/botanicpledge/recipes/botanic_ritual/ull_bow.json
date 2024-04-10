@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "minecraft:bow"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "botania:terrasteel_ingot"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "botania:terrasteel_ingot"
+    },
+    {
+      "item": "botania:terrasteel_ingot"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    },
+    {
+      "item": "botania:terra_sword"
+    },
+    {
+      "item": "botanicpledge:yggdralium_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:ull_bow"
+  },
+  "manaCost": 1000000,
+  "keepNbtOfReagent": false
+}

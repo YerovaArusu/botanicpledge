@@ -25,12 +25,12 @@ import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
-import yerova.botanicpledge.client.render.blocks.ModificationTableRenderer;
+import yerova.botanicpledge.client.render.blocks.ModificationAltarRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
 import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
 import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
-import yerova.botanicpledge.common.blocks.block_entities.ModificationTableBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
@@ -92,8 +92,8 @@ public class ForgeClientInitializer {
                             if (tile instanceof RitualCenterBlockEntity altar) {
                                 RitualCenterBlockEntity.Hud.render(altar, gui, mc);
                             }
-                            if (tile instanceof ModificationTableBlockEntity altar) {
-                                ModificationTableBlockEntity.Hud.render(altar, gui, mc);
+                            if (tile instanceof ModificationAltarBlockEntity altar) {
+                                ModificationAltarBlockEntity.Hud.render(altar, gui, mc);
                             }
                         }
                     }
@@ -106,7 +106,7 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_CENTER.get(), RitualCenterRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL.get(), RitualPedestalRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
-        evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationTableRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationAltarRenderer::new);
     }
 
     @SubscribeEvent

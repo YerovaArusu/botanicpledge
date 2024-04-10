@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "alter=false": {
+      "model": "botanicpledge:block/modification_altar"
+    },
+    "alter=true": {
+      "model": "botanicpledge:block/modification_altar_alter"
+    }
+  }
+}

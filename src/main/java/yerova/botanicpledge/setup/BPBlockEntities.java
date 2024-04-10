@@ -29,9 +29,9 @@ public class BPBlockEntities {
             BLOCK_ENTITIES.register("ritual_pedestal", () ->
                     BlockEntityType.Builder.of(RitualPedestalBlockEntity::new, BPBlocks.RITUAL_PEDESTAL.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<ModificationTableBlockEntity>> MODIFICATION_TABLE =
+    public static final RegistryObject<BlockEntityType<ModificationAltarBlockEntity>> MODIFICATION_TABLE =
             BLOCK_ENTITIES.register("modification_table", () ->
-                    BlockEntityType.Builder.of(ModificationTableBlockEntity::new, BPBlocks.MODIFICATION_TABLE.get()).build(null));
+                    BlockEntityType.Builder.of(ModificationAltarBlockEntity::new, BPBlocks.MODIFICATION_TABLE.get()).build(null));
 
 
     public static final RegistryObject<BlockEntityType<ThunderLilyBLockEntity>> THUNDER_LILY_BLOCK_ENTITY =

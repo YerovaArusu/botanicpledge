@@ -11,27 +11,24 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.botania.api.block.Wandable;
-import yerova.botanicpledge.common.blocks.ModificationTableBlock;
+import yerova.botanicpledge.common.blocks.ModificationAltarBlock;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.AttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.items.RuneGemItem;
-import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
-public class ModificationTableBlockEntity extends RitualBaseBlockEntity implements Wandable {
+public class ModificationAltarBlockEntity extends RitualBaseBlockEntity implements Wandable {
 
     public boolean alter = false;
 
-    public ModificationTableBlockEntity(BlockPos pos, BlockState blockState) {
+    public ModificationAltarBlockEntity(BlockPos pos, BlockState blockState) {
         super(BPBlockEntities.MODIFICATION_TABLE.get(), pos, blockState);
     }
 
-    public List<Attribute.Rune> getRunes(ModificationTableBlockEntity entity) {
+    public List<Attribute.Rune> getRunes(ModificationAltarBlockEntity entity) {
         ItemStack stack = entity.getHeldStack();
 
         if (stack.getCapability(AttributeProvider.ATTRIBUTE).isPresent()) {
@@ -47,9 +44,9 @@ public class ModificationTableBlockEntity extends RitualBaseBlockEntity implemen
     }
 
 
-    public static void tick(Level level, BlockPos pos, BlockState blockState, ModificationTableBlockEntity entity) {
+    public static void tick(Level level, BlockPos pos, BlockState blockState, ModificationAltarBlockEntity entity) {
         if (!level.isClientSide) {
-            blockState = blockState.setValue(ModificationTableBlock.ALTER, entity.alter);
+            blockState = blockState.setValue(ModificationAltarBlock.ALTER, entity.alter);
             level.setBlock(pos, blockState, 3);
             entity.updateBlock();
         }
@@ -96,7 +93,7 @@ public class ModificationTableBlockEntity extends RitualBaseBlockEntity implemen
 
 
     public static class Hud {
-        public static void render(ModificationTableBlockEntity center, GuiGraphics gui, Minecraft mc) {
+        public static void render(ModificationAltarBlockEntity center, GuiGraphics gui, Minecraft mc) {
             PoseStack ms = gui.pose();
             int xc = mc.getWindow().getGuiScaledWidth() / 2;
             int yc = mc.getWindow().getGuiScaledHeight() / 2;

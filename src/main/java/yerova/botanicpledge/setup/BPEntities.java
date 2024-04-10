@@ -36,5 +36,4 @@ public class BPEntities {
                     .setTrackingRange(64)
                     .setShouldReceiveVelocityUpdates(true)
                     .build(""));
-
 }

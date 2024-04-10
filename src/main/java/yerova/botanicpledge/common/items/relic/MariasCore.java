@@ -13,7 +13,7 @@ public class MariasCore extends DivineCoreItem {
     private static final int maxShield = 600;
     private static final int defRegenPerTick = 4;
     private static final int maxCharge = 2_000_000;
-    private static final int manaCost = 100;
+    private static final int manaCost = 8;
 
 
     public MariasCore(Item.Properties properties) {

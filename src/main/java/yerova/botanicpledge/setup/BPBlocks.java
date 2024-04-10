@@ -40,8 +40,8 @@ public class BPBlocks {
     public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlock("ritual_pedestal",
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
-    public static final RegistryObject<Block> MODIFICATION_TABLE = registerBlock("modification_table",
-            () -> new ModificationTableBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+    public static final RegistryObject<Block> MODIFICATION_TABLE = registerBlock("modification_altar",
+            () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
 

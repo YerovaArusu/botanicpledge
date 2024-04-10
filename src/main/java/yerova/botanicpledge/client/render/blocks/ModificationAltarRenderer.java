@@ -10,25 +10,23 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.handler.ClientTickHandler;
-import vazkii.botania.client.core.helper.RenderHelper;
 import vazkii.botania.common.helper.VecHelper;
 import vazkii.botania.mixin.ItemEntityAccessor;
-import yerova.botanicpledge.common.blocks.block_entities.ModificationTableBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 
-public class ModificationTableRenderer implements BlockEntityRenderer<ModificationTableBlockEntity> {
+public class ModificationAltarRenderer implements BlockEntityRenderer<ModificationAltarBlockEntity> {
 
     private final BlockRenderDispatcher blockRenderDispatcher;
 
-    public ModificationTableRenderer(BlockEntityRendererProvider.Context ctx) {
+    public ModificationAltarRenderer(BlockEntityRendererProvider.Context ctx) {
         this.blockRenderDispatcher = ctx.getBlockRenderDispatcher();
     }
 
     @Override
-    public void render(ModificationTableBlockEntity tileEntityIn, float pPartialTick, PoseStack matrixStack, MultiBufferSource buffers, int light, int overlay) {
+    public void render(ModificationAltarBlockEntity tileEntityIn, float pPartialTick, PoseStack matrixStack, MultiBufferSource buffers, int light, int overlay) {
 
 
         double x = tileEntityIn.getBlockPos().getX();

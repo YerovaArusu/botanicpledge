@@ -140,7 +140,7 @@ public class AsgardFractal extends SwordItem {
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
 
-        RelicImpl.addDefaultTooltip(stack, tooltip);
+
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
 
 
@@ -157,7 +157,7 @@ public class AsgardFractal extends SwordItem {
             }
 
         });
-
+        RelicImpl.addDefaultTooltip(stack, tooltip);
     }
 
 
@@ -292,20 +292,5 @@ public class AsgardFractal extends SwordItem {
             }
 
         }
-    }
-
-    public static UUID getUUID(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-        String tagCoreUuidMostLegacy = "coreUUIDMost";
-        String tagCoreUuidLeastLegacy = "coreUUIDLeast";
-        if (tag.contains(tagCoreUuidMostLegacy) && tag.contains(tagCoreUuidLeastLegacy)) {
-            UUID uuid = new UUID(tag.getLong(tagCoreUuidMostLegacy), tag.getLong(tagCoreUuidLeastLegacy));
-            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
-        }
-        if (!tag.hasUUID(BPConstants.TAG_CORE_UUID)) {
-            UUID uuid = UUID.randomUUID();
-            tag.putUUID(BPConstants.TAG_CORE_UUID, uuid);
-        }
-        return tag.getUUID(BPConstants.TAG_CORE_UUID);
     }
 }
