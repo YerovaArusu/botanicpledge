@@ -81,7 +81,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
     public Multimap<Attribute, AttributeModifier> getEquippedAttributeModifiers(ItemStack stack) {
         Multimap<Attribute, AttributeModifier> attributes = HashMultimap.create();
         attributes.put(Attributes.MAX_HEALTH,
-                new AttributeModifier(getBaubleUUID(stack), "Aesir Ring", 30, AttributeModifier.Operation.ADDITION));
+                new AttributeModifier(getBaubleUUID(stack), "Aesir Ring", 60, AttributeModifier.Operation.ADDITION));
         return attributes;
     }
 

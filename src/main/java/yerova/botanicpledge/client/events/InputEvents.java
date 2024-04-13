@@ -39,7 +39,7 @@ public class InputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
         if (mc.screen == null) {
-            if (KeyBindings.INSTANCE.switchSkillButton.isDown() && mc.player != null && FirstRelic.isPartOfFirstRelic(mc.player.getMainHandItem())) {
+            if (KeyBindings.INSTANCE.switchSkillButton.isDown() && mc.player != null ) {
                 Networking.sendToServer(new ItemButtonInteractionToServer());
             }
         }
