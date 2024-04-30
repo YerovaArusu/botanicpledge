@@ -1,6 +1,7 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -42,6 +43,11 @@ public class BPItems {
     public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
+    public static final RegistryObject<TerraShield> TERRA_SHIELD = ITEMS.register("terra_shield",
+            ()-> new TerraShield((new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).stacksTo(1)).durability(660)));
+
+    public static final RegistryObject<ManaShield> MANA_SHIELD = ITEMS.register("mana_shield",
+            ()-> new ManaShield((new Item.Properties().rarity(Rarity.COMMON).stacksTo(1)).durability(330)));
 
     public static final RegistryObject<Item> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmulet(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LTL",
+    "TST",
+    "LTL"
+  ],
+  "key": {
+    "L": {
+      "item": "botania:livingwood"
+    },
+    "T": {
+      "item": "botania:terrasteel_ingot"
+    },
+    "S": {
+      "item": "botanicpledge:mana_shield"
+    }
+  },
+  "result": {
+    "item": "botanicpledge:terra_shield"
+  }
+}

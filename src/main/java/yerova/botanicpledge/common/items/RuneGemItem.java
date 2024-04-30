@@ -110,7 +110,7 @@ public class RuneGemItem extends SimpleFoiledItem {
 
     public static Attribute.Rune.EquipmentType getRandomItemType() {
         return Attribute.Rune.EquipmentType.
-                values()[new Random().nextInt(Attribute.Rune.EquipmentType.values().length) - 1];
+                values()[new Random().nextInt(Attribute.Rune.EquipmentType.values().length)];
     }
 
     public static Attribute.Rune.StatType getRandomAttribute(Attribute.Rune.EquipmentType itemType) {

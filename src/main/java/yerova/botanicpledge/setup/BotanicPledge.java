@@ -1,9 +1,14 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.model.geom.builders.MaterialDefinition;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.resources.model.Material;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -16,7 +21,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
+import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
+import yerova.botanicpledge.client.render.entities.ShieldBlockEntityWithoutLevelRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.items.MariasCoreRenderer;
@@ -70,7 +77,6 @@ public class BotanicPledge {
 
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
 
-
         EntityRenderers.register(BPEntities.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(BPEntities.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
         EntityRenderers.register(BPEntities.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
@@ -85,7 +91,6 @@ public class BotanicPledge {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_PEDESTAL.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.MODIFICATION_TABLE.get(), RenderType.translucent());
-
 
     }
 

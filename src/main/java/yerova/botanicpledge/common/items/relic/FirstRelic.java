@@ -95,7 +95,6 @@ public class FirstRelic extends RelicItem {
         defaultItems.add(new ItemStack(BotaniaItems.kingKey));
         defaultItems.add(new ItemStack(BotaniaItems.infiniteFruit));
         defaultItems.add(new ItemStack(BotaniaItems.flugelEye));
-        defaultItems.add(new ItemStack(BPItems.AESIR_RING.get()));
         defaultItems.add(new ItemStack(BPItems.ASGARD_FRACTAL.get()));
         defaultItems.add(new ItemStack(BPItems.YGGD_RAMUS.get()));
         defaultItems.add(new ItemStack(BPItems.ULL_BOW.get()));

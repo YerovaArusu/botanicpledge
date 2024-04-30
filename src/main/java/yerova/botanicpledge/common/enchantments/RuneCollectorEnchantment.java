@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BPItems;
@@ -40,11 +41,25 @@ public class RuneCollectorEnchantment extends Enchantment {
         super.doPostAttack(pAttacker, entity, pLevel);
     }
 
-
     @Override
-    public boolean isTreasureOnly() {
+    public boolean isDiscoverable() {
         return true;
     }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack) {
+        return true;
+    }
+
+    public int getMinCost(int pEnchantmentLevel) {
+        return 5 + (pEnchantmentLevel - 1) * 9;
+    }
+
+    public int getMaxCost(int pEnchantmentLevel) {
+        return this.getMinCost(pEnchantmentLevel) + 15;
+    }
+
+
 
 
 }

@@ -1,0 +1,14 @@
+{
+  "parent": "item/shield",
+  "textures": {
+    "particle": "botania:block/terrasteel_block"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "blocking": 1
+      },
+      "model": "botanicpledge:item/terra_shield_blocking"
+    }
+  ]
+}

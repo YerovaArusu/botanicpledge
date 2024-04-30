@@ -1,6 +1,8 @@
 package yerova.botanicpledge.client.model;
 
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.model.Material;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -17,12 +19,16 @@ public class ModelBakery {
     public static BakedModel yggralSpreaderCore;
     public static BakedModel yggdralSpreaderScaffolding;
 
+    public static final Material TERRA_SHIELD = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(BotanicPledge.MOD_ID,"entity/shield/terra_shield"));
+    public static final Material MANA_SHIELD = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(BotanicPledge.MOD_ID,"entity/shield/mana_shield"));
+
     public static void onModelRegister(ResourceManager rm, Consumer<ResourceLocation> consumer) {
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/maria_wings"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/marina_wings"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
+
 
     }
 

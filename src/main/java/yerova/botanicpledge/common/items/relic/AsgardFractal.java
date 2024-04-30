@@ -2,6 +2,7 @@ package yerova.botanicpledge.common.items.relic;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.MultimapBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -47,15 +49,13 @@ public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
     public static final int MAX_ENTITIES = 10;
     public final int MAX_TICK_AS_TARGET = 200;
-    public float ATTACK_SPEED_MODIFIER;
-    public float ATTACK_DAMAGE_MODIFIER;
     public static final int MAX_ABILITIES = 4;
 
+    protected static final UUID ADDITIONAL_DAMAGE_UUID = UUID.fromString("3b0d5066-e570-462b-b6c7-05dcfa07a761");
+    protected static final UUID ADDITIONAL_ATTACK_SPEED_UUID = UUID.fromString("bce3dc8c-5a4a-4745-b26b-37e497d2b4c1");
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
         super(BPItemTiers.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
-        ATTACK_DAMAGE_MODIFIER = pAttackDamageModifier;
-        ATTACK_SPEED_MODIFIER = pAttackSpeedModifier;
     }
 
 
@@ -102,14 +102,18 @@ public class AsgardFractal extends SwordItem {
             }
 
 
+
             //Relic Handler
             var relic = XplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
                 relic.tickBinding(player);
             }
         }
+
         super.inventoryTick(stack, pLevel, pEntity, pSlotId, pIsSelected);
     }
+
+
 
     @Override
     public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
@@ -120,22 +124,19 @@ public class AsgardFractal extends SwordItem {
             Attribute attribute = stack.getCapability(AttributeProvider.ATTRIBUTE).resolve().get();
 
 
-            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF"),
-                    BPConstants.ATTACK_DAMAGE_TAG_NAME,
+            builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, BPConstants.ATTACK_DAMAGE_TAG_NAME,
                     attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_DAMAGE) +
                             getDefaultAttributeModifiers(slot).get(Attributes.ATTACK_DAMAGE).stream().mapToDouble(AttributeModifier::getAmount).sum(),
                     AttributeModifier.Operation.ADDITION));
 
-            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(UUID.fromString("FA233E1C-4180-4865-B01B-BCCE9785ACA3"),
-                    BPConstants.ATTACK_SPEED_TAG_NAME,
-                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED) +
+            builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, BPConstants.ATTACK_SPEED_TAG_NAME,
+                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED)/100 *
                             getDefaultAttributeModifiers(slot).get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum(),
                     AttributeModifier.Operation.ADDITION));
         }
 
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getDefaultAttributeModifiers(slot);
     }
-
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
@@ -293,4 +294,15 @@ public class AsgardFractal extends SwordItem {
 
         }
     }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
+        return true;
+    }
+
 }
