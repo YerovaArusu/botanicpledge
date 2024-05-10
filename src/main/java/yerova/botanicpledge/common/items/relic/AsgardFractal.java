@@ -22,7 +22,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -44,6 +46,7 @@ import yerova.botanicpledge.setup.BPItemTiers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.Vector;
 
 public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
@@ -101,8 +104,6 @@ public class AsgardFractal extends SwordItem {
                 }
             }
 
-
-
             //Relic Handler
             var relic = XplatAbstractions.INSTANCE.findRelic(stack);
             if (relic != null) {
@@ -114,6 +115,17 @@ public class AsgardFractal extends SwordItem {
     }
 
 
+    @Override
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+
+
+        //TODO: Improve this, so when moving the player does deal damage to enemy collisions
+        Vec3 dist = player.position().add(entity.position().reverse()).reverse();
+        player.addDeltaMovement(dist);
+
+
+        return super.onLeftClickEntity(stack, player, entity);
+    }
 
     @Override
     public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
@@ -140,10 +152,7 @@ public class AsgardFractal extends SwordItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
-
-
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
-
 
         stack.getCapability(AttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
 
@@ -165,8 +174,31 @@ public class AsgardFractal extends SwordItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand pUsedHand) {
 
-        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 80_000, true)) {
-            activateCurrentSkill(level, player, player.getMainHandItem());
+        ItemStack stack = player.getItemInHand(pUsedHand);
+
+        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 10_000, true)) {
+            HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal) stack.getItem()).targetsNTime;
+
+            if (targetsNTime != null) {
+                LivingEntity[] attackables = targetsNTime.keySet().toArray(new LivingEntity[0]);
+                for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
+
+                    if (attackables.length > 0) {
+                        if (attackables.length >= MAX_ENTITIES) {
+                            summonProjectile(level, player, attackables[i]);
+                        } else if (i < attackables.length) {
+                            summonProjectile(level, player, attackables[i]);
+                        } else if (i % (attackables.length) > 0) {
+                            summonProjectile(level, player, attackables[i % attackables.length]);
+                        } else {
+                            summonProjectile(level, player, attackables[0]);
+                        }
+                    } else
+                        player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
+                }
+                player.getCooldowns().addCooldown(stack.getItem(), 25);
+                if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
+            }
         }
         return super.use(level, player, pUsedHand);
     }
@@ -224,76 +256,6 @@ public class AsgardFractal extends SwordItem {
                 stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.CURRENT_ABILITY_TAG) : 0;
     }
 
-    public static void activateCurrentSkill(Level level, Player player, ItemStack stack) {
-        if (!(stack.getItem() instanceof AsgardFractal)) return;
-        switch (getCurrentSkill(stack)) {
-            case 1 -> {
-                player.displayClientMessage(Component.literal("Activated \"Shoot Blades\""), true);
-                HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal) stack.getItem()).targetsNTime;
-
-                if (targetsNTime != null) {
-                    LivingEntity[] attackables = targetsNTime.keySet().toArray(new LivingEntity[0]);
-                    for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
-
-                        if (attackables.length > 0) {
-                            if (attackables.length >= MAX_ENTITIES) {
-                                summonProjectile(level, player, attackables[i]);
-                            } else if (i < attackables.length) {
-                                summonProjectile(level, player, attackables[i]);
-                            } else if (i % (attackables.length) > 0) {
-                                summonProjectile(level, player, attackables[i % attackables.length]);
-                            } else {
-                                summonProjectile(level, player, attackables[0]);
-                            }
-                        } else
-                            player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
-                    }
-                    player.getCooldowns().addCooldown(stack.getItem(), 25);
-                    if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
-                }
-
-            }
-            case 2 -> {
-                player.displayClientMessage(Component.literal("Activated \"Enemy Collector\""), true);
-                HitResult result = EntityUtils.raytrace(player, 16, true);
-                YggdFocusEntity focus = new YggdFocusEntity(level, player);
-                focus.setPos(result.getLocation().x, result.getLocation().y, result.getLocation().z);
-
-                player.getCooldowns().addCooldown(stack.getItem(), 25);
-
-                if (!level.isClientSide)
-                    level.addFreshEntity(focus);
-            }
-            case 3 -> {
-                player.displayClientMessage(Component.literal("Activated \"Push Back\""), true);
-
-                for (LivingEntity entity : EntityUtils.getAttackableEnemiesAround(player, level, 8, new EntityUtils.AttackableEntitiesSelector())) {
-                    if (entity instanceof Mob) {
-                        entity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 2, 2, false, false));
-                    }
-                    if (entity == player)
-                        continue;
-
-                    Vec3 vect = entity.position().subtract(player.position());
-                    entity.setDeltaMovement(vect.scale(4.5D));
-                    entity.hurt(level.damageSources().playerAttack(player), 20);
-                }
-
-                player.getCooldowns().addCooldown(stack.getItem(), 40);
-
-            }
-
-            case 4 -> {
-                player.displayClientMessage(Component.literal("Activated \"Swing Attack\""), true);
-                PlayerUtils.sweepAttack(level, player, stack, 0.4F);
-                player.getCooldowns().addCooldown(stack.getItem(), 10);
-            }
-            default -> {
-                player.displayClientMessage(Component.literal("No Ability Selected:"), true);
-            }
-
-        }
-    }
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {

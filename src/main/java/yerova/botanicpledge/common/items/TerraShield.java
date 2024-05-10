@@ -58,7 +58,6 @@ public class TerraShield extends ShieldItem implements LensEffectItem {
         }
     }
 
-    //TODO: ADD a method that allows the shield to automatically shoot a projectile after being hit
     public static void onShieldBlock(Level level, LivingEntity defender, LivingEntity attacker,ItemStack useItem) {
         if (level.isClientSide) return;
 
