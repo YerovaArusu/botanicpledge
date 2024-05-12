@@ -35,29 +35,21 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         super(type, worldIn);
     }
 
-    public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target) {
+    public AsgardBladeEntity(Level world, LivingEntity thrower, BlockPos targetPos, float damage) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
         setThrower(thrower);
-        setTargetPos(new BlockPos((int) target.getX(), (int) target.getY(), (int) target.getZ()));
-
-        setTarget_id(target.getId());
-        setVariety((int) (10 * Math.random()));
-        setThrower(thrower);
-        setDamage(10);
+        setTargetPos(targetPos);
+        setDamage(damage);
         this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
-
     }
 
     public AsgardBladeEntity(Level world, LivingEntity thrower, LivingEntity target, float damage) {
         super(BPEntities.ASGARD_BLADE.get(), world, thrower);
-        setThrower(thrower);
         setTargetPos(new BlockPos((int) target.getX(), (int) target.getY(), (int) target.getZ()));
         setDamage(damage);
         setTarget_id(target.getId());
-        setVariety((int) (10 * Math.random()));
         setThrower(thrower);
         this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
-
     }
 
 
@@ -67,33 +59,15 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
 
     public static final int LIVE_TICKS = 60;
-
-    private static final String TAG_VARIETY = "variety";
-    private static final String TAG_DELAY = "delay";
-    private static final String TAG_FAKE = "fake";
     private static final String TAG_TARGET_ENTITY_ID = "target_entity";
-    private static final String TAG_ORIGIN_STACK = "target_entity";
-
-
-    private static final EntityDataAccessor<Integer> VARIETY =
-            SynchedEntityData.defineId(AsgardBladeEntity.class, EntityDataSerializers.INT);
-
-    private static final EntityDataAccessor<Integer> DELAY =
-            SynchedEntityData.defineId(AsgardBladeEntity.class, EntityDataSerializers.INT);
 
     private static final EntityDataAccessor<Integer> TARGET_ENTITY_ID =
             SynchedEntityData.defineId(AsgardBladeEntity.class, EntityDataSerializers.INT);
 
-    private static final EntityDataAccessor<Boolean> FAKE =
-            SynchedEntityData.defineId(AsgardBladeEntity.class, EntityDataSerializers.BOOLEAN);
-
 
     @Override
     protected void defineSynchedData() {
-        entityData.define(VARIETY, 0);
-        entityData.define(DELAY, 0);
         entityData.define(TARGET_ENTITY_ID, 0);
-        entityData.define(FAKE, false);
 
         super.defineSynchedData();
     }
@@ -108,22 +82,25 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
         particles();
 
-        if (getDelay() > 0) {
-            setDelay(getDelay() - 1);
-            return;
-        }
-
         if (getTarget_id() != 0) {
 
             Entity target = level().getEntity(getTarget_id());
             if (target != null) {
                 setTargetPos(target.getOnPos().above().above());
-                faceEntity(target.getOnPos().above().above());
-                this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
-            } else {
-                remove(RemovalReason.DISCARDED);
+                facePosition(target.getOnPos().above().above());
             }
+        } else {
+            BlockPos targetPos = getTargetPos();
+            if (((int) position().x) == targetPos.getX()
+                    && ((int) position().y) == targetPos.getY()
+                    && ((int) position().z) == targetPos.getZ()){
+
+                this.remove(RemovalReason.DISCARDED);
+
+            }
+            facePosition(targetPos);
         }
+        this.setDeltaMovement(calculateBladeVelocity(getXRot(), getYRot()));
 
         if (getThrower() != null && getThrower() instanceof Player player) {
             AABB attackBox = this.getBoundingBox().inflate(2);
@@ -141,14 +118,9 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         }
 
 
-        if (getFake()) {
-            this.setDeltaMovement(0D, 0D, 0D);
-            return;
-        }
-
-        if (getFake() || level().isClientSide && this.tickCount >= LIVE_TICKS && (
-                getThrower() == null || getThrower().isRemoved()
-                        || level().getEntity(getTarget_id()) == null) || (level().getEntity(getTarget_id()) != null && level().getEntity(getTarget_id()).isRemoved())) {
+        if (level().isClientSide && this.tickCount >= LIVE_TICKS
+                && (getThrower() == null || getThrower().isRemoved() || level().getEntity(getTarget_id()) == null)
+                || (level().getEntity(getTarget_id()) != null && level().getEntity(getTarget_id()).isRemoved())) {
             remove(RemovalReason.DISCARDED);
             return;
         }
@@ -163,7 +135,8 @@ public class AsgardBladeEntity extends EntityProjectileBase {
         if (getThrower() != null && pResult.getEntity() != getThrower()) {
             pResult.getEntity().hurt(level().damageSources().playerAttack((Player) getThrower()), (float) getDamage());
         }
-        if (level().getEntity(getTarget_id()).equals(pResult)) this.remove(RemovalReason.DISCARDED);
+        if (getTarget_id() != 0 && level().getEntity(getTarget_id()) != null && level().getEntity(getTarget_id()).equals(pResult))
+            this.remove(RemovalReason.DISCARDED);
         super.onHitEntity(pResult);
     }
 
@@ -177,11 +150,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     @Override
     public void addAdditionalSaveData(CompoundTag cmp) {
         super.addAdditionalSaveData(cmp);
-
-        cmp.putInt(TAG_VARIETY, getVariety());
-        cmp.putInt(TAG_DELAY, getDelay());
         cmp.putInt(TAG_TARGET_ENTITY_ID, getTarget_id());
-        cmp.putBoolean(TAG_FAKE, getFake());
 
     }
 
@@ -189,11 +158,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
     @Override
     public void readAdditionalSaveData(CompoundTag cmp) {
         super.readAdditionalSaveData(cmp);
-
-        setVariety(cmp.getInt(TAG_VARIETY));
-        setDelay(cmp.getInt(TAG_DELAY));
         setTarget_id(cmp.getInt(TAG_TARGET_ENTITY_ID));
-        setFake(cmp.getBoolean(TAG_FAKE));
 
 
     }
@@ -205,31 +170,6 @@ public class AsgardBladeEntity extends EntityProjectileBase {
 
     public int getTarget_id() {
         return entityData.get(TARGET_ENTITY_ID);
-    }
-
-
-    public int getVariety() {
-        return entityData.get(VARIETY);
-    }
-
-    public void setVariety(int var) {
-        entityData.set(VARIETY, var);
-    }
-
-    public int getDelay() {
-        return entityData.get(DELAY);
-    }
-
-    public void setDelay(int var) {
-        entityData.set(DELAY, var);
-    }
-
-    public boolean getFake() {
-        return entityData.get(FAKE);
-    }
-
-    public void setFake(boolean rot) {
-        entityData.set(FAKE, rot);
     }
 
     public void setDamage(double damage) {

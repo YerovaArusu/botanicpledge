@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -53,9 +54,6 @@ public class AsgardFractal extends SwordItem {
     public static final int MAX_ENTITIES = 10;
     public final int MAX_TICK_AS_TARGET = 200;
     public static final int MAX_ABILITIES = 4;
-
-    protected static final UUID ADDITIONAL_DAMAGE_UUID = UUID.fromString("3b0d5066-e570-462b-b6c7-05dcfa07a761");
-    protected static final UUID ADDITIONAL_ATTACK_SPEED_UUID = UUID.fromString("bce3dc8c-5a4a-4745-b26b-37e497d2b4c1");
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
         super(BPItemTiers.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
@@ -118,7 +116,7 @@ public class AsgardFractal extends SwordItem {
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
 
-
+        //TODO: make a method that executes a dash-like ability even if no entity is around
         //TODO: Improve this, so when moving the player does deal damage to enemy collisions
         Vec3 dist = player.position().add(entity.position().reverse()).reverse();
         player.addDeltaMovement(dist);
@@ -179,25 +177,29 @@ public class AsgardFractal extends SwordItem {
         if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 10_000, true)) {
             HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal) stack.getItem()).targetsNTime;
 
-            if (targetsNTime != null) {
+            if (!targetsNTime.isEmpty()) {
                 LivingEntity[] attackables = targetsNTime.keySet().toArray(new LivingEntity[0]);
                 for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
 
-                    if (attackables.length > 0) {
-                        if (attackables.length >= MAX_ENTITIES) {
-                            summonProjectile(level, player, attackables[i]);
-                        } else if (i < attackables.length) {
-                            summonProjectile(level, player, attackables[i]);
-                        } else if (i % (attackables.length) > 0) {
-                            summonProjectile(level, player, attackables[i % attackables.length]);
-                        } else {
-                            summonProjectile(level, player, attackables[0]);
-                        }
-                    } else
-                        player.displayClientMessage(Component.literal("No Attackable Enemies found").withStyle(ChatFormatting.DARK_RED), true);
+                    if (attackables.length >= MAX_ENTITIES) {
+                        summonProjectile(level, player, attackables[i]);
+                    } else if (i < attackables.length) {
+                        summonProjectile(level, player, attackables[i]);
+                    } else if (i % (attackables.length) > 0) {
+                        summonProjectile(level, player, attackables[i % attackables.length]);
+                    } else {
+                        summonProjectile(level, player, attackables[0]);
+                    }
                 }
                 player.getCooldowns().addCooldown(stack.getItem(), 25);
                 if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
+            } else {
+                for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
+                    BlockPos pos = ((BlockHitResult)player.pick(20.0D,0, false)).getBlockPos();
+                    System.out.println(pos);
+
+                    summonProjectile(level,player,pos);
+                }
             }
         }
         return super.use(level, player, pUsedHand);
@@ -220,8 +222,30 @@ public class AsgardFractal extends SwordItem {
             AsgardBladeEntity blade = new AsgardBladeEntity(level, player, target, damage);
             blade.setDamage(damage);
             blade.setPos(x, y, z);
-            blade.setVariety(1);
-            blade.faceTarget(1);
+            blade.setNoGravity(true);
+            level.addFreshEntity(blade);
+        }
+    }
+
+    public static void summonProjectile(Level level, Player player, BlockPos targetPos) {
+        if (player.getMainHandItem().getItem() instanceof AsgardFractal) {
+            double range = 4D;
+            double j = -Math.PI + 2 * Math.PI * Math.random();
+            double k;
+            double x, y, z;
+
+            k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+            x = player.getX() + range * Math.sin(k) * Math.cos(j);
+            y = player.getY() + range * Math.cos(k);
+            z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+
+            float damage = ((AsgardFractal) player.getMainHandItem().getItem()).getDamage();
+
+            AsgardBladeEntity blade = new AsgardBladeEntity(level, player, targetPos, damage);
+            blade.facePosition(targetPos);
+            blade.setDamage(damage);
+            blade.setPos(x, y, z);
+            blade.setTargetPos(targetPos);
             blade.setNoGravity(true);
             level.addFreshEntity(blade);
         }

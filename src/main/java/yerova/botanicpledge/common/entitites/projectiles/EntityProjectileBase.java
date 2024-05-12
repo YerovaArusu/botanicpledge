@@ -65,14 +65,14 @@ public class EntityProjectileBase extends ThrowableProjectile {
     }
 
     public void faceTargetAccurately(float modifier) {
-        this.faceEntity(this.getTargetPosX(), this.getTargetPosY(), this.getTargetPosZ());
+        this.facePosition(this.getTargetPosX(), this.getTargetPosY(), this.getTargetPosZ());
         Vec3 vec = new Vec3(getTargetPosX() - getX(), getTargetPosY() - getY(), getTargetPosZ() - getZ())
                 .normalize();
         this.setDeltaMovement(vec.x * modifier, vec.y * modifier, vec.z * modifier);
     }
 
     public void faceTarget(float modifier) {
-        this.faceEntity(this.getTargetPos());
+        this.facePosition(this.getTargetPos());
         Vec3 vec = new Vec3(this.getTargetPos().getX() - this.getX(), this.getTargetPos().getY() - this.getY(), this.getTargetPos().getZ() - this.getZ())
                 .normalize();
         this.setDeltaMovement(vec.x * modifier, vec.y * modifier, vec.z * modifier);
@@ -85,7 +85,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         this.setTargetPos(new BlockPos((int) vec.x, (int) vec.y, (int) vec.z));
     }
 
-    public void faceEntity(float vx, float vy, float vz) {
+    public void facePosition(float vx, float vy, float vz) {
         double dX = vx - this.getX();
         double dZ = vz - this.getZ();
         double dY = vy - this.getY();
@@ -105,7 +105,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
 
     }
 
-    public void faceEntity(BlockPos target) {
+    public void facePosition(BlockPos target) {
         double d0 = target.getX() - this.getX();
         double d2 = target.getZ() - this.getZ();
         double d1 = target.getY() - this.getY();

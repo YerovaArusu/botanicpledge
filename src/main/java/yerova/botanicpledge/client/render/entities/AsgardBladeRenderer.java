@@ -32,8 +32,6 @@ public class AsgardBladeRenderer extends EntityRenderer<AsgardBladeEntity> {
     public void render(AsgardBladeEntity weapon, float pEntityYaw, float pPartialTick, PoseStack matrixStackIn, MultiBufferSource pBuffer, int pPackedLight) {
 
         Minecraft mc = Minecraft.getInstance();
-        if (weapon.getDelay() > 0)
-            return;
 
         matrixStackIn.pushPose();
 
@@ -45,7 +43,7 @@ public class AsgardBladeRenderer extends EntityRenderer<AsgardBladeEntity> {
         matrixStackIn.mulPose(VecHelper.rotateZ(-45));
 
 
-        float alpha = weapon.getFake() ? Math.max(0F, 0.75F - weapon.tickCount * (0.75F / AsgardBladeEntity.LIVE_TICKS) * 1.5F) : 1F;
+        float alpha = 1F;
         BakedModel model = ModelBakery.asgardBlade;
         int color = 0xFFFFFF | ((int) (alpha * 255F)) << 24;
         RenderHelper.renderItemCustomColor(mc.player, new ItemStack(BPItems.ASGARD_FRACTAL.get()), color, matrixStackIn, pBuffer, 0xF000F0, OverlayTexture.NO_OVERLAY, model);

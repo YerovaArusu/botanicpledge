@@ -17,6 +17,8 @@ import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.setup.BotanicPledge;
 
+import java.awt.event.KeyEvent;
+
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class InputEvents {
 
@@ -28,7 +30,6 @@ public class InputEvents {
 
         onInput(mc, event.getKey(), event.getAction());
     }
-
 
     @SubscribeEvent
     public static void onMouseClicked(InputEvent.MouseButton event) {
@@ -42,6 +43,7 @@ public class InputEvents {
             if (KeyBindings.INSTANCE.switchSkillButton.isDown() && mc.player != null ) {
                 Networking.sendToServer(new ItemButtonInteractionToServer());
             }
+
         }
     }
 
