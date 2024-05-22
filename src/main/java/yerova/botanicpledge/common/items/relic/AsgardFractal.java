@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -28,6 +29,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
@@ -57,6 +60,7 @@ public class AsgardFractal extends SwordItem {
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
         super(BPItemTiers.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
+        MinecraftForge.EVENT_BUS.addListener(this::onLeftClick);
     }
 
 
@@ -112,6 +116,15 @@ public class AsgardFractal extends SwordItem {
         super.inventoryTick(stack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
+    public void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
+
+        Player player = event.getEntity();
+        BlockPos pos = ((BlockHitResult)player.pick(8,0, false)).getBlockPos();
+
+        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
+            player.moveTo(pos.getCenter());
+        }
+    }
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
@@ -198,7 +211,6 @@ public class AsgardFractal extends SwordItem {
             } else {
                 for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
                     BlockPos pos = ((BlockHitResult)player.pick(20.0D,0, false)).getBlockPos();
-                    System.out.println(pos);
 
                     summonProjectile(level,player,pos);
                 }
