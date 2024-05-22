@@ -33,7 +33,6 @@ public class ForgeCommonInitializer {
 
     private static final Supplier<Map<Item, Function<ItemStack, Relic>>> RELIC = Suppliers.memoize(() -> Map.of(
             BPItems.MARIAS_CORE.get(), DivineCoreItem::makeRelic,
-            BPItems.MARINAS_CORE.get(), DivineCoreItem::makeRelic,
             BPItems.YGGD_RAMUS.get(), DivineCoreItem::makeRelic,
             BPItems.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic,
             BPItems.AESIR_RING.get(), RingOfAesir::makeRelic,
@@ -43,8 +42,7 @@ public class ForgeCommonInitializer {
 
 
     private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
-            BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
-            BPItems.MARINAS_CORE.get(), DivineCoreItem.ManaItem::new
+            BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new
     ));
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
@@ -70,8 +68,7 @@ public class ForgeCommonInitializer {
 
         if (stack.getItem() instanceof MariasCore)
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
-        if (stack.getItem() instanceof MarinasCore)
-            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MarinasCore.getCoreAttribute());
+
         if (stack.getItem() instanceof AsgardFractal) {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new AttributeProvider(4, Attribute.Rune.EquipmentType.SWORD));
         }

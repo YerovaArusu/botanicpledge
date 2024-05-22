@@ -40,8 +40,7 @@ public class BPItems {
     public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("marias_core", () -> new MariasCore(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
-    public static final RegistryObject<Item> MARINAS_CORE = ITEMS.register("marinas_core", () -> new MarinasCore(
-            new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
+
 
     public static final RegistryObject<TerraShield> TERRA_SHIELD = ITEMS.register("terra_shield",
             ()-> new TerraShield((new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).stacksTo(1)).durability(660)));

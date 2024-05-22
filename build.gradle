@@ -34,7 +34,8 @@ compileJava {
 minecraft {
     mappings channel: 'parchment', version: '2023.09.03-1.20.1'
 
-    accessTransformer = file('src/main/resources/META-INF/access-transformer.cfg')
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
 
     runs {
 

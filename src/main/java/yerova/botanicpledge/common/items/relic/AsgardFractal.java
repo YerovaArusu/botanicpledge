@@ -118,9 +118,11 @@ public class AsgardFractal extends SwordItem {
 
         //TODO: make a method that executes a dash-like ability even if no entity is around
         //TODO: Improve this, so when moving the player does deal damage to enemy collisions
-        Vec3 dist = player.position().add(entity.position().reverse()).reverse();
-        player.addDeltaMovement(dist);
 
+        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
+            Vec3 dist = player.position().add(entity.position().add(0,1,0).reverse()).reverse();
+            player.addDeltaMovement(dist);
+        }
 
         return super.onLeftClickEntity(stack, player, entity);
     }

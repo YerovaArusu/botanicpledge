@@ -1,7 +1,6 @@
 {
   "replace": false,
   "values": [
-    "botanicpledge:marias_core",
-    "botanicpledge:marinas_core"
+    "botanicpledge:marias_core"
   ]
 }
