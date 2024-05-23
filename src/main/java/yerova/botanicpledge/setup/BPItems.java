@@ -1,7 +1,6 @@
 package yerova.botanicpledge.setup;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.model.Material;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
@@ -37,7 +36,7 @@ public class BPItems {
 
 
     //cores
-    public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("marias_core", () -> new MariasCore(
+    public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("vedrfolnir_core", () -> new VedrfolnirsCore(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
 

@@ -19,7 +19,7 @@ import yerova.botanicpledge.client.events.ForgeClientInitializer;
 import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
 import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
-import yerova.botanicpledge.client.render.items.MariasCoreRenderer;
+import yerova.botanicpledge.client.render.items.VedrfolnirCoreRenderer;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.network.Networking;
 
@@ -74,7 +74,7 @@ public class BotanicPledge {
         EntityRenderers.register(BPEntities.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
 
 
-        CuriosRendererRegistry.register(BPItems.MARIAS_CORE.get(), MariasCoreRenderer::new);
+        CuriosRendererRegistry.register(BPItems.MARIAS_CORE.get(), VedrfolnirCoreRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.THUNDER_LILY.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.MANA_BUFFER.get(), RenderType.translucent());

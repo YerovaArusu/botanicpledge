@@ -14,8 +14,7 @@ import java.util.function.Consumer;
 public class ModelBakery {
 
     public static BakedModel asgardBlade;
-    public static BakedModel mariaWings;
-    public static BakedModel marinaWings;
+    public static BakedModel vedrfolnirWings;
     public static BakedModel yggralSpreaderCore;
     public static BakedModel yggdralSpreaderScaffolding;
 
@@ -24,8 +23,7 @@ public class ModelBakery {
 
     public static void onModelRegister(ResourceManager rm, Consumer<ResourceLocation> consumer) {
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
-        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/maria_wings"));
-        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/marina_wings"));
+        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
 
@@ -34,8 +32,7 @@ public class ModelBakery {
 
     public static void onModelBake(net.minecraft.client.resources.model.ModelBakery loader, Map<ResourceLocation, BakedModel> map) {
         asgardBlade = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
-        mariaWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/maria_wings"));
-        marinaWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/marina_wings"));
+        vedrfolnirWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         yggralSpreaderCore = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         yggdralSpreaderScaffolding = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
     }

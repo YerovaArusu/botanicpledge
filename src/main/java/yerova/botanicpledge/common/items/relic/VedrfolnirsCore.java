@@ -8,7 +8,7 @@ import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 
 
-public class MariasCore extends DivineCoreItem {
+public class VedrfolnirsCore extends DivineCoreItem {
 
     private static final int maxShield = 600;
     private static final int defRegenPerTick = 4;
@@ -16,7 +16,7 @@ public class MariasCore extends DivineCoreItem {
     private static final int manaCost = 8;
 
 
-    public MariasCore(Item.Properties properties) {
+    public VedrfolnirsCore(Item.Properties properties) {
         super(properties);
     }
 

@@ -66,8 +66,8 @@ public class ForgeCommonInitializer {
 
         ItemStack stack = e.getObject();
 
-        if (stack.getItem() instanceof MariasCore)
-            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), MariasCore.getCoreAttribute());
+        if (stack.getItem() instanceof VedrfolnirsCore)
+            e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), VedrfolnirsCore.getCoreAttribute());
 
         if (stack.getItem() instanceof AsgardFractal) {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new AttributeProvider(4, Attribute.Rune.EquipmentType.SWORD));

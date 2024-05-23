@@ -16,15 +16,15 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 import vazkii.botania.common.helper.VecHelper;
 import yerova.botanicpledge.client.model.ModelBakery;
-import yerova.botanicpledge.common.items.relic.MariasCore;
+import yerova.botanicpledge.common.items.relic.VedrfolnirsCore;
 
-public class MariasCoreRenderer implements ICurioRenderer {
+public class VedrfolnirCoreRenderer implements ICurioRenderer {
 
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         M contextModel = renderLayerParent.getModel();
-        if (!(stack.getItem() instanceof MariasCore)) {
+        if (!(stack.getItem() instanceof VedrfolnirsCore)) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class MariasCoreRenderer implements ICurioRenderer {
         }
 
 
-        BakedModel model = ModelBakery.mariaWings;
+        BakedModel model = ModelBakery.vedrfolnirWings;
         boolean flying = slotContext.entity() instanceof Player player && player.getAbilities().flying;
         float flap = 20F + (float) ((Math.sin((double) (slotContext.entity().tickCount + partialTicks) * (flying ? 0.4F : 0.2F)) + 0.5F) * (flying ? 30F : 5F));
 
