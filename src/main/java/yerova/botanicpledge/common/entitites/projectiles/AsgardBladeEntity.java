@@ -93,7 +93,7 @@ public class AsgardBladeEntity extends EntityProjectileBase {
             BlockPos targetPos = getTargetPos();
             if (((int) position().x) == targetPos.getX()
                     && ((int) position().y) == targetPos.getY()
-                    && ((int) position().z) == targetPos.getZ()){
+                    && ((int) position().z) == targetPos.getZ()) {
 
                 this.remove(RemovalReason.DISCARDED);
 

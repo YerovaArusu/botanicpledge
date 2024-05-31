@@ -20,8 +20,6 @@ public final class BPConstants {
 
     public static final int CORE_RANK_REQUIRED_FOR_YGGD_RAMUS = 2;
 
-    public static final String TAG_CORE_UUID = "coreUUID";
-
     public static final String ARMOR_TAG_NAME = "armor";
     public static final String ARMOR_TOUGHNESS_TAG_NAME = "armor_toughness";
     public static final String MAX_HEALTH_TAG_NAME = "max_health";
@@ -36,10 +34,6 @@ public final class BPConstants {
 
     public static final String CURRENT_ABILITY_TAG = "current_ability";
 
-    public static final String GEM_TYPE_TAG_NAME = "gem_type";
-    public static final String GEM_TYPE_SWORD = "sword_type";
-    public static final String GEM_TYPE_CORE = "core_type";
-
     public static final String SOCKET_PRE_TAG = "socket";
 
     public static final String DRACONIC_EVOLUTION_MODID = "draconicevolution";
@@ -52,8 +46,10 @@ public final class BPConstants {
     public static final String RARITY_RARE = "rarity_rare";
     public static final String RARITY_UNCOMMON = "rarity_uncommon";
     public static final String RARITY_COMMON = "rarity_common";
-
     public static final String NO_RUNE_GEM = "no_rune_gem";
+
+    public static final int MAX_ESSENCE_GEN_AMOUNT = 10;
+    public static final int MIN_ESSENCE_GEN_AMOUNT = 1;
 
 
 }

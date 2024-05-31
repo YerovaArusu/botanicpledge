@@ -46,7 +46,6 @@ public class ModificationAltarRenderer implements BlockEntityRenderer<Modificati
         entityItem.setItem(tileEntityIn.getHeldStack());
 
 
-
         Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, pPartialTick, 2.0f, matrixStack, buffers, light);
 
         matrixStack.popPose();
@@ -82,7 +81,6 @@ public class ModificationAltarRenderer implements BlockEntityRenderer<Modificati
         }
 
         matrixStack.popPose();
-
 
 
     }

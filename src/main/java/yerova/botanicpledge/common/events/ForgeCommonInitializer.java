@@ -15,8 +15,8 @@ import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
+import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
 import yerova.botanicpledge.common.items.relic.*;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPItems;
@@ -37,7 +37,7 @@ public class ForgeCommonInitializer {
             BPItems.ASGARD_FRACTAL.get(), AsgardFractal::makeRelic,
             BPItems.AESIR_RING.get(), RingOfAesir::makeRelic,
             BPItems.FIRST_RELIC.get(), FirstRelic::makeRelic,
-            BPItems.ULL_BOW.get(),UllBow::makeRelic
+            BPItems.ULL_BOW.get(), UllBow::makeRelic
     ));
 
 
@@ -61,6 +61,7 @@ public class ForgeCommonInitializer {
 
     }
 
+
     @SubscribeEvent
     public static void addItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
 
@@ -72,7 +73,6 @@ public class ForgeCommonInitializer {
         if (stack.getItem() instanceof AsgardFractal) {
             e.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "attributes"), new AttributeProvider(4, Attribute.Rune.EquipmentType.SWORD));
         }
-
     }
 
     @SubscribeEvent

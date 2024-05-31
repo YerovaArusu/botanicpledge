@@ -2,20 +2,15 @@ package yerova.botanicpledge.common.items.relic;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.multiplayer.PlayerInfo;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -24,10 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -37,20 +30,16 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
 import yerova.botanicpledge.common.entitites.projectiles.AsgardBladeEntity;
-import yerova.botanicpledge.common.entitites.projectiles.YggdFocusEntity;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
-import java.util.Vector;
 
 public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
@@ -119,7 +108,7 @@ public class AsgardFractal extends SwordItem {
     public void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 
         Player player = event.getEntity();
-        BlockPos pos = ((BlockHitResult)player.pick(8,0, false)).getBlockPos();
+        BlockPos pos = ((BlockHitResult) player.pick(8, 0, false)).getBlockPos();
 
         if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
             player.moveTo(pos.getCenter());
@@ -133,7 +122,7 @@ public class AsgardFractal extends SwordItem {
         //TODO: Improve this, so when moving the player does deal damage to enemy collisions
 
         if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
-            Vec3 dist = player.position().add(entity.position().add(0,1,0).reverse()).reverse();
+            Vec3 dist = player.position().add(entity.position().add(0, 1, 0).reverse()).reverse();
             player.addDeltaMovement(dist);
         }
 
@@ -155,7 +144,7 @@ public class AsgardFractal extends SwordItem {
                     AttributeModifier.Operation.ADDITION));
 
             builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, BPConstants.ATTACK_SPEED_TAG_NAME,
-                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED)/100 *
+                    attribute.sumRunesOfType(Attribute.Rune.StatType.ATTACK_SPEED) / 100 *
                             getDefaultAttributeModifiers(slot).get(Attributes.ATTACK_SPEED).stream().mapToDouble(AttributeModifier::getAmount).sum(),
                     AttributeModifier.Operation.ADDITION));
         }
@@ -210,9 +199,9 @@ public class AsgardFractal extends SwordItem {
                 if (!level.isClientSide) ((AsgardFractal) stack.getItem()).targetsNTime = new HashMap<>();
             } else {
                 for (int i = 0; i <= MAX_ENTITIES - 1; i++) {
-                    BlockPos pos = ((BlockHitResult)player.pick(20.0D,0, false)).getBlockPos();
+                    BlockPos pos = ((BlockHitResult) player.pick(20.0D, 0, false)).getBlockPos();
 
-                    summonProjectile(level,player,pos);
+                    summonProjectile(level, player, pos);
                 }
             }
         }

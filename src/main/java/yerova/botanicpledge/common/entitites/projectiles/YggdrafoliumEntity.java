@@ -9,26 +9,18 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.BushBlock;
-import net.minecraft.world.level.block.LeavesBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.*;
 import org.jetbrains.annotations.NotNull;
-import vazkii.botania.api.mana.ManaCollisionGhost;
 import vazkii.botania.client.fx.SparkleParticleData;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
 import vazkii.botania.common.proxy.Proxy;
 import vazkii.botania.xplat.BotaniaConfig;
-import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BPEntities;
 
@@ -118,7 +110,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
         super.tick();
 
         if (!level().isClientSide) {
-            AABB axis = new AABB(position().x - 2F, position().y - 2F, position().z - 2F,position().x + 2F,
+            AABB axis = new AABB(position().x - 2F, position().y - 2F, position().z - 2F, position().x + 2F,
                     position().y + 2F, position().z + 2F);
 
             List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, axis);

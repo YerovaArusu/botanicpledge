@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.items;
 
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,7 +57,7 @@ public class TerraShield extends ShieldItem implements LensEffectItem {
         }
     }
 
-    public static void onShieldBlock(Level level, LivingEntity defender, LivingEntity attacker,ItemStack useItem) {
+    public static void onShieldBlock(Level level, LivingEntity defender, LivingEntity attacker, ItemStack useItem) {
         if (level.isClientSide) return;
 
 
@@ -66,8 +65,8 @@ public class TerraShield extends ShieldItem implements LensEffectItem {
             if (!player.isSpectator() && !player.getUseItem().isEmpty() && useItem.is(BPItems.TERRA_SHIELD.get())) {
                 ManaBurstEntity burst = TerraBladeItem.getBurst(player, player.getMainHandItem());
 
-                float rotX = (float) Math.atan(player.getX()+1/attacker.getX()+1);
-                float rotY = (float) Math.atan((player.getY())/(attacker.getY()));
+                float rotX = (float) Math.atan(player.getX() + 1 / attacker.getX() + 1);
+                float rotY = (float) Math.atan((player.getY()) / (attacker.getY()));
 
                 burst.setYRot(-(rotX + 90F));
                 burst.setXRot(rotY);
@@ -102,7 +101,6 @@ public class TerraShield extends ShieldItem implements LensEffectItem {
     private boolean reequipAnimation(ItemStack before, ItemStack after) {
         return !after.is(this);
     }
-
 
 
     @Override

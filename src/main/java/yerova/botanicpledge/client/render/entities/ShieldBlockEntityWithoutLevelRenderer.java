@@ -52,7 +52,6 @@ public class ShieldBlockEntityWithoutLevelRenderer extends BlockEntityWithoutLev
         }
 
 
-
         VertexConsumer vertexconsumer = material.sprite().wrap(ItemRenderer.getFoilBufferDirect(bufferSource, this.shieldModel.renderType(material.atlasLocation()), true, itemStack.hasFoil()));
         this.shieldModel.handle().render(poseStack, vertexconsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);
         this.shieldModel.plate().render(poseStack, vertexconsumer, p_108834_, p_108835_, 1.0F, 1.0F, 1.0F, 1.0F);

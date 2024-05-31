@@ -44,7 +44,6 @@ public class BPBlocks {
             () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
-
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
             new ForgeSpecialFlowerBlock(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);

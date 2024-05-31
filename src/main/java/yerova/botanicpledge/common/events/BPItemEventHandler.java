@@ -4,14 +4,10 @@ package yerova.botanicpledge.common.events;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -22,8 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.items.TerraShield;
@@ -33,12 +28,11 @@ import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BPItemEventHandler {
-
+    
 
     @SubscribeEvent
     public static void handleCoreDamage(LivingAttackEvent e) {
@@ -91,7 +85,6 @@ public class BPItemEventHandler {
             }
         }
     }
-
 
 
     @SubscribeEvent

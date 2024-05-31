@@ -1,9 +1,7 @@
 package yerova.botanicpledge.common.items.relic;
 
-import net.minecraft.client.KeyMapping;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,7 +10,6 @@ import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.common.item.relic.RelicItem;
-import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 

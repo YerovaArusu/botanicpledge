@@ -9,10 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.setup.BPItems;
 
 public class RuneCollectorEnchantment extends Enchantment {
 
@@ -58,8 +56,6 @@ public class RuneCollectorEnchantment extends Enchantment {
     public int getMaxCost(int pEnchantmentLevel) {
         return this.getMinCost(pEnchantmentLevel) + 15;
     }
-
-
 
 
 }

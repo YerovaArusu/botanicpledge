@@ -2,7 +2,6 @@ package yerova.botanicpledge.client.render.items;
 
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import vazkii.botania.network.TriConsumer;
 import yerova.botanicpledge.common.items.relic.YggdRamus;

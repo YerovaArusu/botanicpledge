@@ -40,12 +40,11 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
 
 
-
     public static final RegistryObject<TerraShield> TERRA_SHIELD = ITEMS.register("terra_shield",
-            ()-> new TerraShield((new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).stacksTo(1)).durability(660)));
+            () -> new TerraShield((new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON).stacksTo(1)).durability(660)));
 
     public static final RegistryObject<ManaShield> MANA_SHIELD = ITEMS.register("mana_shield",
-            ()-> new ManaShield((new Item.Properties().rarity(Rarity.COMMON).stacksTo(1)).durability(330)));
+            () -> new ManaShield((new Item.Properties().rarity(Rarity.COMMON).stacksTo(1)).durability(330)));
 
     public static final RegistryObject<Item> SOUL_AMULET = ITEMS.register("soul_amulet", () -> new SoulAmulet(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));

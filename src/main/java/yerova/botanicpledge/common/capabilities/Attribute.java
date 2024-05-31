@@ -6,7 +6,10 @@ import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.setup.BPItems;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Attribute {
 
@@ -41,7 +44,7 @@ public class Attribute {
     }
 
     public boolean addRune(Rune rune) {
-        if (!hasEmptySocket()|| !isCorrectRuneType(rune)) {
+        if (!hasEmptySocket() || !isCorrectRuneType(rune)) {
             return false;
         }
         runesOnSockets.add(rune);
@@ -55,18 +58,22 @@ public class Attribute {
     public boolean removeRune(Rune rune) {
         return runesOnSockets.remove(rune);
     }
+
     public void removeRuneAt(int i) {
         runesOnSockets.remove(i);
     }
+
     public boolean hasRuneType(Rune.StatType type) {
         return runesOnSockets.stream().map(r -> r.statType).toList().contains(type);
     }
+
     public double sumRunesOfType(Rune.StatType type) {
         return runesOnSockets.stream()
                 .filter(r -> r.statType == type)
                 .mapToDouble(r -> r.value)
                 .sum();
     }
+
     public void update(List<Rune> runes, boolean isMax) {
         if (isMax) {
             maxRunes = runes.size();
@@ -106,7 +113,7 @@ public class Attribute {
         }
 
         public enum StatType {
-            ARMOR,ARMOR_TOUGHNESS,MAX_HEALTH,MOVEMENT_SPEED,ATTACK_SPEED,ATTACK_DAMAGE,JUMP_HEIGHT,NONE;
+            ARMOR, ARMOR_TOUGHNESS, MAX_HEALTH, MOVEMENT_SPEED, ATTACK_SPEED, ATTACK_DAMAGE, JUMP_HEIGHT, NONE;
         }
 
         private final EquipmentType equipmentType;
@@ -123,7 +130,7 @@ public class Attribute {
         public ItemStack getAsStack() {
             ItemStack stack = new ItemStack(BPItems.SOCKET_GEM.get());
             CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-            tag.putString("gem_equipment_type",equipmentType.name().toLowerCase());
+            tag.putString("gem_equipment_type", equipmentType.name().toLowerCase());
             tag.putString("gem_stat_type", statType.name().toLowerCase());
             tag.putDouble("gem_stat_value", value);
 

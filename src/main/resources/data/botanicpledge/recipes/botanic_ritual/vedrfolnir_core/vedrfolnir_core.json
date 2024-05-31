@@ -30,7 +30,7 @@
     }
   ],
   "output": {
-    "item": "botanicpledge:marias_core"
+    "item": "botanicpledge:vedrfolnir_core"
   },
   "manaCost": 400000,
   "keepNbtOfReagent": false

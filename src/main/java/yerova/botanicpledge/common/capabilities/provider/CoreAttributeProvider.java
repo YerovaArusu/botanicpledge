@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.capabilities;
+package yerova.botanicpledge.common.capabilities.provider;
 
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -10,6 +10,8 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.CoreAttribute;
 
 public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static Capability<CoreAttribute> CORE_ATTRIBUTE = CapabilityManager.get(new CapabilityToken<>() {

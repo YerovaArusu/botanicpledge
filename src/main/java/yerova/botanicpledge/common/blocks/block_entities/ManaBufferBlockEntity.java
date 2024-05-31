@@ -1,6 +1,5 @@
 package yerova.botanicpledge.common.blocks.block_entities;
 
-import com.google.common.base.Predicates;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -8,21 +7,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import org.lwjgl.opengl.GL11;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.ManaReceiver;
-import vazkii.botania.api.mana.spark.ManaSpark;
-import vazkii.botania.api.mana.spark.SparkAttachable;
 import vazkii.botania.client.core.helper.RenderHelper;
 import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.client.gui.HUDHandler;
@@ -33,7 +28,6 @@ import vazkii.botania.common.item.ManaTabletItem;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class ManaBufferBlockEntity extends BlockEntity implements ManaReceiver, ThrottledPacket, Wandable {
     public static final int MAX_MANA = 264_000_000;

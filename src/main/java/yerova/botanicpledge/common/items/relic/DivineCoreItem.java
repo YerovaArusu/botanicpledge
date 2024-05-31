@@ -4,8 +4,6 @@ package yerova.botanicpledge.common.items.relic;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -29,7 +27,7 @@ import vazkii.botania.common.item.relic.RelicItem;
 import vazkii.botania.common.lib.BotaniaTags;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 
@@ -38,7 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
 
@@ -163,15 +160,13 @@ public abstract class DivineCoreItem extends RelicItem implements ICurioItem {
             tooltip.add(Component.literal("Charge: " + Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", ((double) attribute.getCurrentCharge() / attribute.getMaxCharge() * 100))) + "%").withStyle(ChatFormatting.GRAY));
 
 
+            attribute.getAllRunes().forEach(rune -> {
+                tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
+            });
 
-
-                attribute.getAllRunes().forEach(rune -> {
-                    tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
-                });
-
-                if (attribute.hasEmptySocket()) {
-                    tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes() - attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
-                }
+            if (attribute.hasEmptySocket()) {
+                tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes() - attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
+            }
 
 
         });

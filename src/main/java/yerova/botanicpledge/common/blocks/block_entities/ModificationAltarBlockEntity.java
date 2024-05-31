@@ -13,8 +13,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import vazkii.botania.api.block.Wandable;
 import yerova.botanicpledge.common.blocks.ModificationAltarBlock;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;

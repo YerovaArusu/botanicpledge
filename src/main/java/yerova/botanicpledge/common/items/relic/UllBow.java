@@ -31,7 +31,6 @@ import vazkii.botania.common.item.relic.RelicImpl;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.entitites.projectiles.YggdrafoliumEntity;
 import yerova.botanicpledge.common.utils.EntityUtils;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -68,12 +67,12 @@ public class UllBow extends BowItem {
 
                 int j = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.POWER_ARROWS, stack);
                 if (j > 0) {
-                    damage = (float) (damage * (j*0.5 + 5));
+                    damage = (float) (damage * (j * 0.5 + 5));
                 }
 
 
                 YggdrafoliumEntity sword = new YggdrafoliumEntity(player.level(), player, targetPos, damage);
-                sword.setPos(player.getX(), player.getY()+1, player.getZ());
+                sword.setPos(player.getX(), player.getY() + 1, player.getZ());
                 sword.faceTarget(1.0F);
                 sword.setColor(0x08e8de);
                 sword.setGravity(0F);
@@ -91,12 +90,10 @@ public class UllBow extends BowItem {
     }
 
 
-
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         return ToolCommons.damageItemIfPossible(stack, amount, entity, MANA_PER_DAMAGE);
     }
-
 
 
     @Override
@@ -121,7 +118,7 @@ public class UllBow extends BowItem {
     public void inventoryTick(ItemStack stack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player) {
 
-            if(stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExactForTool(stack, player, MANA_PER_DAMAGE * 2, true))
+            if (stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExactForTool(stack, player, MANA_PER_DAMAGE * 2, true))
                 stack.setDamageValue(stack.getDamageValue() - 1);
 
             //Relic Handler
@@ -132,7 +129,6 @@ public class UllBow extends BowItem {
         }
 
     }
-
 
 
     @Override

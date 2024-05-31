@@ -1,29 +1,16 @@
 package yerova.botanicpledge.common.items;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import org.jetbrains.annotations.Debug;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
-import yerova.botanicpledge.common.items.relic.AsgardFractal;
-import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.utils.BPConstants;
-import yerova.botanicpledge.common.utils.PlayerUtils;
-import yerova.botanicpledge.setup.BPItems;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.*;
 
@@ -152,7 +139,8 @@ public class RuneGemItem extends SimpleFoiledItem {
     }
 
     public static double getGemAttributeValue(ItemStack stack) {
-        if (!(stack.getItem() instanceof RuneGemItem) && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).get("gem_stat_value") == null) return 0.0;
+        if (!(stack.getItem() instanceof RuneGemItem) && stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).get("gem_stat_value") == null)
+            return 0.0;
         return stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getDouble("gem_stat_value");
     }
 

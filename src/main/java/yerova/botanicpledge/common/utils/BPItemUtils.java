@@ -4,14 +4,12 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.SyncProtector;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -54,7 +52,6 @@ public class BPItemUtils {
             Networking.sendToPlayer(new SyncProtector(0, 0, 0, 0), serverPlayer);
         }
     }
-
 
 
 }

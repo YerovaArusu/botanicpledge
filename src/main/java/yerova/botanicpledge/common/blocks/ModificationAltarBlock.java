@@ -26,8 +26,8 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.AttributeProvider;
-import yerova.botanicpledge.common.capabilities.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.RuneGemItem;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
