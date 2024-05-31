@@ -110,7 +110,8 @@ public class AsgardFractal extends SwordItem {
         Player player = event.getEntity();
         BlockPos pos = ((BlockHitResult) player.pick(8, 0, false)).getBlockPos();
 
-        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
+
+        if (player.getMainHandItem().getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
             player.moveTo(pos.getCenter());
         }
     }

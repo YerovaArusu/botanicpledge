@@ -1,9 +1,14 @@
 package yerova.botanicpledge.common.events;
 
 
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +23,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.capabilities.Attribute;
+import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
@@ -28,17 +34,34 @@ import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+
 
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class BPItemEventHandler {
-    
+    public static final List<ResourceKey<DamageType>> ENV_SOURCES = new ArrayList<>();
+
+    static {
+        ENV_SOURCES.add(DamageTypes.IN_FIRE);
+        ENV_SOURCES.add(DamageTypes.ON_FIRE);
+        ENV_SOURCES.add(DamageTypes.LAVA);
+        ENV_SOURCES.add(DamageTypes.HOT_FLOOR);
+        ENV_SOURCES.add(DamageTypes.IN_WALL);
+        ENV_SOURCES.add(DamageTypes.CRAMMING);
+        ENV_SOURCES.add(DamageTypes.CACTUS);
+    }
 
     @SubscribeEvent
     public static void handleCoreDamage(LivingAttackEvent e) {
-
-
         if (!e.getEntity().level().isClientSide) {
+
+            if (blockEnvironmentalDamage(e, e.getSource())) {
+                return;
+            }
+
 
             ItemHelper.getDivineCoreCurio(e.getEntity()).forEach(slotResult -> {
                 ItemStack stack = slotResult.stack();
@@ -68,8 +91,47 @@ public class BPItemEventHandler {
             if (e.getEntity() instanceof Player player && RingOfAesir.onPlayerAttacked(player, e.getSource())) {
                 e.setCanceled(true);
             }
-
         }
+    }
+
+
+    public static boolean blockEnvironmentalDamage(LivingAttackEvent event, DamageSource source) {
+        LivingEntity entity = event.getEntity();
+
+
+        boolean isEnv = ENV_SOURCES.stream().anyMatch(source::is);
+        ItemHelper.getDivineCoreCurio(entity).forEach(slotResult -> {
+                    CoreAttribute attribute = slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+
+
+                    if (source.is(DamageTypeTags.IS_FIRE) && attribute.getCurrentShield() > 10) {
+                        entity.clearFire();
+                    }
+
+                    long currentTime = System.currentTimeMillis();
+
+                    // Check if the entity is taking environmental damage
+                    if (isEnv) {
+                        // Check if enough shield is available to block the damage
+                        if (attribute.getCurrentShield() >= 2) {
+                            // Check if the last hit time was within the last second (20 ticks)
+
+                            if (currentTime - attribute.getLastTimeHit() < 1500) {
+                                event.setCanceled(true);
+
+                            } else {
+                                // Consume shield if more than a second has passed
+                                attribute.setLastTimeHit(currentTime);
+                                attribute.removeCurrentShield(4);
+                                event.setCanceled(true);
+                            }
+                        }
+                    }
+                }
+        );
+
+
+        return isEnv;
     }
 
     @SubscribeEvent

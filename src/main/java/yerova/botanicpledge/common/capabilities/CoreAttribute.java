@@ -10,6 +10,7 @@ public class CoreAttribute extends Attribute {
     private int currentShield;
     private int defRegenPerTick;
     private int manaCostPerTick;
+    private long lastTimeHit = 0;
 
 
     public CoreAttribute(int maxCharge, int maxShield, int defRegenPerTick, int manaCostPerTick, int maxRunes, Rune.EquipmentType requiredType) {
@@ -18,7 +19,15 @@ public class CoreAttribute extends Attribute {
         this.maxShield = maxShield;
         this.defRegenPerTick = defRegenPerTick;
         this.manaCostPerTick = manaCostPerTick;
+        this.lastTimeHit = 0;
+    }
 
+    public long getLastTimeHit() {
+        return lastTimeHit;
+    }
+
+    public void setLastTimeHit(long lastTimeHit) {
+        this.lastTimeHit = lastTimeHit;
     }
 
     public int getMaxCharge() {
@@ -85,7 +94,7 @@ public class CoreAttribute extends Attribute {
         nbt.putInt(BPConstants.SHIELD_TAG_NAME, currentShield);
         nbt.putInt(BPConstants.DEF_REGEN_TAG_NAME, defRegenPerTick);
         nbt.putInt(BPConstants.MANA_COST_TAG_NAME, manaCostPerTick);
-
+        nbt.putLong("lastTimeHit", lastTimeHit);
         super.saveNBTData(nbt);
 
     }
@@ -98,7 +107,7 @@ public class CoreAttribute extends Attribute {
         currentShield = nbt.getInt(BPConstants.SHIELD_TAG_NAME);
         defRegenPerTick = nbt.getInt(BPConstants.DEF_REGEN_TAG_NAME);
         manaCostPerTick = nbt.getInt(BPConstants.MANA_COST_TAG_NAME);
-
+        lastTimeHit = nbt.getLong("lastTimeHit");
         super.loadNBTData(nbt);
     }
 

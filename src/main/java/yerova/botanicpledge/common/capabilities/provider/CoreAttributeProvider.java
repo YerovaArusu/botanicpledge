@@ -32,6 +32,7 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
         this.manaCost = manaCost;
         this.maxRunes = maxRunes;
         this.requiredType = requiredType;
+
     }
 
     private CoreAttribute coreAttribute = null;
@@ -61,5 +62,6 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
     @Override
     public void deserializeNBT(CompoundTag nbt) {
         createCoreAttribute().loadNBTData(nbt);
+
     }
 }
