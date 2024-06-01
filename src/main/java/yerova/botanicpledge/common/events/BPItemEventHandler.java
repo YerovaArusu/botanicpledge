@@ -110,19 +110,15 @@ public class BPItemEventHandler {
 
                     long currentTime = System.currentTimeMillis();
 
-                    // Check if the entity is taking environmental damage
                     if (isEnv) {
-                        // Check if enough shield is available to block the damage
                         if (attribute.getCurrentShield() >= 2) {
-                            // Check if the last hit time was within the last second (20 ticks)
-
                             if (currentTime - attribute.getLastTimeHit() < 1500) {
                                 event.setCanceled(true);
 
                             } else {
-                                // Consume shield if more than a second has passed
                                 attribute.setLastTimeHit(currentTime);
                                 attribute.removeCurrentShield(4);
+                                event.getEntity().level().playSound(null, event.getEntity().getX(), event.getEntity().getY(), event.getEntity().getZ(), BotaniaSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
                                 event.setCanceled(true);
                             }
                         }
