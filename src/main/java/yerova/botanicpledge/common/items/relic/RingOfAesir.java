@@ -96,6 +96,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
 
     public static InteractionResult onPlayerInteract(Player player, Level world, InteractionHand hand, BlockHitResult lookPos) {
         ItemStack aesirRing = getAesirRing(player);
+
         if (aesirRing.isEmpty() || !player.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }

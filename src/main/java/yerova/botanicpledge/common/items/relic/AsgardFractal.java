@@ -108,23 +108,22 @@ public class AsgardFractal extends SwordItem {
     public void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
 
         Player player = event.getEntity();
-        BlockPos pos = ((BlockHitResult) player.pick(8, 0, false)).getBlockPos();
 
+        if (player.getItemInHand(event.getHand()).getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
 
-        if (player.getMainHandItem().getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
-            player.moveTo(pos.getCenter());
+            Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
+            Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
+            player.setDeltaMovement(dashVec);
         }
     }
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
 
-        //TODO: make a method that executes a dash-like ability even if no entity is around
-        //TODO: Improve this, so when moving the player does deal damage to enemy collisions
-
         if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
-            Vec3 dist = player.position().add(entity.position().add(0, 1, 0).reverse()).reverse();
-            player.addDeltaMovement(dist);
+            Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
+            Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
+            player.setDeltaMovement(dashVec);
         }
 
         return super.onLeftClickEntity(stack, player, entity);

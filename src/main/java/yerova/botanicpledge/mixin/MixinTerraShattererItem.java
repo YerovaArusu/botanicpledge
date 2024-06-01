@@ -9,10 +9,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import vazkii.botania.api.BotaniaAPI;
+import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.StoneOfTemperanceItem;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
@@ -53,7 +58,7 @@ public class MixinTerraShattererItem {
             return;
         }
 
-        boolean thor = !RingOfThorItem.getThorRing(player).isEmpty() || RingOfAesir.getAesirRing(player).isEmpty();
+        boolean thor = !RingOfThorItem.getThorRing(player).isEmpty() || !RingOfAesir.getAesirRing(player).isEmpty();
         boolean doX = thor || side.getStepX() == 0;
         boolean doY = thor || side.getStepY() == 0;
         boolean doZ = thor || side.getStepZ() == 0;
@@ -79,7 +84,5 @@ public class MixinTerraShattererItem {
         if (origLevel == 5) {
             PlayerHelper.grantCriterion((ServerPlayer) player, prefix("challenge/rank_ss_pick"), "code_triggered");
         }
-
     }
-
 }

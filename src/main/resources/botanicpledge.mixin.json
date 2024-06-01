@@ -4,11 +4,13 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "MixinLivingEntity",
-    "MixinTerraShattererItem"
+    "MixinTerraShattererItem",
+    "MixinBotaniaApi"
   ],
   "server": [
     "MixinLivingEntity",
-    "MixinTerraShattererItem"
+    "MixinTerraShattererItem",
+    "MixinBotaniaApi"
   ],
   "injectors": {
     "defaultRequire": 1
