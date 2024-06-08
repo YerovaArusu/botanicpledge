@@ -51,6 +51,10 @@
         "symmetrical": true
       },
       "text": "botanicpledge.page.botanic_ritual2"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "botanicpledge:crafting_table/yggdralium_ingot"
     }
   ]
 }
