@@ -1,0 +1,86 @@
+{
+  "components": [
+    {
+      "type": "patchouli:header",
+      "text": "Botanic Ritual",
+      "x": -1,
+      "y": -1
+    },
+    {
+      "type": "patchouli:separator",
+      "x": -1,
+      "y": -1
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#center",
+      "framed": "true",
+      "x": 50,
+      "y": 78
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#output",
+      "link_recipe": true,
+      "framed": "true",
+      "x": 90,
+      "y": 20
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input7",
+      "framed": "true",
+      "x": 10,
+      "y": 78
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input6",
+      "framed": "true",
+      "x": 20, 
+      "y": 108
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input3",
+      "framed": "true",
+      "x": 90,
+      "y": 78
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input4",
+      "framed": "true",
+      "x": 80,
+      "y": 108
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input8",
+      "framed": "true",
+      "x": 20,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input2",
+      "framed": "true",
+      "x": 80,
+      "y": 48
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input1",
+      "framed": "true",
+      "x": 50,
+      "y": 38
+    },
+    {
+      "type": "patchouli:item",
+      "item": "#input5",
+      "framed": "true",
+      "x": 50,
+      "y": 118
+    }
+  ]
+}

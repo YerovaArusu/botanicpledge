@@ -1,0 +1,18 @@
+{
+  "name": "Shields",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:mana_shield",
+  "priority": false,
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.mana_shield"
+    },
+    {
+      "type": "crafting",
+      "recipe": "botanicpledge:crafting_table/mana_shield",
+      "recipe2": "botanicpledge:crafting_table/terra_shield"
+    }
+  ]
+}

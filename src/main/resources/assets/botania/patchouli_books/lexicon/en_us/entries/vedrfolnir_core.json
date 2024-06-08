@@ -1,0 +1,26 @@
+{
+  "name": "Vedrfolnir's Core",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:vedrfolnir_core",
+  "priority": false,
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.divine_core"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:flight_tiara",
+      "output": "botanicpledge:vedrfolnir_core",
+      "input1": "botania:elf_quartz", 
+      "input2": "botanicpledge:yggdralium_block", 
+      "input3": "botanicpledge:yggdralium_block",
+      "input4": "botania:elf_quartz",
+      "input5": "botanicpledge:yggdralium_block",
+      "input6": "botania:elf_quartz",
+      "input7": "botania:elf_quartz",
+      "input8": "botanicpledge:yggdralium_block"
+    }
+  ]
+}

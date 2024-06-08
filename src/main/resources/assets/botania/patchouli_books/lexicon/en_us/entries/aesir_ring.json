@@ -1,0 +1,26 @@
+{
+  "name": "Ring of Aesir",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:aesir_ring",
+  "priority": false,
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.aesir_ring"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "minecraft:gold_block",
+      "output": "botanicpledge:aesir_ring",
+      "input1": "minecraft:quartz_block", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input3": "botania:loki_ring",
+      "input4": "botanicpledge:yggdralium_shard",
+      "input5": "botania:thor_ring",
+      "input6": "botanicpledge:yggdralium_shard",
+      "input7": "botania:odin_ring",
+      "input8": "botanicpledge:yggdralium_shard"
+    }
+  ]
+}
