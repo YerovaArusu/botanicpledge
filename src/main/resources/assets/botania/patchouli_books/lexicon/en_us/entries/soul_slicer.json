@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:soul_slicer",
   "priority": false,
-  "sortnum": 7,
+  "sortnum": 8,
   "pages": [
     {
       "type": "text",

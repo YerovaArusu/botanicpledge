@@ -1,0 +1,26 @@
+{
+  "name": "Asgard Fractal",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:asgard_fractal",
+  "priority": false,
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.asgard_fractal"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:yggd_ramus",
+      "output": "botanicpledge:asgard_fractal",
+      "input1": "botanicpledge:yggdralium_block", 
+      "input2": "botanicpledge:yggdralium_block", 
+      "input3": "botanicpledge:yggdralium_block",
+      "input4": "botanicpledge:yggdralium_block",
+      "input5": "botanicpledge:yggdralium_block",
+      "input6": "botanicpledge:yggdralium_block",
+      "input7": "botanicpledge:yggdralium_block",
+      "input8": "botanicpledge:yggdralium_block"
+    }
+  ]
+}

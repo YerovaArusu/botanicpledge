@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:vedrfolnir_core",
   "priority": false,
-  "sortnum": 8,
+  "sortnum": 3,
   "pages": [
     {
       "type": "text",

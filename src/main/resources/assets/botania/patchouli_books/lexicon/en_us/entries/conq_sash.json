@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:conquering_sash",
   "priority": false,
-  "sortnum": 14,
+  "sortnum": 10,
   "pages": [
     {
       "type": "text",

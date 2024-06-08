@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:ull_bow",
   "priority": false,
-  "sortnum": 9,
+  "sortnum": 7,
   "pages": [
     {
       "type": "text",

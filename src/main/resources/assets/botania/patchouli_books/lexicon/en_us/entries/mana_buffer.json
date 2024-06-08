@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:mana_buffer",
   "priority": false,
-  "sortnum": 4,
+  "sortnum": 1,
   "pages": [
     {
       "type": "text",

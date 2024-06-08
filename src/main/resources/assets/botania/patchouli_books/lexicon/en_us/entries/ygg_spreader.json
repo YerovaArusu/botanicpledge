@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:yggdral_spreader",
   "priority": false,
-  "sortnum": 13,
+  "sortnum": 2,
   "pages": [
     {
       "type": "text",

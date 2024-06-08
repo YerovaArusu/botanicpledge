@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:rune_gem",
   "priority": false,
-  "sortnum": 5,
+  "sortnum": 12,
   "pages": [
     {
       "type": "text",

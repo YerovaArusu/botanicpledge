@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:aesir_ring",
   "priority": false,
-  "sortnum": 12,
+  "sortnum": 11,
   "pages": [
     {
       "type": "text",

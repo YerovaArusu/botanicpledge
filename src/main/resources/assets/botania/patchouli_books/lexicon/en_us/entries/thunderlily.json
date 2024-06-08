@@ -3,7 +3,7 @@
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:thunder_lily",
   "priority": false,
-  "sortnum": 12,
+  "sortnum": 13,
   "pages": [
     {
       "type": "text",
