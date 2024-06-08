@@ -31,10 +31,10 @@ What have I planned?
 - magic Damage attribute for every weapon.
 - a new Boss called Marina Arusu (If you're wondering... yes she is from DAL)
 
-The Protectors are inspired by another mod:
-https://www.curseforge.com/minecraft/mc-mods/botanic-additions
+The Protectors are inspired by another mod:  
+https://www.curseforge.com/minecraft/mc-mods/botanic-additions  
 So... thanks to Zeitheron
 
-Link for the Main Mod
-https://www.curseforge.com/minecraft/mc-mods/botania
+Link for the Main Mod  
+https://www.curseforge.com/minecraft/mc-mods/botania  
 so... Thanks to Vazkii
