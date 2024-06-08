@@ -1,7 +1,7 @@
 {
   "name": "botanicpledge.start",
   "category": "botania:botanicpledge",
-  "icon": "botanicpledge:marias_core",
+  "icon": "botanicpledge:vedrfolnir_core",
   "priority": true,
   "sortnum": 1,
   "pages": [

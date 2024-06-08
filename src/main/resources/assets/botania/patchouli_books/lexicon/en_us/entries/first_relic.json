@@ -1,0 +1,26 @@
+{
+  "name": "First Relic",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:first_relic",
+  "priority": true,
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.first_relic"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:dice",
+      "output": "botanicpledge:first_relic",
+      "input1": "botanicpledge:yggdralium_ingot", 
+      "input2": "botania:infinite_fruit", 
+      "input3": "botania:king_key",
+      "input4": "minecraft:netherite_sword",
+      "input5": "botania:terra_sword",
+      "input6": "botanicpledge:yggd_ramus",
+      "input7": "botania:flugel_eye",
+      "input8": "botanicpledge:asgard_fractal"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Ull's Bow",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:ull_bow",
+  "priority": false,
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.ull_bow"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "minecraft:bow",
+      "output": "botanicpledge:ull_bow",
+      "input1": "botania:terrasteel_ingot", 
+      "input2": "botanicpledge:yggdralium_ingot", 
+      "input3": "botania:terrasteel_ingot",
+      "input4": "botanicpledge:yggdralium_ingot",
+      "input5": "botania:terra_sword",
+      "input6": "botanicpledge:yggdralium_ingot",
+      "input7": "botania:terrasteel_ingot",
+      "input8": "botanicpledge:yggdralium_ingot"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "Modification Altar",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:modification_altar",
+  "priority": true,
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.modification_altar"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:ritual_pedestal",
+      "output": "botanicpledge:modification_altar",
+      "input1": "botania:livingrock", 
+      "input2": "botanicpledge:yggdralium_ingot", 
+      "input3": "botania:livingrock",
+      "input4": "botanicpledge:yggdralium_ingot",
+      "input5": "botania:livingrock",
+      "input6": "botanicpledge:yggdralium_ingot",
+      "input7": "botania:livingrock",
+      "input8": "botanicpledge:yggdralium_ingot"
+    }
+  ]
+}

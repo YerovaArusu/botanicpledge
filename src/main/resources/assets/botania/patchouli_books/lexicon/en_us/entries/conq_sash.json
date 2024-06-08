@@ -1,0 +1,22 @@
+{
+  "name": "Conquering Sash",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:conquering_sash",
+  "priority": false,
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.conquering_sash"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:super_travel_belt",
+      "output": "botanicpledge:conquering_sash",
+      "input1": "botanicpledge:yggdralium_shard", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input7": "botanicpledge:yggdralium_shard",
+      "input8": "botanicpledge:yggdralium_shard"
+    }
+  ]
+}

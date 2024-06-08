@@ -1,0 +1,26 @@
+{
+  "name": "Yggd Ramus",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggd_ramus",
+  "priority": false,
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.yggd_ramus"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:vedrfolnir_core",
+      "output": "botanicpledge:yggd_ramus",
+      "input1": "botanicpledge:yggdralium_ingot", 
+      "input2": "botania:terra_sword", 
+      "input3": "botanicpledge:yggdralium_ingot",
+      "input4": "botania:terra_sword",
+      "input5": "botanicpledge:yggdralium_ingot",
+      "input6": "botania:terra_sword",
+      "input7": "botanicpledge:yggdralium_ingot",
+      "input8": "botania:terra_sword"
+    }
+  ]
+}

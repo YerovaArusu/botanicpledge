@@ -2,12 +2,52 @@
   "name": "botanicpledge.soul_slicer",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:soul_slicer",
-  "priority": true,
-  "sortnum": 7,
+  "priority": false,
+  "sortnum": 8,
   "pages": [
     {
       "type": "text",
       "text": "botanicpledge.page.soul_slicer"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:ender_dagger",
+      "output": "botanicpledge:soul_slicer",
+      "input1": "botanicpledge:rune_gem", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input3": "botanicpledge:rune_gem",
+      "input4": "botanicpledge:yggdralium_shard",
+      "input5": "botanicpledge:rune_gem",
+      "input6": "botanicpledge:yggdralium_shard",
+      "input7": "botanicpledge:rune_gem",
+      "input8": "botanicpledge:yggdralium_shard"
+    },
+    {
+      "type": "spotlight",
+      "item": {
+        "item": "botanicpledge:soul_shard"
+      },
+      "text": "botanicpledge.page.soul_shard"
+    },
+    {
+      "type": "spotlight",
+      "item": {
+        "item": "botanicpledge:soul_amulet"
+      },
+      "text": "botanicpledge.page.soul_amulet"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:soul_shard",
+      "output": "botanicpledge:soul_amulet",
+      "input1": "minecraft:string", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input3": "minecraft:string",
+      "input4": "botanicpledge:yggdralium_shard",
+      "input5": "minecraft:string",
+      "input6": "botanicpledge:yggdralium_shard",
+      "input7": "minecraft:string",
+      "input8": "botanicpledge:yggdralium_shard"
     }
   ]
 }
