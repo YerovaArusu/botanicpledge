@@ -1,4 +1,4 @@
-# botanicpledge
+# Botanic Pledge
 
 This is an addon for the wellknown Botania mod:
 
