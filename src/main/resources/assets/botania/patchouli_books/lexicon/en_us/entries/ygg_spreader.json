@@ -1,0 +1,26 @@
+{
+  "name": "Yggdral Spreader",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggdral_spreader",
+  "priority": false,
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.yggdral_spreader"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:gaia_spreader",
+      "output": "botanicpledge:yggdral_spreader",
+      "input1": "botanicpledge:world_ash_branch", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input3": "botanicpledge:world_ash_branch",
+      "input4": "botanicpledge:yggdralium_shard",
+      "input5": "botanicpledge:world_ash_branch",
+      "input6": "botanicpledge:yggdralium_shard",
+      "input7": "botanicpledge:world_ash_branch",
+      "input8": "botanicpledge:yggdralium_shard"
+    }
+  ]
+}

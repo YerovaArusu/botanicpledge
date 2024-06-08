@@ -1,0 +1,17 @@
+{
+  "name": "Thunderlily",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:thunder_lily",
+  "priority": false,
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.thunder_lily"
+    },
+    {
+      "type": "botania:petal_apothecary",
+      "recipe": "botanicpledge:petal_apothecary/thunder_lily"
+    }
+  ]
+}
