@@ -4,16 +4,16 @@ This is an addon for the wellknown Botania mod:
 
 - It has 4 protectors of different tiers.
 
-1. Mana Protector
+1. Mana Protector  
    Weak... very weak
 
-2. Terra Protector
+2. Terra Protector  
    Weak... but better than the first one
 
-3. Gaia Protector
+3. Gaia Protector  
    Already very good... but there is still a lot to improve
 
-4. Yggdral Protector
+4. Yggdral Protector  
    So far the best one.
 
 - and more:
