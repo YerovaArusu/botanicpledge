@@ -7,7 +7,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
 
@@ -154,16 +154,16 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.3.0'
 
     //botania
-    implementation fg.deobf("vazkii.botania:Botania:1.20.1-441-FORGE")
+    implementation fg.deobf("vazkii.botania:Botania:1.20.1-444-FORGE")
 
     //curios
-    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.4.2+1.20.1")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:5.9.1+1.20.1")
 
     //patchouli
-    implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-83-FORGE")
+    implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 
     //just enough items
 
