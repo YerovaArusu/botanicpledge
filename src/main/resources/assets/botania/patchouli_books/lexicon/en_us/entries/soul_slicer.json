@@ -28,6 +28,26 @@
         "item": "botanicpledge:soul_shard"
       },
       "text": "botanicpledge.page.soul_shard"
+    },
+    {
+      "type": "spotlight",
+      "item": {
+        "item": "botanicpledge:soul_amulet"
+      },
+      "text": "botanicpledge.page.soul_amulet"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:soul_shard",
+      "output": "botanicpledge:soul_amulet",
+      "input1": "minecraft:string", 
+      "input2": "botanicpledge:yggdralium_shard", 
+      "input3": "minecraft:string",
+      "input4": "botanicpledge:yggdralium_shard",
+      "input5": "minecraft:string",
+      "input6": "botanicpledge:yggdralium_shard",
+      "input7": "minecraft:string",
+      "input8": "botanicpledge:yggdralium_shard"
     }
   ]
 }
