@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static vazkii.botania.common.block.BotaniaBlocks.livingwood;
+import static vazkii.botania.common.block.BotaniaBlocks.manasteelBlock;
 
 public class BPBlocks {
     private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;
@@ -37,6 +39,11 @@ public class BPBlocks {
             () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
+    public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
+            BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+
     public static final RegistryObject<Block> RITUAL_PEDESTAL = registerBlock("ritual_pedestal",
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
@@ -49,9 +56,6 @@ public class BPBlocks {
             new ForgeSpecialFlowerBlock(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
-    public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
-            () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
-            BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     private static <T extends Block> RegistryObject<T> registerBlockWithoutBlockItem(String name, Supplier<T> block) {
         return BLOCKS.register(name, block);

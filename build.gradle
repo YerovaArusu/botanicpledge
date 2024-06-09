@@ -10,7 +10,6 @@ buildscript {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '6.0.+', changing: true
         classpath 'org.parchmentmc:librarian:1.+'
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-
     }
 }
 
@@ -20,7 +19,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 
 group = 'yerova'
-version = '1.20.1-0.6.3.2'
+version = '1.20.1-0.6.4.'
 
 java {
     archivesBaseName = 'botanicpledge'
