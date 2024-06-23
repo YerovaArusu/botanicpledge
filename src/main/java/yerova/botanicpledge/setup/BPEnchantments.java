@@ -13,4 +13,7 @@ public class BPEnchantments {
 
     public static final RegistryObject<Enchantment> RUNE_COLLECTOR_ENCHANTMENT = ENCHANTMENTS.register("rune_collector",
             () -> new RuneCollectorEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
+
+    public static final RegistryObject<Enchantment> YGGDRASIL_DEBARKING_BOUNTY = ENCHANTMENTS.register("yggdrasil_debarking_bounty",
+            () -> new RuneCollectorEnchantment(Enchantment.Rarity.VERY_RARE, EquipmentSlot.MAINHAND));
 }

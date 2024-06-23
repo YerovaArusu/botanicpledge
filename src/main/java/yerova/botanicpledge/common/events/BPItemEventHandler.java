@@ -1,6 +1,7 @@
 package yerova.botanicpledge.common.events;
 
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -10,8 +11,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -19,8 +23,10 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.handler.BotaniaSounds;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
@@ -31,12 +37,12 @@ import yerova.botanicpledge.common.items.TerraShield;
 import yerova.botanicpledge.common.items.relic.RingOfAesir;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
+import yerova.botanicpledge.setup.BPEnchantments;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 
@@ -142,6 +148,28 @@ public class BPItemEventHandler {
                 TerraShield.onShieldBlock(event.getEntity().level(), event.getEntity(), attacker, event.getEntity().getUseItem());
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onLivingWoodChop(BlockEvent.BreakEvent event) {
+
+        if (event.getState().getBlock().equals(BotaniaBlocks.livingwoodLog)
+                && event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).getItem() instanceof AxeItem ) {
+
+
+            int enchantmentLevel = EnchantmentHelper.getEnchantmentLevel(BPEnchantments.YGGDRASIL_DEBARKING_BOUNTY.get(), event.getPlayer());
+            int random = event.getLevel().getRandom().nextInt(0, 100);
+
+            Vec3 pos = event.getPos().getCenter();
+
+            if (random <= enchantmentLevel) {
+                event.getLevel().addFreshEntity(new ItemEntity(event.getPlayer().level(), pos.x, pos.y, pos.z, new ItemStack(BPItems.WORLD_ASH_BRANCH.get())));
+            }
+
+
+        }
+
+
     }
 
 
