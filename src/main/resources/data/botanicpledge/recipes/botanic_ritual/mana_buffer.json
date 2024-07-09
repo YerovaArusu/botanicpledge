@@ -5,13 +5,13 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_block"
+      "item": "botanicpledge:yggdrasilsteel_block"
     },
     {
       "item": "minecraft:gold_block"
     },
     {
-      "item": "botanicpledge:yggdralium_block"
+      "item": "botanicpledge:yggdrasilsteel_block"
     },
     {
       "item": "minecraft:gold_block"
@@ -20,13 +20,13 @@
       "item": "minecraft:gold_block"
     },
     {
-      "item": "botanicpledge:yggdralium_block"
+      "item": "botanicpledge:yggdrasilsteel_block"
     },
     {
       "item": "minecraft:gold_block"
     },
     {
-      "item": "botanicpledge:yggdralium_block"
+      "item": "botanicpledge:yggdrasilsteel_block"
     }
   ],
   "output": {

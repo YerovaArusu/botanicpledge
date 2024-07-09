@@ -7,13 +7,13 @@
   ],
   "key": {
     "#": {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     "G": {
       "item": "botania:gaia_ingot"
     }
   },
   "result": {
-    "item": "botanicpledge:yggdralium_ingot"
+    "item": "botanicpledge:yggdrasilsteel_ingot"
   }
 }

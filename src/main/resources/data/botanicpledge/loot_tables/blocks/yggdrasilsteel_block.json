@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "botanicpledge:yggdralium_block"
+          "name": "botanicpledge:yggdrasilsteel_block"
         }
       ],
       "conditions": [

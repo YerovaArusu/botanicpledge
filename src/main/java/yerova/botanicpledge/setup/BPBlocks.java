@@ -39,7 +39,7 @@ public class BPBlocks {
             () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
-    public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdralium_block",
+    public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdrasilsteel_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),
             BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 

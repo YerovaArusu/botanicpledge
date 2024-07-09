@@ -11,7 +11,7 @@
     },
     {
       "type": "botania:terrasteel",
-      "recipe": "botanicpledge:terra_plate/yggdralium_shard",
+      "recipe": "botanicpledge:terra_plate/yggdrasil_shard",
       "text": "botanicpledge.page.botanic_ritual1"
     },
     {
@@ -54,7 +54,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "botanicpledge:crafting_table/yggdralium_ingot"
+      "recipe": "botanicpledge:crafting_table/yggdrasilsteel_ingot"
     }
   ]
 }

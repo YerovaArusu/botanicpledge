@@ -1,0 +1,39 @@
+{
+  "type": "botania:runic_altar",
+  "ingredients": [
+    {
+      "item": "botania:rune_fire"
+    },
+    {
+      "item": "botania:rune_summer"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:trident"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "botania:terra_sword"
+    },
+    {
+      "item": "botania:elementium_sword"
+    },
+    {
+      "item": "botania:mana_string"
+    },
+    {
+      "item": "minecraft:lightning_rod"
+    }
+  ],
+  "mana": 18000,
+  "output": {
+    "item": "botanicpledge:rune_thurisaz"
+  }
+}

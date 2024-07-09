@@ -5,13 +5,13 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
       "item": "botania:livingrock"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
       "item": "botania:livingrock"
@@ -20,13 +20,13 @@
       "item": "botania:livingrock"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
       "item": "botania:livingrock"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     }
   ],
   "output": {

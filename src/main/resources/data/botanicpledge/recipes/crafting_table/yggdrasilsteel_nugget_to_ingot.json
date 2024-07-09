@@ -7,10 +7,10 @@
   ],
   "key": {
     "N": {
-      "item": "botanicpledge:yggdralium_nugget"
+      "item": "botanicpledge:yggdrasilsteel_nugget"
     }
   },
   "result": {
-    "item": "botanicpledge:yggdralium_ingot"
+    "item": "botanicpledge:yggdrasilsteel_ingot"
   }
 }

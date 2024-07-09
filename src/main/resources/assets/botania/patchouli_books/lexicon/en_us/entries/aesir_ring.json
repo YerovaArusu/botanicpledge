@@ -14,13 +14,13 @@
       "center": "minecraft:gold_block",
       "output": "botanicpledge:aesir_ring",
       "input1": "minecraft:quartz_block", 
-      "input2": "botanicpledge:yggdralium_shard", 
+      "input2": "botanicpledge:yggdrasil_shard",
       "input3": "botania:loki_ring",
-      "input4": "botanicpledge:yggdralium_shard",
+      "input4": "botanicpledge:yggdrasil_shard",
       "input5": "botania:thor_ring",
-      "input6": "botanicpledge:yggdralium_shard",
+      "input6": "botanicpledge:yggdrasil_shard",
       "input7": "botania:odin_ring",
-      "input8": "botanicpledge:yggdralium_shard"
+      "input8": "botanicpledge:yggdrasil_shard"
     }
   ]
 }

@@ -14,13 +14,13 @@
       "center": "botania:flight_tiara",
       "output": "botanicpledge:vedrfolnir_core",
       "input1": "botania:elf_quartz", 
-      "input2": "botanicpledge:yggdralium_block", 
-      "input3": "botanicpledge:yggdralium_block",
+      "input2": "botanicpledge:yggdrasilsteel_block",
+      "input3": "botanicpledge:yggdrasilsteel_block",
       "input4": "botania:elf_quartz",
-      "input5": "botanicpledge:yggdralium_block",
+      "input5": "botanicpledge:yggdrasilsteel_block",
       "input6": "botania:elf_quartz",
       "input7": "botania:elf_quartz",
-      "input8": "botanicpledge:yggdralium_block"
+      "input8": "botanicpledge:yggdrasilsteel_block"
     }
   ]
 }

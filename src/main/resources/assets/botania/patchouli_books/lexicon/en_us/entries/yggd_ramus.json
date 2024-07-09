@@ -13,13 +13,13 @@
       "type": "botania:botanic_ritual",
       "center": "botanicpledge:vedrfolnir_core",
       "output": "botanicpledge:yggd_ramus",
-      "input1": "botanicpledge:yggdralium_ingot", 
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
       "input2": "botania:terra_sword", 
-      "input3": "botanicpledge:yggdralium_ingot",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
       "input4": "botania:terra_sword",
-      "input5": "botanicpledge:yggdralium_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
       "input6": "botania:terra_sword",
-      "input7": "botanicpledge:yggdralium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
       "input8": "botania:terra_sword"
     }
   ]

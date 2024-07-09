@@ -1,0 +1,39 @@
+{
+  "type": "botania:runic_altar",
+  "ingredients": [
+    {
+      "item": "botania:rune_earth"
+    },
+    {
+      "item": "botania:rune_winter"
+    },
+    {
+      "item": "minecraft:bow"
+    },
+    {
+      "item": "minecraft:snow_block"
+    },
+    {
+      "item": "minecraft:fletching_table"
+    },
+    {
+      "item": "minecraft:arrow"
+    },
+    {
+      "item": "botania:crystal_bow"
+    },
+    {
+      "item": "minecraft:powder_snow_bucket"
+    },
+    {
+      "item": "minecraft:netherite_ingot"
+    },
+    {
+      "item": "botania:manasteel_ingot"
+    }
+  ],
+  "mana": 15000,
+  "output": {
+    "item": "botanicpledge:rune_ingwaz"
+  }
+}

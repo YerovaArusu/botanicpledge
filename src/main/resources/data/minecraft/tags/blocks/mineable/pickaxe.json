@@ -329,6 +329,7 @@
     "botanicpledge:ritual_center",
     "botanicpledge:ritual_pedestal",
     "botanicpledge:mana_buffer",
-    "botanicpledge:yggdralium_block"
+    "botanicpledge:yggdralium_block",
+    "botanicpledge:modification_table"
   ]
 }

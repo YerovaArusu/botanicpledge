@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:yggd_ramus"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botanicpledge:rune_yr"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botanicpledge:rune_yr"
+    },
+    {
+      "item": "botanicpledge:rune_yr"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botanicpledge:rune_yr"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:yggdrasil_warden"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}

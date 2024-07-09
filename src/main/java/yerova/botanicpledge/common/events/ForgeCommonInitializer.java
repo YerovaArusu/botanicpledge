@@ -5,8 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -16,8 +14,8 @@ import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.Attribute;
-import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
+import yerova.botanicpledge.common.items.YggdrasilsteelBandOfMana;
 import yerova.botanicpledge.common.items.relic.*;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPItems;
@@ -43,7 +41,8 @@ public class ForgeCommonInitializer {
 
 
     private static final Supplier<Map<Item, Function<ItemStack, ManaItem>>> MANA_ITEM = Suppliers.memoize(() -> Map.of(
-            BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new
+            BPItems.MARIAS_CORE.get(), DivineCoreItem.ManaItem::new,
+            BPItems.YGGDRASILSTEEL_BAND_OF_MANA.get(), YggdrasilsteelBandOfMana.YggdrasilsteelManaItemImpl::new
     ));
 
     public static void attachItemCaps(AttachCapabilitiesEvent<ItemStack> e) {
@@ -56,8 +55,7 @@ public class ForgeCommonInitializer {
 
         var makeManaItem = MANA_ITEM.get().get(stack.getItem());
         if (makeManaItem != null) {
-            e.addCapability(prefix("mana_item"),
-                    CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_ITEM, makeManaItem.apply(stack)));
+            e.addCapability(prefix("mana_item"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_ITEM, makeManaItem.apply(stack)));
         }
 
     }

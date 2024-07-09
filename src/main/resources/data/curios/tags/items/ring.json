@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "botanicpledge:aesir_ring"
+    "botanicpledge:aesir_ring",
+    "botanicpledge:yggdrasilsteel_band_of_mana",
+    "botanicpledge:yggdrasilsteel_band_of_aura"
   ]
 }

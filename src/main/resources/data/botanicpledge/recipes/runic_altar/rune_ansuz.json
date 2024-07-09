@@ -1,0 +1,39 @@
+{
+  "type": "botania:runic_altar",
+  "ingredients": [
+    {
+      "item": "botania:rune_mana"
+    },
+    {
+      "item": "botania:rune_autumn"
+    },
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "minecraft:golden_apple"
+    },
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:enchanted_book"
+    },
+    {
+      "item": "botania:mana_diamond"
+    },
+    {
+      "item": "botania:mana_pearl"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "minecraft:totem_of_undying"
+    }
+  ],
+  "mana": 18000,
+  "output": {
+    "item": "botanicpledge:rune_ansuz"
+  }
+}

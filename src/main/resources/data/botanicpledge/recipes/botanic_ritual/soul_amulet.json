@@ -5,13 +5,13 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "minecraft:string"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "minecraft:string"
@@ -20,13 +20,13 @@
       "item": "minecraft:string"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "minecraft:string"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     }
   ],
   "output": {

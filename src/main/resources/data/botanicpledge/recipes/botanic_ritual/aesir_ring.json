@@ -5,13 +5,13 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "minecraft:quartz_block"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "botania:odin_ring"
@@ -20,13 +20,13 @@
       "item": "botania:loki_ring"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "botania:thor_ring"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     }
   ],
   "output": {

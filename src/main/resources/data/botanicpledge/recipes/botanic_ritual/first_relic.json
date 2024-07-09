@@ -5,10 +5,10 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:asgard_fractal"
+      "item": "botanicpledge:yggdrasil_warden"
     },
     {
-      "item": "botanicpledge:yggdralium_ingot"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
       "item": "botania:infinite_fruit"

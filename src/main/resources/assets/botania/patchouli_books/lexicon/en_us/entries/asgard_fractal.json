@@ -13,14 +13,14 @@
       "type": "botania:botanic_ritual",
       "center": "botanicpledge:yggd_ramus",
       "output": "botanicpledge:asgard_fractal",
-      "input1": "botanicpledge:yggdralium_block", 
-      "input2": "botanicpledge:yggdralium_block", 
-      "input3": "botanicpledge:yggdralium_block",
-      "input4": "botanicpledge:yggdralium_block",
-      "input5": "botanicpledge:yggdralium_block",
-      "input6": "botanicpledge:yggdralium_block",
-      "input7": "botanicpledge:yggdralium_block",
-      "input8": "botanicpledge:yggdralium_block"
+      "input1": "botanicpledge:yggdrasilsteel_block",
+      "input2": "botanicpledge:yggdrasilsteel_block",
+      "input3": "botanicpledge:yggdrasilsteel_block",
+      "input4": "botanicpledge:yggdrasilsteel_block",
+      "input5": "botanicpledge:yggdrasilsteel_block",
+      "input6": "botanicpledge:yggdrasilsteel_block",
+      "input7": "botanicpledge:yggdrasilsteel_block",
+      "input8": "botanicpledge:yggdrasilsteel_block"
     }
   ]
 }

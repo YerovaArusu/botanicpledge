@@ -5,13 +5,13 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "botanicpledge:world_ash_branch"
@@ -20,13 +20,13 @@
       "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     },
     {
       "item": "botanicpledge:world_ash_branch"
     },
     {
-      "item": "botanicpledge:yggdralium_shard"
+      "item": "botanicpledge:yggdrasil_shard"
     }
   ],
   "output": {

@@ -74,12 +74,19 @@ public class CoreAttribute extends Attribute {
         this.currentCharge = Math.min(this.currentCharge + charge, maxCharge);
     }
 
+    public void setCurrentCharge(int charge) {
+        this.currentCharge = charge;
+    }
+
     public void removeCurrentCharge(int charge) {
         this.currentCharge = Math.max(this.currentCharge - charge, 0);
     }
 
     public void addCurrentShield(int shield) {
         this.currentShield = Math.min(this.currentShield + shield, maxShield);
+    }
+    public void setCurrentShield(int shield) {
+        this.currentShield = shield;
     }
 
     public void removeCurrentShield(int shield) {

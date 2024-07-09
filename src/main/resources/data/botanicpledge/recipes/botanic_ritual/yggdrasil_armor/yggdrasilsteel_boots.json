@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botanicpledge:rune_yr"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botania:terrasteel_boots"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botanicpledge:rune_laguz"
+    },
+    {
+      "item": "botanicpledge:rune_laguz"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botania:elementium_boots"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:yggdrasilsteel_boots"
+  },
+  "manaCost": 3500000,
+  "keepNbtOfReagent": false
+}

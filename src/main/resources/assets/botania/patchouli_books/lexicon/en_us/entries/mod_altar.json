@@ -14,13 +14,13 @@
       "center": "botanicpledge:ritual_pedestal",
       "output": "botanicpledge:modification_altar",
       "input1": "botania:livingrock", 
-      "input2": "botanicpledge:yggdralium_ingot", 
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
       "input3": "botania:livingrock",
-      "input4": "botanicpledge:yggdralium_ingot",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
       "input5": "botania:livingrock",
-      "input6": "botanicpledge:yggdralium_ingot",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
       "input7": "botania:livingrock",
-      "input8": "botanicpledge:yggdralium_ingot"
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
     }
   ]
 }

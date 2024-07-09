@@ -13,7 +13,7 @@
       "type": "botania:botanic_ritual",
       "center": "botania:dice",
       "output": "botanicpledge:first_relic",
-      "input1": "botanicpledge:yggdralium_ingot", 
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
       "input2": "botania:infinite_fruit", 
       "input3": "botania:king_key",
       "input4": "minecraft:netherite_sword",

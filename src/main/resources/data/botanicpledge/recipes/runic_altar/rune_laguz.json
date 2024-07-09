@@ -1,0 +1,39 @@
+{
+  "type": "botania:runic_altar",
+  "ingredients": [
+    {
+      "item": "botania:rune_fire"
+    },
+    {
+      "item": "botania:rune_greed"
+    },
+    {
+      "item": "minecraft:flint_and_steel"
+    },
+    {
+      "item": "minecraft:spider_eye"
+    },
+    {
+      "item": "minecraft:prismarine_shard"
+    },
+    {
+      "item": "minecraft:fermented_spider_eye"
+    },
+    {
+      "item": "minecraft:tnt"
+    },
+    {
+      "item": "botania:elementium_axe"
+    },
+    {
+      "item": "minecraft:netherite_scrap"
+    },
+    {
+      "item": "minecraft:echo_shard"
+    }
+  ],
+  "mana": 15000,
+  "output": {
+    "item": "botanicpledge:rune_laguz"
+  }
+}
