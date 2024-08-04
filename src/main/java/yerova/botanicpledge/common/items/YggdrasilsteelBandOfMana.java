@@ -1,9 +1,12 @@
 package yerova.botanicpledge.common.items;
 
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import vazkii.botania.common.item.CustomCreativeTabContents;
 import vazkii.botania.common.item.equipment.bauble.GreaterBandOfManaItem;
 
-public class YggdrasilsteelBandOfMana extends GreaterBandOfManaItem {
+public class YggdrasilsteelBandOfMana extends GreaterBandOfManaItem implements CustomCreativeTabContents {
 
     public static final int MAX_MANA = 8_000_000;
 
@@ -23,5 +26,12 @@ public class YggdrasilsteelBandOfMana extends GreaterBandOfManaItem {
         }
     }
 
+    @Override
+    public void addToCreativeTab(Item me, CreativeModeTab.Output output) {
+        output.accept(this);
 
+        ItemStack full = new ItemStack(this);
+        setMana(full, MAX_MANA);
+        output.accept(full);
+    }
 }

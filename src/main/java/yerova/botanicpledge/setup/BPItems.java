@@ -7,15 +7,19 @@ import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import vazkii.botania.common.block.PylonBlock;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.material.RuneItem;
 import yerova.botanicpledge.common.items.*;
 import yerova.botanicpledge.common.items.armor.CommonYggdrasilsteelArmor;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelArmor;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelHelmet;
+import yerova.botanicpledge.common.items.block_items.YggdrasilPylonItem;
 import yerova.botanicpledge.common.items.relic.*;
 
 public class BPItems {
+
+
     //Custom Rarity
     public static final Rarity UNIQUE = Rarity.create("Unique", ChatFormatting.AQUA);
 
@@ -81,13 +85,17 @@ public class BPItems {
 
 
     public static final RegistryObject<Item> YGGDRASILSTEEL_BAND_OF_MANA = ITEMS.register("yggdrasilsteel_band_of_mana", () -> new YggdrasilsteelBandOfMana(
-            new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
+            new Item.Properties().fireResistant().rarity(Rarity.COMMON).stacksTo(1)));
 
     public static final RegistryObject<Item> YGGDRASILSTEEL_BAND_OF_AURA = ITEMS.register("yggdrasilsteel_band_of_aura", () -> new YggdrasilsteelBandOfAura(
-            new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
+            new Item.Properties().fireResistant().rarity(Rarity.COMMON).stacksTo(1)));
 
     //Items
-    public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdrasilsteel_ingot", () -> new Item(
+    public static final RegistryObject<Item> YGGDRASIL_HEART = ITEMS.register("yggdrasil_heart", () -> new YggdrasilHeart(
+            new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)   
+    ));
+
+    public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdrasilsteel_ingot", () -> new Yggdrasilsteel(
             new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
 
     public static RegistryObject<Item> YGGDRALIUM_SHARD = ITEMS.register("yggdrasil_shard", () -> new Item(
@@ -103,6 +111,8 @@ public class BPItems {
     public static RegistryObject<Item> SOCKET_GEM = ITEMS.register("rune_gem", () -> new RuneGemItem(
             new Item.Properties().fireResistant().rarity(Rarity.RARE)));
 
+    public static RegistryObject<Item> YGGDRASIL_PYLON = ITEMS.register("yggdrasil_pylon",
+            () -> new YggdrasilPylonItem(new Item.Properties()));
 
 
     //Runes

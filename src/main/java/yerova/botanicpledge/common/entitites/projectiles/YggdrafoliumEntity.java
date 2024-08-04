@@ -115,7 +115,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
 
             List<LivingEntity> entities = level().getEntitiesOfClass(LivingEntity.class, axis);
             for (LivingEntity living : entities) {
-                if (living.equals(getThrower())) continue;
+                if (living.equals(getOwner())) continue;
                 living.hurt(living.damageSources().generic(), damage);
             }
         }

@@ -3,6 +3,7 @@ package yerova.botanicpledge.common.items.armor;
 import com.google.common.collect.Multimap;
 import com.google.common.base.Suppliers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,6 +32,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class YggdrasilsteelHelmet extends TerrasteelHelmItem {
+
+    public static final String PIXIE_COUNT_TAG = "pixies";
+    public static final int MAX_PIXIES = 8;
+
 
     private static final Supplier<ItemStack[]> armorSet = Suppliers.memoize(() -> new ItemStack[] {
             new ItemStack(BPItems.YGGDRASIL_HELMET.get()),
@@ -63,6 +68,26 @@ public class YggdrasilsteelHelmet extends TerrasteelHelmItem {
         return hasArmorSet(player) ? 0.8F : 0F;
     }
 
+    public static void setPixieCount(ItemStack stack, int count) {
+        CompoundTag tag = stack.getOrCreateTag();
+        tag.putInt(PIXIE_COUNT_TAG, count);
+    }
+
+    public static void incrementPixieCount(ItemStack stack) {
+        int count = getPixieCount(stack);
+        setPixieCount(stack, Math.min(count+1, MAX_PIXIES));
+    }
+
+    public static void decrementPixieCount(ItemStack stack) {
+        int count = getPixieCount(stack);
+        setPixieCount(stack, Math.max(0, count-1));
+    }
+
+    public static int getPixieCount(ItemStack stack) {
+        CompoundTag tag = stack.getTag();
+        return tag != null ? tag.getInt(PIXIE_COUNT_TAG) : 0;
+    }
+
 
     @Override
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
@@ -79,11 +104,11 @@ public class YggdrasilsteelHelmet extends TerrasteelHelmItem {
         return 10;
     }
 
-
+    @SuppressWarnings({"deprecation","removal"})
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
         if (!level.isClientSide) {
-            if (stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
+            if (stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExactForTool(stack, player, this.getManaPerDamage() * 2, true)) {
                 stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
             }
             int food = player.getFoodData().getFoodLevel();

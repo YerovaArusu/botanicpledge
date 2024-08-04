@@ -57,7 +57,7 @@ public class AsgardFractal extends SwordItem {
     public void inventoryTick(ItemStack stack, Level pLevel, Entity pEntity, int pSlotId, boolean pIsSelected) {
         if (pEntity instanceof Player player && player.getMainHandItem().equals(stack)) {
             if (!pLevel.isClientSide) {
-                if (getCurrentSkill(stack) == 1) {
+
                     Entity entity = EntityUtils.getPlayerPOVHitResult(player.level(), player, 24);
                     if (entity instanceof LivingEntity entity1) {
                         if (targetsNTime.isEmpty() || (!EntityUtils.hasIdMatch(targetsNTime.keySet(), entity1) && targetsNTime.size() < MAX_ENTITIES)) {
@@ -77,7 +77,7 @@ public class AsgardFractal extends SwordItem {
                             }
                         }
                     }
-                }
+
                 //Target Time Handling
                 List<LivingEntity> entityList = targetsNTime.keySet().stream().toList();
                 if (entityList != null) {
@@ -109,7 +109,7 @@ public class AsgardFractal extends SwordItem {
 
         Player player = event.getEntity();
 
-        if (player.getItemInHand(event.getHand()).getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
+        if (player.getItemInHand(event.getHand()).getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExactForTool(player.getMainHandItem(), player, 500, true)) {
 
             Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
             Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
@@ -120,7 +120,7 @@ public class AsgardFractal extends SwordItem {
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
 
-        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 500, true)) {
+        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExactForTool(player.getMainHandItem(), player, 500, true)) {
             Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
             Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
             player.setDeltaMovement(dashVec);
@@ -157,9 +157,6 @@ public class AsgardFractal extends SwordItem {
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
 
         stack.getCapability(AttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
-
-            tooltip.add(Component.literal("Current Selected Skill: " + getCurrentSkill(stack)).withStyle(ChatFormatting.GOLD));
-
             attribute.getAllRunes().forEach(rune -> {
                 tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
             });
@@ -178,7 +175,7 @@ public class AsgardFractal extends SwordItem {
 
         ItemStack stack = player.getItemInHand(pUsedHand);
 
-        if (ManaItemHandler.instance().requestManaExact(player.getMainHandItem(), player, 10_000, true)) {
+        if (ManaItemHandler.instance().requestManaExactForTool(player.getMainHandItem(), player, 10_000, true)) {
             HashMap<LivingEntity, Integer> targetsNTime = ((AsgardFractal) stack.getItem()).targetsNTime;
 
             if (!targetsNTime.isEmpty()) {
@@ -258,31 +255,6 @@ public class AsgardFractal extends SwordItem {
     public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
     }
-
-    public static void switchSkill(Player player, ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME);
-        int i = 0;
-        if (tag.contains(BPConstants.CURRENT_ABILITY_TAG)) {
-            i = tag.getInt(BPConstants.CURRENT_ABILITY_TAG);
-            if (!player.isCrouching()) {
-                if (i >= MAX_ABILITIES) {
-                    i = 0;
-                } else i++;
-            } else {
-                if (i <= 0) {
-                    i = MAX_ABILITIES;
-                } else i--;
-            }
-        }
-        player.displayClientMessage(Component.literal("Selected Ability: " + i).withStyle(ChatFormatting.GOLD), true);
-        tag.putInt(BPConstants.CURRENT_ABILITY_TAG, i);
-    }
-
-    public static int getCurrentSkill(ItemStack stack) {
-        return stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).contains(BPConstants.CURRENT_ABILITY_TAG) ?
-                stack.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getInt(BPConstants.CURRENT_ABILITY_TAG) : 0;
-    }
-
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {

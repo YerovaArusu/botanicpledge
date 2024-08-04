@@ -2,10 +2,13 @@ package yerova.botanicpledge.common.events;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.api.BotaniaForgeCapabilities;
@@ -15,9 +18,11 @@ import vazkii.botania.api.mana.ManaItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.YggdrasilAuraProvider;
 import yerova.botanicpledge.common.items.YggdrasilsteelBandOfMana;
 import yerova.botanicpledge.common.items.relic.*;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPEntities;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -59,6 +64,14 @@ public class ForgeCommonInitializer {
         }
 
     }
+
+    @SubscribeEvent
+    public static void attachCapabilities(AttachCapabilitiesEvent<LevelChunk> event) {
+        event.addCapability(new ResourceLocation(BotanicPledge.MOD_ID, "yggdrasil_aura"), new YggdrasilAuraProvider(event.getObject()));
+    }
+
+
+
 
 
     @SubscribeEvent

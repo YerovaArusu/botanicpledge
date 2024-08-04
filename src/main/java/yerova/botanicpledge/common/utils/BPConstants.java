@@ -15,7 +15,7 @@ public final class BPConstants {
 
     public static final String TAG_RANGED_MODE = "ranged_mode";
 
-    public static final int MANA_TO_SHIELD_CONVERSION_RATE = 40;
+    public static final int MANA_TO_SHIELD_CONVERSION_RATE = 3;
     public static final int MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE = 10;
 
     public static final int CORE_RANK_REQUIRED_FOR_YGGD_RAMUS = 2;
@@ -32,7 +32,6 @@ public final class BPConstants {
     public static final String JUMP_HEIGHT_TAG_NAME = "jump_height";
     public static final int GEM_POSSIBLE_VALUES = 10;
 
-    public static final String CURRENT_ABILITY_TAG = "current_ability";
 
     public static final String SOCKET_PRE_TAG = "socket";
 
@@ -47,9 +46,6 @@ public final class BPConstants {
     public static final String RARITY_UNCOMMON = "rarity_uncommon";
     public static final String RARITY_COMMON = "rarity_common";
     public static final String NO_RUNE_GEM = "no_rune_gem";
-
-    public static final int MAX_ESSENCE_GEN_AMOUNT = 10;
-    public static final int MIN_ESSENCE_GEN_AMOUNT = 1;
 
 
 }

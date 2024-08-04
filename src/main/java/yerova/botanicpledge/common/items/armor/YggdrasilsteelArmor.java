@@ -85,11 +85,16 @@ public class YggdrasilsteelArmor extends TerrasteelArmorItem {
         return 25;
     }
 
+    @SuppressWarnings({"deprecation","removal"})
     @Override
     public void onArmorTick(ItemStack stack, Level level, Player player) {
-        if (!level.isClientSide && stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage() * 2, true)) {
+        if (level.isClientSide)return;
+
+        if (stack.getDamageValue() > 0 && ManaItemHandler.instance().requestManaExact(stack, player, this.getManaPerDamage(), true)) {
             stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
         }
+
+        ManaItemHandler.instance().dispatchManaExact(stack, player, 250, true);
     }
 
     @Override

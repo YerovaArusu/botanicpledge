@@ -1,11 +1,15 @@
 package yerova.botanicpledge.common.network;
 
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
+import vazkii.botania.forge.network.ForgePacketHandler;
+import vazkii.botania.network.BotaniaPacket;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class Networking {
@@ -40,6 +44,11 @@ public class Networking {
                 .consumerMainThread(ItemButtonInteractionToServer::handle)
                 .add();
 
+        net.messageBuilder(SpawnYggdrasilGuardian.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SpawnYggdrasilGuardian::decode)
+                .encoder(SpawnYggdrasilGuardian::encode)
+                .consumerMainThread(SpawnYggdrasilGuardian.Handler::handle)
+                .add();
     }
 
 
@@ -51,4 +60,11 @@ public class Networking {
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), message);
     }
+
+    @SuppressWarnings("unchecked")
+    public static Packet<ClientGamePacketListener> toVanillaClientboundPacket(BotaniaPacket packet) {
+        return (Packet<ClientGamePacketListener>) Networking.INSTANCE.toVanillaPacket(packet, NetworkDirection.PLAY_TO_CLIENT);
+    }
+
+
 }

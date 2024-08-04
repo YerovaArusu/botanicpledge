@@ -1,0 +1,30 @@
+{
+  "pools": [
+    {
+      "name": "yggdrasil_steel",
+      "conditions": [
+        { "condition": "random_chance", "chance": 0.9 }
+      ],
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "botanicpledge:yggdrasilsteel_ingot",
+        "functions": [{ "function": "set_count", "count": { "min": 16, "max": 27 } }]
+      }]
+    },
+    {
+      "name": "world_ash_branch",
+      "conditions": [
+        { "condition": "random_chance", "chance": 0.7 }
+      ],
+      "rolls": 1,
+      "entries": [{
+        "type": "item",
+        "name": "botania:mana_pearl",
+        "functions": [
+          { "function": "set_count", "count": { "min": 8, "max": 13 } }
+        ]
+      }]
+    }
+  ]
+}

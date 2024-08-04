@@ -25,10 +25,7 @@ import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
-import yerova.botanicpledge.client.render.blocks.ModificationAltarRenderer;
-import yerova.botanicpledge.client.render.blocks.RitualCenterRenderer;
-import yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer;
-import yerova.botanicpledge.client.render.blocks.YggdralSpreaderRenderer;
+import yerova.botanicpledge.client.render.blocks.*;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
@@ -107,6 +104,7 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.RITUAL_PEDESTAL.get(), RitualPedestalRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationAltarRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRASIL_PYLON.get(), YggdrasilPylonRenderer::new);
     }
 
     @SubscribeEvent

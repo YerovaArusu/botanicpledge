@@ -22,7 +22,7 @@ public class ModelBakery {
     public static final Material MANA_SHIELD = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(BotanicPledge.MOD_ID, "entity/shield/mana_shield"));
 
     public static void onModelRegister(ResourceManager rm, Consumer<ResourceLocation> consumer) {
-        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
+        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/yggdrasil_warden"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
@@ -31,7 +31,7 @@ public class ModelBakery {
     }
 
     public static void onModelBake(net.minecraft.client.resources.model.ModelBakery loader, Map<ResourceLocation, BakedModel> map) {
-        asgardBlade = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/asgard_blade"));
+        asgardBlade = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/yggdrasil_warden"));
         vedrfolnirWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         yggralSpreaderCore = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         yggdralSpreaderScaffolding = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));

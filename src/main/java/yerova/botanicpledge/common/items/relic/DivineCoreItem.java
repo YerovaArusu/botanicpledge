@@ -45,7 +45,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     private static final int MAX_LEVEL_MANA = 2_000_000_000;
     private static final int TICK_INTERVAL = 20;
 
-    private static final int[] LEVELS = {
+    protected static final int[] LEVELS = {
             0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, MAX_LEVEL_MANA
     };
 
@@ -81,7 +81,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
             stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
                 int manaCost = attribute.getManaCostPerTick() * BPConstants.MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE;
 
-                if (!ManaItemHandler.instance().requestManaExact(stack, player, manaCost, true)) {
+                if (!ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
                     stopFlying(player);
                 }
             });
@@ -282,7 +282,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
         @Override
         public boolean canReceiveManaFromItem(ItemStack otherStack) {
-            return !otherStack.is(BotaniaTags.Items.TERRA_PICK_BLACKLIST);
+            return true;
         }
 
         @Override
@@ -313,7 +313,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         int toReturn = 0;
         if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {{
             CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
-            toReturn = (int) Math.ceil(13 * attribute.getCurrentCharge()/(float)attribute.getMaxCharge());
+            toReturn = (int) Math.ceil(13 * attribute.getCurrentShield()/(float)attribute.getMaxShield());
 
         }}
         return toReturn;
@@ -324,7 +324,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         int toReturn = 0;
         if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {{
             CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
-            toReturn = (int) Math.ceil(13 * attribute.getCurrentCharge()/(float)attribute.getMaxCharge());
+            toReturn = (int) Math.ceil(13 * attribute.getCurrentShield()/(float)attribute.getMaxShield());
 
         }}
 

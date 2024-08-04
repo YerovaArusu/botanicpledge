@@ -15,7 +15,7 @@ public class YggdrasilsteelBandOfAura extends BaubleItem {
 
     public void onWornTick(ItemStack stack, LivingEntity living) {
         if (!living.level().isClientSide && living instanceof Player player && player.tickCount % 2 == 0) {
-            ManaItemHandler.instance().dispatchManaExact(stack, player, 20, true);
+            ManaItemHandler.instance().dispatchManaExact(stack, player, 250, true);
         }
     }
 

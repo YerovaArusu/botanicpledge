@@ -1,19 +1,21 @@
 package yerova.botanicpledge.common.items.relic;
 
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
+import vazkii.botania.common.item.CustomCreativeTabContents;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 
 
-public class VedrfolnirsCore extends DivineCoreItem {
+public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTabContents {
 
     private static final int maxShield = 600;
     private static final int defRegenPerTick = 4;
     private static final int maxCharge = 2_000_000;
-    private static final int manaCost = 8;
+    private static final int manaCost = 4;
 
 
     public VedrfolnirsCore(Item.Properties properties) {
@@ -37,4 +39,14 @@ public class VedrfolnirsCore extends DivineCoreItem {
     }
 
 
+    @Override
+    public void addToCreativeTab(Item me, CreativeModeTab.Output output) {
+
+        for (int i : LEVELS) {
+            ItemStack full = new ItemStack(this);
+            setMana(full, i);
+            output.accept(full);
+        }
+
+    }
 }

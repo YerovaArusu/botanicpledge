@@ -1,17 +1,27 @@
 package yerova.botanicpledge.common.utils;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.custom.ManaSweepParticleData;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
+import yerova.botanicpledge.integration.curios.ItemHelper;
 
 import java.util.Objects;
 
@@ -36,13 +46,6 @@ public class PlayerUtils {
             }
         }
         return false;
-    }
-
-    public static Player getStackOwner(@NotNull Level level, @NotNull ItemStack stack) {
-        for (Player p : level.players()) {
-            if (p.getInventory().contains(stack)) return p;
-        }
-        return level.getNearestPlayer(0, 0, 0, Double.MAX_VALUE, false);
     }
 
 
@@ -80,6 +83,46 @@ public class PlayerUtils {
     @NotNull
     public static AABB getSweepHitBox(@NotNull ItemStack stack, @NotNull Player player) {
         return player.getBoundingBox().inflate(5.0D, 2D, 5.0D);
+    }
+
+
+    public static float getDamageAfterMagicAbsorb(LivingEntity entity,DamageSource pDamageSource, float pDamageAmount) {
+
+
+        if (pDamageSource.is(DamageTypeTags.BYPASSES_EFFECTS)) {
+            return pDamageAmount;
+        } else {
+            if (entity.hasEffect(MobEffects.DAMAGE_RESISTANCE) && !pDamageSource.is(DamageTypeTags.BYPASSES_RESISTANCE)) {
+                int i = (entity.getEffect(MobEffects.DAMAGE_RESISTANCE).getAmplifier() + 1) * 5;
+                int j = 25 - i;
+                float f = pDamageAmount * (float) j;
+                float f1 = pDamageAmount;
+                pDamageAmount = Math.max(f / 25.0F, 0.0F);
+                float f2 = f1 - pDamageAmount;
+                if (f2 > 0.0F && f2 < 3.4028235E37F) {
+                    if (entity instanceof ServerPlayer) {
+                        ((ServerPlayer) entity).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_RESISTED), Math.round(f2 * 10.0F));
+                    } else if (pDamageSource.getEntity() instanceof ServerPlayer) {
+                        ((ServerPlayer) pDamageSource.getEntity()).awardStat(Stats.CUSTOM.get(Stats.DAMAGE_DEALT_RESISTED), Math.round(f2 * 10.0F));
+                    }
+                }
+            }
+
+            if (pDamageAmount <= 0.0F) {
+                return 0F;
+            } else {
+                int k = EnchantmentHelper.getDamageProtection(entity.getArmorSlots(), pDamageSource);
+                if (entity instanceof ServerPlayer player) {
+                    k += EnchantmentHelper.getDamageProtection(
+                            ItemHelper.getDivineCoreCurio(player).stream().map(SlotResult::stack).toList(),
+                            pDamageSource);
+                }
+                if (k > 0) {
+                    pDamageAmount = CombatRules.getDamageAfterMagicAbsorb(pDamageAmount, (float) k);
+                }
+                return pDamageAmount;
+            }
+        }
     }
 
 }

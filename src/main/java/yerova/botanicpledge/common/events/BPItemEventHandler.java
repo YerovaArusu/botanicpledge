@@ -31,8 +31,6 @@ import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.entity.PixieEntity;
 import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.PlayerHelper;
-import vazkii.botania.common.item.BotaniaItems;
-import vazkii.botania.common.item.equipment.armor.elementium.ElementiumHelmItem;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
@@ -40,11 +38,13 @@ import yerova.botanicpledge.common.items.ConqueringSashItem;
 import yerova.botanicpledge.common.items.SoulAmulet;
 import yerova.botanicpledge.common.items.TerraShield;
 import yerova.botanicpledge.common.items.armor.CommonYggdrasilsteelArmor;
-import yerova.botanicpledge.common.items.armor.YggdrasilsteelArmor;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelHelmet;
 import yerova.botanicpledge.common.items.relic.RingOfAesir;
 import yerova.botanicpledge.common.utils.BPItemUtils;
+import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
+import yerova.botanicpledge.mixin.MixinMagicLandMineEntity;
+import yerova.botanicpledge.mixin_api.IMixinPixieEntity;
 import yerova.botanicpledge.setup.BPEnchantments;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -77,32 +77,46 @@ public class BPItemEventHandler {
     @SubscribeEvent
     public static void handleCoreDamage(LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
+        float actualAmount = PlayerUtils.getDamageAfterMagicAbsorb(entity, event.getSource(), event.getAmount());
 
-
-
-        if (entity.level().isClientSide()) {
-            return;
+        if (event.getSource().is(DamageTypes.CRAMMING)) return;
+        if (event.getSource().getEntity() instanceof PixieEntity pixie) {
+            IMixinPixieEntity mixinPixie = ((IMixinPixieEntity) pixie);
+            if (mixinPixie.botanicpledge$getSummoner().equals(entity)) {
+                event.setCanceled(true);
+                return;
+            }
         }
 
-        if (blockEnvironmentalDamage(event, event.getSource())) {
-            return;
-        }
+        if (actualAmount > 0) {
+            if (entity.level().isClientSide()) {
+                return;
+            }
 
-        handleDivineCoreCurio(event, entity);
+            if (blockEnvironmentalDamage(event, event.getSource())) {
+                return;
+            }
 
-        if (entity instanceof Player player) {
-            onGeneratePixie(player, event.getSource());
-            handlePlayerSpecificDamage(event, player);
+            handleDivineCoreCurio(event,actualAmount, entity);
+
+            if (entity instanceof Player player) {
+                onGeneratePixie(player, event.getSource());
+                handlePlayerSpecificDamage(event, player);
+            }
         }
     }
 
-    private static void handleDivineCoreCurio(LivingAttackEvent event, LivingEntity entity) {
+
+    private static void handleDivineCoreCurio(LivingAttackEvent event,float actualAmount, LivingEntity entity) {
+
+        System.out.println(actualAmount);
+
         ItemHelper.getDivineCoreCurio(entity).forEach(slotResult -> {
             ItemStack stack = slotResult.stack();
             stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                double remainingShield = attribute.getCurrentShield() - event.getAmount();
+                double remainingShield = attribute.getCurrentShield() - actualAmount;
                 if (remainingShield > 0) {
-                    attribute.removeCurrentShield((int) Math.ceil(event.getAmount()));
+                    attribute.removeCurrentShield((int) Math.ceil(actualAmount));
                     playSound(entity);
                     event.setCanceled(true);
                 }
@@ -127,34 +141,56 @@ public class BPItemEventHandler {
         });
     }
 
-    private static void onGeneratePixie(Player player, DamageSource source){
+    private static void onGeneratePixie(Player player, DamageSource source) {
 
 
         if (!player.level().isClientSide && source.getEntity() instanceof LivingEntity livingSource) {
-            double chance = player.getAttributes().hasAttribute(PIXIE_SPAWN_CHANCE)
-                    ? player.getAttributeValue(PIXIE_SPAWN_CHANCE) : 0;
-            ItemStack sword = PlayerHelper.getFirstHeldItem(player, s -> s.is(BPItems.ASGARD_FRACTAL.get()));
+            if (CommonYggdrasilsteelArmor.hasArmorSet(player)) {
 
-            if (Math.random() < chance) {
-                PixieEntity pixie = new PixieEntity(player.level());
-                pixie.setPos(player.getX(), player.getY() + 2, player.getZ());
+                for (ItemStack stack : player.getArmorSlots()) {
+                    if (stack.is(BPItems.YGGDRASIL_HELMET.get())) {
+                        if (YggdrasilsteelHelmet.getPixieCount(stack) <= YggdrasilsteelHelmet.MAX_PIXIES) {
+                            YggdrasilsteelHelmet.incrementPixieCount(stack);
 
-                if (CommonYggdrasilsteelArmor.hasArmorSet(player)) {
-                    pixie.setApplyPotionEffect(new MobEffectInstance(potions[player.level().random.nextInt(potions.length)], 40, 2));
+
+
+                            double chance = player.getAttributes().hasAttribute(PIXIE_SPAWN_CHANCE)
+                                    ? player.getAttributeValue(PIXIE_SPAWN_CHANCE) : 0;
+                            ItemStack sword = PlayerHelper.getFirstHeldItem(player, s -> s.is(BPItems.ASGARD_FRACTAL.get()));
+
+                            if (Math.random() < chance) {
+                                PixieEntity pixie = new PixieEntity(player.level());
+
+                                double range = 4D;
+                                double j = -Math.PI + 2 * Math.PI * Math.random();
+                                double k;
+                                double x, y, z;
+
+                                k = 0.12F * Math.PI * Math.random() + 0.28F * Math.PI;
+                                x = player.getX() + range * Math.sin(k) * Math.cos(j);
+                                y = player.getY() + range * Math.cos(k);
+                                z = player.getZ() + range * Math.sin(k) * Math.sin(j);
+
+                                pixie.setPos(x, y + 2, z);
+
+
+                                pixie.setApplyPotionEffect(new MobEffectInstance(potions[player.level().random.nextInt(potions.length)], 40, 2));
+
+                                float dmg = 4;
+                                if (!sword.isEmpty()) {
+                                    dmg += 12;
+                                }
+
+                                pixie.setProps(livingSource, player, 0, dmg);
+                                pixie.finalizeSpawn((ServerLevelAccessor) player.level(), player.level().getCurrentDifficultyAt(pixie.blockPosition()), MobSpawnType.EVENT, null, null);
+                                player.level().addFreshEntity(pixie);
+                            }
+                        }
+                        break;
+                    }
                 }
-
-                float dmg = 4;
-                if (!sword.isEmpty()) {
-                    dmg += 8;
-                }
-
-                pixie.setProps(livingSource, player, 0, dmg);
-                pixie.finalizeSpawn((ServerLevelAccessor) player.level(), player.level().getCurrentDifficultyAt(pixie.blockPosition()),
-                        MobSpawnType.EVENT, null, null);
-                player.level().addFreshEntity(pixie);
             }
         }
-
     }
 
     private static boolean blockEnvironmentalDamage(LivingAttackEvent event, DamageSource source) {

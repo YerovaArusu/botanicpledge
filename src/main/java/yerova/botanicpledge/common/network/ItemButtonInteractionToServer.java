@@ -33,9 +33,6 @@ public class ItemButtonInteractionToServer {
                     YggdRamus.setRanged(player.getMainHandItem(), !YggdRamus.isRanged(player.getMainHandItem()));
                 }
 
-                if (player.getMainHandItem().getItem() instanceof AsgardFractal) {
-                    AsgardFractal.switchSkill(player, player.getMainHandItem());
-                }
                 if (player.isShiftKeyDown()) {
                     FirstRelic.switchRelic(player, player.level(), player.getMainHandItem());
                 }

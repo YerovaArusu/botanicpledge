@@ -25,6 +25,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
     private static final String TAG_TARGETPOSX = "targetposx";
     private static final String TAG_TARGETPOSY = "targetposy";
     private static final String TAG_TARGETPOSZ = "targetposz";
+    private static final String TAG_ALIVE_TICKS = "alive_ticks";
 
     private static final EntityDataAccessor<Float> ROTATION = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.FLOAT);
@@ -32,8 +33,8 @@ public class EntityProjectileBase extends ThrowableProjectile {
     private static final EntityDataAccessor<Float> TARGET_POS_X = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> TARGET_POS_Y = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> TARGET_POS_Z = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> ALIVE_TICKS = SynchedEntityData.defineId(EntityProjectileBase.class, EntityDataSerializers.INT);
 
-    private LivingEntity thrower;
 
     public EntityProjectileBase(EntityType<? extends ThrowableProjectile> type, Level worldIn) {
         super(type, worldIn);
@@ -41,17 +42,13 @@ public class EntityProjectileBase extends ThrowableProjectile {
 
     public EntityProjectileBase(EntityType<? extends ThrowableProjectile> type, Level worldIn, LivingEntity thrower) {
         super(type, worldIn);
-        this.thrower = thrower;
         this.setNoGravity(true);
     }
 
-    @Nullable
-    public LivingEntity getThrower() {
-        return this.thrower;
-    }
-
-    public void setThrower(LivingEntity entity) {
-        this.thrower = entity;
+    @Override
+    public void tick() {
+        super.tick();
+        if (!this.level().isClientSide) incrementAliveTicks();
     }
 
     @Override
@@ -62,6 +59,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         entityData.define(TARGET_POS_X, 0F);
         entityData.define(TARGET_POS_Y, 0F);
         entityData.define(TARGET_POS_Z, 0F);
+        entityData.define(ALIVE_TICKS, 0);
     }
 
     public void faceTargetAccurately(float modifier) {
@@ -84,6 +82,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         this.setTargetPosZ((float) vec.z);
         this.setTargetPos(new BlockPos((int) vec.x, (int) vec.y, (int) vec.z));
     }
+
 
     public void facePosition(float vx, float vy, float vz) {
         double dX = vx - this.getX();
@@ -148,7 +147,7 @@ public class EntityProjectileBase extends ThrowableProjectile {
         cmp.putFloat(TAG_TARGETPOSX, this.getTargetPosX());
         cmp.putFloat(TAG_TARGETPOSY, this.getTargetPosY());
         cmp.putFloat(TAG_TARGETPOSZ, this.getTargetPosZ());
-
+        cmp.putInt(TAG_ALIVE_TICKS, this.getAliveTicks());
 
         super.addAdditionalSaveData(cmp);
     }
@@ -162,8 +161,18 @@ public class EntityProjectileBase extends ThrowableProjectile {
         setTargetPosX(cmp.getFloat(TAG_TARGETPOSX));
         setTargetPosY(cmp.getFloat(TAG_TARGETPOSY));
         setTargetPosZ(cmp.getFloat(TAG_TARGETPOSZ));
+        setAliveTicks(cmp.getInt(TAG_ALIVE_TICKS));
 
         super.readAdditionalSaveData(cmp);
+    }
+
+
+
+    public int getAliveTicks() { return entityData.get(ALIVE_TICKS);}
+    public void setAliveTicks(int i) { entityData.set(ALIVE_TICKS, i);}
+
+    public void incrementAliveTicks() {
+        setAliveTicks(getAliveTicks()+1);
     }
 
 
@@ -213,11 +222,6 @@ public class EntityProjectileBase extends ThrowableProjectile {
 
     public void setTargetPosZ(float f) {
         entityData.set(TARGET_POS_Z, f);
-    }
-
-    @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
 

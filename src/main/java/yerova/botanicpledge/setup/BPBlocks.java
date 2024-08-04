@@ -12,6 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.botania.common.block.PylonBlock;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
@@ -48,12 +49,16 @@ public class BPBlocks {
             () -> new RitualPedestalBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     public static final RegistryObject<Block> MODIFICATION_TABLE = registerBlock("modification_altar",
-            () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+            () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
             new ForgeSpecialFlowerBlock(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+
+    public static final RegistryObject<Block> YGGDRASIL_PYLON = registerBlockWithoutBlockItem("yggdrasil_pylon", () ->
+            new YggdrasilPylon(BlockBehaviour.Properties.copy(BotaniaBlocks.gaiaPylon)));
 
 
 
@@ -78,6 +83,8 @@ public class BPBlocks {
             }
         });
     }
+
+
 
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
