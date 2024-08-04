@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -74,7 +75,7 @@ public class BotanicPledge {
 
     private void setup(final FMLCommonSetupEvent event) {
         Networking.register();
-        PatchouliAPI.get().registerMultiblock(prefix("yggdrasil_ritual"), YggdrasilGuardian.ARENA_MULTIBLOCK.get());
+        PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"yggdrasil_ritual"), YggdrasilGuardian.ARENA_MULTIBLOCK.get());
     }
 
 
