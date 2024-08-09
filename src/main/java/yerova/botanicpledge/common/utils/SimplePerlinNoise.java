@@ -5,6 +5,8 @@ import net.minecraft.util.RandomSource;
 
 /*
   I have no clue how it works, but it seems to work... So lets keep it.
+
+  This Noise is for the Mana potency in each chunk. Might upgrade this in the future
  */
 public class SimplePerlinNoise {
 

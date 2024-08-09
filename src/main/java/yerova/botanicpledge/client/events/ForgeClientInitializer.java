@@ -131,8 +131,7 @@ public class ForgeClientInitializer {
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
-        event.register(KeyBindings.INSTANCE.switchSkillButton);
-
+        event.register(KeyBindings.INSTANCE.ABILITY_BUTTON);
     }
 
 }

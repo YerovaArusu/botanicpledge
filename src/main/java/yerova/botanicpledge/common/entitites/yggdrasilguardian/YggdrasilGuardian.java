@@ -595,9 +595,9 @@ public class YggdrasilGuardian extends Mob {
 
     private void particles() {
         for (int i = 0; i < 360; i += 8) {
-            float r = 0.6F;
-            float g = 0F;
-            float b = 0.2F;
+            float r = 0.25F; // Turquoise red value
+            float g = 0.88F; // Turquoise green value
+            float b = 0.82F; // Turquoise blue value
             float m = 0.15F;
             float mv = 0.35F;
 
@@ -624,9 +624,9 @@ public class YggdrasilGuardian extends Mob {
                 Vec3 partPos = new Vec3(xp, pylonPos.y, zp);
                 Vec3 mot = pos.subtract(partPos).scale(0.04);
 
-                float r = 0.7F + (float) Math.random() * 0.3F;
-                float g = (float) Math.random() * 0.3F;
-                float b = 0.7F + (float) Math.random() * 0.3F;
+                float r = 0.25F + (float) Math.random() * 0.05F; // Turquoise red value variation
+                float g = 0.88F + (float) Math.random() * 0.12F; // Turquoise green value variation
+                float b = 0.82F + (float) Math.random() * 0.18F; // Turquoise blue value variation
 
                 WispParticleData data = WispParticleData.wisp(0.25F + (float) Math.random() * 0.1F, r, g, b, 1);
                 level().addParticle(data, partPos.x, partPos.y, partPos.z, 0, -(-0.075F - (float) Math.random() * 0.015F), 0);
@@ -635,6 +635,7 @@ public class YggdrasilGuardian extends Mob {
             }
         }
     }
+
 
     private void smashBlocksAround(int centerX, int centerY, int centerZ, int radius) {
         for (int dx = -radius; dx <= radius; dx++) {

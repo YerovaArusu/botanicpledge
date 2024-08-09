@@ -9,6 +9,7 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import org.lwjgl.glfw.GLFW;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.common.items.relic.FirstRelic;
 import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
@@ -27,6 +28,7 @@ public class InputEvents {
         onInput(mc, event.getKey(), event.getAction());
     }
 
+
     @SubscribeEvent
     public static void onMouseClicked(InputEvent.MouseButton event) {
         Minecraft mc = Minecraft.getInstance();
@@ -36,12 +38,13 @@ public class InputEvents {
 
     private static void onInput(Minecraft mc, int key, int action) {
         if (mc.screen == null) {
-            if (KeyBindings.INSTANCE.switchSkillButton.isDown() && mc.player != null) {
-                Networking.sendToServer(new ItemButtonInteractionToServer());
+            boolean isCTRLPressed = GLFW.glfwGetKey(mc.getWindow().getWindow(),GLFW.GLFW_KEY_LEFT_CONTROL) == GLFW.GLFW_PRESS;
+            if (KeyBindings.INSTANCE.ABILITY_BUTTON.isDown() && mc.player != null) {
+                Networking.sendToServer(new ItemButtonInteractionToServer(isCTRLPressed));
             }
-
         }
     }
+
 
 
     @SubscribeEvent

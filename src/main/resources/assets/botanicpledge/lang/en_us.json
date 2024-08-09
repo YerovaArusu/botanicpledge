@@ -103,9 +103,11 @@
   "enchantment.botanicpledge.rune_collector.desc": "Allows the player to obtain Rune Gems",
   "category.botanicpledge.botanicpledge": "Botanic Pledge",
   "key.botanicpledge.interaction_button": "Interaction Button",
+  "key.botanicpledge.alt_button": "ALT Button",
   "curios.modifiers.divine_core": "When equipped:",
   "botanicpledge.armorset.terrasteel.desc0": "40%% less Mana cost on Mana Tools and Rods",
   "botanicpledge.armorset.terrasteel.desc1": "Regen even if hunger isn't topped off",
   "botanicpledge.armorset.terrasteel.desc2": "Passive Mana generation on Mana Tablets",
-  "botanicpledge.armorset.terrasteel.name": "Will of Yggdrasil"
+  "botanicpledge.armorset.terrasteel.name": "Will of Yggdrasil",
+  "botanicpledge.message.aesir_ring.toggled": "Changed Loki Effect to "
 }
