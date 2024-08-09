@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import vazkii.botania.common.block.block_entity.mana.ManaPoolBlockEntity;
+import yerova.botanicpledge.common.capabilities.provider.YggdrasilAuraProvider;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class YggdrasilPylonBlockEntity extends BlockEntity {
@@ -54,8 +55,14 @@ public class YggdrasilPylonBlockEntity extends BlockEntity {
 
 
     public static void tick(Level level, BlockPos pos, BlockState blockState, YggdrasilPylonBlockEntity entity) {
-        if (entity.canGenerateMana() && level.getBlockEntity(pos.below()) instanceof ManaPoolBlockEntity pool){
-            pool.receiveMana(500);
-        }
+
+        level.getChunkAt(pos).getCapability(YggdrasilAuraProvider.ESSENCE).ifPresent(aura -> {
+            if (entity.canGenerateMana() && level.getBlockEntity(pos.below()) instanceof ManaPoolBlockEntity pool){
+                pool.receiveMana(30*aura.getGenPerInstance());
+            }
+
+        });
+
+
     }
 }

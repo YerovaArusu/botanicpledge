@@ -5,7 +5,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.item.CustomCreativeTabContents;
-import yerova.botanicpledge.client.render.screen.ProtectorHUD;
+import yerova.botanicpledge.client.render.screen.CoreHUD;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BPTabs;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -15,7 +15,7 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerGameOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerAboveAll("hotbar", ProtectorHUD.PROTECTOR_HUD);
+        event.registerBelowAll("hotbar", CoreHUD.PROTECTOR_HUD);
     }
 
     @SubscribeEvent

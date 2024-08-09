@@ -15,6 +15,8 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
+import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.api.mana.spark.SparkAttachable;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;

@@ -76,10 +76,10 @@
       }]
     },
     {
-      "name": "overgrowth_seeds",
+      "name": "yggdrasil_heart",
       "conditions": [
         { "condition": "botania:killed_by_player" },
-        { "condition": "random_chance", "chance": 1 }
+        { "condition": "random_chance", "chance": 0.0333 }
       ],
       "rolls": 1,
       "entries": [{
@@ -95,7 +95,7 @@
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "botanicpledge:yggdrasil_guardian/  materials"
+          "name": "botanicpledge:yggdrasil_guardian/materials"
         }
       ]
     },

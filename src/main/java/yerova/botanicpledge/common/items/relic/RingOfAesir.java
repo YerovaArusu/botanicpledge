@@ -3,10 +3,13 @@ package yerova.botanicpledge.common.items.relic;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +62,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
     private static final String TAG_X_ORIGIN = "xOrigin";
     private static final String TAG_Y_ORIGIN = "yOrigin";
     private static final String TAG_Z_ORIGIN = "zOrigin";
+    private static final String TAG_ACTIVE_LOKI = "activeLoki";
 
     private static boolean recCall = false;
 
@@ -97,7 +102,12 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
     public static InteractionResult onPlayerInteract(Player player, Level world, InteractionHand hand, BlockHitResult lookPos) {
         ItemStack aesirRing = getAesirRing(player);
 
-        if (aesirRing.isEmpty() || !player.isShiftKeyDown()) {
+        // Check if the ring is equipped and if activeLoki is enabled
+        if (aesirRing.isEmpty() || !isActiveLoki(aesirRing)) {
+            return InteractionResult.PASS;
+        }
+
+        if (!player.isShiftKeyDown()) {
             return InteractionResult.PASS;
         }
 
@@ -165,6 +175,7 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
         }
     }
 
+
     @NotNull
     public static UseOnContext getUseOnContext(Player player, InteractionHand hand, BlockPos pos, Vec3 lookHit, Direction direction) {
         Vec3 newHitVec = new Vec3(pos.getX() + Mth.frac(lookHit.x()), pos.getY() + Mth.frac(lookHit.y()), pos.getZ() + Mth.frac(lookHit.z()));
@@ -199,18 +210,52 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
         }
     }
 
+
+
+    // Method to check if activeLoki is enabled
+    public static boolean isActiveLoki(ItemStack stack) {
+        return ItemNBTHelper.getBoolean(stack, TAG_ACTIVE_LOKI, false);
+    }
+
+    // Method to toggle activeLoki
+    public static void toggleActiveLoki(ItemStack stack) {
+        boolean current = isActiveLoki(stack);
+        ItemNBTHelper.setBoolean(stack, TAG_ACTIVE_LOKI, !current);
+    }
+
+
+
+    public static void changeLokiState(Player player, ItemStack stack) {
+
+        toggleActiveLoki(stack);
+
+        boolean isActive = isActiveLoki(stack);
+        String status = isActive ? "Active" : "Inactive";
+        ChatFormatting color = isActive ? ChatFormatting.GREEN : ChatFormatting.RED;
+
+        Component message = Component.translatable("botanicpledge.message.aesir_ring.toggled")
+                .append(Component.literal(" "))
+                .append(Component.literal(status)
+                        .setStyle(Style.EMPTY.withColor(color).withBold(true)));
+
+        player.displayClientMessage(message, true);
+    }
+
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
+
+        super.appendHoverText(stack, world, tooltip, flags);
+    }
+
     @Override
     public void onUnequipped(ItemStack stack, LivingEntity living) {
         setCursorList(stack, null);
     }
 
-    // onUnequipped has itemstack identity issues and doesn't actually fully work, so do this here every tick.
-    // This prevents a player from accidentally entering binding mode, then forgetting where the binding center
-    // is and thus being unable to exit binding mode.
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int slot, boolean held) {
         super.inventoryTick(stack, world, entity, slot, held);
-        // Curios actually calls this method, but with a negative slot, so we can check if we're in the "real" inventory this way
         if (slot >= 0) {
             exitBindingMode(stack);
         }

@@ -19,7 +19,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 
 group = 'yerova'
-version = '1.20.1-0.6.4.1'
+version = '1.20.1-0.7'
 
 java {
     archivesBaseName = 'botanicpledge'
