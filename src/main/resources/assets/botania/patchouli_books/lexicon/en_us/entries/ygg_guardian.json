@@ -1,0 +1,22 @@
+{
+  "name": "Yggdrasil Guardian",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggdrasil_pylon",
+  "priority": false,
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.ygg_guardian"
+    },
+    {
+      "type": "crafting",
+      "recipe": "botanicpledge:crafting_table/yggdrasil_pylon"
+    },
+    {
+      "type": "spotlight",
+      "item": "botanicpledge:yggdrasil_heart",
+      "text": "botanicpledge.page.ygg_heart"
+    }
+  ]
+}

@@ -1,18 +1,18 @@
 {
-  "name": "Asgard Fractal",
+  "name": "Warden of Yggdrasil",
   "category": "botania:botanicpledge",
-  "icon": "botanicpledge:asgard_fractal",
+  "icon": "botanicpledge:yggdrasil_warden",
   "priority": false,
   "sortnum": 6,
   "pages": [
     {
       "type": "text",
-      "text": "botanicpledge.page.asgard_fractal"
+      "text": "botanicpledge.page.yggdrasil_warden"
     },
     {
       "type": "botania:botanic_ritual",
       "center": "botanicpledge:yggd_ramus",
-      "output": "botanicpledge:asgard_fractal",
+      "output": "botanicpledge:yggdrasil_warden",
       "input1": "botanicpledge:yggdrasilsteel_block",
       "input2": "botanicpledge:yggdrasilsteel_block",
       "input3": "botanicpledge:yggdrasilsteel_block",
