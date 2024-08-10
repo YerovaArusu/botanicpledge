@@ -39,14 +39,4 @@ public class Yggdrasilsteel extends Item {
 
         return super.useOn(ctx);
     }
-
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-
-        pLevel.getChunkAt(pPlayer.getOnPos()).getCapability(YggdrasilAuraProvider.ESSENCE).ifPresent(aura -> {
-            System.out.println(aura.getGenPerInstance());
-        });
-
-        return super.use(pLevel, pPlayer, pUsedHand);
-    }
 }

@@ -108,9 +108,6 @@ public class BPItemEventHandler {
 
 
     private static void handleDivineCoreCurio(LivingAttackEvent event,float actualAmount, LivingEntity entity) {
-
-        System.out.println(actualAmount);
-
         ItemHelper.getDivineCoreCurio(entity).forEach(slotResult -> {
             ItemStack stack = slotResult.stack();
             stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {

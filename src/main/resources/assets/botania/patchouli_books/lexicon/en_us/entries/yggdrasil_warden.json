@@ -13,14 +13,14 @@
       "type": "botania:botanic_ritual",
       "center": "botanicpledge:yggd_ramus",
       "output": "botanicpledge:yggdrasil_warden",
-      "input1": "botanicpledge:yggdrasilsteel_block",
-      "input2": "botanicpledge:yggdrasilsteel_block",
-      "input3": "botanicpledge:yggdrasilsteel_block",
-      "input4": "botanicpledge:yggdrasilsteel_block",
-      "input5": "botanicpledge:yggdrasilsteel_block",
-      "input6": "botanicpledge:yggdrasilsteel_block",
-      "input7": "botanicpledge:yggdrasilsteel_block",
-      "input8": "botanicpledge:yggdrasilsteel_block"
+      "input1": "botanicpledge:rune_yr",
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
+      "input3": "botanicpledge:rune_yr",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:rune_yr",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botanicpledge:rune_yr",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
     }
   ]
 }
