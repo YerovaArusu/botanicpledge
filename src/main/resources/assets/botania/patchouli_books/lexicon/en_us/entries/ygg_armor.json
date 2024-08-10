@@ -1,0 +1,87 @@
+{
+  "name": "Yggdrasilsteel Equipment",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggdrasilsteel_helmet",
+  "priority": false,
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_helmet",
+      "input1": "botanicpledge:yggdrasilsteel_ingot", 
+      "input2": "botania:terrasteel_helmet",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_ansuz",
+      "input5": "botanicpledge:rune_ansuz",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botania:elementium_helmet",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_chestplate",
+      "input1": "botanicpledge:yggdrasilsteel_ingot", 
+      "input2": "botania:terrasteel_chestplate",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_thurisaz",
+      "input5": "botanicpledge:rune_thurisaz",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botania:elementium_chestplate",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_leggings",
+      "input1": "botanicpledge:yggdrasilsteel_ingot", 
+      "input2": "botania:terrasteel_leggings",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_ingwaz",
+      "input5": "botanicpledge:rune_ingwaz",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botania:elementium_leggings",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_boots",
+      "input1": "botanicpledge:yggdrasilsteel_ingot", 
+      "input2": "botania:terrasteel_boots",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_laguz",
+      "input5": "botanicpledge:rune_laguz",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botania:elementium_boots",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:aura_ring_greater",
+      "output": "botanicpledge:yggdrasilsteel_band_of_aura",
+      "input1": "botania:elementium_ingot", 
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
+      "input3": "botania:elementium_ingot",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:mana_ring_greater",
+      "output": "botanicpledge:yggdrasilsteel_band_of_mana",
+      "input1": "botania:elementium_ingot", 
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
+      "input3": "botania:elementium_ingot",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    }
+  ]
+}
