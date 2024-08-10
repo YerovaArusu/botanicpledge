@@ -5,28 +5,28 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elf_quartz"
+      "item": "botanicpledge:rune_yr"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elf_quartz"
+      "item": "botanicpledge:rune_yr"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:rune_yr"
     },
     {
-      "item": "botania:elf_quartz"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:rune_yr"
     },
     {
-      "item": "botania:elf_quartz"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     }
   ],
   "output": {
