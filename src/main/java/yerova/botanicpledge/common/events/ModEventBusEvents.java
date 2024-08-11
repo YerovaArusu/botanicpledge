@@ -15,7 +15,7 @@ public class ModEventBusEvents {
 
     @SubscribeEvent
     public static void registerGameOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerBelowAll("hotbar", CoreHUD.PROTECTOR_HUD);
+        event.registerAboveAll("hotbar", CoreHUD.PROTECTOR_HUD);
     }
 
     @SubscribeEvent

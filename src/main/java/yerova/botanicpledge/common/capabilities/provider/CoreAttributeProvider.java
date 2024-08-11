@@ -18,15 +18,13 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
     });
 
 
-    private final int maxCharge;
     private final int maxShield;
     private final int defRegen;
     private final int manaCost;
     private final int maxRunes;
     private final Attribute.Rune.EquipmentType requiredType;
 
-    public CoreAttributeProvider(int maxCharge, int maxShield, int defRegen, int manaCost, int maxRunes, Attribute.Rune.EquipmentType requiredType) {
-        this.maxCharge = maxCharge;
+    public CoreAttributeProvider(int maxShield, int defRegen, int manaCost, int maxRunes, Attribute.Rune.EquipmentType requiredType) {
         this.maxShield = maxShield;
         this.defRegen = defRegen;
         this.manaCost = manaCost;
@@ -40,7 +38,7 @@ public class CoreAttributeProvider implements ICapabilityProvider, INBTSerializa
 
     private @NotNull CoreAttribute createCoreAttribute() {
         if (this.coreAttribute == null) {
-            this.coreAttribute = new CoreAttribute(maxCharge, maxShield, defRegen, manaCost, maxRunes, requiredType);
+            this.coreAttribute = new CoreAttribute(maxShield, defRegen, manaCost, maxRunes, requiredType);
         }
         return this.coreAttribute;
     }

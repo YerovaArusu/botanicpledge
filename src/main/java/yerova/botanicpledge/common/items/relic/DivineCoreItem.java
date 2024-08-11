@@ -24,9 +24,6 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.helper.ItemNBTHelper;
 import vazkii.botania.common.item.relic.RelicBaubleItem;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.common.item.relic.RelicItem;
-import vazkii.botania.common.lib.BotaniaTags;
-import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
@@ -134,7 +131,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
+        if (slotContext.entity() instanceof Player player && !stack.getItem().equals(newStack.getItem())) {
             stopFlying(player);
         }
     }
@@ -173,8 +170,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     private void addShieldAndChargeTooltip(List<Component> tooltip, CoreAttribute attribute) {
         tooltip.add(Component.literal("Shield: " + formatPercentage(attribute.getCurrentShield(), attribute.getMaxShield()) + "%")
                 .withStyle(ChatFormatting.GRAY));
-        tooltip.add(Component.literal("Charge: " + formatPercentage(attribute.getCurrentCharge(), attribute.getMaxCharge()) + "%")
-                .withStyle(ChatFormatting.GRAY));
     }
 
     private String formatPercentage(double current, double max) {
@@ -196,7 +191,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     }
 
     private void attemptToStartFlying(Player player, ItemStack stack) {
-        if (hasSufficientMana(stack)) {
+        if (new ManaItem(stack).getMana() > 0) {
             startFlying(player);
         }
     }
@@ -214,9 +209,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         }
     }
 
-    private boolean hasSufficientMana(ItemStack stack) {
-        return getMana(stack) > 0;
-    }
 
     public static int getShieldValueAccordingToRank(ItemStack stack, int defaultValue) {
         return stack.getItem() instanceof DivineCoreItem ? getLevel(stack) * defaultValue : 0;
@@ -226,26 +218,16 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         int level = getLevel(stack);
         int max = LEVELS[Math.min(LEVELS.length - 1, level + 1)];
-        int curr = getMana(stack);
+        int curr = new ManaItem(stack).getMana();
         float percent = level == 0 ? 0F : (float) curr / max;
         return Optional.of(new ManaBarTooltip(percent, level));
     }
 
-    protected static void setMana(ItemStack stack, int mana) {
-        if (mana > 0) {
-            ItemNBTHelper.setInt(stack, TAG_MANA, mana);
-        } else {
-            ItemNBTHelper.removeEntry(stack, TAG_MANA);
-        }
-    }
-
-    public static int getMana(ItemStack stack) {
-        return ItemNBTHelper.getInt(stack, TAG_MANA, 0);
-    }
-
     public static int getLevel(ItemStack stack) {
-        long mana = getMana(stack);
-        for (int i = LEVELS.length - 1; i > 0; i--) {
+        ManaItem item = new ManaItem(stack);
+        long mana = item.getMana();
+
+        for (int i = LEVELS.length - 1; i >= 0; i--) {
             if (mana >= LEVELS[i]) {
                 return i;
             }
@@ -253,8 +235,13 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         return 0;
     }
 
+
     public static class ManaItem implements vazkii.botania.api.mana.ManaItem {
         private final ItemStack stack;
+
+        public ItemStack getStack() {
+            return stack;
+        }
 
         public ManaItem(ItemStack stack) {
             this.stack = stack;
@@ -262,18 +249,21 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
         @Override
         public int getMana() {
-            return DivineCoreItem.getMana(stack) * stack.getCount();
+            return ItemNBTHelper.getInt(stack, TAG_MANA, 0) * stack.getCount();
         }
 
         @Override
         public int getMaxMana() {
-            return MAX_LEVEL_MANA * stack.getCount();
+            int level = getLevel(stack);
+            return LEVELS[Math.min(LEVELS.length - 1, level + 1)] * stack.getCount();
         }
 
         @Override
         public void addMana(int mana) {
-            setMana(stack, Math.min(getMana() + mana, getMaxMana()) / stack.getCount());
+
+            ItemNBTHelper.setInt(stack, TAG_MANA, Math.min(getMana() + mana, MAX_LEVEL_MANA));
         }
+
 
         @Override
         public boolean canReceiveManaFromPool(BlockEntity pool) {
@@ -302,7 +292,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     }
 
 
-
     @Override
     public boolean isBarVisible(ItemStack stack) {
         return true;
@@ -310,28 +299,14 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        int toReturn = 0;
-        if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {{
-            CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
-            toReturn = (int) Math.ceil(13 * attribute.getCurrentShield()/(float)attribute.getMaxShield());
-
-        }}
-        return toReturn;
+        DivineCoreItem.ManaItem item = new ManaItem(stack);
+        return (int) Math.ceil(13 * (item.getMana() / (float) item.getMaxMana()));
     }
 
     @Override
     public int getBarColor(ItemStack stack) {
-        int toReturn = 0;
-        if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {{
-            CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
-            toReturn = (int) Math.ceil(13 * attribute.getCurrentShield()/(float)attribute.getMaxShield());
-
-        }}
-
-        return Mth.hsvToRgb(toReturn / 3.0F, 1.0F, 1.0F);
+        return Mth.hsvToRgb(getBarWidth(stack) / 3.0F, 1.0F, 1.0F);
     }
-
-
 
     @Nonnull
     @Override

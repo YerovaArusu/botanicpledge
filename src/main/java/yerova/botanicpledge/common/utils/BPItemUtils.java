@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
+import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
@@ -21,35 +22,41 @@ public class BPItemUtils {
         if (!((stack.getItem()) instanceof DivineCoreItem)) return;
 
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attributes -> {
-            if (attributes.getCurrentCharge() < attributes.getMaxCharge()) {
-                attributes.addCurrentCharge(ManaItemHandler.instance().requestMana(stack, serverPlayer, attributes.getMaxCharge() - attributes.getCurrentCharge(), true));
-            }
+            attributes.incrementLastTimeHit();
+            long lastTimeHit = attributes.getLastTimeHit();
+            if (lastTimeHit < 60) return;
+            if (attributes.getCurrentShield() >= attributes.getMaxShield()) return;
 
-            if (attributes.getCurrentShield() < attributes.getMaxShield()) {
-                int defRegen = attributes.getDefRegenPerTick();
-                if (defRegen + attributes.getCurrentShield() >= attributes.getMaxShield())
-                    defRegen = attributes.getMaxShield() + attributes.getCurrentShield();
+            int shieldRegenAmount = getShieldRegenAmount(attributes, lastTimeHit);
+            int manaCost = shieldRegenAmount * 10;
 
-                if (attributes.getCurrentCharge() >= defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE) {
-                    attributes.removeCurrentCharge(defRegen * BPConstants.MANA_TO_SHIELD_CONVERSION_RATE);
-                    attributes.addCurrentShield(defRegen);
-                }
+            if (ManaItemHandler.instance().requestManaExactForTool(stack, serverPlayer, manaCost, true)) {
+                attributes.addCurrentShield(shieldRegenAmount);
             }
         });
     }
+
+    private static int getShieldRegenAmount(CoreAttribute attributes, long lastTimeHit) {
+        double baseRegenAmount = 1;
+        double growthRate = 0.05;
+        int shieldRegenAmount = (int) (baseRegenAmount * Math.exp(growthRate * Math.max(lastTimeHit/20,1)));
+        shieldRegenAmount = Math.min(shieldRegenAmount, attributes.getMaxShield() - attributes.getCurrentShield());
+        return shieldRegenAmount;
+    }
+
 
     public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
         AtomicBoolean success = new AtomicBoolean(false);
         ItemHelper.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
             if (!(slotResult.stack().getItem() instanceof DivineCoreItem)) return;
             slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                Networking.sendToPlayer(new SyncProtector(attribute.getCurrentCharge(), attribute.getMaxCharge(), attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
+                Networking.sendToPlayer(new SyncProtector(attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
                 success.set(true);
             });
         });
 
         if (!success.get()) {
-            Networking.sendToPlayer(new SyncProtector(0, 0, 0, 0), serverPlayer);
+            Networking.sendToPlayer(new SyncProtector(0, 0), serverPlayer);
         }
     }
 

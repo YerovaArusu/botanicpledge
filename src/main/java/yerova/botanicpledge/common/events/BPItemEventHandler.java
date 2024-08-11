@@ -111,6 +111,7 @@ public class BPItemEventHandler {
         ItemHelper.getDivineCoreCurio(entity).forEach(slotResult -> {
             ItemStack stack = slotResult.stack();
             stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
+                attribute.setLastTimeHit(0);
                 double remainingShield = attribute.getCurrentShield() - actualAmount;
                 if (remainingShield > 0) {
                     attribute.removeCurrentShield((int) Math.ceil(actualAmount));

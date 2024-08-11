@@ -14,7 +14,7 @@ public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTab
 
     private static final int maxShield = 600;
     private static final int defRegenPerTick = 4;
-    private static final int maxCharge = 2_000_000;
+
     private static final int manaCost = 4;
 
 
@@ -28,25 +28,26 @@ public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTab
         super.curioTick(slotContext, stack);
         BPItemUtils.handleShieldRegenOnCurioTick(slotContext.entity(), stack);
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-            attribute.setMaxCharge(getShieldValueAccordingToRank(stack, maxCharge));
             attribute.setMaxShield(getShieldValueAccordingToRank(stack, maxShield));
             attribute.setDefRegenPerTick(getShieldValueAccordingToRank(stack, defRegenPerTick));
         });
     }
 
     public static CoreAttributeProvider getCoreAttribute() {
-        return new CoreAttributeProvider(maxCharge, maxShield, defRegenPerTick, manaCost, 4, Attribute.Rune.EquipmentType.DIVINE_CORE);
+        return new CoreAttributeProvider(maxShield, defRegenPerTick, manaCost, 4, Attribute.Rune.EquipmentType.DIVINE_CORE);
     }
 
 
     @Override
     public void addToCreativeTab(Item me, CreativeModeTab.Output output) {
 
-        for (int i : LEVELS) {
-            ItemStack full = new ItemStack(this);
-            setMana(full, i);
-            output.accept(full);
-        }
+        for (int level : LEVELS) {
+            ManaItem item = new ManaItem(new ItemStack(this));
+            item.addMana(level);
+            System.out.println(item.getMana()+ " " +item.getMaxMana());
 
+            output.accept(item.getStack());
+
+        }
     }
 }
