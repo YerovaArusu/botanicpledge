@@ -15,6 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -27,6 +28,7 @@ import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.*;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
+import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
@@ -95,6 +97,16 @@ public class ForgeClientInitializer {
                         }
                     }
                 });
+    }
+
+
+    @SubscribeEvent
+    public static void BossEvent(CustomizeGuiOverlayEvent.BossEventProgress e) {
+        YggdrasilBossBar.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(), e.getBossEvent(), true).ifPresent(increment -> {
+                    e.setCanceled(true);
+                    e.setIncrement(increment);
+                }
+        );
     }
 
 

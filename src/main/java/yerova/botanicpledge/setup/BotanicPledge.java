@@ -84,16 +84,6 @@ public class BotanicPledge {
 
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
 
-
-        MinecraftForge.EVENT_BUS.addListener((CustomizeGuiOverlayEvent.BossEventProgress e) -> {
-            var result = YggdrasilBossBar.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(),
-                    e.getBossEvent(), true);
-            result.ifPresent(increment -> {
-                e.setCanceled(true);
-                e.setIncrement(increment);
-            });
-        });
-
         EntityRenderers.register(BPEntities.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(BPEntities.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
         EntityRenderers.register(BPEntities.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
