@@ -3,7 +3,6 @@ package yerova.botanicpledge.common.capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.chunk.LevelChunk;
-import net.minecraft.world.level.levelgen.synth.ImprovedNoise;
 import yerova.botanicpledge.common.utils.SimplePerlinNoise;
 import yerova.botanicpledge.setup.BotanicPledge;
 

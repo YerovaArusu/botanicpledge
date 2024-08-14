@@ -1,6 +1,7 @@
 package yerova.botanicpledge.common.items.armor;
 
 import com.google.common.base.Suppliers;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -24,15 +25,13 @@ import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.armor.terrasteel.TerrasteelArmorItem;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
 import vazkii.botania.common.lib.BotaniaTags;
+import yerova.botanicpledge.setup.BPItems;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-
-import com.google.common.collect.Multimap;
-import yerova.botanicpledge.setup.BPItems;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 public class YggdrasilsteelArmor extends TerrasteelArmorItem {
 

@@ -12,7 +12,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import vazkii.botania.common.block.BotaniaBlocks;
-import vazkii.botania.common.block.PylonBlock;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
@@ -22,7 +21,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import static vazkii.botania.common.block.BotaniaBlocks.livingwood;
-import static vazkii.botania.common.block.BotaniaBlocks.manasteelBlock;
 
 public class BPBlocks {
     private static final BlockBehaviour.StateArgumentPredicate<EntityType<?>> NO_SPAWN = (state, world, pos, et) -> false;

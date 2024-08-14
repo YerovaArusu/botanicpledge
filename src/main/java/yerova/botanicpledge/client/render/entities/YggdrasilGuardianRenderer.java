@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.botania.client.core.helper.CoreShaders;
 import vazkii.botania.client.core.helper.RenderHelper;
 import vazkii.botania.client.model.armor.ArmorModels;
-import vazkii.botania.common.entity.GaiaGuardianEntity;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 
 public class YggdrasilGuardianRenderer extends HumanoidMobRenderer<YggdrasilGuardian, HumanoidModel<YggdrasilGuardian>> {

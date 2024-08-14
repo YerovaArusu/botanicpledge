@@ -8,7 +8,6 @@ import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
-import vazkii.botania.forge.network.ForgePacketHandler;
 import vazkii.botania.network.BotaniaPacket;
 import yerova.botanicpledge.setup.BotanicPledge;
 

@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 import vazkii.botania.network.BotaniaPacket;
-import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.setup.BotanicPledge;
 

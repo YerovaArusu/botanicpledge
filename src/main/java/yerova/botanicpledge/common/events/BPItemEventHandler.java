@@ -43,7 +43,6 @@ import yerova.botanicpledge.common.items.relic.RingOfAesir;
 import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.integration.curios.ItemHelper;
-import yerova.botanicpledge.mixin.MixinMagicLandMineEntity;
 import yerova.botanicpledge.mixin_api.IMixinPixieEntity;
 import yerova.botanicpledge.setup.BPEnchantments;
 import yerova.botanicpledge.setup.BPItems;

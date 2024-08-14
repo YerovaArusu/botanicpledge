@@ -4,13 +4,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.lwjgl.opengl.GL11;
-import vazkii.botania.client.core.helper.RenderHelper;
-import vazkii.botania.xplat.BotaniaConfig;
 import yerova.botanicpledge.client.synched.ClientSyncedProtector;
 import yerova.botanicpledge.setup.BotanicPledge;
 

@@ -19,20 +19,17 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
-import vazkii.botania.client.core.handler.BossBarHandler;
-import vazkii.botania.client.render.entity.GaiaGuardianRenderer;
-import vazkii.botania.common.entity.BotaniaEntities;
-import vazkii.botania.common.entity.GaiaGuardianEntity;
 import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
-import yerova.botanicpledge.client.render.entities.*;
+import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
+import yerova.botanicpledge.client.render.entities.YggdFocusRenderer;
+import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
+import yerova.botanicpledge.client.render.entities.YggdrasilGuardianRenderer;
 import yerova.botanicpledge.client.render.items.VedrfolnirCoreRenderer;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.network.Networking;
-
-import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 
 @Mod(BotanicPledge.MOD_ID)

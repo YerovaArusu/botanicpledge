@@ -1,35 +1,24 @@
 package yerova.botanicpledge.mixin;
 
 
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.FlyingMob;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import vazkii.botania.client.fx.WispParticleData;
-import vazkii.botania.common.entity.MagicLandmineEntity;
 import vazkii.botania.common.entity.PixieEntity;
-import vazkii.botania.common.handler.BotaniaSounds;
-import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelHelmet;
-import yerova.botanicpledge.mixin_api.IMagicLandmineEntity;
 import yerova.botanicpledge.mixin_api.IMixinPixieEntity;
 import yerova.botanicpledge.setup.BPItems;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 @Mixin(PixieEntity.class)
 public abstract class MixinPixieEntity extends FlyingMob implements IMixinPixieEntity {

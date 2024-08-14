@@ -15,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeHooks;
 import org.jetbrains.annotations.NotNull;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.client.particle.ParticleColor;

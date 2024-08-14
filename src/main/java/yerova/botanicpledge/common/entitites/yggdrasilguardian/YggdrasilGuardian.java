@@ -52,9 +52,7 @@ import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.extensions.IForgeLevelChunk;
 import net.minecraftforge.event.entity.EntityStruckByLightningEvent;
-import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.internal.ManaBurst;
@@ -88,7 +86,6 @@ import java.util.*;
 import java.util.function.Supplier;
 
 import static vazkii.botania.common.helper.PlayerHelper.isTruePlayer;
-import static vazkii.botania.common.lib.ResourceLocationHelper.prefix;
 
 
 public class YggdrasilGuardian extends Mob {

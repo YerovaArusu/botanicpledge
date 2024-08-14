@@ -1,20 +1,15 @@
 package yerova.botanicpledge.common.network;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
-import org.checkerframework.checker.units.qual.A;
 import vazkii.botania.common.handler.EquipmentHandler;
-import yerova.botanicpledge.common.items.relic.AsgardFractal;
 import yerova.botanicpledge.common.items.relic.FirstRelic;
 import yerova.botanicpledge.common.items.relic.RingOfAesir;
 import yerova.botanicpledge.common.items.relic.YggdRamus;
 import yerova.botanicpledge.setup.BPItems;
 
-import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class ItemButtonInteractionToServer {
