@@ -17,10 +17,13 @@ import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.WandHUD;
+import vazkii.botania.client.core.handler.BossBarHandler;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.forge.CapabilityUtil;
@@ -101,12 +104,15 @@ public class ForgeClientInitializer {
 
 
     @SubscribeEvent
-    public static void BossEvent(CustomizeGuiOverlayEvent.BossEventProgress e) {
-        YggdrasilBossBar.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(), e.getBossEvent(), true).ifPresent(increment -> {
-                    e.setCanceled(true);
-                    e.setIncrement(increment);
-                }
-        );
+    public static void clientRegister(FMLClientSetupEvent event) {
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST,(CustomizeGuiOverlayEvent.BossEventProgress e) -> {
+            var result = BossBarHandler.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(),
+                    e.getBossEvent(), true);
+            result.ifPresent(increment -> {
+                e.setCanceled(true);
+                e.setIncrement(increment);
+            });
+        });
     }
 
 
