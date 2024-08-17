@@ -44,7 +44,6 @@ public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTab
         for (int level : LEVELS) {
             ManaItem item = new ManaItem(new ItemStack(this));
             item.addMana(level);
-            System.out.println(item.getMana()+ " " +item.getMaxMana());
 
             output.accept(item.getStack());
 
