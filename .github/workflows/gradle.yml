@@ -11,7 +11,7 @@ jobs:
 
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -31,8 +31,15 @@ jobs:
     - name: Grant execute permissions for Gradlew
       run: chmod +x ./gradlew
 
-    - name: Build with Gradle Wrapper
-      run: ./gradlew build
+    - name: Commit and Push changes
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add .
+        git commit -m "Remove System.out.print statements - $(date)"
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   dependency-submission:
 
