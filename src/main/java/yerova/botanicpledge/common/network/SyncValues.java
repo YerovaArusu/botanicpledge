@@ -2,24 +2,28 @@ package yerova.botanicpledge.common.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import yerova.botanicpledge.client.synched.ClientSyncedProtector;
+import yerova.botanicpledge.client.synched.ClientSyncedValues;
+import yerova.botanicpledge.common.capabilities.YggdrasilAura;
 
 import java.util.function.Supplier;
 
-public class SyncProtector {
+public class SyncValues {
 
 
     private final int defense;
     private final int maxDefense;
+    private final int yggdrasilPower;
 
-    public SyncProtector(int defense, int maxDefense) {
+    public SyncValues(int defense, int maxDefense, int yggdrasilPower) {
         this.defense = defense;
         this.maxDefense = maxDefense;
+        this.yggdrasilPower = yggdrasilPower;
     }
 
-    public SyncProtector(FriendlyByteBuf buffer) {
+    public SyncValues(FriendlyByteBuf buffer) {
         this.defense = buffer.readInt();
         this.maxDefense = buffer.readInt();
+        this.yggdrasilPower = buffer.readInt();
     }
 
 
@@ -27,13 +31,14 @@ public class SyncProtector {
 
         buffer.writeInt(this.defense);
         buffer.writeInt(this.maxDefense);
+        buffer.writeInt(this.yggdrasilPower);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> contextSupplier) {
         NetworkEvent.Context ctx = contextSupplier.get();
 
         ctx.enqueueWork(() -> {
-            ClientSyncedProtector.set(defense, maxDefense);
+            ClientSyncedValues.set(defense, maxDefense,yggdrasilPower);
         });
         return true;
     }

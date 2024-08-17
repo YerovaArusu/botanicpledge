@@ -18,12 +18,6 @@ import yerova.botanicpledge.setup.BotanicPledge;
 public class ModEventBusEvents {
 
     @SubscribeEvent
-    public static void registerGameOverlay(RegisterGuiOverlaysEvent event) {
-        event.registerBelow(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "hotbar", CoreHUD.PROTECTOR_HUD);
-    }
-
-
-    @SubscribeEvent
     public static void addToBotanicPLedgeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == BPTabs.MAIN_TAB.getKey())
             BPItems.ITEMS.getEntries().forEach(item -> {

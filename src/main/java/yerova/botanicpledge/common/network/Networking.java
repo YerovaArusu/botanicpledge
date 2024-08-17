@@ -31,10 +31,10 @@ public class Networking {
 
         INSTANCE = net;
 
-        net.messageBuilder(SyncProtector.class, id(), NetworkDirection.PLAY_TO_CLIENT)
-                .decoder(SyncProtector::new)
-                .encoder(SyncProtector::encode)
-                .consumerMainThread(SyncProtector::handle)
+        net.messageBuilder(SyncValues.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(SyncValues::new)
+                .encoder(SyncValues::encode)
+                .consumerMainThread(SyncValues::handle)
                 .add();
 
         net.messageBuilder(ItemButtonInteractionToServer.class, id(), NetworkDirection.PLAY_TO_SERVER)

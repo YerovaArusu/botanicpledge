@@ -5,7 +5,9 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeItemTagsProvider;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -24,6 +26,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         this.tag(ItemTags.SWORDS).add(BPItems.ASGARD_FRACTAL.get());
         this.tag(ItemTags.SWORDS).add(BPItems.YGGD_RAMUS.get());
-
+        this.tag(Tags.Items.INGOTS).add(BPItems.YGGDRALIUM_INGOT.get());
+        this.tag(Tags.Items.NUGGETS).add(BPItems.YGGDRALIUM_NUGGET.get());
     }
 }

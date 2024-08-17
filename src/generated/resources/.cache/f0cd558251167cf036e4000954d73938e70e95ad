@@ -1,2 +1,4 @@
-// 1.20.1	2024-08-17T10:00:06.7231751	Tags for minecraft:item mod id botanicpledge
+// 1.20.1	2024-08-17T19:42:13.3703141	Tags for minecraft:item mod id botanicpledge
+b84d0b70c09b101fa0685ebc7dc3289252aeadf8 data/forge/tags/items/ingots.json
+a851c85683f9649390e547b745b74609485fe2f3 data/forge/tags/items/nuggets.json
 10aade203000889693fae76694368ec0bc7e3963 data/minecraft/tags/items/swords.json

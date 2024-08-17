@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botania:monocle"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:yggdrasil_monocle"
+  },
+  "manaCost": 50000,
+  "keepNbtOfReagent": false
+}

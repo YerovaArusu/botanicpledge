@@ -305,7 +305,7 @@ public class BPItemEventHandler {
 
         event.level.players().stream()
                 .filter(player -> player instanceof ServerPlayer)
-                .forEach(player -> BPItemUtils.SyncShieldValuesToClient((ServerPlayer) player));
+                .forEach(player -> BPItemUtils.syncValueToClient((ServerPlayer) player));
     }
 
     private static void playSound(LivingEntity entity) {

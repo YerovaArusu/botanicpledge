@@ -5,13 +5,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.api.mana.ManaItemHandler;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
+import yerova.botanicpledge.common.capabilities.YggdrasilAura;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
+import yerova.botanicpledge.common.capabilities.provider.YggdrasilAuraProvider;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
-import yerova.botanicpledge.common.network.SyncProtector;
+import yerova.botanicpledge.common.network.SyncValues;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class BPItemUtils {
@@ -45,18 +48,24 @@ public class BPItemUtils {
     }
 
 
-    public static void SyncShieldValuesToClient(ServerPlayer serverPlayer) {
+    public static void syncValueToClient(ServerPlayer serverPlayer) {
+
+        AtomicInteger auraValue = new AtomicInteger();
+        serverPlayer.level().getChunkAt(serverPlayer.getOnPos()).getCapability(YggdrasilAuraProvider.ESSENCE).ifPresent(aura -> {
+            auraValue.set(aura.getGenPerInstance());
+        });
+
         AtomicBoolean success = new AtomicBoolean(false);
         ItemHelper.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
             if (!(slotResult.stack().getItem() instanceof DivineCoreItem)) return;
             slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                Networking.sendToPlayer(new SyncProtector(attribute.getCurrentShield(), attribute.getMaxShield()), serverPlayer);
+                Networking.sendToPlayer(new SyncValues(attribute.getCurrentShield(), attribute.getMaxShield(), auraValue.get()), serverPlayer);
                 success.set(true);
             });
         });
 
         if (!success.get()) {
-            Networking.sendToPlayer(new SyncProtector(0, 0), serverPlayer);
+            Networking.sendToPlayer(new SyncValues(0, 0, 0), serverPlayer);
         }
     }
 

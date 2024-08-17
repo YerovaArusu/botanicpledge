@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import org.lwjgl.opengl.GL11;
-import yerova.botanicpledge.client.synched.ClientSyncedProtector;
+import yerova.botanicpledge.client.synched.ClientSyncedValues;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class CoreHUD {
@@ -16,7 +16,7 @@ public class CoreHUD {
     private static final ResourceLocation NEW_CORE_BAR = new ResourceLocation(BotanicPledge.MOD_ID, "textures/gui/protector_hud/core_bar.png");
 
     public static final IGuiOverlay PROTECTOR_HUD = ((gui, poseStack, partialTick, width, height) -> {
-        renderManaInvBar(poseStack, ClientSyncedProtector.getDefense(), ClientSyncedProtector.getMaxDefense());
+        renderManaInvBar(poseStack, ClientSyncedValues.getDefense(), ClientSyncedValues.getMaxDefense());
     });
 
 

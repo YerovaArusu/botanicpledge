@@ -9,6 +9,7 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -26,14 +27,17 @@ import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.client.core.handler.BossBarHandler;
 import vazkii.botania.common.helper.PlayerHelper;
 import vazkii.botania.common.item.BotaniaItems;
+import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.client.render.blocks.*;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
+import yerova.botanicpledge.client.render.screen.CoreHUD;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.common.items.YggdrasilMonocle;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -79,11 +83,22 @@ public class ForgeClientInitializer {
 
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
+        e.registerBelow(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "shield_bar", CoreHUD.PROTECTOR_HUD);
         e.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "hud",
                 (Fgui, gui, partialTick, width, height) -> {
+
+
+
                     Minecraft mc = Minecraft.getInstance();
                     if (mc.options.hideGui) {
                         return;
+                    }
+
+                    ProfilerFiller profiler = mc.getProfiler();
+                    if (YggdrasilMonocle.hasMonocle(mc.player)) {
+                        profiler.push("yggdrasil_monocle");
+                        YggdrasilMonocle.Hud.render(gui, mc.player);
+                        profiler.pop();
                     }
 
                     if (mc.hitResult instanceof BlockHitResult result) {

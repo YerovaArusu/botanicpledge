@@ -68,6 +68,9 @@ public class BPItems {
     public static final RegistryObject<Item> AESIR_RING = ITEMS.register("aesir_ring", () -> new RingOfAesir(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
+    public static final RegistryObject<Item> YGGDRASIL_MONOCLE = ITEMS.register("yggdrasil_monocle", () -> new YggdrasilMonocle(
+            new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
+
     public static final RegistryObject<Item> YGGDRASIL_HELMET = ITEMS.register("yggdrasilsteel_helmet",
             () -> new YggdrasilsteelHelmet(new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)));
 
