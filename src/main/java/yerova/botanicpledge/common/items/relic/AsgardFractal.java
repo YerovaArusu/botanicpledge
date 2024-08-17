@@ -151,22 +151,25 @@ public class AsgardFractal extends SwordItem {
         return slot == EquipmentSlot.MAINHAND ? builder.build() : super.getDefaultAttributeModifiers(slot);
     }
 
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level pLevel, List<Component> tooltip, TooltipFlag pIsAdvanced) {
         super.appendHoverText(stack, pLevel, tooltip, pIsAdvanced);
 
+        tooltip.add(Component.translatable("item.botanicpledge.asgard_fractal.desc").withStyle(ChatFormatting.GRAY));
+
+        tooltip.add(Component.translatable("item.botanicpledge.asgard_fractal.ability").withStyle(ChatFormatting.DARK_PURPLE));
+
         stack.getCapability(AttributeProvider.ATTRIBUTE).ifPresent(attribute -> {
-            attribute.getAllRunes().forEach(rune -> {
-                tooltip.add(Component.literal("+ " + rune.getValue() + " " + Component.translatable(rune.getStatType().name().toLowerCase()).getString()).withStyle(ChatFormatting.BLUE));
-            });
-
             if (attribute.hasEmptySocket()) {
-                tooltip.add(Component.literal(Component.translatable(BPConstants.NO_RUNE_GEM).getString() + ": " + (attribute.getMaxRunes() - attribute.getAllRunes().size())).withStyle(ChatFormatting.GOLD));
+                tooltip.add(Component.translatable("item.botanicpledge.asgard_fractal.empty_sockets", attribute.getMaxRunes() - attribute.getAllRunes().size()).withStyle(ChatFormatting.RED));
             }
-
         });
+
         RelicImpl.addDefaultTooltip(stack, tooltip);
     }
+
+
 
 
     @Override

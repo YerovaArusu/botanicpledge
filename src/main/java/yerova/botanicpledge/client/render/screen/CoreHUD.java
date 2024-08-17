@@ -24,7 +24,7 @@ public class CoreHUD {
         Minecraft mc = Minecraft.getInstance();
         int width = 182;
         int x = mc.getWindow().getGuiScaledWidth() / 2 - width / 2;
-        int y = mc.getWindow().getGuiScaledHeight() - 32;
+        int y = mc.getWindow().getGuiScaledHeight() - 34;
 
         if (totalMaxMana == 0) {
             width = 0;

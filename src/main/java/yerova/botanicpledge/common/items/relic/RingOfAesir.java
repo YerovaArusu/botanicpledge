@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -244,9 +245,28 @@ public class RingOfAesir extends RelicBaubleItem implements WireframeCoordinateL
 
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
-
         super.appendHoverText(stack, world, tooltip, flags);
+
+        // Basic item description
+        tooltip.add(Component.translatable("item.botanicpledge.ring_of_aesir.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
+
+        // Display current state (Active or Inactive)
+        boolean isActive = isActiveLoki(stack);
+        ChatFormatting stateColor = isActive ? ChatFormatting.GREEN : ChatFormatting.RED;
+        String stateText = isActive ? "Active" : "Inactive";
+        tooltip.add(Component.translatable("botanicpledge.tooltip.state", stateText)
+                .setStyle(Style.EMPTY.withColor(stateColor).withItalic(true)));
+
+        // Information about toggling the state
+        if (Screen.hasControlDown()) {
+            tooltip.add(Component.translatable("botanicpledge.tooltip.toggle_state.ctrl")
+                    .setStyle(Style.EMPTY.withColor(ChatFormatting.AQUA)));
+        } else {
+            tooltip.add(Component.translatable("botanicpledge.tooltip.toggle_state")
+                    .setStyle(Style.EMPTY.withColor(ChatFormatting.DARK_GRAY)));
+        }
     }
+
 
     @Override
     public void onUnequipped(ItemStack stack, LivingEntity living) {
