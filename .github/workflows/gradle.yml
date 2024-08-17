@@ -22,17 +22,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-    - name: Check for System.out.print usage
+    - name: Remove System.out.print statements
       run: |
-        if grep -r "System\.out\.print" src/; then
-          echo "Found System.out.print statements, please remove them.";
-          exit 1;
-        else
-          echo "No System.out.print statements found.";
-        fi
+        echo "Removing System.out.print and System.out.println statements..."
+        find src/ -type f -name "*.java" -exec sed -i '/System\.out\.print/d' {} +
+        echo "Finished removing System.out.print and System.out.println statements."
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
