@@ -31,10 +31,13 @@ jobs:
     - name: Grant execute permissions for Gradlew
       run: chmod +x ./gradlew
 
+    - name: Build with Gradle Wrapper
+      run: ./gradlew build
+
     - name: Commit and Push changes
       run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
+        git config --global user.name "${{ secrets.COMMIT_USER_NAME }}"
+        git config --global user.email "${{ secrets.COMMIT_USER_EMAIL }}"
         git add .
         git commit -m "Remove System.out.print statements - $(date)"
         git push
