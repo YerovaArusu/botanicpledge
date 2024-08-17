@@ -28,6 +28,9 @@ jobs:
         find src/ -type f -name "*.java" -exec sed -i '/System\.out\.print/d' {} +
         echo "Finished removing System.out.print and System.out.println statements."
 
+    - name: Grant execute permissions for Gradlew
+      run: chmod +x ./gradlew
+
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
