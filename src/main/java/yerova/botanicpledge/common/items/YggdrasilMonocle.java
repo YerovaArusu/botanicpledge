@@ -69,7 +69,6 @@ public class YggdrasilMonocle extends ManaseerMonocleItem {
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         tooltip.add(Component.translatable("item.botanicpledge.yggdrasil_monocle.desc").setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY)));
-        System.out.println("Testing");
 
     }
 }
