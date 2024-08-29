@@ -31,7 +31,7 @@ public class BPItemUtils {
             if (attributes.getCurrentShield() >= attributes.getMaxShield()) return;
 
             int shieldRegenAmount = getShieldRegenAmount(attributes, lastTimeHit);
-            int manaCost = shieldRegenAmount * 10;
+            int manaCost = shieldRegenAmount * 100;
 
             if (ManaItemHandler.instance().requestManaExactForTool(stack, serverPlayer, manaCost, true)) {
                 attributes.addCurrentShield(shieldRegenAmount);

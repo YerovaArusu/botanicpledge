@@ -140,7 +140,6 @@ public class BPItemEventHandler {
 
     private static void onGeneratePixie(Player player, DamageSource source) {
 
-
         if (!player.level().isClientSide && source.getEntity() instanceof LivingEntity livingSource) {
             if (CommonYggdrasilsteelArmor.hasArmorSet(player)) {
 

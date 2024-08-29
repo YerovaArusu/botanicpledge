@@ -93,7 +93,7 @@ public class YggdrasilsteelArmor extends TerrasteelArmorItem {
             stack.setDamageValue(Math.max(0, stack.getDamageValue() - 2));
         }
 
-        ManaItemHandler.instance().dispatchManaExact(stack, player, 250, true);
+        ManaItemHandler.instance().dispatchManaExact(stack, player, 16, true);
     }
 
     @Override
