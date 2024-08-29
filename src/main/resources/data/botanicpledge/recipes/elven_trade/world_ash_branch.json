@@ -1,0 +1,22 @@
+{
+  "type": "botania:elven_trade",
+  "ingredients": [
+    {
+      "item": "botania:livingwood_twig"
+    },
+    {
+      "item": "botania:livingwood_twig"
+    },
+    {
+      "item": "botania:livingwood_twig"
+    },
+    {
+      "item": "botania:livingwood_twig"
+    }
+  ],
+  "output": [
+    {
+      "item": "botanicpledge:world_ash_branch"
+    }
+  ]
+}
