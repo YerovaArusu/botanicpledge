@@ -1,6 +1,10 @@
 package yerova.botanicpledge.setup;
 
 import com.mojang.logging.LogUtils;
+import com.tterrag.registrate.Registrate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -13,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -32,6 +37,8 @@ import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.network.Networking;
+import yerova.botanicpledge.config.BPConfig;
+import yerova.botanicpledge.integration.expanded_combat.ExpandedCombatPlugin;
 
 
 @Mod(BotanicPledge.MOD_ID)
@@ -39,8 +46,14 @@ public class BotanicPledge {
 
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String MOD_ID = "botanicpledge";
+    public static BPConfig CONFIG;
+
+
 
     public BotanicPledge() {
+
+        AutoConfig.register(BPConfig.class, Toml4jConfigSerializer::new);
+
 
         IEventBus forgeBus = FMLJavaModLoadingContext.get().getModEventBus();
         IEventBus eventBus = MinecraftForge.EVENT_BUS;

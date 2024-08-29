@@ -1,0 +1,6 @@
+{
+  "parent": "expanded_combat:item/bases/flail",
+  "textures": {
+    "head": "botanicpledge:item/flail/yggdrasilsteel"
+  }
+}

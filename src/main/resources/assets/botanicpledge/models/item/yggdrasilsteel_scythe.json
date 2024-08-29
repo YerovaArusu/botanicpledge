@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:item/handheld",
+  "base": {
+    "parent": "expanded_combat:item/bases/scythe",
+    "textures": {
+      "layer0": "expanded_combat:item_large/scythe_dye",
+      "layer1": "expanded_combat:item_large/scythe_handle",
+      "layer2": "botanicpledge:item_large/scythe/yggdrasilsteel"
+    }
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/scythe_dye",
+        "layer1": "expanded_combat:item/scythe_handle",
+        "layer2": "botanicpledge:item/scythe/yggdrasilsteel"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/scythe_dye",
+        "layer1": "expanded_combat:item/scythe_handle",
+        "layer2": "botanicpledge:item/scythe/yggdrasilsteel"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/scythe_dye",
+        "layer1": "expanded_combat:item/scythe_handle",
+        "layer2": "botanicpledge:item/scythe/yggdrasilsteel"
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "expanded_combat:config_boolean",
+          "config_entry": "weapon"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "expanded_combat:config_material_boolean",
+            "location_path": [
+              "config",
+              "crafting",
+              "is_single_addition"
+            ],
+            "material": "yggdrasilsteel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "equipment",
+        "key": {
+          "p": {
+            "tag": "forge:tools/swords/fiery"
+          },
+          "s": {
+            "item": "minecraft:stick"
+          }
+        },
+        "pattern": [
+          "p",
+          "s",
+          "s"
+        ],
+        "result": {
+          "item": "botanicpledge:yggdrasilsteel_spear"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "botanicpledge:item/gauntlet/yggdrasilsteel",
+    "layer1": "expanded_combat:trims/items/gauntlet_trim_redstone"
+  }
+}

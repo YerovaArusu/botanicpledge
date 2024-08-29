@@ -1,0 +1,6 @@
+{
+  "parent": "expanded_combat:item/bases/great_hammer",
+  "textures": {
+    "head": "botanicpledge:item/great_hammer/yggdrasilsteel"
+  }
+}

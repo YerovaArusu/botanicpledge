@@ -1,0 +1,42 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "expanded_combat:config_boolean",
+          "config_entry": "gauntlet"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "expanded_combat:config_material_boolean",
+            "location_path": [
+              "config",
+              "crafting",
+              "is_single_addition"
+            ],
+            "material": "yggdrasilsteel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "equipment",
+        "key": {
+          "b": {
+            "item": "botanicpledge:yggdrasilsteel_ingot"
+          }
+        },
+        "pattern": [
+          "bb",
+          "b "
+        ],
+        "result": {
+          "item": "botanicpledge:yggdrasilsteel_gauntlet"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

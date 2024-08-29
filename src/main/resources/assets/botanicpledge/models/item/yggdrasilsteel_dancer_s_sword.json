@@ -1,0 +1,38 @@
+{
+  "parent": "minecraft:item/handheld",
+  "base": {
+    "parent": "expanded_combat:item/bases/dancer_s_sword",
+    "textures": {
+      "layer0": "expanded_combat:item_large/dancer_s_sword_dye",
+      "layer1": "expanded_combat:item_large/dancer_s_sword_handle",
+      "layer2": "botanicpledge:item_large/dancer_s_sword/yggdrasilsteel"
+    }
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/dancer_s_sword_dye",
+        "layer1": "expanded_combat:item/dancer_s_sword_handle",
+        "layer2": "botanicpledge:item/dancer_s_sword/yggdrasilsteel"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/dancer_s_sword_dye",
+        "layer1": "expanded_combat:item/dancer_s_sword_handle",
+        "layer2": "botanicpledge:item/dancer_s_sword/yggdrasilsteel"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/dancer_s_sword_dye",
+        "layer1": "expanded_combat:item/dancer_s_sword_handle",
+        "layer2": "botanicpledge:item/dancer_s_sword/yggdrasilsteel"
+      }
+    }
+  }
+}

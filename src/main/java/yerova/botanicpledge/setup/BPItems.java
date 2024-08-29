@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,8 +16,6 @@ import yerova.botanicpledge.common.items.block_items.YggdrasilPylonItem;
 import yerova.botanicpledge.common.items.relic.*;
 
 public class BPItems {
-
-
     //Custom Rarity
     public static final Rarity UNIQUE = Rarity.create("Unique", ChatFormatting.AQUA);
 

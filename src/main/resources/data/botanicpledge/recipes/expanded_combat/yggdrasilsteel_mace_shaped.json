@@ -1,0 +1,45 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "expanded_combat:config_boolean",
+          "config_entry": "weapon"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "expanded_combat:config_material_boolean",
+            "location_path": [
+              "config",
+              "crafting",
+              "is_single_addition"
+            ],
+            "material": "yggdrasilsteel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "equipment",
+        "key": {
+          "b": {
+            "tag": "forge:storage_blocks/yggdrasilsteel"
+          },
+          "s": {
+            "item": "minecraft:stick"
+          }
+        },
+        "pattern": [
+          " b",
+          "s "
+        ],
+        "result": {
+          "item": "ec_tf_plugin:yggdrasilsteel_mace"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}

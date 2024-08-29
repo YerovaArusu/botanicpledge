@@ -1,0 +1,7 @@
+{
+  "parent": "expanded_combat:item/bases/sickle",
+  "textures": {
+    "layer0": "expanded_combat:item/sickle_handle",
+    "layer1": "botanicpledge:item/sickle/yggdrasilsteel"
+  }
+}

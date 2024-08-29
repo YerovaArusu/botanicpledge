@@ -1,4 +1,10 @@
-// 1.20.1	2024-08-17T19:42:13.3703141	Tags for minecraft:item mod id botanicpledge
+// 1.20.1	2024-08-29T10:50:13.9566166	Tags for minecraft:item mod id botanicpledge
 b84d0b70c09b101fa0685ebc7dc3289252aeadf8 data/forge/tags/items/ingots.json
 a851c85683f9649390e547b745b74609485fe2f3 data/forge/tags/items/nuggets.json
+86ffec38fa71dd28ba440719f7ca9d9ad186b05f data/forge/tags/items/storage_blocks/manasteel.json
+15ce809b95f059b30de6478da2785dd82a6257fb data/forge/tags/items/storage_blocks/terrasteel.json
+5f2988a1bf1e9d402cca5f95853706ff67905078 data/forge/tags/items/storage_blocks/yggdrasilsteel.json
+2012dd6065a43f32b8790afb2be1659ec0c116dc data/forge/tags/items/tools/swords/manasteel.json
+0211765d1bb4b9b5fe5a533d4b109fe0c2f152b2 data/forge/tags/items/tools/swords/terrasteel.json
+0211765d1bb4b9b5fe5a533d4b109fe0c2f152b2 data/forge/tags/items/tools/swords/yggdrasilsteel.json
 10aade203000889693fae76694368ec0bc7e3963 data/minecraft/tags/items/swords.json

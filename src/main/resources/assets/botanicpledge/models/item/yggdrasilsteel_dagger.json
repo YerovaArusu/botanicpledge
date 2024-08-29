@@ -1,0 +1,7 @@
+{
+  "parent": "expanded_combat:item/bases/dagger",
+  "textures": {
+    "layer0": "expanded_combat:item/dagger_handle",
+    "layer1": "botanicpledge:item/dagger/yggdrasilsteel"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:item/handheld",
+  "base": {
+    "parent": "expanded_combat:item/bases/spear",
+    "textures": {
+      "layer0": "expanded_combat:item_large/spear_handle",
+      "layer1": "botanicpledge:item_large/spear/yggdrasilsteel"
+    }
+  },
+  "loader": "forge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/spear_handle",
+        "layer1": "botanicpledge:item/spear/yggdrasilsteel"
+      }
+    },
+    "ground": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/spear_handle",
+        "layer1": "botanicpledge:item/spear/yggdrasilsteel"
+      }
+    },
+    "gui": {
+      "parent": "minecraft:item/generated",
+      "textures": {
+        "layer0": "expanded_combat:item/spear_handle",
+        "layer1": "botanicpledge:item/spear/yggdrasilsteel"
+      }
+    }
+  }
+}

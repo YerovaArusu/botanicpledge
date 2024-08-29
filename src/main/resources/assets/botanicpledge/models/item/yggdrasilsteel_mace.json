@@ -1,0 +1,6 @@
+{
+  "parent": "expanded_combat:item/bases/mace",
+  "textures": {
+    "head": "botanicpledge:item/mace/yggdrasilsteel"
+  }
+}

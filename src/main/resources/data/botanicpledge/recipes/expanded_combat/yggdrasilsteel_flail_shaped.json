@@ -1,0 +1,49 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "expanded_combat:config_boolean",
+          "config_entry": "weapon"
+        },
+        {
+          "type": "forge:not",
+          "value": {
+            "type": "expanded_combat:config_material_boolean",
+            "location_path": [
+              "config",
+              "crafting",
+              "is_single_addition"
+            ],
+            "material": "yggdrasilsteel"
+          }
+        }
+      ],
+      "recipe": {
+        "type": "minecraft:crafting_shaped",
+        "category": "equipment",
+        "key": {
+          "b": {
+            "tag": "forge:storage_blocks/yggdrasilsteel"
+          },
+          "c": {
+            "item": "minecraft:chain"
+          },
+          "s": {
+            "item": "minecraft:stick"
+          }
+        },
+        "pattern": [
+          "b",
+          "c",
+          "s"
+        ],
+        "result": {
+          "item": "botanicpledge:yggdrasilsteel_flail"
+        },
+        "show_notification": true
+      }
+    }
+  ]
+}
