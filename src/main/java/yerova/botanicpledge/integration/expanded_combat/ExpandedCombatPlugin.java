@@ -13,7 +13,9 @@ import com.userofbricks.expanded_combat.item.ECKatanaItem;
 import com.userofbricks.expanded_combat.item.ECWeaponItem;
 import com.userofbricks.expanded_combat.plugins.VanillaECPlugin;
 import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.fml.ModList;
 import yerova.botanicpledge.config.BPConfig;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -35,6 +37,7 @@ public class ExpandedCombatPlugin implements IExpandedCombatPlugin {
 
     @Override
     public void registerMaterials(RegistrationHandler registrationHandler) {
+        AutoConfig.register(BPConfig.class, Toml4jConfigSerializer::new);
         BotanicPledge.CONFIG = AutoConfig.getConfigHolder(BPConfig.class).getConfig();
 
         YGGDRASILSTEEL = registrationHandler.registerMaterial(new MaterialBuilder(EC_REGISTRATE, "yggdrasilsteel", BotanicPledge.CONFIG.yggdrasilsteel)

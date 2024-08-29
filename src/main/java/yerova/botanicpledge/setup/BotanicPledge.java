@@ -52,7 +52,6 @@ public class BotanicPledge {
 
     public BotanicPledge() {
 
-        AutoConfig.register(BPConfig.class, Toml4jConfigSerializer::new);
 
 
         IEventBus forgeBus = FMLJavaModLoadingContext.get().getModEventBus();
