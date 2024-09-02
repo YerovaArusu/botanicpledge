@@ -42,19 +42,19 @@ public class ExpandedCombatPlugin implements IExpandedCombatPlugin {
 
         YGGDRASILSTEEL = registrationHandler.registerMaterial(new MaterialBuilder(EC_REGISTRATE, "yggdrasilsteel", BotanicPledge.CONFIG.yggdrasilsteel)
                 .gauntlet((Material) null, BPGauntletItem::new).build(false)
-                .weaponBuilder(VanillaECPlugin.BATTLE_STAFF, null, ECWeaponItem.Dyeable::new).build()
-                .weaponBuilder(VanillaECPlugin.BROAD_SWORD, null, ECWeaponItem.Dyeable::new).build()
-                .weaponBuilder(VanillaECPlugin.CLAYMORE, null, ECWeaponItem.Dyeable::new).build()
-                .weaponBuilder(VanillaECPlugin.CUTLASS, null, ECWeaponItem::new).build()
-                .weaponBuilder(VanillaECPlugin.DAGGER, null, ECWeaponItem::new).build()
-                .weaponBuilder(VanillaECPlugin.DANCERS_SWORD, null, ECWeaponItem.Dyeable::new).build()
-                .weaponBuilder(VanillaECPlugin.FLAIL, null, ECWeaponItem::new).build()
-                .weaponBuilder(VanillaECPlugin.GLAIVE, null, ECWeaponItem.Dyeable::new).build()
-                .weaponBuilder(VanillaECPlugin.GREAT_HAMMER, null, (m, w, p) -> new ECHammerWeaponItem(m, p)).build()
-                .weaponBuilder(VanillaECPlugin.KATANA, null, (m, w, p) -> new ECKatanaItem(m, p)).build()
-                .weaponBuilder(VanillaECPlugin.MACE, null, ECWeaponItem::new).build()
-                .weaponBuilder(VanillaECPlugin.SCYTHE, null, ECWeaponItem.HasPotion::new).build()
-                .weaponBuilder(VanillaECPlugin.SICKLE, null, ECWeaponItem::new).build()
-                .weaponBuilder(VanillaECPlugin.SPEAR, null, ECWeaponItem::new).build());
+                .weaponBuilder(VanillaECPlugin.BATTLE_STAFF, null, BPWeaponItem.Dyeable::new).build()
+                .weaponBuilder(VanillaECPlugin.BROAD_SWORD, null, BPWeaponItem.Dyeable::new).build()
+                .weaponBuilder(VanillaECPlugin.CLAYMORE, null, BPWeaponItem.Dyeable::new).build()
+                .weaponBuilder(VanillaECPlugin.CUTLASS, null, BPWeaponItem::new).build()
+                .weaponBuilder(VanillaECPlugin.DAGGER, null, BPWeaponItem::new).build()
+                .weaponBuilder(VanillaECPlugin.DANCERS_SWORD, null, BPWeaponItem.Dyeable::new).build()
+                .weaponBuilder(VanillaECPlugin.FLAIL, null, BPWeaponItem::new).build()
+                .weaponBuilder(VanillaECPlugin.GLAIVE, null, BPWeaponItem.Dyeable::new).build()
+                .weaponBuilder(VanillaECPlugin.GREAT_HAMMER, null, (m, w, p) -> new BPHammerWeaponItem(m, p)).build()
+                .weaponBuilder(VanillaECPlugin.KATANA, null, (m, w, p) -> new BPKatanaItem(m, p)).build()
+                .weaponBuilder(VanillaECPlugin.MACE, null, BPWeaponItem::new).build()
+                .weaponBuilder(VanillaECPlugin.SCYTHE, null, BPWeaponItem.HasPotion::new).build()
+                .weaponBuilder(VanillaECPlugin.SICKLE, null, BPWeaponItem::new).build()
+                .weaponBuilder(VanillaECPlugin.SPEAR, null, BPWeaponItem::new).build());
     }
 }
