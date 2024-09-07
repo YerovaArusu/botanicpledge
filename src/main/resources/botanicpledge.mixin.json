@@ -18,6 +18,7 @@
   "refmap": "botanicpledge.mixin-refmap.json",
   "minVersion": "0.8",
   "mixins": [
+    "MixinGaiaGuardianEntity",
     "MixinMagicLandMineEntity",
     "MixinPixieEntity"
   ]

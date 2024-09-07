@@ -23,13 +23,11 @@ public class YggdrasilAura {
             double noiseValue = SimplePerlinNoise.noise(chunk.getPos().x * 0.1, chunk.getPos().z * 0.1);
             double normalizedNoiseValue = (noiseValue + 1.0) / 2.0;
 
-            BlockPos chunkPos = chunk.getPos().getWorldPosition();
-            Biome biome = serverLevel.getBiome(chunkPos).value();
-            Biome.Precipitation precipitation = biome.getPrecipitationAt(chunkPos);
 
-            float greennessFactor = calculateGreenness(biome, precipitation, chunkPos.getY());
 
-            return (int) (normalizedNoiseValue * 20 * greennessFactor);
+            //float greennessFactor = calculateGreenness(biome, precipitation, chunkPos.getY());
+
+            return (int) (normalizedNoiseValue * 20 /* * greennessFactor*/);
         }
         return 1;
     }

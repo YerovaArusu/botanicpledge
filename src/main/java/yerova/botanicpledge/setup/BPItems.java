@@ -93,6 +93,9 @@ public class BPItems {
     public static final RegistryObject<Item> YGGDRASIL_HEART = ITEMS.register("yggdrasil_heart", () -> new YggdrasilHeart(
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)   
     ));
+    public static final RegistryObject<Item> YGGDRASIL_TEMPLATE = ITEMS.register("yggdrasilsteel_template", () -> new YggdrasilHeart(
+            new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)
+    ));
 
     public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdrasilsteel_ingot", () -> new Yggdrasilsteel(
             new Item.Properties().fireResistant().rarity(Rarity.COMMON)));

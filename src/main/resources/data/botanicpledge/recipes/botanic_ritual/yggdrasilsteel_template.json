@@ -5,16 +5,10 @@
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdrasilsteel_ingot"
+      "item": "botanicpledge:rune_thurisaz"
     },
     {
-      "item": "botania:terrasteel_boots"
-    },
-    {
-      "item": "botanicpledge:yggdrasilsteel_ingot"
-    },
-    {
-      "item": "botanicpledge:rune_laguz"
+      "item": "botania:terrasteel_ingot"
     },
     {
       "item": "botanicpledge:rune_laguz"
@@ -23,14 +17,20 @@
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elementium_boots"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_ingot"
+      "item": "botanicpledge:rune_ansuz"
+    },
+    {
+      "item": "botania:elementium_ingot"
+    },
+    {
+      "item": "botanicpledge:rune_ingwaz"
     }
   ],
   "output": {
-    "item": "botanicpledge:yggdrasilsteel_boots"
+    "item": "botanicpledge:yggdrasilsteel_template"
   },
   "manaCost": 3500000,
   "keepNbtOfReagent": false

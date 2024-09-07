@@ -240,21 +240,6 @@ public class BPItemEventHandler {
     }
 
     @SubscribeEvent
-    public static void onLivingWoodChop(BlockEvent.BreakEvent event) {
-        if (event.getState().getBlock().equals(BotaniaBlocks.livingwoodLog)
-                && event.getPlayer().getItemInHand(event.getPlayer().getUsedItemHand()).getItem() instanceof AxeItem) {
-
-            int enchantmentLevel = EnchantmentHelper.getEnchantmentLevel(BPEnchantments.YGGDRASIL_DEBARKING_BOUNTY.get(), event.getPlayer());
-            int random = event.getLevel().getRandom().nextInt(100);
-
-            if (random <= enchantmentLevel) {
-                Vec3 pos = event.getPos().getCenter();
-                event.getLevel().addFreshEntity(new ItemEntity(event.getPlayer().level(), pos.x, pos.y, pos.z, new ItemStack(BPItems.WORLD_ASH_BRANCH.get())));
-            }
-        }
-    }
-
-    @SubscribeEvent
     public static void handlePlayerJumps(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
 

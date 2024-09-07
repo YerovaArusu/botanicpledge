@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "botanicpledge:yggdrasilsteel_ingot"
+  },
+  "base": {
+    "item": "botania:terrasteel_chestplate"
+  },
+  "result": {
+    "item": "botanicpledge:yggdrasilsteel_chestplate"
+  },
+  "template": {
+    "item": "botanicpledge:yggdrasilsteel_template"
+  }
+}

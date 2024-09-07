@@ -49,6 +49,7 @@
   "item.botanicpledge.yggdrasilsteel_scythe": "Yggdrasilsteel Scythe",
   "item.botanicpledge.yggdrasilsteel_sickle": "Yggdrasilsteel Sickle",
   "item.botanicpledge.yggdrasilsteel_spear": "Yggdrasilsteel Spear",
+  "item.botanicpledge.yggdrasilsteel_template": "Yggdrasilsteel Template",
   "block.botanicpledge.ritual_pedestal": "Ritual Pedestal",
   "block.botanicpledge.ritual_center": "Ritual Center",
   "block.botanicpledge.yggdrasilsteel_block": "Yggdralium Block",
@@ -138,5 +139,9 @@
   "botanicpledge.armorset.terrasteel.desc1": "Regen even if hunger isn't topped off",
   "botanicpledge.armorset.terrasteel.desc2": "Passive Mana generation on Mana Tablets",
   "botanicpledge.armorset.terrasteel.name": "Will of Yggdrasil",
-  "botanicpledge.message.aesir_ring.toggled": "Changed Loki Effect to "
+  "botanicpledge.message.aesir_ring.toggled": "Changed Loki Effect to ",
+  "tooltip.botanicpledge.yggdrasilsteel_template.applies_to": "Terrasteel Equipment",
+  "tooltip.botanicpledge.yggdrasilsteel_template.slot_base": "terrasteel armor, weapon or tool",
+  "tooltip.botanicpledge.yggdrasilsteel_template.slot_description": "Add %s",
+  "tooltip.botanicpledge.yggdrasilsteel_template.upgrade": "Yggdrasilsteel Upgrade"
 }
