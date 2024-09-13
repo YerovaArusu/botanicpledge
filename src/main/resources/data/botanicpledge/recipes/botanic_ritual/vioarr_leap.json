@@ -1,0 +1,37 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botania:ender_dagger"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botania:ender_air_bottle"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botania:ender_air_bottle"
+    },
+    {
+      "item": "botania:ender_air_bottle"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "botania:ender_air_bottle"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:vioarr_leap"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}

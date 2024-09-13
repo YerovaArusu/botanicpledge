@@ -83,9 +83,9 @@ public class BPRitualCategory implements IRecipeCategory<BotanicRitualRecipe> {
         HashMap<RecipeIngredientRole, ArrayList<Point>> slots = new HashMap<>();
 
         ArrayList<Point> InputPoints = new ArrayList<>();
-        InputPoints.add(new Point(39, 13));
-        InputPoints.add(new Point(62, 7));
-        InputPoints.add(new Point(85, 13));
+        InputPoints.add(new Point(39, 12));
+        InputPoints.add(new Point(62, 6));
+        InputPoints.add(new Point(85, 12));
 
         InputPoints.add(new Point(34, 35));
         InputPoints.add(new Point(90, 35));

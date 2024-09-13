@@ -2,6 +2,8 @@ package yerova.botanicpledge.common.items.relic;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -19,14 +22,18 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.network.EffectType;
+import vazkii.botania.network.clientbound.BotaniaEffectPacket;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
@@ -39,6 +46,7 @@ import yerova.botanicpledge.setup.BPItemTiers;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class AsgardFractal extends SwordItem {
     public HashMap<LivingEntity, Integer> targetsNTime = new HashMap<>();
@@ -48,7 +56,6 @@ public class AsgardFractal extends SwordItem {
 
     public AsgardFractal(int pAttackDamageModifier, float pAttackSpeedModifier, Item.Properties pProperties) {
         super(BPItemTiers.YGGDRALIUM_TIER, pAttackDamageModifier, pAttackSpeedModifier, pProperties);
-        MinecraftForge.EVENT_BUS.addListener(this::onLeftClick);
     }
 
 
@@ -104,28 +111,42 @@ public class AsgardFractal extends SwordItem {
         super.inventoryTick(stack, pLevel, pEntity, pSlotId, pIsSelected);
     }
 
-    public void onLeftClick(PlayerInteractEvent.LeftClickEmpty event) {
-
-        Player player = event.getEntity();
-
-        if (player.getItemInHand(event.getHand()).getItem() instanceof AsgardFractal && !player.isCrouching() && ManaItemHandler.instance().requestManaExactForTool(player.getMainHandItem(), player, 500, true)) {
-
-            Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
-            Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
-            player.setDeltaMovement(dashVec);
-        }
-    }
-
     @Override
-    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
+    public boolean hurtEnemy(ItemStack stack, LivingEntity entity, @NotNull LivingEntity attacker) {
+        double range = 8;
+        IntList alreadyTargetedEntities = new IntArrayList();
 
-        if (!player.isCrouching() && ManaItemHandler.instance().requestManaExactForTool(player.getMainHandItem(), player, 500, true)) {
-            Vec3 playerLook = player.getViewVector(1).multiply(2,2,2);
-            Vec3 dashVec = new Vec3(playerLook.x(), playerLook.y(), playerLook.z());
-            player.setDeltaMovement(dashVec);
+        Predicate<Entity> selector = e -> e instanceof LivingEntity && e instanceof Enemy && !(e instanceof Player) && !alreadyTargetedEntities.contains(e.getId());
+
+        LivingEntity prevTarget = entity;
+        int hops =10;
+        float dmg = getDamage();
+        for (int i = 0; i < hops; i++) {
+            List<Entity> entities = entity.level().getEntities(prevTarget, new AABB(prevTarget.getX() - range, prevTarget.getY() - range, prevTarget.getZ() - range, prevTarget.getX() + range, prevTarget.getY() + range, prevTarget.getZ() + range), selector);
+            if (entities.isEmpty()) {
+                break;
+            }
+
+            LivingEntity target = (LivingEntity) entities.get(entity.level().getRandom().nextInt(entities.size()));
+            if (attacker instanceof Player player) {
+                target.hurt(player.damageSources().playerAttack(player), dmg);
+            } else {
+                target.hurt(attacker.damageSources().mobAttack(attacker), dmg);
+            }
+
+            alreadyTargetedEntities.add(target.getId());
+            prevTarget = target;
+            dmg-=dmg*(1/hops);
         }
 
-        return super.onLeftClickEntity(stack, player, entity);
+        if (!alreadyTargetedEntities.isEmpty()) {
+            XplatAbstractions.INSTANCE.sendToTracking(attacker,
+                    new BotaniaEffectPacket(EffectType.THUNDERCALLER_EFFECT,
+                            attacker.getX(), attacker.getY() + attacker.getBbHeight() / 2.0, attacker.getZ(),
+                            alreadyTargetedEntities.toArray(new int[0])));
+        }
+
+        return super.hurtEnemy(stack, entity, attacker);
     }
 
     @Override

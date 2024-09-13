@@ -25,7 +25,7 @@
         "category": "equipment",
         "key": {
           "p": {
-            "tag": "forge:tools/swords/fiery"
+            "tag": "forge:tools/swords/yggdrasilsteel"
           },
           "s": {
             "item": "minecraft:stick"

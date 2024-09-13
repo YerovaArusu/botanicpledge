@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -33,6 +32,10 @@ public class BPItems {
 
 
     public static final RegistryObject<Item> ASGARD_FRACTAL = ITEMS.register("yggdrasil_warden", () -> new AsgardFractal(23, 1,
+            new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> VIOARR_LEAP = ITEMS.register("vioarr_leap", () -> new VioarrLeap(0, 0,
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
