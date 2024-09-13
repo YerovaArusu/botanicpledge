@@ -18,6 +18,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.crafting.ConditionalRecipe;
+import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
@@ -242,7 +244,6 @@ public class BPItemEventHandler {
     @SubscribeEvent
     public static void handlePlayerJumps(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
-
         ConqueringSashItem.onPlayerJump(entity);
         handleJumpHeightBoost(entity);
     }
@@ -267,7 +268,6 @@ public class BPItemEventHandler {
         if (jumpBoost != 0.0) {
             entity.setDeltaMovement(movement.x, movement.y + (1 + (jumpBoost * JUMP_HEIGHT_MULTIPLIER)), movement.z);
         }
-
         if (entity.isSprinting()) {
             float rotation = entity.getYRot() * ((float) Math.PI / 180F);
             entity.setDeltaMovement(entity.getDeltaMovement().add(-Mth.sin(rotation) * SPRINT_MODIFIER, 0.0D, Mth.cos(rotation) * SPRINT_MODIFIER));

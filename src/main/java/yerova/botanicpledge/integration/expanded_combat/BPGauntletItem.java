@@ -11,7 +11,7 @@ import vazkii.botania.api.mana.ManaItemHandler;
 
 import static yerova.botanicpledge.common.items.TerraShield.MANA_PER_DAMAGE;
 
-public class BPGauntletItem extends ECGauntletItem {
+public class BPGauntletItem extends ECGauntletItem{
     public BPGauntletItem(Properties properties, Material materialIn) {
         super(properties, materialIn);
     }

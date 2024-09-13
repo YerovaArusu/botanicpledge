@@ -16,6 +16,7 @@ import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.fml.ModList;
+import top.theillusivec4.curios.api.CuriosApi;
 import yerova.botanicpledge.config.BPConfig;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -37,6 +38,7 @@ public class ExpandedCombatPlugin implements IExpandedCombatPlugin {
 
     @Override
     public void registerMaterials(RegistrationHandler registrationHandler) {
+
         AutoConfig.register(BPConfig.class, Toml4jConfigSerializer::new);
         BotanicPledge.CONFIG = AutoConfig.getConfigHolder(BPConfig.class).getConfig();
 
