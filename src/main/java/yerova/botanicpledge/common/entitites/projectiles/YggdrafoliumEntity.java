@@ -102,9 +102,9 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
 
     @Override
     public void tick() {
-        setTicksExisted(getTicksExisted() + 1);
 
-        if (this.getTicksExisted() >= 160) discard();
+
+        if (this.getAliveTicks() >= 160) discard();
 
         particles();
         super.tick();
@@ -142,7 +142,7 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
     public void addAdditionalSaveData(CompoundTag tag) {
 
 
-        tag.putInt(TAG_TICKS_EXISTED, getTicksExisted());
+
         tag.putInt(TAG_COLOR, getColor());
         tag.putFloat(TAG_GRAVITY, getGravity());
 
@@ -160,7 +160,6 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
     @Override
     public void readAdditionalSaveData(CompoundTag cmp) {
 
-        setTicksExisted(cmp.getInt(TAG_TICKS_EXISTED));
         setColor(cmp.getInt(TAG_COLOR));
         setGravity(cmp.getFloat(TAG_GRAVITY));
 
@@ -310,13 +309,6 @@ public class YggdrafoliumEntity extends EntityProjectileBase {
         entityData.set(COLOR, color);
     }
 
-    public void setTicksExisted(int ticks) {
-        _ticksExisted = ticks;
-    }
-
-    public int getTicksExisted() {
-        return _ticksExisted;
-    }
 
 
     public void setShooterUUID(UUID uuid) {

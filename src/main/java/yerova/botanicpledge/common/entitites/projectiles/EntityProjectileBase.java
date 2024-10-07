@@ -43,7 +43,11 @@ public class EntityProjectileBase extends ThrowableProjectile {
     @Override
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) incrementAliveTicks();
+
+        if (getAliveTicks() >= 160) {
+            this.remove(RemovalReason.DISCARDED);
+        }
+        incrementAliveTicks();
     }
 
     @Override
@@ -162,12 +166,16 @@ public class EntityProjectileBase extends ThrowableProjectile {
     }
 
 
+    public int getAliveTicks() {
+        return entityData.get(ALIVE_TICKS);
+    }
 
-    public int getAliveTicks() { return entityData.get(ALIVE_TICKS);}
-    public void setAliveTicks(int i) { entityData.set(ALIVE_TICKS, i);}
+    public void setAliveTicks(int i) {
+        entityData.set(ALIVE_TICKS, i);
+    }
 
     public void incrementAliveTicks() {
-        setAliveTicks(getAliveTicks()+1);
+        setAliveTicks(getAliveTicks() + 1);
     }
 
 
