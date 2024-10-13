@@ -43,7 +43,7 @@ public class YggdrasilsteelHelmet extends TerrasteelHelmItem {
             new ItemStack(BPItems.YGGDRASIL_BOOTS.get())
     });
     public YggdrasilsteelHelmet(Properties props) {
-        super(props);
+        super(props.durability(6400));
     }
 
     @Override

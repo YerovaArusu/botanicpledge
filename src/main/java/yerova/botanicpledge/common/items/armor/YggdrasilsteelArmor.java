@@ -35,6 +35,10 @@ import java.util.function.Supplier;
 
 public class YggdrasilsteelArmor extends TerrasteelArmorItem {
 
+    public YggdrasilsteelArmor(ArmorItem.Type type, Properties props) {
+        super(type,props.durability(6400));
+        MinecraftForge.EVENT_BUS.addListener(this::onJump);
+    }
     public static final MobEffect[] potions = {
             MobEffects.BLINDNESS,
             MobEffects.WITHER,
@@ -50,14 +54,12 @@ public class YggdrasilsteelArmor extends TerrasteelArmorItem {
             new ItemStack(BPItems.YGGDRASIL_LEGGINGS.get()),
             new ItemStack(BPItems.YGGDRASIL_BOOTS.get())
     });
-    public YggdrasilsteelArmor(ArmorItem.Type type, Properties props) {
-        super(type, props.durability(6400));
-        MinecraftForge.EVENT_BUS.addListener(this::onJump);
-    }
+
 
     public String getArmorTextureAfterInk(ItemStack stack, EquipmentSlot slot) {
         return BotanicPledge.MOD_ID + ":textures/model/armor_yggdrasilsteel.png";
     }
+
 
 
     @Override
@@ -127,6 +129,8 @@ public class YggdrasilsteelArmor extends TerrasteelArmorItem {
     public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
         return repair.getItem() == BPItems.YGGDRALIUM_INGOT.get() || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
+
+
 
 
     @Override
