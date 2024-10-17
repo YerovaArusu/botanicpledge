@@ -10,6 +10,11 @@
       "text": "botanicpledge.page.mana_buffer"
     },
     {
+      "type": "multiblock",
+      "multiblock_id": "botanicpledge:mana_buffer_structure",
+      "text": "botanicpledge.page.mana_buffer_use"
+    },
+    {
       "type": "text",
       "text": "botanicpledge.page.mana_buffer1"
     }

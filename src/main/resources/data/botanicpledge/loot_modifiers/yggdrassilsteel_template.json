@@ -1,0 +1,14 @@
+{
+  "type": "botanicpledge:add_item",
+  "conditions": [
+    {
+      "condition": "botania:killed_by_player",
+      "killed_by_player": true
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 1.0
+    }
+  ],
+  "item": "botanicpledge:yggdrasilsteel_template"
+}

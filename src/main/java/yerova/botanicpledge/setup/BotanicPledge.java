@@ -35,6 +35,7 @@ import yerova.botanicpledge.client.render.entities.YggdrafoliumRenderer;
 import yerova.botanicpledge.client.render.entities.YggdrasilGuardianRenderer;
 import yerova.botanicpledge.client.render.items.VedrfolnirCoreRenderer;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
+import yerova.botanicpledge.common.blocks.ManaBufferBlock;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
 import yerova.botanicpledge.common.network.Networking;
@@ -71,6 +72,7 @@ public class BotanicPledge {
         BPEntities.ENTITY.register(forgeBus);
         BPBlocks.BLOCKS.register(forgeBus);
         BPBlockEntities.BLOCK_ENTITIES.register(forgeBus);
+        BPLootModifiers.LOOT_MODIFIERS.register(forgeBus);
 
 
         forgeBus.addListener(this::setup);
@@ -88,6 +90,7 @@ public class BotanicPledge {
     private void setup(final FMLCommonSetupEvent event) {
         Networking.register();
         PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"yggdrasil_ritual"), YggdrasilGuardian.ARENA_MULTIBLOCK.get());
+        PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"mana_buffer_structure"), ManaBufferBlock.MANA_BUFFER_STRUCTURE.get());
 
 
     }

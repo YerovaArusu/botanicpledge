@@ -4,6 +4,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,12 +18,14 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.lwjgl.openal.SOFTDeferredUpdates;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.helper.ItemNBTHelper;
+import vazkii.botania.common.item.equipment.tool.terrasteel.TerraShattererItem;
 import vazkii.botania.common.item.relic.RelicBaubleItem;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.capabilities.Attribute;
@@ -39,10 +43,10 @@ import java.util.UUID;
 public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioItem {
 
     private static final String TAG_MANA = "mana";
-    private static final int MAX_LEVEL_MANA = 2_000_000_000;
+    public static final int MAX_LEVEL_MANA = 2_000_000_000;
     private static final int TICK_INTERVAL = 20;
 
-    protected static final int[] LEVELS = {
+    public static final int[] LEVELS = {
             0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, MAX_LEVEL_MANA
     };
 
@@ -70,20 +74,39 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player player)) {
-            return;
+        if (!(slotContext.entity() instanceof Player player)) return;
+        handleFlight(player,stack);
+
+    }
+
+    public static void handleFlight(Player player,ItemStack stack) {
+        if (stack.isEmpty() || player.isCreative() || player.isSpectator()) return;
+
+        if (checkIfAllowedToFly(player,stack) && !player.getAbilities().mayfly) {
+            startFlying(player);
+        } else if (!checkIfAllowedToFly(player,stack) && player.getAbilities().mayfly) {
+            stopFlying(player);
+            if (player instanceof ServerPlayer serverPlayer) {
+                serverPlayer.sendSystemMessage(Component.translatable("botanicpledge.attributes.cant_fly").withStyle(ChatFormatting.DARK_RED));
+            }
         }
 
-        if (player.tickCount % TICK_INTERVAL == 0 && player.getAbilities().flying) {
-            stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                int manaCost = attribute.getManaCostPerTick() * BPConstants.MANA_TICK_COST_WHILE_FLIGHT_CONVERSION_RATE;
+        if (player.tickCount % TICK_INTERVAL == 0 &&player.getAbilities().mayfly && player.getAbilities().flying) {
+            if(stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
+                CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
 
-                if (!ManaItemHandler.instance().requestManaExactForTool(stack, player, manaCost, true)) {
-                    stopFlying(player);
-                }
-            });
+                ManaItemHandler.INSTANCE.requestManaExactForTool(stack,player,attribute.getManaCostPerTick(), true);
+            }
         }
     }
+
+    private static boolean checkIfAllowedToFly(Player player, ItemStack stack) {
+        if(!stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) return false;
+        CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+
+        return ManaItemHandler.INSTANCE.requestManaExactForTool(stack,player,attribute.getManaCostPerTick(), false);
+    }
+
 
     private boolean isDraconicEvolutionArmorEquipped(Player player) {
         return PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID);
@@ -95,9 +118,9 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player) {
-            attemptToStartFlying(player, stack);
-        }
+        slotContext.entity().playSound(SoundEvents.ARMOR_EQUIP_NETHERITE,
+                1.0F, 1.0F);
+
     }
 
     @Override
@@ -190,23 +213,18 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         }
     }
 
-    private void attemptToStartFlying(Player player, ItemStack stack) {
-        if (new ManaItem(stack).getMana() > 0) {
-            startFlying(player);
-        }
-    }
 
-    private void startFlying(Player player) {
+
+    public static void startFlying(Player player) {
         player.getAbilities().mayfly = true;
         player.onUpdateAbilities();
     }
 
-    private void stopFlying(Player player) {
-        if (!player.isSpectator() && !player.isCreative()) {
+    private static void stopFlying(Player player) {
+        if (player.isSpectator() || player.isCreative()) return;
             player.getAbilities().flying = false;
             player.getAbilities().mayfly = false;
             player.onUpdateAbilities();
-        }
     }
 
 
@@ -255,7 +273,9 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         @Override
         public int getMaxMana() {
             int level = getLevel(stack);
-            return LEVELS[Math.min(LEVELS.length - 1, level + 1)] * stack.getCount();
+            if (level == 0) return LEVELS[1];
+            if (getMana() >= LEVELS[level]) level++;
+            return LEVELS[Math.min(LEVELS.length - 1, level)] * stack.getCount();
         }
 
         @Override
@@ -294,7 +314,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return true;
+        return false;
     }
 
     @Override
