@@ -182,7 +182,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-            addShieldAndChargeTooltip(tooltip, attribute);
             addRunesTooltip(tooltip, attribute);
             addEmptySocketsTooltip(tooltip, attribute);
         });
@@ -190,14 +189,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         super.appendHoverText(stack, world, tooltip, flags);
     }
 
-    private void addShieldAndChargeTooltip(List<Component> tooltip, CoreAttribute attribute) {
-        tooltip.add(Component.literal("Shield: " + formatPercentage(attribute.getCurrentShield(), attribute.getMaxShield()) + "%")
-                .withStyle(ChatFormatting.GRAY));
-    }
-
-    private String formatPercentage(double current, double max) {
-        return String.format(Locale.ENGLISH, "%1.2f", (current / max) * 100);
-    }
 
     private void addRunesTooltip(List<Component> tooltip, CoreAttribute attribute) {
         attribute.getAllRunes().forEach(rune ->
@@ -235,9 +226,10 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         int level = getLevel(stack);
-        int max = LEVELS[Math.min(LEVELS.length - 1, level + 1)];
+        int max = LEVELS[Math.min(LEVELS.length - 1, level )];
         int curr = new ManaItem(stack).getMana();
-        float percent = level == 0 ? 0F : (float) curr / max;
+        float percent = (float) curr / max;
+        System.out.println(percent);
         return Optional.of(new ManaBarTooltip(percent, level));
     }
 
@@ -314,7 +306,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return false;
+        return true;
     }
 
     @Override

@@ -42,9 +42,9 @@ public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTab
     public void addToCreativeTab(Item me, CreativeModeTab.Output output) {
 
         for (int level : LEVELS) {
+            if (level == 0) continue;
             ManaItem item = new ManaItem(new ItemStack(this));
-            item.addMana(level);
-
+            item.addMana(level-1);
             output.accept(item.getStack());
 
         }
