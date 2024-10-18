@@ -229,7 +229,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         int max = LEVELS[Math.min(LEVELS.length - 1, level )];
         int curr = new ManaItem(stack).getMana();
         float percent = (float) curr / max;
-        System.out.println(percent);
         return Optional.of(new ManaBarTooltip(percent, level));
     }
 
