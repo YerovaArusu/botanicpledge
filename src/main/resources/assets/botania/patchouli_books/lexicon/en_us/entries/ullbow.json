@@ -2,6 +2,7 @@
   "name": "Ull's Bow",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:ull_bow",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 7,
   "pages": [

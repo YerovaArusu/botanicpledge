@@ -2,6 +2,7 @@
   "name": "Ring of Aesir",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:aesir_ring",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 11,
   "pages": [

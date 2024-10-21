@@ -2,6 +2,7 @@
   "name": "Conquering Sash",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:conquering_sash",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 10,
   "pages": [

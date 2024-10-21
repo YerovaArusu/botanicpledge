@@ -2,6 +2,7 @@
   "name": "Yggdrasilsteel Equipment",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:yggdrasilsteel_helmet",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 14,
   "pages": [

@@ -2,6 +2,7 @@
   "name": "Shields",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:mana_shield",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 9,
   "pages": [

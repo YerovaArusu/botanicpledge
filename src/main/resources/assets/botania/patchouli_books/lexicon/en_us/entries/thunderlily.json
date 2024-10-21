@@ -2,6 +2,7 @@
   "name": "Thunderlily",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:thunder_lily",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 13,
   "pages": [

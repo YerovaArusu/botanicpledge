@@ -2,6 +2,7 @@
   "name": "Warden of Yggdrasil",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:yggdrasil_warden",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 6,
   "pages": [

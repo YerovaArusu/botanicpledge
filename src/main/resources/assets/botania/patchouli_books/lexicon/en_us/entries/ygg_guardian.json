@@ -2,6 +2,7 @@
   "name": "Yggdrasil Guardian",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:yggdrasil_pylon",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 15,
   "pages": [

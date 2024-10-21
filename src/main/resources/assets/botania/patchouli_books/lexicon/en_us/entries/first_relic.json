@@ -2,6 +2,7 @@
   "name": "First Relic",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:first_relic",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": true,
   "sortnum": 4,
   "pages": [

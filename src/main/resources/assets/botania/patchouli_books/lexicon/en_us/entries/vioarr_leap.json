@@ -2,6 +2,7 @@
   "name": "Víðarr’s Leap",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:vioarr_leap",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 15,
   "pages": [

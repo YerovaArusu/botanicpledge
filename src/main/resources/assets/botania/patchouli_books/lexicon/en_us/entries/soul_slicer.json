@@ -2,6 +2,7 @@
   "name": "botanicpledge.soul_slicer",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:soul_slicer",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 8,
   "pages": [

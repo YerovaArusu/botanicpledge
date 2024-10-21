@@ -1,0 +1,22 @@
+{
+  "name": "Shard of Freyr",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:freyr_shard",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.freyr_shard"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:laputa_shard",
+      "input1": "botanicpledge:yggdrasil_shard",
+      "input3": "botanicpledge:yggdrasil_shard",
+      "input5": "botanicpledge:yggdrasil_shard",
+      "input7": "botanicpledge:yggdrasil_shard"
+    }
+  ]
+}

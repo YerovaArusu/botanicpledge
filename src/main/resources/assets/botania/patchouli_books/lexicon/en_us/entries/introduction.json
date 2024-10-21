@@ -2,6 +2,7 @@
   "name": "botanicpledge.start",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:vedrfolnir_core",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": true,
   "sortnum": 1,
   "pages": [

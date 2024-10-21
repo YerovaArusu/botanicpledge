@@ -2,6 +2,7 @@
   "name": "Modification Altar",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:modification_altar",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": true,
   "sortnum": 6,
   "pages": [

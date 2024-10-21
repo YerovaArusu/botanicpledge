@@ -229,7 +229,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         int max = LEVELS[Math.min(LEVELS.length - 1, level )];
         int curr = new ManaItem(stack).getMana();
         float percent = (float) curr / max;
-        System.out.println(percent);
         return Optional.of(new ManaBarTooltip(percent, level));
     }
 
@@ -306,7 +305,8 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return true;
+        ManaItem item = new ManaItem(stack);
+        return item.getMana() >= item.getMaxMana()-1;
     }
 
     @Override

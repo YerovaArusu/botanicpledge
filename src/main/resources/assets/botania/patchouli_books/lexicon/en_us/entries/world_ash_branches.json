@@ -2,6 +2,7 @@
   "name": "botanicpledge.world_ash_branches",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:world_ash_branch",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": true,
   "sortnum": 2,
   "pages": [

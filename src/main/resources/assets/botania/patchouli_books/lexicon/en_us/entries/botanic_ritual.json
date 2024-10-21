@@ -2,6 +2,7 @@
   "name": "botanicpledge.botanic_ritual",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:ritual_center",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": true,
   "sortnum": 3,
   "pages": [

@@ -1,0 +1,25 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "reagent": {
+    "item": "botania:laputa_shard"
+  },
+  "pedestalItems": [
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    },
+    {
+      "item": "botanicpledge:yggdrasil_shard"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:freyr_shard"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}

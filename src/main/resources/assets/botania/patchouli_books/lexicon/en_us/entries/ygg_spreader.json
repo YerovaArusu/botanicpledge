@@ -2,6 +2,7 @@
   "name": "Yggdral Spreader",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:yggdral_spreader",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 2,
   "pages": [

@@ -2,6 +2,7 @@
   "name": "botanicpledge.runes",
   "category": "botania:botanicpledge",
   "icon": "botanicpledge:rune_gem",
+  "advancement": "botania:main/elf_lexicon_pickup",
   "priority": false,
   "sortnum": 12,
   "pages": [
