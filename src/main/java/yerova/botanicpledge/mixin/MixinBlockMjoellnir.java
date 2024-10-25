@@ -15,17 +15,8 @@ import yerova.botanicpledge.common.items.relic.RingOfAesir;
 @Mixin(BlockMjoellnir.class)
 public class MixinBlockMjoellnir {
 
-    @Unique
-    private static final boolean IS_MYTHIC_BOTANY_LOADED = ModList.get().isLoaded("mythicbotany");
-
     @Inject(at = @At(value = "RETURN"), method = "canHold", cancellable = true, remap = false)
     private static void canHold(Player player, CallbackInfoReturnable<Boolean> cir) {
-        if (!IS_MYTHIC_BOTANY_LOADED) {
-            cir.cancel(); // Skip if Mythic Botany is not present
-            return;
-        }
-
-
         cir.setReturnValue(player.isCreative() || player.isSpectator()
                 || MythicConfig.mjoellnir.requirement.test(player) || !RingOfAesir.getAesirRing(player).isEmpty()
                 || !RingOfThorItem.getThorRing(player).isEmpty() && MythicConfig.mjoellnir.requirement_thor.test(player));

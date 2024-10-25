@@ -1,6 +1,7 @@
 package yerova.botanicpledge.mixin_plugins;
 
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -21,7 +22,10 @@ public class MythicBotanyMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return ModList.get().isLoaded("mythicbotany");
+        if (mixinClassName.equals("yerova.botanicpledge.mixin.MixinBlockMjoellnir")) {
+            return FMLLoader.getLoadingModList().getModFileById("mythicbotany") != null;
+        }
+        return true;
     }
 
     @Override

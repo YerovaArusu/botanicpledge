@@ -2,6 +2,7 @@
   "required": true,
   "package": "yerova.botanicpledge.mixin",
   "compatibilityLevel": "JAVA_17",
+  "plugin": "yerova.botanicpledge.mixin_plugins.MythicBotanyMixinPlugin",
   "injectors": {
     "defaultRequire": 1
   },
