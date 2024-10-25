@@ -1,20 +1,23 @@
-{
+ {
   "type": "botanicpledge:botanic_ritual",
+   "conditions": [
+     {
+       "type": "forge:not",
+       "value": {
+         "type": "forge:mod_loaded",
+         "modid": "mythicbotany"
+       }
+     }
+   ],
   "reagent": {
     "item": "botania:dice"
   },
-  "conditions": [
-    {
-      "type": "forge:mod_loaded",
-      "modid": "mythicbotany"
-    }
-  ],
   "pedestalItems": [
     {
       "item": "botanicpledge:yggdrasil_warden"
     },
     {
-      "item": "mythicbotany:alfsteel_sword"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
       "item": "botania:infinite_fruit"

@@ -1,32 +1,38 @@
 {
   "type": "botanicpledge:botanic_ritual",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mythicbotany"
+    }
+  ],
   "reagent": {
     "item": "botania:mana_pool"
   },
   "pedestalItems": [
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "minecraft:gold_block"
+      "item": "mythicbotany:alfsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:alfsteel_ingot"
     },
     {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:alfsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "minecraft:gold_block"
+      "item": "minecraft:alfsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_block"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
     }
   ],
   "output": {

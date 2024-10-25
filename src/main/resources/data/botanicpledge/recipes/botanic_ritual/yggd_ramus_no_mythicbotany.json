@@ -2,22 +2,25 @@
   "type": "botanicpledge:botanic_ritual",
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "mythicbotany"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "mythicbotany"
+      }
     }
   ],
   "reagent": {
-    "item": "mythicbotany:aura_ring_greatest"
+    "item": "botanicpledge:yggdrasil_heart"
   },
   "pedestalItems": [
     {
-      "item": "botania:elementium_ingot"
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elementium_ingot"
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
@@ -26,18 +29,18 @@
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elementium_ingot"
+      "item": "botania:terra_sword"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botania:elementium_ingot"
+      "item": "botania:terra_sword"
     }
   ],
   "output": {
-    "item": "botanicpledge:yggdrasilsteel_band_of_aura"
+    "item": "botanicpledge:yggd_ramus"
   },
-  "manaCost": 100000,
+  "manaCost": 1000000,
   "keepNbtOfReagent": false
 }

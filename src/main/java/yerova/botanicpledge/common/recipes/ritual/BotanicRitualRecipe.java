@@ -20,6 +20,10 @@ import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.setup.BotanicPledge;
 
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.common.crafting.conditions.ICondition;
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -189,6 +193,17 @@ public class BotanicRitualRecipe implements IBotanicRitualRecipe {
         @Override
         public BotanicRitualRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
 
+            if (json.has("conditions")) {
+                JsonArray conditions = GsonHelper.getAsJsonArray(json, "conditions");
+                for (int i = 0; i < conditions.size(); i++) {
+                    JsonObject conditionJson = conditions.get(i).getAsJsonObject();
+                    ICondition condition = CraftingHelper.getCondition(conditionJson);
+                    if (!condition.test(ICondition.IContext.EMPTY)) {
+                        // Condition failed, don't load this recipe
+                        return null;
+                    }
+                }
+            }
 
             //Center Piece
             Ingredient reagent = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "reagent"));

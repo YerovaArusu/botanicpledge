@@ -2,12 +2,15 @@
   "type": "botanicpledge:botanic_ritual",
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "mythicbotany"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "mythicbotany"
+      }
     }
   ],
   "reagent": {
-    "item": "mythicbotany:aura_ring_greatest"
+    "item": "botania:mana_ring_greater"
   },
   "pedestalItems": [
     {
@@ -36,7 +39,7 @@
     }
   ],
   "output": {
-    "item": "botanicpledge:yggdrasilsteel_band_of_aura"
+    "item": "botanicpledge:yggdrasilsteel_band_of_mana"
   },
   "manaCost": 100000,
   "keepNbtOfReagent": false

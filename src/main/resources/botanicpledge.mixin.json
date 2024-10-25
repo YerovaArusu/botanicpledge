@@ -2,22 +2,16 @@
   "required": true,
   "package": "yerova.botanicpledge.mixin",
   "compatibilityLevel": "JAVA_17",
-  "client": [
-    "MixinBotaniaApi",
-    "MixinLivingEntity",
-    "MixinTerraShattererItem"
-  ],
-  "server": [
-    "MixinBotaniaApi",
-    "MixinLivingEntity",
-    "MixinTerraShattererItem"
-  ],
   "injectors": {
     "defaultRequire": 1
   },
   "refmap": "botanicpledge.mixin-refmap.json",
   "minVersion": "0.8",
   "mixins": [
+    "MixinBotaniaApi",
+    "MixinLivingEntity",
+    "MixinTerraShattererItem",
+    "MixinBlockMjoellnir",
     "MixinMagicLandMineEntity",
     "MixinPixieEntity"
   ]

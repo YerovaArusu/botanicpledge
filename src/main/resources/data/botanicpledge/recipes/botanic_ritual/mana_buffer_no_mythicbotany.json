@@ -2,41 +2,44 @@
   "type": "botanicpledge:botanic_ritual",
   "conditions": [
     {
-      "type": "forge:mod_loaded",
-      "modid": "mythicbotany"
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "mythicbotany"
+      }
     }
   ],
   "reagent": {
-    "item": "botanicpledge:yggdrasil_heart"
+    "item": "botania:mana_pool"
   },
   "pedestalItems": [
     {
-      "item": "mythicbotany:alfsteel_sword"
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "mythicbotany:alfsteel_sword"
+      "item": "minecraft:gold_block"
+    },
+    {
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
     },
     {
-      "item": "botanicpledge:yggdrasilsteel_ingot"
-    },
-    {
-      "item": "mythicbotany:alfsteel_sword"
+      "item": "minecraft:gold_block"
     },
     {
       "item": "botanicpledge:yggdrasilsteel_ingot"
-    },
-    {
-      "item": "mythicbotany:alfsteel_sword"
     }
   ],
   "output": {
-    "item": "botanicpledge:yggd_ramus"
+    "item": "botanicpledge:mana_buffer"
   },
   "manaCost": 1000000,
   "keepNbtOfReagent": false

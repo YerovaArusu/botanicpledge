@@ -160,6 +160,10 @@ repositories {
     maven {url "https://cursemaven.com"}
 
     maven { url "https://maven.shedaniel.me/" }
+    maven {
+        name = 'ModdingX Maven'
+        url = 'https://maven.moddingx.org/'
+    }
 
 }
 
@@ -185,6 +189,10 @@ dependencies {
     compileOnly(fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.2.0.27"))
     // at runtime, use the full JEI jar for Forge
     runtimeOnly(fg.deobf("mezz.jei:jei-1.20.1-forge:15.2.0.27"))
+
+    implementation fg.deobf("curse.maven:mythicbotany-400058:5101899")
+    annotationProcessor fg.deobf("org.moddingx:LibX:${mc_version}-5.0.14")
+    implementation fg.deobf("org.moddingx:LibX:${mc_version}-5.0.14")
 
     //expanded combat
     implementation fg.deobf("curse.maven:expanded-combat-413079:5325188")

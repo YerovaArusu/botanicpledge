@@ -1,7 +1,13 @@
 {
   "type": "botanicpledge:botanic_ritual",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mythicbotany"
+    }
+  ],
   "reagent": {
-    "item": "botania:mana_ring_greater"
+    "item": "mythicbotany:mana_ring_greatest"
   },
   "pedestalItems": [
     {
