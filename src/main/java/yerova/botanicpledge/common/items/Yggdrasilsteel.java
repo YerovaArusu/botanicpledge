@@ -20,7 +20,7 @@ public class Yggdrasilsteel extends Item {
     public InteractionResult useOn(UseOnContext ctx) {
         ItemStack stack = ctx.getItemInHand();
 
-        if (stack.is(BPItems.YGGDRALIUM_INGOT.get())) {
+        if (stack.is(BPItems.YGGDRASILSTEEL_INGOT.get())) {
             return YggdrasilGuardian.spawn(ctx.getPlayer(), stack, ctx.getLevel(), ctx.getClickedPos())
                     ? InteractionResult.sidedSuccess(ctx.getLevel().isClientSide())
                     : InteractionResult.FAIL;

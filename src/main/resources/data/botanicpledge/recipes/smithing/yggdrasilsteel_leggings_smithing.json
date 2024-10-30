@@ -1,10 +1,16 @@
 {
   "type": "minecraft:smithing_transform",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mythicbotany"
+    }
+  ],
   "addition": {
     "item": "botanicpledge:yggdrasilsteel_ingot"
   },
   "base": {
-    "item": "botania:terrasteel_leggings"
+    "item": "mythicbotany:alfsteel_leggings"
   },
   "result": {
     "item": "botanicpledge:yggdrasilsteel_leggings"

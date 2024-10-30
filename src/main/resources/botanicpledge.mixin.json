@@ -9,11 +9,11 @@
   "refmap": "botanicpledge.mixin-refmap.json",
   "minVersion": "0.8",
   "mixins": [
+    "MixinBlockMjoellnir",
     "MixinBotaniaApi",
     "MixinLivingEntity",
-    "MixinTerraShattererItem",
-    "MixinBlockMjoellnir",
     "MixinMagicLandMineEntity",
-    "MixinPixieEntity"
+    "MixinPixieEntity",
+    "MixinTerraShattererItem"
   ]
 }

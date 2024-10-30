@@ -127,7 +127,7 @@ public class YggdrasilsteelArmor extends TerrasteelArmorItem {
 
     @Override
     public boolean isValidRepairItem(@Nonnull ItemStack toRepair, @Nonnull ItemStack repair) {
-        return repair.getItem() == BPItems.YGGDRALIUM_INGOT.get() || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
+        return repair.getItem() == BPItems.YGGDRASILSTEEL_INGOT.get() || (!Ingredient.of(BotaniaTags.Items.INGOTS_TERRASTEEL).test(repair) && super.isValidRepairItem(toRepair, repair));
     }
 
 

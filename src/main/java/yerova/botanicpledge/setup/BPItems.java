@@ -104,7 +104,7 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(Rarity.EPIC).stacksTo(1)
     ));
 
-    public static final RegistryObject<Item> YGGDRALIUM_INGOT = ITEMS.register("yggdrasilsteel_ingot", () -> new Yggdrasilsteel(
+    public static final RegistryObject<Item> YGGDRASILSTEEL_INGOT = ITEMS.register("yggdrasilsteel_ingot", () -> new Yggdrasilsteel(
             new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
 
     public static RegistryObject<Item> YGGDRALIUM_SHARD = ITEMS.register("yggdrasil_shard", () -> new Item(

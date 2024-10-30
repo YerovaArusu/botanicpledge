@@ -11,9 +11,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeItemTagsProvider;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.BotaniaItems;
 import yerova.botanicpledge.integration.expanded_combat.ExpandedCombatPlugin;
 import yerova.botanicpledge.setup.BPBlocks;
@@ -38,7 +36,7 @@ public class ItemTagProvider extends ItemTagsProvider {
     protected void addTags(HolderLookup.Provider pProvider) {
         this.tag(ItemTags.SWORDS).add(BPItems.ASGARD_FRACTAL.get());
         this.tag(ItemTags.SWORDS).add(BPItems.YGGD_RAMUS.get());
-        this.tag(Tags.Items.INGOTS).add(BPItems.YGGDRALIUM_INGOT.get());
+        this.tag(Tags.Items.INGOTS).add(BPItems.YGGDRASILSTEEL_INGOT.get());
         this.tag(Tags.Items.NUGGETS).add(BPItems.YGGDRALIUM_NUGGET.get());
 
         this.tag(YGGDRASILSTEEL_SWORD).add(BotaniaItems.terraSword);
