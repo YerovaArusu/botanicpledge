@@ -35,6 +35,7 @@ import yerova.botanicpledge.client.render.blocks.*;
 import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.client.render.screen.CoreHUD;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
+import yerova.botanicpledge.client.render.screen.YggdrasilPowerHUD;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.items.YggdrasilMonocle;
@@ -84,44 +85,15 @@ public class ForgeClientInitializer {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
         e.registerBelow(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "shield_bar", CoreHUD.PROTECTOR_HUD);
-        e.registerAbove(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "hud",
-                (Fgui, gui, partialTick, width, height) -> {
+        e.registerAboveAll( "yggdrasil_power", YggdrasilPowerHUD.YGGDRASIL_POWER_HUD);
 
-
-
-                    Minecraft mc = Minecraft.getInstance();
-                    if (mc.options.hideGui) {
-                        return;
-                    }
-
-                    ProfilerFiller profiler = mc.getProfiler();
-                    if (YggdrasilMonocle.hasMonocle(mc.player)) {
-                        profiler.push("yggdrasil_monocle");
-                        YggdrasilMonocle.Hud.render(gui, mc.player);
-                        profiler.pop();
-                    }
-
-                    if (mc.hitResult instanceof BlockHitResult result) {
-                        BlockPos bpos = result.getBlockPos();
-                        BlockEntity tile = mc.level.getBlockEntity(bpos);
-
-                        if (!PlayerHelper.hasHeldItem(mc.player, BotaniaItems.lexicon)) {
-                            if (tile instanceof RitualCenterBlockEntity altar) {
-                                RitualCenterBlockEntity.Hud.render(altar, gui, mc);
-                            }
-                            if (tile instanceof ModificationAltarBlockEntity altar) {
-                                ModificationAltarBlockEntity.Hud.render(altar, gui, mc);
-                            }
-                        }
-                    }
-                });
     }
 
 
     @SubscribeEvent
     public static void clientRegister(FMLClientSetupEvent event) {
         MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST,(CustomizeGuiOverlayEvent.BossEventProgress e) -> {
-            var result = BossBarHandler.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(),
+            var result = YggdrasilBossBar.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(),
                     e.getBossEvent(), true);
             result.ifPresent(increment -> {
                 e.setCanceled(true);

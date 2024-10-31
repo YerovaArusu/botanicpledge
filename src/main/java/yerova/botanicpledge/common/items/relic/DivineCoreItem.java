@@ -18,14 +18,12 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.lwjgl.openal.SOFTDeferredUpdates;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.helper.ItemNBTHelper;
-import vazkii.botania.common.item.equipment.tool.terrasteel.TerraShattererItem;
 import vazkii.botania.common.item.relic.RelicBaubleItem;
 import vazkii.botania.common.item.relic.RelicImpl;
 import yerova.botanicpledge.common.capabilities.Attribute;
@@ -36,7 +34,6 @@ import yerova.botanicpledge.common.utils.PlayerUtils;
 
 import javax.annotation.Nonnull;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -75,36 +72,36 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         if (!(slotContext.entity() instanceof Player player)) return;
-        handleFlight(player,stack);
+        handleFlight(player, stack);
 
     }
 
-    public static void handleFlight(Player player,ItemStack stack) {
+    public static void handleFlight(Player player, ItemStack stack) {
         if (stack.isEmpty() || player.isCreative() || player.isSpectator()) return;
 
-        if (checkIfAllowedToFly(player,stack) && !player.getAbilities().mayfly) {
+        if (checkIfAllowedToFly(player, stack) && !player.getAbilities().mayfly) {
             startFlying(player);
-        } else if (!checkIfAllowedToFly(player,stack) && player.getAbilities().mayfly) {
+        } else if (!checkIfAllowedToFly(player, stack) && player.getAbilities().mayfly) {
             stopFlying(player);
             if (player instanceof ServerPlayer serverPlayer) {
                 serverPlayer.sendSystemMessage(Component.translatable("botanicpledge.attributes.cant_fly").withStyle(ChatFormatting.DARK_RED));
             }
         }
 
-        if (player.tickCount % TICK_INTERVAL == 0 &&player.getAbilities().mayfly && player.getAbilities().flying) {
-            if(stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
+        if (player.tickCount % TICK_INTERVAL == 0 && player.getAbilities().mayfly && player.getAbilities().flying) {
+            if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
                 CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
 
-                ManaItemHandler.INSTANCE.requestManaExactForTool(stack,player,attribute.getManaCostPerTick(), true);
+                ManaItemHandler.INSTANCE.requestManaExactForTool(stack, player, attribute.getManaCostPerTick(), true);
             }
         }
     }
 
     private static boolean checkIfAllowedToFly(Player player, ItemStack stack) {
-        if(!stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) return false;
+        if (!stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) return false;
         CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
 
-        return ManaItemHandler.INSTANCE.requestManaExactForTool(stack,player,attribute.getManaCostPerTick(), false);
+        return ManaItemHandler.INSTANCE.requestManaExactForTool(stack, player, attribute.getManaCostPerTick(), false);
     }
 
 
@@ -205,7 +202,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     }
 
 
-
     public static void startFlying(Player player) {
         player.getAbilities().mayfly = true;
         player.onUpdateAbilities();
@@ -213,9 +209,9 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     private static void stopFlying(Player player) {
         if (player.isSpectator() || player.isCreative()) return;
-            player.getAbilities().flying = false;
-            player.getAbilities().mayfly = false;
-            player.onUpdateAbilities();
+        player.getAbilities().flying = false;
+        player.getAbilities().mayfly = false;
+        player.onUpdateAbilities();
     }
 
 
@@ -226,7 +222,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     @Override
     public Optional<TooltipComponent> getTooltipImage(ItemStack stack) {
         int level = getLevel(stack);
-        int max = LEVELS[Math.min(LEVELS.length - 1, level )];
+        int max = LEVELS[Math.min(LEVELS.length - 1, level)];
         int curr = new ManaItem(stack).getMana();
         float percent = (float) curr / max;
         return Optional.of(new ManaBarTooltip(percent, level));
@@ -306,7 +302,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     @Override
     public boolean isBarVisible(ItemStack stack) {
         ManaItem item = new ManaItem(stack);
-        return item.getMana() >= item.getMaxMana()-1;
+        return item.getMana() >= item.getMaxMana() - 1;
     }
 
     @Override

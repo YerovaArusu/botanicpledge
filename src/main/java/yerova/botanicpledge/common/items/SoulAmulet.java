@@ -82,7 +82,7 @@ public class SoulAmulet extends Item implements ICurioItem {
 
         if (amulet.getItem() instanceof SoulAmulet) {
             for (String s : amulet.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getAllKeys()) {
-
+                if (s == "0") continue;
                 souls.put(UUID.fromString(s), amulet.getOrCreateTagElement(BPConstants.STATS_TAG_NAME).getString(s));
             }
         }
