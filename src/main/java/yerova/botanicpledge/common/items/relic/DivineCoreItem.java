@@ -115,8 +115,7 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
 
     @Override
     public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        slotContext.entity().playSound(SoundEvents.ARMOR_EQUIP_NETHERITE,
-                1.0F, 1.0F);
+        if (prevStack.getItem() != stack.getItem()) slotContext.entity().playSound(SoundEvents.ARMOR_EQUIP_NETHERITE, 1.0F, 1.0F);
 
     }
 
