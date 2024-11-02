@@ -23,11 +23,7 @@ public class YggdrasilAura {
             double noiseValue = SimplePerlinNoise.noise(chunk.getPos().x * 0.1, chunk.getPos().z * 0.1);
             double normalizedNoiseValue = (noiseValue + 1.0) / 2.0;
 
-
-
-            //float greennessFactor = calculateGreenness(biome, precipitation, chunkPos.getY());
-
-            return (int) (normalizedNoiseValue * 20 /* * greennessFactor*/);
+            return (int) (normalizedNoiseValue * 20);
         }
         return 1;
     }

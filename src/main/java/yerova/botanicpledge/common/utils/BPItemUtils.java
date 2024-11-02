@@ -3,9 +3,9 @@ package yerova.botanicpledge.common.utils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.util.LazyOptional;
 import vazkii.botania.api.mana.ManaItemHandler;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
-import yerova.botanicpledge.common.capabilities.YggdrasilAura;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.capabilities.provider.YggdrasilAuraProvider;
 import yerova.botanicpledge.common.items.relic.DivineCoreItem;
@@ -13,8 +13,7 @@ import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.common.network.SyncValues;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
 
 public class BPItemUtils {
@@ -42,7 +41,7 @@ public class BPItemUtils {
     private static int getShieldRegenAmount(CoreAttribute attributes, long lastTimeHit) {
         double baseRegenAmount = 1;
         double growthRate = 0.05;
-        int shieldRegenAmount = (int) (baseRegenAmount * Math.exp(growthRate * Math.max(lastTimeHit/20,1)));
+        int shieldRegenAmount = (int) (baseRegenAmount * Math.exp(growthRate * Math.max(lastTimeHit / 20, 1)));
         shieldRegenAmount = Math.min(shieldRegenAmount, attributes.getMaxShield() - attributes.getCurrentShield());
         return shieldRegenAmount;
     }
@@ -50,23 +49,19 @@ public class BPItemUtils {
 
     public static void syncValueToClient(ServerPlayer serverPlayer) {
 
-        AtomicInteger auraValue = new AtomicInteger();
-        serverPlayer.level().getChunkAt(serverPlayer.getOnPos()).getCapability(YggdrasilAuraProvider.ESSENCE).ifPresent(aura -> {
-            auraValue.set(aura.getGenPerInstance());
-        });
 
-        AtomicBoolean success = new AtomicBoolean(false);
-        ItemHelper.getDivineCoreCurio(serverPlayer).forEach(slotResult -> {
-            if (!(slotResult.stack().getItem() instanceof DivineCoreItem)) return;
-            slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-                Networking.sendToPlayer(new SyncValues(attribute.getCurrentShield(), attribute.getMaxShield(), auraValue.get()), serverPlayer);
-                success.set(true);
-            });
-        });
+        int auraValue = serverPlayer.level().getChunkAt(serverPlayer.getOnPos())
+                .getCapability(YggdrasilAuraProvider.ESSENCE)
+                .map(aura -> aura.getGenPerInstance())
+                .orElse(0);
 
-        if (!success.get()) {
-            Networking.sendToPlayer(new SyncValues(0, 0, 0), serverPlayer);
-        }
+        Optional<CoreAttribute> attribute = ItemHelper.getDivineCoreCurio(serverPlayer).stream().findFirst().map(slotResult -> slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get());
+
+        int def = attribute.map(a -> a.getCurrentShield()).orElse(0);
+        int maxDef = attribute.map(a -> a.getMaxShield()).orElse(0);
+
+        Networking.sendToPlayer(new SyncValues(def, maxDef, auraValue), serverPlayer);
+
     }
 
 

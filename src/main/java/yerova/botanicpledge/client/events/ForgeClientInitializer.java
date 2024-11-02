@@ -85,7 +85,7 @@ public class ForgeClientInitializer {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
         e.registerBelow(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "shield_bar", CoreHUD.PROTECTOR_HUD);
-        e.registerAboveAll( "yggdrasil_power", YggdrasilPowerHUD.YGGDRASIL_POWER_HUD);
+        e.registerAboveAll( "yggdrasil_power_gui", YggdrasilPowerHUD.YGGDRASIL_POWER_HUD);
 
     }
 

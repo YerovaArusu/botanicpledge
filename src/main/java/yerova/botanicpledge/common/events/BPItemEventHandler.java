@@ -283,7 +283,7 @@ public class BPItemEventHandler {
 
     @SubscribeEvent
     public static void syncShield(TickEvent.LevelTickEvent event) {
-        if (event.level.isClientSide() || event.phase != TickEvent.Phase.START) {
+        if (event.level.isClientSide() || event.phase != TickEvent.Phase.END) {
             return;
         }
 

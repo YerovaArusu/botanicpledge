@@ -42,22 +42,6 @@ public class YggdrasilMonocle extends ManaseerMonocleItem {
         Proxy.INSTANCE.runOnClient(() -> () -> AccessoryRenderRegistry.register(this, new Renderer()));
     }
 
-    public static class Hud {
-        public static void render(GuiGraphics gui, Player player) {
-            Minecraft mc = Minecraft.getInstance();
-
-            int x = mc.getWindow().getGuiScaledWidth() / 2 -51;
-            int y = mc.getWindow().getGuiScaledHeight() / 6 *5;
-
-
-            gui.drawString(mc.font, "Yggdrasil Aura", x +8, y - 10, 0x0000FF);
-            HUDHandler.renderManaBar(gui,x,y, 0x0000FF, 0.75F, ClientSyncedValues.getYggdrasilPower(),15);
-
-        }
-    }
-
-
-
     public static boolean hasMonocle(LivingEntity living) {
         return !EquipmentHandler.findOrEmpty(stack -> {
             if (!stack.isEmpty() && stack.is(BPItems.YGGDRASIL_MONOCLE.get()))
