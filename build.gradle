@@ -165,6 +165,13 @@ repositories {
         url = 'https://maven.moddingx.org/'
     }
 
+    maven { url 'https://api.modrinth.com/maven' }
+
+    maven {
+        name "KosmX's maven"
+        url 'https://maven.kosmx.dev/'
+    }
+
 }
 
 dependencies {
@@ -184,7 +191,6 @@ dependencies {
     implementation fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84-FORGE")
 
     //just enough items
-
     compileOnly(fg.deobf("mezz.jei:jei-1.20.1-common-api:15.2.0.27"))
     compileOnly(fg.deobf("mezz.jei:jei-1.20.1-forge-api:15.2.0.27"))
     // at runtime, use the full JEI jar for Forge
@@ -200,6 +206,17 @@ dependencies {
     //cloth config
     implementation fg.deobf("me.shedaniel.cloth:cloth-config-forge:11.1.118")
 
+    //Better Combat
+    implementation fg.deobf('maven.modrinth:better-combat:1.8.6+1.20.1-forge')
+
+    //MixinExtras for Better Combat
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")) {
+        jarJar.ranged(it, "[0.4.1,)")
+    }
+
+    //PlayerAnimator for Better Combat
+    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:1.0.2-rc1+1.20")
 
 
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
