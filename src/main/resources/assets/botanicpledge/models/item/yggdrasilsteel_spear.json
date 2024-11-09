@@ -3,8 +3,8 @@
   "base": {
     "parent": "expanded_combat:item/bases/spear",
     "textures": {
-      "layer0": "expanded_combat:item_large/spear_handle",
-      "layer1": "botanicpledge:item_large/spear/yggdrasilsteel"
+      "layer0": "expanded_combat:item/spear_handle",
+      "layer1": "botanicpledge:item/spear/yggdrasilsteel"
     }
   },
   "loader": "forge:separate_transforms",

@@ -66,8 +66,7 @@ public class ModificationAltarBlock extends BaseEntityBlock {
                 world.addFreshEntity(item);
                 tile.setHeldStack(ItemStack.EMPTY);
 
-            } else if (!player.getInventory().getSelected().isEmpty()
-                    && !(player.getItemInHand(handIn).getItem() instanceof WandOfTheForestItem)) {
+            } else if (!(player.getItemInHand(handIn).getItem() instanceof WandOfTheForestItem)) {
                 if (!state.getValue(ModificationAltarBlock.ALTER)) {
                     if (tile.getHeldStack() != null) {
                         ItemEntity item = new ItemEntity(world, player.getX(), player.getY(), player.getZ(), tile.getHeldStack());
@@ -77,7 +76,9 @@ public class ModificationAltarBlock extends BaseEntityBlock {
                 } else {
                     if (tile.getHeldStack().getCapability(AttributeProvider.ATTRIBUTE).isPresent()) {
                         Attribute attribute = tile.getHeldStack().getCapability(AttributeProvider.ATTRIBUTE).resolve().get();
-                        if (handleAttribute(world, handIn, player, attribute)) return InteractionResult.FAIL;
+                        if (handleAttribute(world, handIn, player, attribute)) {
+                            return InteractionResult.FAIL;
+                        }
                     }
 
                     if (tile.getHeldStack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
@@ -93,7 +94,9 @@ public class ModificationAltarBlock extends BaseEntityBlock {
 
     private boolean handleAttribute(Level world, InteractionHand handIn, Player player, Attribute attribute) {
         if (player.getItemInHand(handIn).getItem() instanceof RuneGemItem) {
-            if (!attribute.addRune(Attribute.Rune.getRuneFromStack(player.getItemInHand(handIn)))) return true;
+            if (!attribute.addRune(Attribute.Rune.getRuneFromStack(player.getItemInHand(handIn)))){
+                return true;
+            } else player.getItemInHand(handIn).shrink(1);
 
         } else if (player.isCrouching() || player.getItemInHand(handIn).isEmpty()) {
             if (attribute.getAllRunes().isEmpty()) return true;

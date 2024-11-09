@@ -3,9 +3,9 @@
   "base": {
     "parent": "expanded_combat:item/bases/broad_sword",
     "textures": {
-      "layer0": "expanded_combat:item_large/broad_sword_dye",
-      "layer1": "expanded_combat:item_large/broad_sword_handle",
-      "layer2": "botanicpledge:item_large/broad_sword/yggdrasilsteel"
+      "layer0": "expanded_combat:item/broad_sword_dye",
+      "layer1": "expanded_combat:item/broad_sword_handle",
+      "layer2": "botanicpledge:item/broad_sword/yggdrasilsteel"
     }
   },
   "loader": "forge:separate_transforms",

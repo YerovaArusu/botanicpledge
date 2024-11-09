@@ -3,9 +3,9 @@
   "base": {
     "parent": "expanded_combat:item/bases/glaive",
     "textures": {
-      "layer0": "expanded_combat:item_large/glaive_dye",
-      "layer1": "expanded_combat:item_large/glaive_handle",
-      "layer2": "botanicpledge:item_large/glaive/yggdrasilsteel"
+      "layer0": "expanded_combat:item/glaive_dye",
+      "layer1": "expanded_combat:item/glaive_handle",
+      "layer2": "botanicpledge:item/glaive/yggdrasilsteel"
     }
   },
   "loader": "forge:separate_transforms",

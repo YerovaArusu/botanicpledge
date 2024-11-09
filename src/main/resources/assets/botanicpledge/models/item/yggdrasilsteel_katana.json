@@ -3,8 +3,8 @@
   "base": {
     "parent": "expanded_combat:item/bases/katana",
     "textures": {
-      "layer0": "expanded_combat:item_large/katana_handle",
-      "layer1": "botanicpledge:item_large/katana/yggdrasilsteel"
+      "layer0": "expanded_combat:item/katana_handle",
+      "layer1": "botanicpledge:item/katana/yggdrasilsteel"
     }
   },
   "loader": "forge:separate_transforms",
