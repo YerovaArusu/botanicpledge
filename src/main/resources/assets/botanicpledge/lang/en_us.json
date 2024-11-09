@@ -124,7 +124,7 @@
   "botanicpledge.page.yggdrasil_monocle": "Ever wanted to know how intense the Yggdrasil Aura is so you can optimise your mana production? A Yggdrasil Monocle might actually the best and easiest help. The greener your vision the higher the concentration of Yggdrasil Aura",
   "botanicpledge.page.freyr_shard" : "Are you finding the limitations of the standard Shard of Laputa too restrictive for your grand architectural ambitions? Look no further—this enhanced item is exactly what you need. Boasting a significantly increased range, this upgraded shard offers double the radius compared to its predecessor, making it the perfect tool for larger, more intricate terraforming projects. ",
   "botanicpledge.shard_frey_upgrade": "This is an upgraded version of ",
-  "botanicpledge.attributes.cant_fly": "You cant fly anymore",
+  "botanicpledge.attributes.cant_fly": "YOU CAN'T FLY ANYMORE",
   "item.botanicpledge.ring_of_aesir.desc": "A mystical ring with the power to bind and manipulate elements.",
   "botanicpledge.tooltip.state": "State: %s",
   "botanicpledge.tooltip.toggle_state.ctrl": "Press 'V' to toggle the state.",

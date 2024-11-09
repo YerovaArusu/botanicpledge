@@ -84,8 +84,9 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         } else if (!checkIfAllowedToFly(player, stack) && player.getAbilities().mayfly) {
             stopFlying(player);
             if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.sendSystemMessage(Component.translatable("botanicpledge.attributes.cant_fly").withStyle(ChatFormatting.DARK_RED));
+                serverPlayer.displayClientMessage(Component.translatable("botanicpledge.attributes.cant_fly").withStyle(ChatFormatting.DARK_RED), true);
             }
+            player.playSound(SoundEvents.GLASS_BREAK, 3.0F, 1.0F);
         }
 
         if (player.tickCount % TICK_INTERVAL == 0 && player.getAbilities().mayfly && player.getAbilities().flying) {
