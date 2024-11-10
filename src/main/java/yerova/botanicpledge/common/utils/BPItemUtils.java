@@ -48,21 +48,27 @@ public class BPItemUtils {
 
 
     public static void syncValueToClient(ServerPlayer serverPlayer) {
-
-
         int auraValue = serverPlayer.level().getChunkAt(serverPlayer.getOnPos())
                 .getCapability(YggdrasilAuraProvider.ESSENCE)
                 .map(aura -> aura.getGenPerInstance())
                 .orElse(0);
 
-        Optional<CoreAttribute> attribute = ItemHelper.getDivineCoreCurio(serverPlayer).stream().findFirst().map(slotResult -> slotResult.stack().getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get());
+        Optional<CoreAttribute> attribute = ItemHelper.getDivineCoreCurio(serverPlayer)
+                .stream()
+                .findFirst()
+                .flatMap(slotResult ->
+                        slotResult.stack()
+                                .getCapability(CoreAttributeProvider.CORE_ATTRIBUTE)
+                                .resolve()
+                );
 
-        int def = attribute.map(a -> a.getCurrentShield()).orElse(0);
-        int maxDef = attribute.map(a -> a.getMaxShield()).orElse(0);
+        // Retrieve current shield and max shield values safely
+        int def = attribute.map(CoreAttribute::getCurrentShield).orElse(0);
+        int maxDef = attribute.map(CoreAttribute::getMaxShield).orElse(0);
 
         Networking.sendToPlayer(new SyncValues(def, maxDef, auraValue), serverPlayer);
-
     }
+
 
 
 }
