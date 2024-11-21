@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import vazkii.botania.api.item.AncientWillContainer;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.item.equipment.armor.terrasteel.TerrasteelHelmItem;
 import vazkii.botania.common.item.equipment.tool.ToolCommons;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class YggdrasilsteelHelmet extends TerrasteelHelmItem {
+public class YggdrasilsteelHelmet extends TerrasteelHelmItem implements AncientWillContainer {
 
     public static final String PIXIE_COUNT_TAG = "pixies";
     public static final int MAX_PIXIES = 8;
