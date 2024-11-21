@@ -8,6 +8,7 @@
   "pages": [
     {
       "type": "botania:botanic_ritual",
+      "flag": "!mod:mythicbotany",
       "center": "botanicpledge:rune_yr",
       "output": "botanicpledge:yggdrasilsteel_template",
       "input1": "botania:terrasteel_ingot",
@@ -21,6 +22,21 @@
     },
     {
       "type": "botania:botanic_ritual",
+      "flag": "mod:mythicbotany",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_template",
+      "input1": "mythicbotany:alfsteel_ingot",
+      "input2": "botanicpledge:rune_laguz",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_ingwaz",
+      "input5": "mythicbotany:alfsteel_ingot",
+      "input6": "botanicpledge:rune_ansuz",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botanicpledge:rune_thurisaz"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "!mod:mythicbotany",
       "center": "botania:aura_ring_greater",
       "output": "botanicpledge:yggdrasilsteel_band_of_aura",
       "input2": "botania:elementium_ingot",
@@ -34,7 +50,36 @@
     },
     {
       "type": "botania:botanic_ritual",
+      "flag": "mod:mythicbotany",
+      "center": "mythicbotany:aura_ring_greatest",
+      "output": "botanicpledge:yggdrasilsteel_band_of_aura",
+      "input2": "botania:elementium_ingot",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botania:elementium_ingot",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "!mod:mythicbotany",
       "center": "botania:mana_ring_greater",
+      "output": "botanicpledge:yggdrasilsteel_band_of_mana",
+      "input2": "botania:elementium_ingot",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botania:elementium_ingot",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "mod:mythicbotany",
+      "center": "mythicbotany:mana_ring_greatest",
       "output": "botanicpledge:yggdrasilsteel_band_of_mana",
       "input2": "botania:elementium_ingot",
       "input1": "botanicpledge:yggdrasilsteel_ingot",

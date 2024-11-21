@@ -12,7 +12,8 @@
     },
     {
       "type": "botania:botanic_ritual",
-      "center": "botanicpledge:vedrfolnir_core",
+      "flag": "!mod:mythicbotany",
+      "center": "botanicpledge:yggdrasil_heart",
       "output": "botanicpledge:yggd_ramus",
       "input1": "botanicpledge:yggdrasilsteel_ingot",
       "input2": "botania:terra_sword", 
@@ -22,6 +23,20 @@
       "input6": "botania:terra_sword",
       "input7": "botanicpledge:yggdrasilsteel_ingot",
       "input8": "botania:terra_sword"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "mod:mythicbotany",
+      "center": "botanicpledge:yggdrasil_heart",
+      "output": "botanicpledge:yggd_ramus",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input2": "mythicbotany:alfsteel_sword",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "mythicbotany:alfsteel_sword",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "mythicbotany:alfsteel_sword",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "mythicbotany:alfsteel_sword"
     }
   ]
 }
