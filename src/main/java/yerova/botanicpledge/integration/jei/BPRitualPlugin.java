@@ -7,6 +7,7 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
+import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @JeiPlugin
 public class BPRitualPlugin implements IModPlugin {
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return new ResourceLocation(BotanicPledge.MOD_ID, "jei_plugin");
     }
 

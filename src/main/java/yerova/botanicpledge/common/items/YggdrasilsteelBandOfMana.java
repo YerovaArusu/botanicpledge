@@ -8,7 +8,7 @@ import vazkii.botania.common.item.equipment.bauble.GreaterBandOfManaItem;
 
 public class YggdrasilsteelBandOfMana extends GreaterBandOfManaItem implements CustomCreativeTabContents {
 
-    public static final int MAX_MANA = 8_000_000;
+    public static final int MAX_MANA = 32_000_000;
 
 
     public YggdrasilsteelBandOfMana(Properties props) {
