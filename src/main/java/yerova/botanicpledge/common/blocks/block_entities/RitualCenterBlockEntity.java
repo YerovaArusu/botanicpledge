@@ -24,8 +24,8 @@ import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.client.utils.ClientUtils;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.recipes.ritual.IBotanicRitualRecipe;
-import yerova.botanicpledge.common.recipes.ritual.RecipeUtils;
+import yerova.botanicpledge.common.recipes.botanic_ritual.IBotanicRitualRecipe;
+import yerova.botanicpledge.common.recipes.RecipeUtils;
 import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.setup.BPBlockEntities;
 

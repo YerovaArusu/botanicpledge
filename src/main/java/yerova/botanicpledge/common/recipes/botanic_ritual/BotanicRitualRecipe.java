@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.recipes.ritual;
+package yerova.botanicpledge.common.recipes.botanic_ritual;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

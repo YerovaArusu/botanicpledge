@@ -12,7 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import yerova.botanicpledge.common.recipes.ritual.BotanicRitualRecipe;
+import yerova.botanicpledge.common.recipes.botanic_ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 

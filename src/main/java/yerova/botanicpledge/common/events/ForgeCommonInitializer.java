@@ -13,6 +13,9 @@ import vazkii.botania.api.BotaniaForgeCapabilities;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaItem;
+import vazkii.botania.api.mana.ManaReceiver;
+import vazkii.botania.common.block.block_entity.BlockEntityConstants;
+import vazkii.botania.common.block.mana.ManaVoidBlock;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
@@ -93,6 +96,12 @@ public class ForgeCommonInitializer {
         if (blockEntity.getType() == BPBlockEntities.MODIFICATION_TABLE.get()) {
             e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE,
                     (Wandable) blockEntity));
+        }
+
+        if (blockEntity.getType() == BPBlockEntities.ORE_INFUSION.get()) {
+
+            e.addCapability(prefix("mana_receiver"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_RECEIVER,
+                    (ManaReceiver) blockEntity));
         }
 
     }

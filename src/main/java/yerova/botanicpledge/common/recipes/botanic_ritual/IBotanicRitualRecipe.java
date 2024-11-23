@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.recipes.ritual;
+package yerova.botanicpledge.common.recipes.botanic_ritual;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

@@ -43,6 +43,11 @@ public class BPItems {
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
 
+    public static final RegistryObject<Item> GUNGNIR = ITEMS.register("gungnir", () -> new GungnirItem(
+            new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
+    ));
+
+
     public static final RegistryObject<Item> FIRST_RELIC = ITEMS.register("first_relic", () -> new FirstRelic(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));

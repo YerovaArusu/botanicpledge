@@ -1,0 +1,11 @@
+{
+  "type": "botanicpledge:ore_infusion",
+  "reagent": {
+    "item": "minecraft:raw_iron"
+  },
+  "output": {
+    "item": "minecraft:iron_ingot",
+    "count": 5
+  },
+  "manaCost": 5000
+}

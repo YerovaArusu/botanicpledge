@@ -79,7 +79,7 @@
       "name": "yggdrasil_heart",
       "conditions": [
         { "condition": "botania:killed_by_player" },
-        { "condition": "random_chance", "chance": 0.15 }
+        { "condition": "random_chance", "chance": 0.30 }
       ],
       "rolls": 1,
       "entries": [{
