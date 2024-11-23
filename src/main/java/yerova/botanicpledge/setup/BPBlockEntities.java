@@ -42,6 +42,11 @@ public class BPBlockEntities {
             BLOCK_ENTITIES.register("yggdrasil_pylon",
                     () -> BlockEntityType.Builder.of(YggdrasilPylonBlockEntity::new, BPBlocks.YGGDRASIL_PYLON.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<OreInfusionBlockEntity>> ORE_INFUSION =
+            BLOCK_ENTITIES.register("ore_infusion", () ->
+                    BlockEntityType.Builder.of(OreInfusionBlockEntity::new, BPBlocks.ORE_INFUSION.get()).build(null));
+
+
 
     public static void registerWandHudCaps(BotaniaBlockEntities.BECapConsumer<WandHUD> consumer) {
         consumer.accept(be -> new ManaBufferBlockEntity.WandHud((ManaBufferBlockEntity) be), BPBlockEntities.MANA_BUFFER_BLOCK_ENTITY.get());

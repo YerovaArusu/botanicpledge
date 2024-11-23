@@ -37,6 +37,9 @@ public class BPBlocks {
     public static final RegistryObject<Block> RITUAL_CENTER = registerBlock("ritual_center",
             () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
+    public static final RegistryObject<Block> ORE_INFUSION = registerBlock("ore_infusion",
+            () -> new OreInfusionBlock(BlockBehaviour.Properties.copy(livingwood).isValidSpawn(NO_SPAWN)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdrasilsteel_block",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).strength(9f).requiresCorrectToolForDrops()),

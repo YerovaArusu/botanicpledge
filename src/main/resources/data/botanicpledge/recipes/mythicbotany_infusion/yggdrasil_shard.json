@@ -1,0 +1,44 @@
+{
+    "type": "forge:conditional",
+    "recipes": [
+        {
+            "conditions": [
+                {
+                    "type": "forge:mod_loaded",
+                    "modid": "mythicbotany"
+                }
+            ],
+            "recipe": {
+                "type": "mythicbotany:infuser",
+                "group": "infuser",
+                "mana": 100000,
+                "fromColor": 65280,
+                "toColor": 8356095,
+                "ingredients": [
+                  {
+                    "item": "botania:terrasteel_ingot"
+                  },
+                  {
+                    "item": "botanicpledge:world_ash_branch"
+                  },
+                  {
+                    "item": "botanicpledge:world_ash_branch"
+                  },
+                  {
+                    "item": "botanicpledge:world_ash_branch"
+                  },
+                  {
+                    "item": "botanicpledge:world_ash_branch"
+                  },
+                  {
+                    "item": "botania:terrasteel_ingot"
+                  }
+                ],
+                "output": {
+                  "count": 1,
+                  "item": "botanicpledge:yggdrasil_shard"
+                }
+            }
+        }
+    ]
+}
