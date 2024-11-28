@@ -7,16 +7,19 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
+import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 
 public class RitualPedestalBlock extends BaseEntityBlock {
@@ -68,5 +71,13 @@ public class RitualPedestalBlock extends BaseEntityBlock {
     @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        if (pLevel.getBlockEntity(pPos) instanceof RitualPedestalBlockEntity e && e.getHeldStack() != null ) {
+            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), e.getHeldStack()));
+        }
     }
 }

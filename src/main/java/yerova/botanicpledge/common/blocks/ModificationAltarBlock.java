@@ -7,6 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -25,6 +27,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.provider.AttributeProvider;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
@@ -133,6 +137,14 @@ public class ModificationAltarBlock extends BaseEntityBlock {
             BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
         return createTickerHelper(pBlockEntityType, BPBlockEntities.MODIFICATION_TABLE.get(),
                 ModificationAltarBlockEntity::tick);
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        if (pLevel.getBlockEntity(pPos) instanceof ModificationAltarBlockEntity e && e.getHeldStack() != null ) {
+            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), e.getHeldStack()));
+        }
     }
 
 

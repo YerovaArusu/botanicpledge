@@ -6,12 +6,14 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
@@ -60,5 +62,13 @@ public class OreInfusionBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         return createTickerHelper(type, BPBlockEntities.ORE_INFUSION.get(),
                 OreInfusionBlockEntity::tick);
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        if (pLevel.getBlockEntity(pPos) instanceof OreInfusionBlockEntity e && e.getHeldStack() != null ) {
+            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), e.getHeldStack()));
+        }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -24,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
 
@@ -150,5 +153,11 @@ public class RitualCenterBlock extends BaseEntityBlock {
                 RitualCenterBlockEntity::tick);
     }
 
-
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+        if (pLevel.getBlockEntity(pPos) instanceof RitualCenterBlockEntity e && e.getHeldStack() != null ) {
+            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), e.getHeldStack()));
+        }
+    }
 }
