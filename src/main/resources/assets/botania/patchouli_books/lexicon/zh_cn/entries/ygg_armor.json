@@ -1,0 +1,49 @@
+{
+  "name": "泰拉钢锭护甲",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggdrasilsteel_helmet",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:rune_yr",
+      "output": "botanicpledge:yggdrasilsteel_template",
+      "input1": "botania:terrasteel_ingot",
+      "input2": "botanicpledge:rune_laguz",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botanicpledge:rune_ingwaz",
+      "input5": "botania:elementium_ingot",
+      "input6": "botanicpledge:rune_ansuz",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botanicpledge:rune_thurisaz"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:aura_ring_greater",
+      "output": "botanicpledge:yggdrasilsteel_band_of_aura",
+      "input2": "botania:elementium_ingot",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botania:elementium_ingot",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:mana_ring_greater",
+      "output": "botanicpledge:yggdrasilsteel_band_of_mana",
+      "input2": "botania:elementium_ingot",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input4": "botania:elementium_ingot",
+      "input3": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:yggdrasilsteel_ingot",
+      "input6": "botania:elementium_ingot",
+      "input7": "botanicpledge:yggdrasilsteel_ingot",
+      "input8": "botania:elementium_ingot"
+    }
+  ]
+}

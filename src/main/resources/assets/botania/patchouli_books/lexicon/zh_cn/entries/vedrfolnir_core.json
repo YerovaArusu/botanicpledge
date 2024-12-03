@@ -1,0 +1,27 @@
+{
+  "name": "凋零之风",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:vedrfolnir_core",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.divine_core"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:flight_tiara",
+      "output": "botanicpledge:vedrfolnir_core",
+      "input1": "botanicpledge:rune_yr",
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
+      "input3": "botanicpledge:rune_yr",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botanicpledge:rune_yr",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botanicpledge:rune_yr",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    }
+  ]
+}

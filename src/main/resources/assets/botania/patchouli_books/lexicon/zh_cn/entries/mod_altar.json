@@ -1,0 +1,27 @@
+{
+  "name": "改造祭坛",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:modification_altar",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": true,
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.modification_altar"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botanicpledge:ritual_pedestal",
+      "output": "botanicpledge:modification_altar",
+      "input1": "botania:livingrock", 
+      "input2": "botanicpledge:yggdrasilsteel_ingot",
+      "input3": "botania:livingrock",
+      "input4": "botanicpledge:yggdrasilsteel_ingot",
+      "input5": "botania:livingrock",
+      "input6": "botanicpledge:yggdrasilsteel_ingot",
+      "input7": "botania:livingrock",
+      "input8": "botanicpledge:yggdrasilsteel_ingot"
+    }
+  ]
+}

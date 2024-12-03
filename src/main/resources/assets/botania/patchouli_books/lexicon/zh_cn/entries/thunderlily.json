@@ -1,0 +1,18 @@
+{
+  "name": "雷电百合",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:thunder_lily",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.thunder_lily"
+    },
+    {
+      "type": "botania:petal_apothecary",
+      "recipe": "botanicpledge:petal_apothecary/thunder_lily"
+    }
+  ]
+}

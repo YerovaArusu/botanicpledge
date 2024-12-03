@@ -1,0 +1,27 @@
+{
+  "name": "世界树发射器",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:yggdral_spreader",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.yggdral_spreader"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "center": "botania:gaia_spreader",
+      "output": "botanicpledge:yggdral_spreader",
+      "input1": "botanicpledge:world_ash_branch", 
+      "input2": "botanicpledge:yggdrasil_shard",
+      "input3": "botanicpledge:world_ash_branch",
+      "input4": "botanicpledge:yggdrasil_shard",
+      "input5": "botanicpledge:world_ash_branch",
+      "input6": "botanicpledge:yggdrasil_shard",
+      "input7": "botanicpledge:world_ash_branch",
+      "input8": "botanicpledge:yggdrasil_shard"
+    }
+  ]
+}
