@@ -73,7 +73,6 @@ public class FirstRelic extends RelicItem {
 
     public static void switchRelic(Player player, Level level, ItemStack heldItem) {
 
-        System.out.println("tEST");
         if (!level.isClientSide) {
             int slot = player.getInventory().findSlotMatchingItem(heldItem);
 
@@ -99,7 +98,6 @@ public class FirstRelic extends RelicItem {
     }
 
     public static void setupDefaultNBT(ItemStack stack) {
-        System.out.println(relics);
         putRelicStacks(relics, stack);
     }
 
