@@ -120,6 +120,7 @@ public class BotanicPledge {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.MODIFICATION_TABLE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_PYLON.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.ORE_INFUSION.get(), RenderType.translucent());
 
     }
 

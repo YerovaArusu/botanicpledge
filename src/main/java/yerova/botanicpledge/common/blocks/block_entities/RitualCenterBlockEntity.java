@@ -38,13 +38,12 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     private int counter = 0;
 
-    boolean isCrafting = false;
+    public boolean isCrafting = false;
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(BPBlockEntities.RITUAL_CENTER.get(), p_155229_, p_155230_);
-
-
     }
+
 
 
     public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {

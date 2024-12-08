@@ -6,13 +6,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -24,10 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import vazkii.botania.api.BotaniaForgeClientCapabilities;
 import vazkii.botania.api.block.WandHUD;
-import vazkii.botania.client.core.handler.BossBarHandler;
-import vazkii.botania.common.helper.PlayerHelper;
-import vazkii.botania.common.item.BotaniaItems;
-import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
 import vazkii.botania.forge.CapabilityUtil;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.client.model.ModelBakery;
@@ -36,9 +29,6 @@ import yerova.botanicpledge.client.render.items.BotanicPledgeItemProperties;
 import yerova.botanicpledge.client.render.screen.CoreHUD;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.client.render.screen.YggdrasilPowerHUD;
-import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.items.YggdrasilMonocle;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -85,14 +75,14 @@ public class ForgeClientInitializer {
     @SubscribeEvent
     public static void registerGuiOverlays(RegisterGuiOverlaysEvent e) {
         e.registerBelow(VanillaGuiOverlay.EXPERIENCE_BAR.id(), "shield_bar", CoreHUD.PROTECTOR_HUD);
-        e.registerAboveAll( "yggdrasil_power_gui", YggdrasilPowerHUD.YGGDRASIL_POWER_HUD);
+        e.registerAboveAll("yggdrasil_power_gui", YggdrasilPowerHUD.YGGDRASIL_POWER_HUD);
 
     }
 
 
     @SubscribeEvent
     public static void clientRegister(FMLClientSetupEvent event) {
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST,(CustomizeGuiOverlayEvent.BossEventProgress e) -> {
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, (CustomizeGuiOverlayEvent.BossEventProgress e) -> {
             var result = YggdrasilBossBar.onBarRender(e.getGuiGraphics(), e.getX(), e.getY(),
                     e.getBossEvent(), true);
             result.ifPresent(increment -> {
@@ -110,6 +100,7 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRAL_SPREADER.get(), YggdralSpreaderRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationAltarRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRASIL_PYLON.get(), YggdrasilPylonRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.ORE_INFUSION.get(), OreInfusionRenderer::new);
     }
 
     @SubscribeEvent

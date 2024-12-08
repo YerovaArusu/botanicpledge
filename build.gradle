@@ -13,6 +13,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.hypherionmc.modutils.modpublisher" version "2.1.6"
+}
+
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 apply plugin: 'org.spongepowered.mixin'
@@ -21,7 +25,7 @@ jarJar.enable()
 
 
 group = 'yerova'
-version = '1.20.1-0.7.4'
+version = '1.20.1-0.7.5'
 
 java {
     archivesBaseName = 'botanicpledge'
@@ -30,6 +34,38 @@ java {
 
 compileJava {
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+}
+
+publisher {
+    apiKeys {
+        // Modrinth Token
+        modrinth System.getenv("MODRINTH_TOKEN")
+        // Curseforge Token
+        curseforge System.getenv("CURSE_TOKEN")
+    }
+
+    setDebug(true)
+
+    setCurseID("664074")
+    setModrinthID("Kw2Q2hxP")
+
+    setVersionType("release")
+    setChangelog("changelog.md")
+    setProjectVersion(project.version)
+    setDisplayName("BotanicPledge-${project.version}")
+
+    // The supported game versions
+    setGameVersions("1.20.1")
+    setLoaders("forge")
+    setCurseEnvironment("both")
+    setIsManualRelease(false)
+    setArtifact(jar)
+    setDisableMalwareScanner(false)
+
+    setJavaVersions(JavaVersion.VERSION_17,17)
+
+    setDisableEmptyJarCheck(true)
+
 }
 
 minecraft {
@@ -255,3 +291,12 @@ tasks.jarJar.finalizedBy('reobfJarJar')
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+tasks.register("testPublish") {
+    doLast {
+        println "Curseforge Token: ${System.getenv('CURSE_TOKEN')}"
+        println "Modrinth Token: ${System.getenv('MODRINTH_TOKEN')}"
+        println "Build Artifact: ${jar.archiveFile.get()}"
+    }
+}
+

@@ -52,9 +52,9 @@ public class InputEvents {
     public static void onToolTipRender(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
 
-        if (!(stack.getItem() instanceof FirstRelic)) {
+        if (!(stack.getItem() instanceof FirstRelic) || FirstRelic.relics.stream().anyMatch(it -> stack.is(it.getItem()))) {
             if (stack.getTag() != null && stack.getTag().contains(BotanicPledge.MOD_ID + ".relic_items")) {
-                event.getToolTip().add(1, Component.literal("Press §bLShift§f to switch to §eNEXT§f Relic"));
+                event.getToolTip().add(1, Component.translatable("item.botanicpledge.first_relic.ability_desc"));
             }
         }
 

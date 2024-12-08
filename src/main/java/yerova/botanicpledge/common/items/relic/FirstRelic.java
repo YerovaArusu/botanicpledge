@@ -14,6 +14,7 @@ import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -25,6 +26,14 @@ import java.util.List;
     Item.
  */
 public class FirstRelic extends RelicItem {
+
+    public static final List<ItemStack> relics = Arrays.asList(
+            new ItemStack(BotaniaItems.kingKey),
+            new ItemStack(BotaniaItems.infiniteFruit),
+            new ItemStack(BotaniaItems.flugelEye),
+            new ItemStack(BPItems.ASGARD_FRACTAL.get()),
+            new ItemStack(BPItems.YGGD_RAMUS.get()),
+            new ItemStack(BPItems.ULL_BOW.get()));
 
 
     public FirstRelic(Properties props) {
@@ -49,13 +58,13 @@ public class FirstRelic extends RelicItem {
     @Override
     public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flags) {
 
-        Component component = Component.literal("Press §bLShift§f to switch to §eNEXT Relic§e");
+        Component component = Component.translatable("item.botanicpledge.first_relic.ability_desc");
         tooltip.add(component);
 
         super.appendHoverText(stack, world, tooltip, flags);
     }
 
-    public static void putRelicStacks(ArrayList<ItemStack> stacks, ItemStack heldItem) {
+    public static void putRelicStacks(List<ItemStack> stacks, ItemStack heldItem) {
         CompoundTag tag = heldItem.getOrCreateTagElement(BotanicPledge.MOD_ID + ".relic_items");
         for (int i = 1; i <= stacks.size(); i++) {
             tag.put(i + "_item", stacks.get(i - 1).save(new CompoundTag()));
@@ -63,6 +72,8 @@ public class FirstRelic extends RelicItem {
     }
 
     public static void switchRelic(Player player, Level level, ItemStack heldItem) {
+
+        System.out.println("tEST");
         if (!level.isClientSide) {
             int slot = player.getInventory().findSlotMatchingItem(heldItem);
 
@@ -88,15 +99,8 @@ public class FirstRelic extends RelicItem {
     }
 
     public static void setupDefaultNBT(ItemStack stack) {
-        ArrayList<ItemStack> defaultItems = new ArrayList<>();
-        defaultItems.add(new ItemStack(BotaniaItems.kingKey));
-        defaultItems.add(new ItemStack(BotaniaItems.infiniteFruit));
-        defaultItems.add(new ItemStack(BotaniaItems.flugelEye));
-        defaultItems.add(new ItemStack(BPItems.ASGARD_FRACTAL.get()));
-        defaultItems.add(new ItemStack(BPItems.YGGD_RAMUS.get()));
-        defaultItems.add(new ItemStack(BPItems.ULL_BOW.get()));
-
-        putRelicStacks(defaultItems, stack);
+        System.out.println(relics);
+        putRelicStacks(relics, stack);
     }
 
     public static void clearRelicItemNBT(ItemStack stack) {

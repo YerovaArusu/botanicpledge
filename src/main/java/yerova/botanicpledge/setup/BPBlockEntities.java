@@ -52,6 +52,7 @@ public class BPBlockEntities {
         consumer.accept(be -> new ManaBufferBlockEntity.WandHud((ManaBufferBlockEntity) be), BPBlockEntities.MANA_BUFFER_BLOCK_ENTITY.get());
         consumer.accept(be -> new YggdralSpreaderBlockEntity.WandHud((YggdralSpreaderBlockEntity) be), BPBlockEntities.YGGDRAL_SPREADER.get());
         consumer.accept(be -> new BindableSpecialFlowerBlockEntity.BindableFlowerWandHud<>((ThunderLilyBLockEntity) be), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY.get());
+        consumer.accept(be -> new OreInfusionBlockEntity.WandHud((OreInfusionBlockEntity) be), BPBlockEntities.ORE_INFUSION.get());
     }
 
 }

@@ -106,7 +106,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if (handIn != InteractionHand.MAIN_HAND)
             return InteractionResult.PASS;
-        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile) {
+        if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile && !tile.isCrafting) {
 
             if (completedStructure(player, pos, world, handIn)) {
                 if (tile.attemptCraft(tile.getHeldStack(), player)) return InteractionResult.SUCCESS;
@@ -141,7 +141,6 @@ public class RitualCenterBlock extends BaseEntityBlock {
             if (!allChecked) {
                 player.sendSystemMessage(Component.literal("Structure not Complete"));
             }
-
         }
         return allChecked;
     }

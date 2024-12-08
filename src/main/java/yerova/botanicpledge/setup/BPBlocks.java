@@ -38,7 +38,7 @@ public class BPBlocks {
             () -> new RitualCenterBlock(BlockBehaviour.Properties.copy(Blocks.NETHERITE_BLOCK).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
     public static final RegistryObject<Block> ORE_INFUSION = registerBlock("ore_infusion",
-            () -> new OreInfusionBlock(BlockBehaviour.Properties.copy(livingwood).isValidSpawn(NO_SPAWN)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+            () -> new OreInfusionBlock(BlockBehaviour.Properties.copy(livingwood).noOcclusion()), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
     public static final RegistryObject<Block> YGGDRALIUM_BLOCK = registerBlock("yggdrasilsteel_block",
