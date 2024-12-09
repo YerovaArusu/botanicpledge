@@ -4,6 +4,10 @@
     {
       "conditions": [
         {
+          "type": "forge:mod_loaded",
+          "modid": "expanded_combat"
+        },
+        {
           "type": "expanded_combat:config_boolean",
           "config_entry": "gauntlet"
         },

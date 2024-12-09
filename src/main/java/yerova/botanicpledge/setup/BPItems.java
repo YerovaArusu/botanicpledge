@@ -42,10 +42,12 @@ public class BPItems {
     public static final RegistryObject<Item> FREYR_SHARD = ITEMS.register("freyr_shard", () -> new ShardOfFreyr(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
-
+    /*
     public static final RegistryObject<Item> GUNGNIR = ITEMS.register("gungnir", () -> new GungnirItem(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)
     ));
+
+     */
 
 
     public static final RegistryObject<Item> FIRST_RELIC = ITEMS.register("first_relic", () -> new FirstRelic(

@@ -1,0 +1,11 @@
+{
+  "type": "botanicpledge:ore_infusion",
+  "reagent": {
+    "item": "minecraft:ancient_debris"
+  },
+  "output": {
+    "item": "minecraft:netherite_scrap",
+    "count": 2
+  },
+  "manaCost": 20000
+}
