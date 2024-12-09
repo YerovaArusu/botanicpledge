@@ -1,15 +1,15 @@
 {
   "display": {
     "icon": {
-      "item": "botanicpledge:vedrfolnir_core"
+      "item": "botanicpledge:world_ash_branch"
     },
-    "title": "Choose the Heavens",
-    "description": "Obtain Vedrfolnir Core",
+    "title": "World of Yggdrasil",
+    "description": "Acquire your first World Ash Branch.",
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": true
+    "announce_to_chat": true,
+    "background": "botanicpledge:textures/block/yggdrasilsteel_block.png"
   },
-  "parent": "botanicpledge:botanic_ritual",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -17,7 +17,7 @@
         "items": [
           {
             "items": [
-              "botanicpledge:vedrfolnir_core"
+              "botanicpledge:world_ash_branch"
             ]
           }
         ]

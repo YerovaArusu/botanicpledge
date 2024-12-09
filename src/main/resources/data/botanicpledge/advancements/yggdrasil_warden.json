@@ -1,15 +1,15 @@
 {
   "display": {
     "icon": {
-      "item": "botanicpledge:vedrfolnir_core"
+      "item": "botanicpledge:yggdrasil_warden"
     },
-    "title": "Choose the Heavens",
-    "description": "Obtain Vedrfolnir Core",
-    "frame": "task",
+    "title": "Warden of Yggdrasil",
+    "description": "Craft the Warden of Yggdrasil.",
+    "frame": "challenge",
     "show_toast": true,
     "announce_to_chat": true
   },
-  "parent": "botanicpledge:botanic_ritual",
+  "parent": "botanicpledge:yggdrasil_heart",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -17,7 +17,7 @@
         "items": [
           {
             "items": [
-              "botanicpledge:vedrfolnir_core"
+              "botanicpledge:yggdrasil_warden"
             ]
           }
         ]

@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "botanicpledge:ore_infusion"
+    },
+    "title": "Ore Infusion",
+    "description": "Craft an Ore Infusion Altar.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "botanicpledge:ingot_forging",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botanicpledge:ore_infusion"
+      }
+    }
+  }
+}

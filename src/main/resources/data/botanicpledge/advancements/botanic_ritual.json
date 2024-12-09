@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "botanicpledge:ritual_center"
+    },
+    "title": "Botanic Ritual",
+    "description": "Craft the Center Piece of the Botanic Ritual.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "botanicpledge:ingot_forging",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "botanicpledge:ritual_center"
+      }
+    }
+  }
+}

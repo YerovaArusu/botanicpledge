@@ -1,15 +1,15 @@
 {
   "display": {
     "icon": {
-      "item": "botanicpledge:vedrfolnir_core"
+      "item": "botanicpledge:conquering_sash"
     },
-    "title": "Choose the Heavens",
-    "description": "Obtain Vedrfolnir Core",
+    "title": "Conquering Speed",
+    "description": "Craft the Conquering Sash.",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
   },
-  "parent": "botanicpledge:botanic_ritual",
+  "parent": "botanicpledge:ingot_forging",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -17,7 +17,7 @@
         "items": [
           {
             "items": [
-              "botanicpledge:vedrfolnir_core"
+              "botanicpledge:conquering_sash"
             ]
           }
         ]
