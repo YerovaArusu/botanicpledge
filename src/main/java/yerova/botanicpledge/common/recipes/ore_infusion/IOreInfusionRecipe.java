@@ -19,4 +19,6 @@ public interface IOreInfusionRecipe extends Recipe<OreInfusionBlockEntity> {
     }
 
     int getManaCost();
+
+
 }

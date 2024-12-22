@@ -6,20 +6,19 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
-import org.objectweb.asm.commons.StaticInitMerger;
 import vazkii.botania.api.BotaniaAPIClient;
 import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.ManaReceiver;
-import vazkii.botania.api.mana.spark.ManaSpark;
-import vazkii.botania.api.mana.spark.SparkAttachable;
 import vazkii.botania.client.core.helper.RenderHelper;
+import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.client.gui.HUDHandler;
 import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
 import vazkii.botania.common.item.BotaniaItems;
@@ -30,14 +29,18 @@ import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
+import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticlesAbove;
+
 public class OreInfusionBlockEntity extends RitualBaseBlockEntity
         implements ManaReceiver, ThrottledPacket, Wandable {
 
-    private final int MAX_MANA = 4_000_000;
+    private static final int MAX_MANA = 500_000;
     private final int MAX_TIME = 200; //max duration in ticks (10s)
     private int mana;
     private boolean infusing;
     private int timer;
+    private static boolean sendPacket = false;
+
 
     private static final String TAG_MANA = "mana";
     private static final String TAG_INFUSION = "infusing";
@@ -103,20 +106,40 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
 
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, OreInfusionBlockEntity oreInfusionBlockEntity) {
-        if (level.isClientSide) return;
         ItemStack stack = oreInfusionBlockEntity.getHeldStack();
 
+        if (level instanceof ServerLevel serverLevel) {
+            int color = 0x08e8de;
 
+            float r = (color >> 16 & 0xFF) / 255F;
+            float g = (color >> 8 & 0xFF) / 255F;
+            float b = (color & 0xFF) / 255F;
+
+            for (int i = 0; i < 5; i++) {
+                WispParticleData data = WispParticleData.wisp(0.7F * ((float) oreInfusionBlockEntity.mana / MAX_MANA), r, g, b, true);
+
+                serverLevel.sendParticles(data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
+                        10, 0, 0, 0, (float) (Math.random() - 0.95F) * 0.01F);
+            }
+
+            if (oreInfusionBlockEntity.infusing) {
+                spawnMovingParticlesAbove(serverLevel, blockPos, r, g, b);
+            }
+        }
 
         if (stack.isEmpty()) {
             oreInfusionBlockEntity.infusing = false;
             return;
         }
 
-        IOreInfusionRecipe recipe = RecipeUtils.getOreInfusionRecipes(level).stream().filter(r -> r.isMatch(stack, oreInfusionBlockEntity, null)).findFirst().orElse(null);
+        IOreInfusionRecipe recipe = RecipeUtils.getOreInfusionRecipes(level).stream()
+                .filter(r -> r.isMatch(stack, oreInfusionBlockEntity, null))
+                .findFirst().orElse(null);
+
 
         if (recipe == null) {
             oreInfusionBlockEntity.infusing = false;
+            oreInfusionBlockEntity.timer = oreInfusionBlockEntity.MAX_TIME;
             return;
         }
 
@@ -128,15 +151,18 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
         if (oreInfusionBlockEntity.infusing) {
             if (oreInfusionBlockEntity.timer > 0) {
                 oreInfusionBlockEntity.timer--;
-                oreInfusionBlockEntity.mana -= Math.ceil(recipe.getManaCost()/oreInfusionBlockEntity.MAX_TIME);
+                oreInfusionBlockEntity.mana -= Math.ceil(recipe.getManaCost() / oreInfusionBlockEntity.MAX_TIME);
             }
             if (oreInfusionBlockEntity.timer == 0) {
                 oreInfusionBlockEntity.infusing = false;
-                oreInfusionBlockEntity.heldStack =  recipe.getResult(stack, oreInfusionBlockEntity);
+                oreInfusionBlockEntity.heldStack = recipe.getResult(stack, oreInfusionBlockEntity);
             }
         }
         oreInfusionBlockEntity.setChanged();
     }
+
+
+
 
 
     @Override
@@ -149,7 +175,7 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
 
     @Override
     public void markDispatchable() {
-
+        sendPacket = true;
     }
 
     public static class WandHud implements WandHUD {
@@ -164,7 +190,7 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
             ItemStack poolStack = new ItemStack(pool.getBlockState().getBlock());
             String name = poolStack.getHoverName().getString();
             int color = 0x4444FF;
-            BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, pool.getCurrentMana(), ManaBufferBlockEntity.MAX_MANA, name);
+            BotaniaAPIClient.instance().drawSimpleManaHUD(ms, color, pool.getCurrentMana(), OreInfusionBlockEntity.MAX_MANA, name);
 
             int x = Minecraft.getInstance().getWindow().getGuiScaledWidth() / 2 - 11;
             int y = Minecraft.getInstance().getWindow().getGuiScaledHeight() / 2 + 30;
@@ -181,10 +207,6 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
 
             ItemStack tablet = new ItemStack(BotaniaItems.manaTablet);
             ManaTabletItem.setStackCreative(tablet);
-
-            RenderHelper.renderItemWithNameCentered(ms, mc, tablet, x - 20, color);
-            RenderHelper.renderItemWithNameCentered(ms, mc, poolStack, x + 26, color);
-
 
             RenderSystem.disableBlend();
         }

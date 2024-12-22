@@ -39,8 +39,12 @@ public class OreInfusionRecipe implements IOreInfusionRecipe {
     }
 
     @Override
-    public boolean isMatch(ItemStack reagent, OreInfusionBlockEntity oreInfusionBlockEntity, @Nullable Player player) {
-        return oreInfusionBlockEntity.heldStack.getItem() == reagent.getItem();
+    public boolean isMatch(ItemStack stack, OreInfusionBlockEntity oreInfusionBlockEntity, @Nullable Player player) {
+        return this.reagent.test(stack);
+    }
+
+    public Ingredient getReagent() {
+        return reagent;
     }
 
     @Override
@@ -97,7 +101,7 @@ public class OreInfusionRecipe implements IOreInfusionRecipe {
 
     public static class Serializer implements RecipeSerializer<OreInfusionRecipe> {
         public static final OreInfusionRecipe.Serializer INSTANCE = new OreInfusionRecipe.Serializer();
-        public static final ResourceLocation ID = new ResourceLocation(BotanicPledge.MOD_ID, "botanic_ritual");
+        public static final ResourceLocation ID = new ResourceLocation(BotanicPledge.MOD_ID, "ore_infusion");
 
 
         @Override
@@ -141,5 +145,15 @@ public class OreInfusionRecipe implements IOreInfusionRecipe {
         private static <G> Class<G> castClass(Class<?> cls) {
             return (Class<G>) cls;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "OreInfusionRecipe{" +
+                "reagent=" + reagent +
+                ", result=" + result +
+                ", manaCost=" + manaCost +
+                ", id=" + id +
+                '}';
     }
 }

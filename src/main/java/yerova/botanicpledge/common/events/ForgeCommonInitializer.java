@@ -100,6 +100,9 @@ public class ForgeCommonInitializer {
 
         if (blockEntity.getType() == BPBlockEntities.ORE_INFUSION.get()) {
 
+            e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE,
+                    (Wandable) blockEntity));
+
             e.addCapability(prefix("mana_receiver"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_RECEIVER,
                     (ManaReceiver) blockEntity));
         }

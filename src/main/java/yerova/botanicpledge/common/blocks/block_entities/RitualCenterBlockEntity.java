@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -24,14 +25,16 @@ import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
 import yerova.botanicpledge.client.utils.ClientUtils;
 import yerova.botanicpledge.common.blocks.RitualCenterBlock;
-import yerova.botanicpledge.common.recipes.botanic_ritual.IBotanicRitualRecipe;
 import yerova.botanicpledge.common.recipes.RecipeUtils;
+import yerova.botanicpledge.common.recipes.botanic_ritual.IBotanicRitualRecipe;
 import yerova.botanicpledge.common.utils.ManaUtils;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+
+import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticles;
 
 public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wandable {
 
@@ -45,7 +48,6 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
     }
 
 
-
     public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {
         if (level.isClientSide) {
             if (entity.isCrafting) {
@@ -57,6 +59,7 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                                 YggdralParticleData.createData(new ParticleColor(19, 237, 237)),
                                 p.getX() + 0.5 + ParticleUtils.inRange(-0.2, 0.2), p.getY() + 1.5 + ParticleUtils.inRange(-0.3, 0.3), p.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                                 0, 0, 0);
+
                 }
                 if (!entity.heldStack.isEmpty()) {
                     level.addParticle(YggdralParticleData.createData(new ParticleColor(12, 70, 204)),
@@ -65,9 +68,27 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
                             pos.getZ() + 0.5 + ParticleUtils.inRange(-0.2, 0.2),
                             0, 0, 0);
                 }
+
+
             }
 
             return;
+        }
+
+        if (level instanceof ServerLevel serverLevel && entity.isCrafting) {
+
+            for (BlockPos bPos : RitualCenterBlock.ritualPedestals().keySet()) {
+                BlockPos p = pos.offset(bPos);
+
+                int color = 0xcc3dc7;
+
+                float r = (color >> 16 & 0xFF) / 255F;
+                float g = (color >> 8 & 0xFF) / 255F;
+                float b = (color & 0xFF) / 255F;
+
+                spawnMovingParticles(serverLevel, p.above(), pos.above(), r, g, b);
+
+            }
         }
 
 

@@ -1,0 +1,17 @@
+{
+  "type": "botanicpledge:ore_infusion",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mythicbotany"
+    }
+  ],
+  "reagent": {
+    "item": "mythicbotany:raw_elementium"
+  },
+  "output": {
+    "item": "botania:elementium_ingot",
+    "count": 3
+  },
+  "manaCost": 15000
+}

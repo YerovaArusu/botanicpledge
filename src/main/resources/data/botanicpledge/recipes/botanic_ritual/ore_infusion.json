@@ -1,0 +1,43 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mythicbotany"
+    }
+  ],
+  "reagent": {
+    "item": "botania:mana_pool"
+  },
+  "pedestalItems": [
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "mythicbotany:alfsteel_ingot"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:ore_infusion"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}

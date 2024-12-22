@@ -1,0 +1,46 @@
+{
+  "type": "botanicpledge:botanic_ritual",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:mod_loaded",
+        "modid": "mythicbotany"
+      }
+    }
+  ],
+  "reagent": {
+    "item": "botania:mana_pool"
+  },
+  "pedestalItems": [
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "botanicpledge:yggdrasilsteel_ingot"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:calcite"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    }
+  ],
+  "output": {
+    "item": "botanicpledge:ore_infusion"
+  },
+  "manaCost": 500000,
+  "keepNbtOfReagent": false
+}
