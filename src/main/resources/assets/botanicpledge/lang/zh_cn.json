@@ -123,7 +123,7 @@
   "botanicpledge.page.ull_bow": "这把弓可以发射不受重力影响的魔力箭。左击可以快速瞬移至前方几格。",
   "botanicpledge.page.mana_shield": "被注入魔力的盾牌，会自动修复。可以用四个泰拉钢锭和活木再次升级。",
   "botanicpledge.page.yggdrasil_monocle": "是不是需要测量世界树气息的强度？装备世界树之眼，视野越发绿，世界树气息越强。",
-  "botanicpledge.page.freyr_shard" : "有没有感觉拉普达碎片还是不够？芙尔雅碎片范围是拉普达两倍，可以适应各种环境改造需求。",
+  "botanicpledge.page.freyr_shard": "有没有感觉拉普达碎片还是不够？芙尔雅碎片范围是拉普达两倍，可以适应各种环境改造需求。",
   "botanicpledge.shard_frey_upgrade": "这个是升级版的 ",
   "botanicpledge.attributes.cant_fly": "你不能再飞了",
   "item.botanicpledge.ring_of_aesir.desc": "一个可以汇集和操纵元素的神奇戒指。",
@@ -151,5 +151,10 @@
   "tooltip.botanicpledge.yggdrasilsteel_template.applies_to": "泰拉钢锭装备",
   "tooltip.botanicpledge.yggdrasilsteel_template.slot_base": "泰拉钢锭护甲武器或工具",
   "tooltip.botanicpledge.yggdrasilsteel_template.slot_description": "添加 %s",
-  "tooltip.botanicpledge.yggdrasilsteel_template.upgrade": "世界树钢升级"
+  "tooltip.botanicpledge.yggdrasilsteel_template.upgrade": "世界树钢升级",
+  "botanicpledge.page.ore_infusion": "矿石注魔祭坛是魔力科学的最新杰作。过程不但很快而且不影响环境，无残留。把矿石放在祭坛上然后注入魔力就行了。注意的是，$(br2) 更高级的矿石需要更多的魔力，所以尽量提供一个可靠的魔源。",
+  "botanicpledge.page.ore_infusion_usage": "矿石注魔祭坛可以处理各种维度和模组的矿石。如果想最大化效率，可以考虑使用 $(item) 世界树发射器 $(nocolor) 向祭坛注入魔力。非常方便自动化。",
+  "botanicpledge.page.ore_infusion_requirements": "矿石注魔祭坛需要环境中提供大量魔力。尽量提供准确的角度能提高性能。同时，不同配方需要不同的附魔核心或条件，多多实验。",
+  "block.botanicpledge.ore_infusion": "矿石注魔祭坛",
+  "item.botanicpledge.first_relic.ability_desc": "按 §bLShift§f 和能力键切换到 §eNEXT§e 下一个遗物。"
 }

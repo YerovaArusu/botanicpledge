@@ -1,0 +1,23 @@
+{
+  "name": "botanicpledge.mana_buffer",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:mana_buffer",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.mana_buffer"
+    },
+    {
+      "type": "multiblock",
+      "multiblock_id": "botanicpledge:mana_buffer_structure",
+      "text": "botanicpledge.page.mana_buffer_use"
+    },
+    {
+      "type": "text",
+      "text": "botanicpledge.page.mana_buffer1"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "name": "矿石注魔祭坛",
+  "category": "botania:botanicpledge",
+  "icon": "botanicpledge:ore_infusion",
+  "advancement": "botania:main/elf_lexicon_pickup",
+  "priority": false,
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "text",
+      "text": "botanicpledge.page.ore_infusion"
+    },
+    {
+      "type": "text",
+      "text": "botanicpledge.page.ore_infusion_usage"
+    },
+    {
+      "type": "text",
+      "text": "botanicpledge.page.ore_infusion_requirements"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "!mod:mythicbotany",
+      "center": "botania:mana_pool",
+      "output": "botanicpledge:ore_infusion",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input2": "minecraft:blaze_rod",
+      "input3": "minecraft:calcite",
+      "input4": "minecraft:blaze_rod",
+      "input5": "minecraft:calcite",
+      "input6": "minecraft:blaze_rod",
+      "input7": "minecraft:calcite",
+      "input8": "minecraft:blaze_rod"
+    },
+    {
+      "type": "botania:botanic_ritual",
+      "flag": "mod:mythicbotany",
+      "center": "botania:mana_pool",
+      "output": "botanicpledge:ore_infusion",
+      "input1": "botanicpledge:yggdrasilsteel_ingot",
+      "input2": "mythicbotany:alfsteel_ingot",
+      "input3": "minecraft:calcite",
+      "input4": "mythicbotany:alfsteel_ingot",
+      "input5": "minecraft:calcite",
+      "input6": "mythicbotany:alfsteel_ingot",
+      "input7": "minecraft:calcite",
+      "input8": "mythicbotany:alfsteel_ingot"
+    }
+  ]
+}
