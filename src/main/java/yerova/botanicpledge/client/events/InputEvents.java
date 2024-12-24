@@ -16,6 +16,8 @@ import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.setup.BotanicPledge;
 
+import java.util.ArrayList;
+
 @Mod.EventBusSubscriber(modid = BotanicPledge.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class InputEvents {
 
@@ -52,7 +54,7 @@ public class InputEvents {
     public static void onToolTipRender(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
 
-        if (!(stack.getItem() instanceof FirstRelic) || FirstRelic.relics.stream().anyMatch(it -> stack.is(it.getItem()))) {
+        if (!(stack.getItem() instanceof FirstRelic) || FirstRelic.getRelics().resolve().orElse(new ArrayList<>()).stream().anyMatch(it -> stack.is(it.getItem()))) {
             if (stack.getTag() != null && stack.getTag().contains(BotanicPledge.MOD_ID + ".relic_items")) {
                 event.getToolTip().add(1, Component.translatable("item.botanicpledge.first_relic.ability_desc"));
             }

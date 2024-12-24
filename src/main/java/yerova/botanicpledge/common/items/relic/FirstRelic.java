@@ -6,6 +6,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LazyOptional;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.BotaniaItems;
 import vazkii.botania.common.item.relic.RelicImpl;
@@ -27,13 +28,19 @@ import java.util.List;
  */
 public class FirstRelic extends RelicItem {
 
-    public static final List<ItemStack> relics = Arrays.asList(
+
+    private static final LazyOptional<List<ItemStack>> relics = LazyOptional.of(() -> Arrays.asList(
             new ItemStack(BotaniaItems.kingKey),
             new ItemStack(BotaniaItems.infiniteFruit),
             new ItemStack(BotaniaItems.flugelEye),
             new ItemStack(BPItems.ASGARD_FRACTAL.get()),
             new ItemStack(BPItems.YGGD_RAMUS.get()),
-            new ItemStack(BPItems.ULL_BOW.get()));
+            new ItemStack(BPItems.ULL_BOW.get())
+    ));
+
+    public static LazyOptional<List<ItemStack>> getRelics() {
+        return relics;
+    }
 
 
     public FirstRelic(Properties props) {
@@ -98,7 +105,7 @@ public class FirstRelic extends RelicItem {
     }
 
     public static void setupDefaultNBT(ItemStack stack) {
-        putRelicStacks(relics, stack);
+        putRelicStacks(relics.resolve().orElse(new ArrayList<>()), stack);
     }
 
     public static void clearRelicItemNBT(ItemStack stack) {
