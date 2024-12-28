@@ -1,5 +1,6 @@
 package yerova.botanicpledge.common.blocks;
 
+import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -17,13 +18,47 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import vazkii.botania.common.block.BotaniaBlocks;
+import vazkii.patchouli.api.IMultiblock;
+import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPBlocks;
+import yerova.botanicpledge.setup.BPItems;
+
+import java.util.function.Supplier;
 
 
 public class OreInfusionBlock extends BaseEntityBlock {
+
+    public static final Supplier<IMultiblock> ORE_INFUSION_STRUCTURE = Suppliers.memoize(() -> {
+
+        return PatchouliAPI.get().makeMultiblock(
+                new String[][]{
+                        {
+                                "___",
+                                "_P_",
+                                "___",
+                        },
+                        {
+                                "___",
+                                "___",
+                                "___",
+                        },
+                        {
+                                "___",
+                                "_0_",
+                                "___",
+                        }
+                },
+                '0', BPBlocks.ORE_INFUSION.get(),
+                'P', BPBlocks.YGGDRASIL_PYLON.get()
+        );
+    });
+
+
     public OreInfusionBlock(Properties pProperties) {
         super(pProperties);
     }

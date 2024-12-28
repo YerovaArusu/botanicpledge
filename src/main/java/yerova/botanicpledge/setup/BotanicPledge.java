@@ -9,12 +9,16 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
@@ -27,6 +31,8 @@ import org.slf4j.Logger;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import vazkii.botania.client.core.handler.BossBarHandler;
+import vazkii.botania.common.item.equipment.bauble.FlugelTiaraItem;
+import vazkii.botania.common.item.equipment.bauble.SojournersSashItem;
 import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.client.events.ForgeClientInitializer;
 import yerova.botanicpledge.client.render.entities.AsgardBladeRenderer;
@@ -36,8 +42,10 @@ import yerova.botanicpledge.client.render.entities.YggdrasilGuardianRenderer;
 import yerova.botanicpledge.client.render.items.VedrfolnirCoreRenderer;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.common.blocks.ManaBufferBlock;
+import yerova.botanicpledge.common.blocks.OreInfusionBlock;
 import yerova.botanicpledge.common.entitites.yggdrasilguardian.YggdrasilGuardian;
 import yerova.botanicpledge.common.events.ForgeCommonInitializer;
+import yerova.botanicpledge.common.items.relic.DivineCoreItem;
 import yerova.botanicpledge.common.network.Networking;
 import yerova.botanicpledge.config.BPConfig;
 import yerova.botanicpledge.integration.expanded_combat.ExpandedCombatPlugin;
@@ -60,6 +68,12 @@ public class BotanicPledge {
         IEventBus eventBus = MinecraftForge.EVENT_BUS;
 
         eventBus.addGenericListener(ItemStack.class, ForgeCommonInitializer::attachItemCaps);
+        eventBus.addListener((PlayerEvent.PlayerLoggedOutEvent e) -> DivineCoreItem.playerLoggedOut((ServerPlayer) e.getEntity()));
+        eventBus.addListener((LivingEvent.LivingTickEvent e) -> {
+            if (e.getEntity() instanceof Player player) {
+                DivineCoreItem.updatePlayerFlyStatus(player);
+            }
+        });
 
 
         BPParticles.PARTICLES.register(forgeBus);
@@ -91,7 +105,7 @@ public class BotanicPledge {
         Networking.register();
         PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"yggdrasil_ritual"), YggdrasilGuardian.ARENA_MULTIBLOCK.get());
         PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"mana_buffer_structure"), ManaBufferBlock.MANA_BUFFER_STRUCTURE.get());
-
+        PatchouliAPI.get().registerMultiblock(new ResourceLocation(BotanicPledge.MOD_ID,"ore_infusion_structure"), OreInfusionBlock.ORE_INFUSION_STRUCTURE.get());
 
     }
 

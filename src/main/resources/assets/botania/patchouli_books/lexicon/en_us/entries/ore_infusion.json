@@ -19,6 +19,11 @@
       "text": "botanicpledge.page.ore_infusion_requirements"
     },
     {
+      "type": "multiblock",
+      "multiblock_id": "botanicpledge:ore_infusion_structure",
+      "text": "botanicpledge.page.ore_infusion_structure"
+    },
+    {
       "type": "botania:botanic_ritual",
       "flag": "!mod:mythicbotany",
       "center": "botania:mana_pool",

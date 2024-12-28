@@ -25,7 +25,7 @@ jarJar.enable()
 
 
 group = 'yerova'
-version = '1.20.1-0.7.5'
+version = '1.20.1-0.8.1'
 
 java {
     archivesBaseName = 'botanicpledge'
@@ -44,13 +44,13 @@ publisher {
         curseforge System.getenv("CURSE_TOKEN")
     }
 
-    setDebug(true)
+    setDebug(false)
 
     setCurseID("664074")
     setModrinthID("Kw2Q2hxP")
 
     setVersionType("release")
-    setChangelog("changelog.md")
+    setChangelog("https://github.com/YerovaArusu/botanicpledge/blob/1.20.1/changelog.md")
     setProjectVersion(project.version)
     setDisplayName("BotanicPledge-${project.version}")
 

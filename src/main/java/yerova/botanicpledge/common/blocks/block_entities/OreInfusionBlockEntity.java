@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.lwjgl.opengl.GL11;
 import vazkii.botania.api.BotaniaAPIClient;
@@ -29,6 +30,7 @@ import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
+import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticles;
 import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticlesAbove;
 
 public class OreInfusionBlockEntity extends RitualBaseBlockEntity
@@ -38,6 +40,7 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
     private final int MAX_TIME = 200; //max duration in ticks (10s)
     private int mana;
     private boolean infusing;
+    private boolean isComplete;
     private int timer;
     private static boolean sendPacket = false;
 
@@ -45,6 +48,7 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
     private static final String TAG_MANA = "mana";
     private static final String TAG_INFUSION = "infusing";
     private static final String TAG_TIMER = "timer";
+
 
     public OreInfusionBlockEntity(BlockPos blockPos, BlockState state) {
         super(BPBlockEntities.ORE_INFUSION.get(), blockPos, state);
@@ -108,6 +112,12 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, OreInfusionBlockEntity oreInfusionBlockEntity) {
         ItemStack stack = oreInfusionBlockEntity.getHeldStack();
 
+        BlockEntity be = level.getBlockEntity(blockPos.above().above());
+        if (be != null && be.getType() == BPBlockEntities.YGGDRASIL_PYLON.get()) {
+            oreInfusionBlockEntity.isComplete = true;
+        } else oreInfusionBlockEntity.isComplete = false;
+
+
         if (level instanceof ServerLevel serverLevel) {
             int color = 0x08e8de;
 
@@ -115,15 +125,9 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
             float g = (color >> 8 & 0xFF) / 255F;
             float b = (color & 0xFF) / 255F;
 
-            for (int i = 0; i < 5; i++) {
-                WispParticleData data = WispParticleData.wisp(0.7F * ((float) oreInfusionBlockEntity.mana / MAX_MANA), r, g, b, true);
-
-                serverLevel.sendParticles(data, blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5,
-                        10, 0, 0, 0, (float) (Math.random() - 0.95F) * 0.01F);
-            }
 
             if (oreInfusionBlockEntity.infusing) {
-                spawnMovingParticlesAbove(serverLevel, blockPos, r, g, b);
+                spawnMovingParticles(serverLevel, blockPos.above().above(), blockPos, r, g, b);
             }
         }
 
@@ -143,7 +147,7 @@ public class OreInfusionBlockEntity extends RitualBaseBlockEntity
             return;
         }
 
-        if (recipe != null && !oreInfusionBlockEntity.infusing && oreInfusionBlockEntity.hasEnoughMana(recipe.getManaCost())) {
+        if (recipe != null && !oreInfusionBlockEntity.infusing && oreInfusionBlockEntity.isComplete && oreInfusionBlockEntity.hasEnoughMana(recipe.getManaCost())) {
             oreInfusionBlockEntity.infusing = true;
             oreInfusionBlockEntity.timer = oreInfusionBlockEntity.MAX_TIME;
         }

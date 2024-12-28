@@ -1,5 +1,6 @@
 package yerova.botanicpledge.common.items.relic;
 
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,16 +23,17 @@ public class VedrfolnirsCore extends DivineCoreItem implements CustomCreativeTab
         super(properties);
     }
 
-
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        super.curioTick(slotContext, stack);
-        BPItemUtils.handleShieldRegenOnCurioTick(slotContext.entity(), stack);
+    public void onWornTick(ItemStack stack, LivingEntity entity) {
+        super.onWornTick(stack, entity);
+
+        BPItemUtils.handleShieldRegenOnCurioTick(entity, stack);
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
             attribute.setMaxShield(getShieldValueAccordingToRank(stack, maxShield));
             attribute.setDefRegenPerTick(getShieldValueAccordingToRank(stack, defRegenPerTick));
         });
     }
+
 
     public static CoreAttributeProvider getCoreAttribute() {
         return new CoreAttributeProvider(maxShield, defRegenPerTick, manaCost, 4, Attribute.Rune.EquipmentType.DIVINE_CORE);

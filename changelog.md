@@ -1,4 +1,17 @@
-# Version 0.8/0.7.5 Changelog:
+
+# Version 0.8.1 Changelog
+### Bugfixes
+    - Fixed an Issue that would lead to the game crashing on startup when trying to register the First Relic Item
+    - Fixed an Issue that would prevent the Core Item from allowing creative flight
+
+### Changes:
+    - Completely reworked the model and texture of the Ore Infusion Altar
+
+### Features
+    - The Ore Infusion Altar now is a Structure. It now requires a Yggdrasil Pylon two blocks above to function
+    - The Core Item now fully inherits the features from the the tiaras wings. (Dashing, speed modify for sprinting, etc.)
+
+# Version 0.8 Changelog:
 ### Bugfixes:
     - Fixed the incorrect display of the Mod dependent Recipes
     - Fixed the recipe for the Will item not appearing for the Yggdrasilsteel Armor

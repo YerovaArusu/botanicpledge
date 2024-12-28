@@ -6,7 +6,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -18,11 +20,16 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import vazkii.botania.api.item.Relic;
 import vazkii.botania.api.mana.ManaBarTooltip;
 import vazkii.botania.api.mana.ManaItemHandler;
+import vazkii.botania.client.fx.SparkleParticleData;
+import vazkii.botania.common.handler.BotaniaSounds;
+import vazkii.botania.common.handler.EquipmentHandler;
+import vazkii.botania.common.helper.InventoryHelper;
 import vazkii.botania.common.helper.ItemNBTHelper;
 import vazkii.botania.common.item.relic.RelicBaubleItem;
 import vazkii.botania.common.item.relic.RelicImpl;
@@ -31,17 +38,30 @@ import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
 import yerova.botanicpledge.common.utils.PlayerUtils;
+import yerova.botanicpledge.setup.BPItems;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
-public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioItem {
+public abstract class DivineCoreItem extends RelicBaubleItem {
 
     private static final String TAG_MANA = "mana";
+    private static final String TAG_GLIDING = "gliding";
+    private static final String TAG_DASH_COOLDOWN = "dashCooldown";
+    private static final String TAG_IS_SPRINTING = "isSprinting";
+    private static final String TAG_BOOST_PENDING = "boostPending";
+
+    private static final String UUID_ARMOR = "01940a5c-b0f3-7ff9-bb8c-e0884a8cc18d";
+    private static final String UUID_ARMOR_TOUGHNESS = "01940a5c-b0f3-7ff9-bb8c-e0884a8cc18d";
+    private static final String UUID_HEALTH = "01940a5c-b0f3-7ff9-bb8c-e0884a8cc18d";
+    private static final String UUID_SPEED = "01940a5c-b0f3-7ff9-bb8c-e0884a8cc18d";
+
+    private static final List<String> playersWithFlight = Collections.synchronizedList(new ArrayList<>());
+
     public static final int MAX_LEVEL_MANA = 2_000_000_000;
     private static final int TICK_INTERVAL = 20;
+
 
     public static final int[] LEVELS = {
             0, 10_000, 1_000_000, 10_000_000, 100_000_000, 1_000_000_000, MAX_LEVEL_MANA
@@ -69,44 +89,133 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
         return 25;
     }
 
+
     @Override
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        if (!(slotContext.entity() instanceof Player player)) return;
-        handleFlight(player, stack);
-
+    public void onWornTick(ItemStack stack, LivingEntity entity) {
+        handleFlight(entity,stack);
+        super.onWornTick(stack, entity);
     }
 
-    public static void handleFlight(Player player, ItemStack stack) {
-        if (stack.isEmpty() || player.isCreative() || player.isSpectator()) return;
 
-        if (checkIfAllowedToFly(player, stack) && !player.getAbilities().mayfly) {
-            startFlying(player);
-        } else if (!checkIfAllowedToFly(player, stack) && player.getAbilities().mayfly) {
-            stopFlying(player);
-            if (player instanceof ServerPlayer serverPlayer) {
-                serverPlayer.displayClientMessage(Component.translatable("botanicpledge.attributes.cant_fly").withStyle(ChatFormatting.DARK_RED), true);
+    public void handleFlight(LivingEntity living, ItemStack stack) {
+
+        if (living instanceof Player player) {
+            boolean flying = player.getAbilities().flying;
+
+            boolean wasSprting = ItemNBTHelper.getBoolean(stack, TAG_IS_SPRINTING, false);
+            boolean isSprinting = player.isSprinting();
+            if (isSprinting != wasSprting) {
+                ItemNBTHelper.setBoolean(stack, TAG_IS_SPRINTING, isSprinting);
             }
-            player.playSound(SoundEvents.GLASS_BREAK, 3.0F, 1.0F);
+
+            Vec3 look = player.getLookAngle().multiply(1, 0, 1).normalize();
+
+            if (flying) {
+                final int maxCd = 80;
+                int cooldown = ItemNBTHelper.getInt(stack, TAG_DASH_COOLDOWN, 0);
+                if (!wasSprting && isSprinting && cooldown == 0) {
+                    player.setDeltaMovement(player.getDeltaMovement().add(look.x, 0, look.z));
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(), BotaniaSounds.dash, SoundSource.PLAYERS, 1F, 1F);
+                    ItemNBTHelper.setInt(stack, TAG_DASH_COOLDOWN, maxCd);
+                    ItemNBTHelper.setBoolean(stack, TAG_BOOST_PENDING, true);
+                } else if (cooldown > 0) {;
+                    if (ItemNBTHelper.getBoolean(stack, TAG_BOOST_PENDING, false)) {
+                        living.moveRelative(5F, new Vec3(0F, 0F, 1F));
+                        ItemNBTHelper.removeEntry(stack, TAG_BOOST_PENDING);
+                    }
+                    ItemNBTHelper.setInt(stack, TAG_DASH_COOLDOWN, cooldown - 2);
+                }
+            } else {
+                boolean wasGliding = ItemNBTHelper.getBoolean(stack, TAG_GLIDING, false);
+                boolean doGlide = living.isShiftKeyDown() && !living.onGround() && (living.getDeltaMovement().y() < -.7F || wasGliding);
+
+
+                if (doGlide) {
+                    float mul = 0.6F;
+                    living.setDeltaMovement(look.x * mul, Math.max(-0.15F, living.getDeltaMovement().y()), look.z * mul);
+                    living.fallDistance = 2F;
+                }
+                ItemNBTHelper.setBoolean(stack, TAG_GLIDING, doGlide);
+            }
         }
 
-        if (player.tickCount % TICK_INTERVAL == 0 && player.getAbilities().mayfly && player.getAbilities().flying) {
-            if (stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
-                CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+    }
 
-                ManaItemHandler.INSTANCE.requestManaExactForTool(stack, player, attribute.getManaCostPerTick(), true);
+    public static void updatePlayerFlyStatus(Player player) {
+        ItemStack tiara = EquipmentHandler.findOrEmpty(BPItems.MARIAS_CORE.get(), player);
+
+        if (playersWithFlight.contains(playerStr(player))) {
+            if (shouldPlayerHaveFlight(player)) {
+                player.getAbilities().mayfly = true;
+                if (player.getAbilities().flying) {
+                    if (!player.level().isClientSide) {
+                        if (!player.isCreative() && !player.isSpectator()) {
+
+                            if (player.tickCount %20 == 0) {
+                                if (tiara.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
+                                    CoreAttribute attribute = tiara.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+                                    ManaItemHandler.instance().requestManaExact(tiara, player, attribute.getManaCostPerTick(), true);
+                                }
+                            }
+                        }
+                    } else if (Math.abs(player.getDeltaMovement().x()) > 0.1 || Math.abs(player.getDeltaMovement().z()) > 0.1) {
+                        double x = player.getX() - 0.5;
+                        double y = player.getY() - 0.5;
+                        double z = player.getZ() - 0.5;
+
+                        float r = 1F;
+                        float g = 1F;
+                        float b = 1F;
+
+
+                        for (int i = 0; i < 2; i++) {
+                            SparkleParticleData data = SparkleParticleData.sparkle(2F * (float) Math.random(), r, g, b, 20);
+                            player.level().addParticle(data, x + Math.random() * player.getBbWidth(), y + Math.random() * 0.4, z + Math.random() * player.getBbWidth(), 0, 0, 0);
+                        }
+                    }
+                }
+            } else {
+                if (!player.isSpectator() && !player.isCreative()) {
+                    player.getAbilities().mayfly = false;
+                    player.getAbilities().flying = false;
+                    player.getAbilities().invulnerable = false;
+                }
+                playersWithFlight.remove(playerStr(player));
             }
+        } else if (shouldPlayerHaveFlight(player)) {
+            playersWithFlight.add(playerStr(player));
+            player.getAbilities().mayfly = true;
         }
     }
 
-    private static boolean checkIfAllowedToFly(Player player, ItemStack stack) {
-        if (!stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) return false;
-        CoreAttribute attribute = stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+    public static void playerLoggedOut(ServerPlayer player) {
+        String username = player.getGameProfile().getName();
+        playersWithFlight.remove(username + ":false");
+        playersWithFlight.remove(username + ":true");
+    }
 
-        return ManaItemHandler.INSTANCE.requestManaExactForTool(stack, player, attribute.getManaCostPerTick(), false);
+    private static String playerStr(Player player) {
+        return player.getGameProfile().getName() + ":" + player.level().isClientSide;
+    }
+
+    private static boolean shouldPlayerHaveFlight(Player player) {
+        ItemStack armor = EquipmentHandler.findOrEmpty(BPItems.MARIAS_CORE.get(), player);
+        if (!armor.isEmpty()) {
+
+            if (armor.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).isPresent()) {
+                CoreAttribute attribute = armor.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).resolve().get();
+
+                return ManaItemHandler.instance().requestManaExactForTool(armor, player,attribute.getManaCostPerTick(),false);
+            }
+            return true;
+        }
+
+        return false;
     }
 
 
-    private boolean isDraconicEvolutionArmorEquipped(Player player) {
+
+    private static boolean isDraconicEvolutionArmorEquipped(Player player) {
         return PlayerUtils.checkForArmorFromMod(player, BPConstants.DRACONIC_EVOLUTION_MODID);
     }
 
@@ -115,21 +224,22 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     }
 
     @Override
-    public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
-        if (prevStack.getItem() != stack.getItem()) slotContext.entity().playSound(SoundEvents.ARMOR_EQUIP_NETHERITE, 1.0F, 1.0F);
+    public void onEquipped(ItemStack stack, LivingEntity entity) {
+        super.onEquipped(stack, entity);
 
+        entity.playSound(SoundEvents.ARMOR_EQUIP_NETHERITE, 1.0F, 1.0F);
     }
 
     @Override
-    public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+    public Multimap<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> getEquippedAttributeModifiers(ItemStack stack) {
         ImmutableMultimap.Builder<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         stack.getCapability(CoreAttributeProvider.CORE_ATTRIBUTE).ifPresent(attribute -> {
-            addAttributeModifier(builder, Attributes.ARMOR, uuid, BPConstants.ARMOR_TAG_NAME, attribute, Attribute.Rune.StatType.ARMOR);
-            addAttributeModifier(builder, Attributes.ARMOR_TOUGHNESS, uuid, BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute, Attribute.Rune.StatType.ARMOR_TOUGHNESS);
-            addAttributeModifier(builder, Attributes.MAX_HEALTH, uuid, BPConstants.MAX_HEALTH_TAG_NAME, attribute, Attribute.Rune.StatType.MAX_HEALTH);
-            addMovementSpeedModifier(builder, uuid, BPConstants.MOVEMENT_SPEED_TAG_NAME, attribute);
+            addAttributeModifier(builder, Attributes.ARMOR, UUID.fromString(UUID_ARMOR), BPConstants.ARMOR_TAG_NAME, attribute, Attribute.Rune.StatType.ARMOR);
+            addAttributeModifier(builder, Attributes.ARMOR_TOUGHNESS, UUID.fromString(UUID_ARMOR_TOUGHNESS), BPConstants.ARMOR_TOUGHNESS_TAG_NAME, attribute, Attribute.Rune.StatType.ARMOR_TOUGHNESS);
+            addAttributeModifier(builder, Attributes.MAX_HEALTH, UUID.fromString(UUID_HEALTH), BPConstants.MAX_HEALTH_TAG_NAME, attribute, Attribute.Rune.StatType.MAX_HEALTH);
+            addMovementSpeedModifier(builder, UUID.fromString(UUID_SPEED), BPConstants.MOVEMENT_SPEED_TAG_NAME, attribute);
         });
-        return builder.build().isEmpty() ? ICurioItem.super.getAttributeModifiers(slotContext, uuid, stack) : builder.build();
+        return builder.build().isEmpty() ?  super.getEquippedAttributeModifiers(stack) : builder.build();
     }
 
     private void addAttributeModifier(ImmutableMultimap.Builder<net.minecraft.world.entity.ai.attributes.Attribute, AttributeModifier> builder,
@@ -150,27 +260,11 @@ public abstract class DivineCoreItem extends RelicBaubleItem implements ICurioIt
     }
 
     @Override
-    public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
-        if (slotContext.entity() instanceof Player player && !stack.getItem().equals(newStack.getItem())) {
-            stopFlying(player);
-        }
+    public boolean canEquip(ItemStack stack, LivingEntity entity) {
+        return !isDraconicEvolutionArmorEquipped((Player) entity);
     }
 
-    @Override
-    public boolean canEquip(SlotContext slotContext, ItemStack stack) {
-        return isEquipable((Player) slotContext.entity(), stack);
-    }
 
-    @Override
-    public boolean canUnequip(SlotContext slotContext, ItemStack stack) {
-        return !isDraconicEvolutionArmorEquipped((Player) slotContext.entity());
-    }
-
-    @Override
-    public boolean canEquipFromUse(SlotContext slotContext, ItemStack stack) {
-        Player player = (Player) slotContext.entity();
-        return isEquipable(player, stack) && !(player.getOffhandItem().getItem() instanceof DivineCoreItem);
-    }
 
     private boolean isEquipable(Player player, ItemStack stack) {
         return !isDraconicEvolutionArmorEquipped(player);
