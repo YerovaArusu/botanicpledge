@@ -6,6 +6,7 @@
 
 ### Changes:
     - Completely reworked the model and texture of the Ore Infusion Altar
+    - Changed the Wings of the Vedrofolnir core to better match the wing design
 
 ### Features
     - The Ore Infusion Altar now is a Structure. It now requires a Yggdrasil Pylon two blocks above to function

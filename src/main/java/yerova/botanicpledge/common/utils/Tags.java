@@ -9,16 +9,17 @@ import net.minecraft.world.level.block.Block;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class Tags {
-    public static class Blocks{
+    public static class Blocks {
 
         private static TagKey<Block> tag(String name) {
             return BlockTags.create(new ResourceLocation(BotanicPledge.MOD_ID, name));
         }
     }
-    public static class Items{
+
+    public static class Items {
 
         private static TagKey<Item> tag(String name) {
             return ItemTags.create(new ResourceLocation(BotanicPledge.MOD_ID, name));
-         }
+        }
     }
 }
