@@ -33,10 +33,12 @@ import vazkii.botania.common.helper.InventoryHelper;
 import vazkii.botania.common.helper.ItemNBTHelper;
 import vazkii.botania.common.item.relic.RelicBaubleItem;
 import vazkii.botania.common.item.relic.RelicImpl;
+import vazkii.botania.forge.integration.curios.CurioIntegration;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.common.utils.BPItemUtils;
 import yerova.botanicpledge.common.utils.PlayerUtils;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -221,13 +223,6 @@ public abstract class DivineCoreItem extends RelicBaubleItem {
 
     public static Relic makeRelic(ItemStack stack) {
         return new RelicImpl(stack, null);
-    }
-
-    @Override
-    public void onEquipped(ItemStack stack, LivingEntity entity) {
-        super.onEquipped(stack, entity);
-
-        entity.playSound(SoundEvents.ARMOR_EQUIP_NETHERITE, 1.0F, 1.0F);
     }
 
     @Override
