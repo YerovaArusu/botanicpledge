@@ -80,7 +80,7 @@ public class FirstRelic extends RelicItem {
 
     public static void switchRelic(Player player, Level level, ItemStack heldItem) {
 
-        if (!level.isClientSide) {
+        if (!level.isClientSide && (isPartOfFirstRelic(heldItem) || heldItem.getItem() instanceof FirstRelic)) {
             int slot = player.getInventory().findSlotMatchingItem(heldItem);
 
             ArrayList<ItemStack> stacks = getRelicStacks(heldItem);
