@@ -22,7 +22,6 @@ public class ConfiguredBPFeatures {
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> context) {
 
-
         register(context, YGGDRASIL_WOOD_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(BPBlocks.YGGDRASIL_LOG.get()),
                 new StraightTrunkPlacer(5, 4, 3),

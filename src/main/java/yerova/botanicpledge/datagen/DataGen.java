@@ -21,9 +21,11 @@ public class DataGen {
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+        generator.addProvider(event.includeServer(), BPLootTableProvider.create(output));
+
         BlockTagProvider provider = generator.addProvider(event.includeServer(), new BlockTagProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new ItemTagProvider(output,lookupProvider,provider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), new WorldGenProvider(output, lookupProvider));
-        generator.addProvider(event.includeServer(), BPLootTableProvider.create(output));
+
      }
 }

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#forge:is_mountain",
+  "features": "botanicpledge:yggdrasil_tree_placed",
+  "step": "vegetal_decoration"
+}

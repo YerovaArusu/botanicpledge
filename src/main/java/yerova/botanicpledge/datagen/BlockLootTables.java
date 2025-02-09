@@ -15,18 +15,28 @@ public class BlockLootTables extends BlockLootSubProvider {
 
     @Override
     public void generate() {
+        this.dropSelf(BPBlocks.YGGDRAL_SPREADER.get());
+        this.dropSelf(BPBlocks.MANA_BUFFER.get());
+        this.dropSelf(BPBlocks.RITUAL_CENTER.get());
+        this.dropSelf(BPBlocks.ORE_INFUSION.get());
+        this.dropSelf(BPBlocks.YGGDRALIUM_BLOCK.get());
+        this.dropSelf(BPBlocks.RITUAL_PEDESTAL.get());
+        this.dropSelf(BPBlocks.MODIFICATION_TABLE.get());
+        this.dropSelf(BPBlocks.THUNDER_LILY.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_PYLON.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_SAPLING.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_LOG.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_WOOD.get());
+        this.dropSelf(BPBlocks.STRIPPED_YGGDRASIL_LOG.get());
+        this.dropSelf(BPBlocks.STRIPPED_YGGDRASIL_WOOD.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_PLANKS.get());
 
-        this.createOakLeavesDrops(BPBlocks.YGGDRASIL_LEAVES.get(), BPBlocks.YGGDRASIL_SAPLING.get());
-
-        BPBlocks.BLOCKS.getEntries().stream().forEach(block -> {
-            this.dropSelf(block.get());
-        });
-
-
+        this.createLeavesDrops(BPBlocks.YGGDRASIL_LEAVES.get(), BPBlocks.YGGDRASIL_SAPLING.get(), 0.05f);
     }
 
+
     @Override
-    public Iterable<Block> getKnownBlocks() {
+    protected Iterable<Block> getKnownBlocks() {
         return BPBlocks.BLOCKS.getEntries().stream().map(RegistryObject::get)::iterator;
     }
 
