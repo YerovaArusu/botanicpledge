@@ -23,5 +23,7 @@ public class DataGen {
 
         BlockTagProvider provider = generator.addProvider(event.includeServer(), new BlockTagProvider(output, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new ItemTagProvider(output,lookupProvider,provider.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new WorldGenProvider(output, lookupProvider));
+        generator.addProvider(event.includeServer(), BPLootTableProvider.create(output));
      }
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "botanicpledge:block/livingwood_log",
+    "side": "botanicpledge:block/livingwood_log",
+    "top": "botanicpledge:block/livingwood_log"
+  }
+}

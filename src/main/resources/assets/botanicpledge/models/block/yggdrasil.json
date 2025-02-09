@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "botanicpledge:block/yggdrasil_log",
+    "side": "botanicpledge:block/yggdrasil_log"
+  }
+}

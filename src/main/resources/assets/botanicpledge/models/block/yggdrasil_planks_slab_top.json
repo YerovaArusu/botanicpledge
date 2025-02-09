@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "botanicpledge:block/yggdrasil_planks",
+    "side": "botanicpledge:block/yggdrasil_planks",
+    "top": "botanicpledge:block/yggdrasil_planks"
+  }
+}

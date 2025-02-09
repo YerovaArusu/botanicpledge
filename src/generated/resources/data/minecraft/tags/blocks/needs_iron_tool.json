@@ -3,10 +3,18 @@
     "botanicpledge:yggdral_spreader",
     "botanicpledge:mana_buffer",
     "botanicpledge:ritual_center",
+    "botanicpledge:ore_infusion",
     "botanicpledge:yggdrasilsteel_block",
     "botanicpledge:ritual_pedestal",
     "botanicpledge:modification_altar",
     "botanicpledge:thunder_lily",
-    "botanicpledge:yggdrasil_pylon"
+    "botanicpledge:yggdrasil_pylon",
+    "botanicpledge:yggdrasil_sapling",
+    "botanicpledge:yggdrasil_log",
+    "botanicpledge:yggdrasil",
+    "botanicpledge:stripped_yggdrasil_log",
+    "botanicpledge:stripped_yggdrasil",
+    "botanicpledge:yggdrasil_planks",
+    "botanicpledge:yggdrasil_leaves"
   ]
 }

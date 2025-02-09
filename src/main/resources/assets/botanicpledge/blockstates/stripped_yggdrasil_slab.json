@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "botanicpledge:block/stripped_stripped_slab"
+    },
+    "type=double": {
+      "model": "botanicpledge:block/stripped_yggdrasil"
+    },
+    "type=top": {
+      "model": "botanicpledge:block/stripped_yggdrasil_slab_top"
+    }
+  }
+}

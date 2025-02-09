@@ -1,13 +1,19 @@
 package yerova.botanicpledge.setup;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -15,6 +21,7 @@ import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
 import yerova.botanicpledge.common.items.BotanicPledgeTab;
+import yerova.botanicpledge.common.worldgen.tree.YggdrasilTreeGrower;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -60,6 +67,60 @@ public class BPBlocks {
 
     public static final RegistryObject<Block> YGGDRASIL_PYLON = registerBlockWithoutBlockItem("yggdrasil_pylon", () ->
             new YggdrasilPylon(BlockBehaviour.Properties.copy(BotaniaBlocks.gaiaPylon)));
+
+
+    //World Ash
+    public static final RegistryObject<Block> YGGDRASIL_SAPLING = registerBlock("yggdrasil_sapling", () ->
+            new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+
+    public static final RegistryObject<Block> YGGDRASIL_LOG = registerBlock("yggdrasil_log", () ->
+            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG).strength(3f)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> YGGDRASIL_WOOD = registerBlock("yggdrasil", () ->
+            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).strength(3f)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> STRIPPED_YGGDRASIL_LOG = registerBlock("stripped_yggdrasil_log", () ->
+            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG).strength(3f)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> STRIPPED_YGGDRASIL_WOOD = registerBlock("stripped_yggdrasil", () ->
+            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD).strength(3f)), BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> YGGDRASIL_PLANKS = registerBlock("yggdrasil_planks", () ->
+            new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(2f)) {
+                @Override
+                public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return true;
+                }
+
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 5;
+                }
+
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 5;
+                }
+            }, BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
+
+    public static final RegistryObject<Block> YGGDRASIL_LEAVES = registerBlock("yggdrasil_leaves", () ->
+            new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES).noLootTable()) {
+                @Override
+                public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return true;
+                }
+
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 60;
+                }
+
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 30;
+                }
+            }, BotanicPledgeTab.BOTANIC_PLEDGE_TAB);
 
 
 

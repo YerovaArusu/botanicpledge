@@ -4,6 +4,7 @@ import com.userofbricks.expanded_combat.item.ECItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BlockItem;
@@ -42,5 +43,12 @@ public class ItemTagProvider extends ItemTagsProvider {
         this.tag(YGGDRASILSTEEL_SWORD).add(BotaniaItems.terraSword);
 
         this.tag(ECItemTags.bindForgeStorageBlock(ExpandedCombatPlugin.YGGDRASILSTEEL.getLocationName().getPath())).add(BlockItem.byBlock(BPBlocks.YGGDRALIUM_BLOCK.get()));
+
+        this.tag(ItemTags.LOGS_THAT_BURN).add(BPBlocks.STRIPPED_YGGDRASIL_LOG.get().asItem(), BPBlocks.STRIPPED_YGGDRASIL_WOOD.get().asItem(), BPBlocks.YGGDRASIL_WOOD.get().asItem(), BPBlocks.YGGDRASIL_LOG.get().asItem());
+        this.tag(ItemTags.LOGS).add(BPBlocks.STRIPPED_YGGDRASIL_LOG.get().asItem(),BPBlocks.YGGDRASIL_LOG.get().asItem(),BPBlocks.YGGDRASIL_WOOD.get().asItem(),BPBlocks.STRIPPED_YGGDRASIL_WOOD.get().asItem());
+
+        this.tag(ItemTags.PLANKS).add(BPBlocks.YGGDRASIL_PLANKS.get().asItem());
+        this.tag(ItemTags.LEAVES).add(BPBlocks.YGGDRASIL_LEAVES.get().asItem());
+
     }
 }

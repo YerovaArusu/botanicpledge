@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "botanicpledge:block/yggdrasil_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "botanicpledge:block/yggdrasil_log"
+    },
+    "axis=z": {
+      "model": "botanicpledge:block/yggdrasil_log_horizontal",
+      "x": 90
+    }
+  }
+}

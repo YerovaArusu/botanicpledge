@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "botania:block/stripped_yggdrasil_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "botanicpledge:block/stripped_yggdrasil"
+    },
+    "axis=z": {
+      "model": "botanicpledge:block/stripped_yggdrasil_horizontal",
+      "x": 90
+    }
+  }
+}
