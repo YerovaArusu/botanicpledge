@@ -30,6 +30,14 @@ public class BlockLootTables extends BlockLootSubProvider {
         this.dropSelf(BPBlocks.STRIPPED_YGGDRASIL_LOG.get());
         this.dropSelf(BPBlocks.STRIPPED_YGGDRASIL_WOOD.get());
         this.dropSelf(BPBlocks.YGGDRASIL_PLANKS.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_STAIRS.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_SLAB.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_FENCE.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_FENCE_GATE.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_WALL.get());
+        this.dropSelf(BPBlocks.YGGDRASIL_TRAPDOOR.get());
+        this.add(BPBlocks.YGGDRASIL_DOOR.get(),block -> createDoorTable(block));
+
 
         this.createLeavesDrops(BPBlocks.YGGDRASIL_LEAVES.get(), BPBlocks.YGGDRASIL_SAPLING.get(), 0.05f);
     }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "item": "botanicpledge:world_ash_branch"
+    }
+  },
+  "pattern": [
+    "WW",
+    "WW"
+  ],
+  "result": {
+    "item": "botanicpledge:yggdrasil_planks"
+  },
+  "show_notification": true
+}

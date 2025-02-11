@@ -1,13 +1,13 @@
 {
   "variants": {
     "type=bottom": {
-      "model": "botanicpledge:block/yggdrasil_planks_slab"
+      "model": "botanicpledge:block/yggdrasil_slab"
     },
     "type=double": {
       "model": "botanicpledge:block/yggdrasil_planks"
     },
     "type=top": {
-      "model": "botanicpledge:block/yggdrasil_planks_slab_top"
+      "model": "botanicpledge:block/yggdrasil_slab_top"
     }
   }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": {
+      "item": "botanicpledge:world_ash_branch"
+    }
+  },
+  "pattern": [
+    "W "
+  ],
+  "result": {
+    "item": "botania:livingwood_twig"
+  },
+  "show_notification": true
+}

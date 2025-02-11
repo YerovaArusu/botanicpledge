@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_post"
+        "model": "botanicpledge:block/yggdrasil_wall_post"
       },
       "when": {
         "up": "true"
@@ -10,7 +10,7 @@
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side",
+        "model": "botanicpledge:block/yggdrasil_wall_side",
         "uvlock": true,
         "y": 90
       },
@@ -20,7 +20,7 @@
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side_tall",
+        "model": "botanicpledge:block/yggdrasil_wall_side_tall",
         "uvlock": true,
         "y": 90
       },
@@ -30,27 +30,25 @@
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_livingwood_wall_side",
-        "uvlock": true,
-        "y": 270
+        "model": "botanicpledge:block/yggdrasil_wall_side",
+        "uvlock": true
       },
       "when": {
-        "west": "low"
+        "north": "low"
       }
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side_tall",
-        "uvlock": true,
-        "y": 270
+        "model": "botanicpledge:block/yggdrasil_wall_side_tall",
+        "uvlock": true
       },
       "when": {
-        "west": "tall"
+        "north": "tall"
       }
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side",
+        "model": "botanicpledge:block/yggdrasil_wall_side",
         "uvlock": true,
         "y": 180
       },
@@ -60,7 +58,7 @@
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side_tall",
+        "model": "botanicpledge:block/yggdrasil_wall_side_tall",
         "uvlock": true,
         "y": 180
       },
@@ -70,20 +68,22 @@
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side",
-        "uvlock": true
+        "model": "botanicpledge:block/yggdrasil_wall_side",
+        "uvlock": true,
+        "y": 270
       },
       "when": {
-        "north": "low"
+        "west": "low"
       }
     },
     {
       "apply": {
-        "model": "botanicpledge:block/stripped_yggdrasil_wall_side_tall",
-        "uvlock": true
+        "model": "botanicpledge:block/yggdrasil_wall_side_tall",
+        "uvlock": true,
+        "y": 270
       },
       "when": {
-        "north": "tall"
+        "west": "tall"
       }
     }
   ]

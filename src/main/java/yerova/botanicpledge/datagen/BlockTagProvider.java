@@ -31,6 +31,9 @@ public class BlockTagProvider extends BlockTagsProvider {
 
         this.tag(BlockTags.PLANKS).add(BPBlocks.YGGDRASIL_PLANKS.get());
         this.tag(BlockTags.LEAVES).add(BPBlocks.YGGDRASIL_LEAVES.get());
+        this.tag(BlockTags.FENCES).add(BPBlocks.YGGDRASIL_FENCE.get());
+        this.tag(BlockTags.FENCE_GATES).add(BPBlocks.YGGDRASIL_FENCE_GATE.get());
+        this.tag(BlockTags.WALLS).add(BPBlocks.YGGDRASIL_WALL.get());
 
     }
 }

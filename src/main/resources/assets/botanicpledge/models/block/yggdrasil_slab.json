@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab",
-  "textures": {
-    "bottom": "botanicpledge:block/yggdrasil_log",
-    "side": "botanicpledge:block/yggdrasil_log",
-    "top": "botanicpledge:block/yggdrasil_log"
-  }
-}

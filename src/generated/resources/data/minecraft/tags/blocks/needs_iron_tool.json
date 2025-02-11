@@ -15,6 +15,13 @@
     "botanicpledge:stripped_yggdrasil_log",
     "botanicpledge:stripped_yggdrasil",
     "botanicpledge:yggdrasil_planks",
-    "botanicpledge:yggdrasil_leaves"
+    "botanicpledge:yggdrasil_leaves",
+    "botanicpledge:yggdrasil_stairs",
+    "botanicpledge:yggdrasil_slab",
+    "botanicpledge:yggdrasil_fence",
+    "botanicpledge:yggdrasil_fence_gate",
+    "botanicpledge:yggdrasil_wall",
+    "botanicpledge:yggdrasil_door",
+    "botanicpledge:yggdrasil_trapdoor"
   ]
 }

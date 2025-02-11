@@ -3,11 +3,15 @@
 ### Bugfixes
     - Fixed an issue that would lead to a sound spam when equipping the Core Item.
     - Fixed an issue that would still lead to every item to receivve the first-Relic Description
+    - Fixed some more minor bugs
 
 ### Features
     - Added a new Wood type: Yggdrasil Wood
-    - Added slabs and stairs for the new wood
+    - Added slabs, doors, fences and stairs for the new wood type
     - Added a new Sapling: Yggdrassil tree
+
+### Notes
+    - Features are currently not big because i am in the final semester of the technical college
 
 
 # Version 0.8.1 Changelog

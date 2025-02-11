@@ -120,7 +120,6 @@ public class BotanicPledge {
         MinecraftForge.EVENT_BUS.addGenericListener(BlockEntity.class, ForgeClientInitializer::attachBeCapabilities);
 
 
-
         EntityRenderers.register(BPEntities.YGGD_FOCUS.get(), YggdFocusRenderer::new);
         EntityRenderers.register(BPEntities.YGGDRAFOLIUM.get(), YggdrafoliumRenderer::new);
         EntityRenderers.register(BPEntities.ASGARD_BLADE.get(), AsgardBladeRenderer::new);
@@ -136,6 +135,7 @@ public class BotanicPledge {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.MODIFICATION_TABLE.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_PYLON.get(), RenderType.translucent());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.ORE_INFUSION.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_TRAPDOOR.get(), RenderType.translucent());
 
     }
 
