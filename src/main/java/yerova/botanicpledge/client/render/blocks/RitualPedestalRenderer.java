@@ -22,6 +22,7 @@ public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedesta
     @Override
     public void render(RitualPedestalBlockEntity tileEntityIn, float pPartialTick, PoseStack matrixStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
 
+
         double x = tileEntityIn.getBlockPos().getX();
         double y = tileEntityIn.getBlockPos().getY();
         double z = tileEntityIn.getBlockPos().getZ();

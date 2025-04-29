@@ -75,6 +75,7 @@ public class BotanicPledge {
         BPBlockEntities.BLOCK_ENTITIES.register(forgeBus);
         BPLootModifiers.LOOT_MODIFIERS.register(forgeBus);
         BPEssences.ESSENCES.register(forgeBus);
+        BPTrunkPlacerTypes.PLACER_TYPES.register(forgeBus);
 
 
         forgeBus.addListener(this::setup);
@@ -115,14 +116,20 @@ public class BotanicPledge {
         CuriosRendererRegistry.register(BPItems.MARIAS_CORE.get(), VedrfolnirCoreRenderer::new);
 
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.THUNDER_LILY.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.MANA_BUFFER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_CENTER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_PEDESTAL.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.MODIFICATION_TABLE.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_PYLON.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.ORE_INFUSION.get(), RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_TRAPDOOR.get(), RenderType.translucent());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.MANA_BUFFER.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_CENTER.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.RITUAL_PEDESTAL.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRAL_SPREADER.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.MODIFICATION_TABLE.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_PYLON.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.ORE_INFUSION.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_TRAPDOOR.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.AURA_NODE.get(), RenderType.cutoutMipped());
+
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_LOG.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_WOOD.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.STRIPPED_YGGDRASIL_LOG.get(), RenderType.cutoutMipped());
+        ItemBlockRenderTypes.setRenderLayer(BPBlocks.STRIPPED_YGGDRASIL_WOOD.get(), RenderType.cutoutMipped());
 
     }
 

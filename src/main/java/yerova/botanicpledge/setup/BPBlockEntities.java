@@ -46,6 +46,43 @@ public class BPBlockEntities {
             BLOCK_ENTITIES.register("ore_infusion", () ->
                     BlockEntityType.Builder.of(OreInfusionBlockEntity::new, BPBlocks.ORE_INFUSION.get()).build(null));
 
+    //Aura Node (Test)
+    public static final RegistryObject<BlockEntityType<AuraNodeBlockEntity>> AURA_NODE =
+            BLOCK_ENTITIES.register("aura_node", () ->
+                    BlockEntityType.Builder.of(AuraNodeBlockEntity::new, BPBlocks.AURA_NODE.get()).build(null));
+
+
+
+    public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> YGGDRASIL_LOG =
+            BLOCK_ENTITIES.register("yggdrasil_log", () ->
+                    BlockEntityType.Builder.of(
+                            (pos, state) -> new YggdrasilLogBlockEntity(BPBlockEntities.YGGDRASIL_LOG.get(), pos, state),
+                            BPBlocks.YGGDRASIL_LOG.get()
+                    ).build(null));
+
+    public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> YGGDRASIL_WOOD =
+            BLOCK_ENTITIES.register("yggdrasil_wood", () ->
+                    BlockEntityType.Builder.of(
+                            (pos, state) -> new YggdrasilLogBlockEntity(BPBlockEntities.YGGDRASIL_WOOD.get(), pos, state),
+                            BPBlocks.YGGDRASIL_WOOD.get()
+                    ).build(null));
+
+    public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> STRIPPED_YGGDRASIL_LOG =
+            BLOCK_ENTITIES.register("stripped_yggdrasil_log", () ->
+                    BlockEntityType.Builder.of(
+                            (pos, state) -> new YggdrasilLogBlockEntity(BPBlockEntities.STRIPPED_YGGDRASIL_LOG.get(), pos, state),
+                            BPBlocks.STRIPPED_YGGDRASIL_LOG.get()
+                    ).build(null));
+
+    public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> STRIPPED_YGGDRASIL_WOOD =
+            BLOCK_ENTITIES.register("stripped_yggdrasil_wood", () ->
+                    BlockEntityType.Builder.of(
+                            (pos, state) -> new YggdrasilLogBlockEntity(BPBlockEntities.STRIPPED_YGGDRASIL_WOOD.get(), pos, state),
+                            BPBlocks.STRIPPED_YGGDRASIL_WOOD.get()
+                    ).build(null));
+
+
+
 
 
     public static void registerWandHudCaps(BotaniaBlockEntities.BECapConsumer<WandHUD> consumer) {

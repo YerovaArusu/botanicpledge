@@ -28,7 +28,6 @@ public class RitualPedestalBlock extends BaseEntityBlock {
         super(properties);
     }
 
-
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
 
     @Override

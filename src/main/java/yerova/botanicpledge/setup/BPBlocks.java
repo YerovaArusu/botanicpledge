@@ -12,17 +12,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import vazkii.botania.common.block.BotaniaBlock;
 import vazkii.botania.common.block.BotaniaBlockSetTypes;
 import vazkii.botania.common.block.BotaniaBlocks;
-import vazkii.botania.common.block.decor.stairs.BotaniaStairBlock;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
-import yerova.botanicpledge.common.items.BotanicPledgeTab;
+import yerova.botanicpledge.common.blocks.AuraNodeBlock;
 import yerova.botanicpledge.common.worldgen.tree.YggdrasilTreeGrower;
 
 import javax.annotation.Nullable;
@@ -60,6 +57,10 @@ public class BPBlocks {
     public static final RegistryObject<Block> MODIFICATION_TABLE = registerBlock("modification_altar",
             () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE)));
 
+    //Aura Node Block (Test)
+    public static final RegistryObject<Block> AURA_NODE = registerBlock("aura_node",
+            () -> new AuraNodeBlock(BlockBehaviour.Properties.copy(Blocks.TORCH)));
+
 
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
@@ -70,22 +71,24 @@ public class BPBlocks {
             new YggdrasilPylon(BlockBehaviour.Properties.copy(BotaniaBlocks.gaiaPylon)));
 
 
+
+
     //World Ash
     public static final RegistryObject<Block> YGGDRASIL_SAPLING = registerBlock("yggdrasil_sapling", () ->
             new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
 
 
     public static final RegistryObject<Block> YGGDRASIL_LOG = registerBlock("yggdrasil_log", () ->
-            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG).strength(3f)));
+            new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.OAK_LOG).strength(3f)));
 
     public static final RegistryObject<Block> YGGDRASIL_WOOD = registerBlock("yggdrasil", () ->
-            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).strength(3f)));
+            new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD).strength(3f)));
 
     public static final RegistryObject<Block> STRIPPED_YGGDRASIL_LOG = registerBlock("stripped_yggdrasil_log", () ->
-            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG).strength(3f)));
+            new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG).strength(3f)));
 
     public static final RegistryObject<Block> STRIPPED_YGGDRASIL_WOOD = registerBlock("stripped_yggdrasil", () ->
-            new FlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD).strength(3f)));
+            new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD).strength(3f)));
 
     public static final RegistryObject<Block> YGGDRASIL_PLANKS = registerBlock("yggdrasil_planks", () ->
             new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS).strength(2f)) {
