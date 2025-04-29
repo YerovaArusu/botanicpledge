@@ -28,7 +28,6 @@ public class AuraNodeNBTHandler {
         tag.put(KEY_BASE_ESSENCE, baseEssence.toNBT());
         tag.putInt(KEY_BASE_ESSENCE_AMOUNT, imp.getBaseEssenceAmount());
 
-        System.out.println("Essence:" + tag.toString());
 
         // Full essence list
         tag.put(KEY_ESSENCES, imp.getEssenceList().toNBT());
