@@ -3,14 +3,21 @@ package yerova.botanicpledge.common.items;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SimpleFoiledItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.utils.BPConstants;
+import yerova.botanicpledge.setup.BPEnchantments;
 
 import java.util.*;
 
@@ -25,54 +32,54 @@ public class RuneGemItem extends SimpleFoiledItem {
         return true;
     }
 
-    public static double getSocketValueByChance(Attribute.Rune.StatType stat) {
+    public static double getSocketValueByChance(Attribute.Rune.StatType stat, RandomSource random) {
 
         double value = switch (getRandomRarity(10000)) {
             case (BPConstants.RARITY_EPIC) -> switch (stat.name().toLowerCase()) {
-                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(7, 8);
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(7, 8);
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(4, 5);
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(60, 75);
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(60, 75);
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(7, 8, random);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(7, 8, random);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(4, 5, random);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(60, 75, random);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(60, 75, random);
 
-                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(7, 8);
-                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(60, 75);
+                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(7, 8, random);
+                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(60, 75, random);
 
                 default -> 0.0;
             };
             case (BPConstants.RARITY_RARE) -> switch (stat.name().toLowerCase()) {
-                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(6, 7);
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(6, 7);
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(3, 4);
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(45, 60);
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(45, 60);
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(6, 7, random);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(6, 7, random);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(3, 4, random);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(45, 60, random);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(45, 60, random);
 
-                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7);
-                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(45, 60);
+                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7, random);
+                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(45, 60, random);
 
                 default -> 0.0;
             };
             case (BPConstants.RARITY_UNCOMMON) -> switch (stat.name().toLowerCase()) {
-                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(5, 6);
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(5, 6);
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(2, 3);
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(30, 45);
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(30, 45);
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(5, 6, random);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(5, 6, random);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(2, 3, random);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(30, 45, random);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(30, 45, random);
 
-                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7);
-                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(30, 45);
+                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7, random);
+                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(30, 45, random);
 
                 default -> 0.0;
             };
             case (BPConstants.RARITY_COMMON) -> switch (stat.name().toLowerCase()) {
-                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(0, 5);
-                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(0, 5);
-                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(0, 2);
-                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(0, 30);
-                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(7, 8);
+                case (BPConstants.ARMOR_TAG_NAME) -> getRandomGemValueInRange(0, 5, random);
+                case (BPConstants.ARMOR_TOUGHNESS_TAG_NAME) -> getRandomGemValueInRange(0, 5, random);
+                case (BPConstants.MAX_HEALTH_TAG_NAME) -> getRandomGemValueInRange(0, 2, random);
+                case (BPConstants.JUMP_HEIGHT_TAG_NAME) -> getRandomGemValueInRange(0, 30, random);
+                case (BPConstants.MOVEMENT_SPEED_TAG_NAME) -> getRandomGemValueInRange(7, 8, random);
 
-                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7);
-                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(0, 30);
+                case (BPConstants.ATTACK_DAMAGE_TAG_NAME) -> getRandomGemValueInRange(6, 7, random);
+                case (BPConstants.ATTACK_SPEED_TAG_NAME) -> getRandomGemValueInRange(0, 30, random);
 
                 default -> 0.0;
             };
@@ -95,23 +102,24 @@ public class RuneGemItem extends SimpleFoiledItem {
         } else return BPConstants.RARITY_COMMON;
     }
 
-    public static Attribute.Rune.EquipmentType getRandomItemType() {
-        return Attribute.Rune.EquipmentType.
-                values()[new Random().nextInt(Attribute.Rune.EquipmentType.values().length)];
+    public static Attribute.Rune.EquipmentType getRandomItemType(RandomSource random) {
+        return Attribute.Rune.EquipmentType.values()[random.nextInt(Attribute.Rune.EquipmentType.values().length)];
     }
 
-    public static Attribute.Rune.StatType getRandomAttribute(Attribute.Rune.EquipmentType itemType) {
-        return switch (itemType) {
+    public static Attribute.Rune.StatType getRandomAttribute(Attribute.Rune.EquipmentType itemType, RandomSource random) {
+        List<Attribute.Rune.StatType> filtered = switch (itemType) {
             case DIVINE_CORE -> Arrays.stream(Attribute.Rune.StatType.values())
                     .filter(stat -> stat != Attribute.Rune.StatType.ATTACK_SPEED &&
                             stat != Attribute.Rune.StatType.ATTACK_DAMAGE &&
                             stat != Attribute.Rune.StatType.NONE)
-                    .findAny().orElse(Attribute.Rune.StatType.NONE);
+                    .toList();
             case SWORD -> Arrays.stream(Attribute.Rune.StatType.values())
-                    .filter(stat -> stat == Attribute.Rune.StatType.ATTACK_SPEED || stat == Attribute.Rune.StatType.ATTACK_DAMAGE)
-                    .findAny().orElse(Attribute.Rune.StatType.NONE);
-            default -> Attribute.Rune.StatType.NONE;
+                    .filter(stat -> stat == Attribute.Rune.StatType.ATTACK_SPEED ||
+                            stat == Attribute.Rune.StatType.ATTACK_DAMAGE)
+                    .toList();
+            default -> List.of();
         };
+        return filtered.isEmpty() ? Attribute.Rune.StatType.NONE : filtered.get(random.nextInt(filtered.size()));
     }
 
     @Override
@@ -166,15 +174,48 @@ public class RuneGemItem extends SimpleFoiledItem {
         return Attribute.Rune.StatType.NONE;
     }
 
-    public static ItemStack getNewAttributedGemStack() {
-        Attribute.Rune.EquipmentType et = getRandomItemType();
-        Attribute.Rune.StatType st = getRandomAttribute(et);
-        Attribute.Rune rune = new Attribute.Rune(et, getRandomAttribute(et), getSocketValueByChance(st));
+    public static ItemStack getNewAttributedGemStack(LootContext context, Map<String,Float> rarities) {
+
+        RandomSource random = context.getRandom();
+
+        Entity killer = context.getParamOrNull(LootContextParams.KILLER_ENTITY);
+        if (!(killer instanceof LivingEntity living)) return ItemStack.EMPTY;
+
+        int runeCollectorLevel = EnchantmentHelper.getEnchantmentLevel(BPEnchantments.RUNE_COLLECTOR_ENCHANTMENT.get(), living);
+
+        Map<String, Float> scaledChances = new HashMap<>();
+
+        float totalChance = 0f;
+        for (Map.Entry<String, Float> entry : rarities.entrySet()) {
+            float scaledChance = entry.getValue() * runeCollectorLevel;
+            scaledChances.put(entry.getKey(), scaledChance);
+            totalChance += scaledChance;
+        }
+
+        if (totalChance <= 0f) return ItemStack.EMPTY;
+
+        float roll = random.nextFloat() * totalChance;
+        float cumulative = 0f;
+
+        Attribute.Rune.EquipmentType random_et = getRandomItemType(random);
+        Attribute.Rune.StatType random_st = null;
+
+        for (Map.Entry<String, Float> entry : scaledChances.entrySet()) {
+            cumulative += entry.getValue();
+            if (roll <= cumulative) {
+                random_st = getRandomAttribute(random_et, random);
+                break;
+            }
+        }
+
+        Attribute.Rune rune = new Attribute.Rune(random_et, random_st, getSocketValueByChance(random_st, random));
 
         return rune.getAsStack();
     }
 
-    public static double getRandomGemValueInRange(double start, double end) {
-        return ((double) (end - start) / (double) BPConstants.GEM_POSSIBLE_VALUES) * ((double) new Random().nextInt(BPConstants.GEM_POSSIBLE_VALUES - 1) + 1);
+    public static double getRandomGemValueInRange(double start, double end, RandomSource random) {
+        int steps = BPConstants.GEM_POSSIBLE_VALUES;
+        return ((end - start) / steps) * (random.nextInt(steps - 1) + 1);
     }
+
 }

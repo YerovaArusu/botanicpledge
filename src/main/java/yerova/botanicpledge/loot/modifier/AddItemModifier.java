@@ -1,4 +1,4 @@
-package yerova.botanicpledge.loot;
+package yerova.botanicpledge.loot.modifier;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -28,8 +28,7 @@ public class AddItemModifier extends LootModifier {
             .fieldOf("item").forGetter(m -> m.item)).apply(inst, AddItemModifier::new)));
 
     private final Item item;
-    public static final ResourceLocation HARD_LOOT_TABLE = new ResourceLocation("botania", "gaia_guardian_2");
-
+    public static final ResourceLocation GAIA_HARD_LOOT_TABLE = new ResourceLocation("botania", "gaia_guardian_2");
 
     public AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
         super(conditionsIn);
@@ -43,7 +42,7 @@ public class AddItemModifier extends LootModifier {
         Entity dead = context.getParamOrNull(LootContextParams.THIS_ENTITY);
 
         if (self instanceof Player && dead instanceof GaiaGuardianEntity && dead.getType() == BotaniaEntities.DOPPLEGANGER) {
-            if (HARD_LOOT_TABLE.equals(((Mob) dead).getLootTable())) {
+            if (GAIA_HARD_LOOT_TABLE.equals(((Mob) dead).getLootTable())) {
                 generatedLoot.add(new ItemStack(item));
             }
         }

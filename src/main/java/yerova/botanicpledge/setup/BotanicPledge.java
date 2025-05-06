@@ -89,6 +89,8 @@ public class BotanicPledge {
         BPBlockEntities.BLOCK_ENTITIES.register(forgeBus);
         BPLootModifiers.LOOT_MODIFIERS.register(forgeBus);
 
+        BPLootItemConditions.LOOT_TYPES.register(forgeBus);
+
 
         forgeBus.addListener(this::setup);
         forgeBus.addListener(this::processIMC);

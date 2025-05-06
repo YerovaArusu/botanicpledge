@@ -29,7 +29,7 @@ public class DataGen {
         generator.addProvider(event.includeClient(), new BPBlockStateProvider(output, existingFileHelper));
         generator.addProvider(event.includeClient(), new BPItemModelProvider(output, existingFileHelper));
 
-
+        generator.addProvider(event.includeServer(), new BPGlobalLootModifiersProvider(output));
 
      }
 }

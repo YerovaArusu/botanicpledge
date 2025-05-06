@@ -41,10 +41,10 @@ public final class BPConstants {
     public static final String FLOWER_TAG_COOLDOWN = "cooldown";
     public static final String FLOWER_TAG_CD = "cd";
 
-    public static final String RARITY_EPIC = "rarity_epic";
-    public static final String RARITY_RARE = "rarity_rare";
-    public static final String RARITY_UNCOMMON = "rarity_uncommon";
-    public static final String RARITY_COMMON = "rarity_common";
+    public static final String RARITY_EPIC = "epic";
+    public static final String RARITY_RARE = "rare";
+    public static final String RARITY_UNCOMMON = "uncommon";
+    public static final String RARITY_COMMON = "common";
     public static final String NO_RUNE_GEM = "no_rune_gem";
 
 

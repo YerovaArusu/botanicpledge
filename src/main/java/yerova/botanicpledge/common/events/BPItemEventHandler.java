@@ -75,6 +75,7 @@ public class BPItemEventHandler {
     private static final float SPRINT_MODIFIER = 0.2F;
     private static final double JUMP_HEIGHT_MULTIPLIER = 0.01;
 
+
     @SubscribeEvent
     public static void handleCoreDamage(LivingAttackEvent event) {
         LivingEntity entity = event.getEntity();
