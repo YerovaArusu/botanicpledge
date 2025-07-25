@@ -5,6 +5,7 @@ import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import yerova.botanicpledge.loot.AddGaiaItemModifier;
 import yerova.botanicpledge.loot.AddItemModifier;
 
 public class BPLootModifiers {
@@ -15,4 +16,7 @@ public class BPLootModifiers {
 
     public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_ITEM =
             LOOT_MODIFIERS.register("add_item", AddItemModifier.CODEC);
+
+    public static final RegistryObject<Codec<? extends IGlobalLootModifier>> ADD_GAIA_ITEM =
+            LOOT_MODIFIERS.register("add_gaia_item", AddGaiaItemModifier.CODEC);
 }

@@ -21,17 +21,17 @@ import org.jetbrains.annotations.NotNull;
 import vazkii.botania.common.entity.BotaniaEntities;
 import vazkii.botania.common.entity.GaiaGuardianEntity;
 
-public class AddItemModifier extends LootModifier {
+public class AddGaiaItemModifier extends LootModifier {
 
-    public static final Supplier<Codec<AddItemModifier>> CODEC = Suppliers.memoize(()
+    public static final Supplier<Codec<AddGaiaItemModifier>> CODEC = Suppliers.memoize(()
             -> RecordCodecBuilder.create(inst -> codecStart(inst).and(ForgeRegistries.ITEMS.getCodec()
-            .fieldOf("item").forGetter(m -> m.item)).apply(inst, AddItemModifier::new)));
+            .fieldOf("item").forGetter(m -> m.item)).apply(inst, AddGaiaItemModifier::new)));
 
     private final Item item;
     public static final ResourceLocation HARD_LOOT_TABLE = new ResourceLocation("botania", "gaia_guardian_2");
 
 
-    public AddItemModifier(LootItemCondition[] conditionsIn, Item item) {
+    public AddGaiaItemModifier(LootItemCondition[] conditionsIn, Item item) {
         super(conditionsIn);
         this.item = item;
     }
@@ -42,16 +42,12 @@ public class AddItemModifier extends LootModifier {
         Entity self = context.getParamOrNull(LootContextParams.KILLER_ENTITY);
         Entity dead = context.getParamOrNull(LootContextParams.THIS_ENTITY);
 
-        boolean test = true;
 
-        for (LootItemCondition condition : conditions) {
-            if (!condition.test(context)) {
-                return generatedLoot;
+        if (self instanceof Player && dead instanceof GaiaGuardianEntity && dead.getType() == BotaniaEntities.DOPPLEGANGER) {
+            if (HARD_LOOT_TABLE.equals(((Mob) dead).getLootTable())) {
+                generatedLoot.add(new ItemStack(item));
             }
         }
-
-        generatedLoot.add(new ItemStack(item));
-
 
         return generatedLoot;
     }

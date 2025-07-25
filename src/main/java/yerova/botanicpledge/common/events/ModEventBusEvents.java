@@ -4,6 +4,7 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.item.CustomCreativeTabContents;
+import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BPTabs;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -15,6 +16,9 @@ public class ModEventBusEvents {
     public static void addToBotanicPLedgeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == BPTabs.MAIN_TAB.getKey())
             BPItems.ITEMS.getEntries().forEach(item -> {
+                if (item.get().equals(BPBlocks.AURA_NODE.get().asItem())) {
+                    return;
+                }
 
                 if (item.get() instanceof CustomCreativeTabContents tab) {
                     tab.addToCreativeTab(item.get(), event);

@@ -138,4 +138,35 @@ public class BPItems {
     public static RegistryObject<Item> THOR_RUNE = ITEMS.register("rune_thurisaz", () -> new RuneItem(new Item.Properties()));
     public static RegistryObject<Item> ULL_RUNE = ITEMS.register("rune_ingwaz", () -> new RuneItem(new Item.Properties()));
 
+    //Essences
+    // World Essences – simple crafting items representing the 9 realms
+
+    public static final RegistryObject<Item> ASGARD_ESSENCE = ITEMS.register("asgard_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> VANAHEIM_ESSENCE = ITEMS.register("vanaheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> ALFHEIM_ESSENCE = ITEMS.register("alfheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> MIDGARD_ESSENCE = ITEMS.register("midgard_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> JOTUNHEIM_ESSENCE = ITEMS.register("jotunheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> SVARTALFHEIM_ESSENCE = ITEMS.register("svartalfheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> NIFLHEIM_ESSENCE = ITEMS.register("niflheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> MUSPELHEIM_ESSENCE = ITEMS.register("muspelheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> HELHEIM_ESSENCE = ITEMS.register("helheim_essence", () ->
+            new Item(new Item.Properties().fireResistant().rarity(Rarity.UNCOMMON)));
+
+
 }

@@ -124,7 +124,7 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
                     if (be instanceof YggdrasilLogBlockEntity aura) {
                         AuraImplementation data = aura.auraData;
                         data.setType(AuraNodeType.getRandomType());
-                        data.setBaseEssence(BPEssences.FIRE_ESSENCE.get(), 25);
+                        data.setBaseEssence(BPEssences.MIDGARD_ESSENCE.get(), 25);
                         aura.setChanged();
                     }
                 }

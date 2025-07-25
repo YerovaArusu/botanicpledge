@@ -11,6 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import yerova.botanicpledge.setup.BPBlocks;
+import yerova.botanicpledge.setup.BPItems;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 public class BPItemModelProvider extends ItemModelProvider {
@@ -31,6 +32,16 @@ public class BPItemModelProvider extends ItemModelProvider {
         evenSimplerBlockItem(BPBlocks.YGGDRASIL_PLANKS);
         evenSimplerBlockItem(BPBlocks.YGGDRASIL_FENCE_GATE);
         simpleBlockItem(BPBlocks.YGGDRASIL_DOOR);
+
+        simpleItem(BPItems.ASGARD_ESSENCE);
+        simpleItem(BPItems.VANAHEIM_ESSENCE);
+        simpleItem(BPItems.ALFHEIM_ESSENCE);
+        simpleItem(BPItems.MIDGARD_ESSENCE);
+        simpleItem(BPItems.JOTUNHEIM_ESSENCE);
+        simpleItem(BPItems.SVARTALFHEIM_ESSENCE);
+        simpleItem(BPItems.NIFLHEIM_ESSENCE);
+        simpleItem(BPItems.MUSPELHEIM_ESSENCE);
+        simpleItem(BPItems.HELHEIM_ESSENCE);
 
         // Register special cases
         trapdoorItem(BPBlocks.YGGDRASIL_TRAPDOOR);

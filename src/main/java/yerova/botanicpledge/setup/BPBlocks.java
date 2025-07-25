@@ -61,7 +61,6 @@ public class BPBlocks {
     public static final RegistryObject<Block> AURA_NODE = registerBlock("aura_node",
             () -> new AuraNodeBlock(BlockBehaviour.Properties.copy(Blocks.TORCH)));
 
-
     //Flower
     public static final RegistryObject<Block> THUNDER_LILY = registerBlock("thunder_lily", () ->
             new ForgeSpecialFlowerBlock(MobEffects.ABSORPTION, 10, BlockBehaviour.Properties.copy(Blocks.POPPY), BPBlockEntities.THUNDER_LILY_BLOCK_ENTITY::get));
