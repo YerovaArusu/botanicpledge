@@ -27,6 +27,11 @@ public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNod
     }
 
     @Override
+    public void setImplementation(AuraImplementation implementation) {
+        auraData = implementation;
+    }
+
+    @Override
     public void load(CompoundTag compound) {
         super.load(compound);
         if (compound.contains("Aura")) {
@@ -36,7 +41,7 @@ public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNod
 
     @Override
     public void saveAdditional(CompoundTag tag) {
-        tag.put("Aura", auraData.toNBT());
+        if (auraData != null) {tag.put("Aura", auraData.toNBT());}
         super.saveAdditional(tag);
     }
 

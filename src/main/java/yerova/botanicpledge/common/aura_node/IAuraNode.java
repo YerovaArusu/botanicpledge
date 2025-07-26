@@ -7,4 +7,6 @@ import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 public interface IAuraNode {
 
     AuraImplementation getImplementation();
+
+    void setImplementation(AuraImplementation implementation);
 }

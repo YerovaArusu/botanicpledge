@@ -5,6 +5,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -17,6 +19,7 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.crafting.ConditionalRecipe;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -27,12 +30,16 @@ import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.entity.PixieEntity;
 import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.PlayerHelper;
+import yerova.botanicpledge.common.aura_node.AuraImplementation;
+import yerova.botanicpledge.common.aura_node.IAuraNode;
+import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
@@ -295,4 +302,43 @@ public class BPItemEventHandler {
     private static void playSound(LivingEntity entity) {
         entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BotaniaSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
     }
+
+    @SubscribeEvent
+    public static void onPlayerRightClick(PlayerInteractEvent.RightClickBlock event) {
+        if (event.getHand() != InteractionHand.MAIN_HAND) return;
+
+        BlockEntity be = event.getLevel().getBlockEntity(event.getHitVec().getBlockPos());
+        if (!(be instanceof IAuraNode node)) return;
+
+        event.setCancellationResult(InteractionResult.SUCCESS);
+
+        AuraImplementation imp = node.getImplementation();
+        if (imp == null) {
+            event.setCancellationResult(InteractionResult.FAIL);
+            return;
+        }
+
+        Player player = event.getEntity();
+        int toRemove = 1;
+
+        Essence toGet = imp.removeFirstEssence(toRemove);
+
+        if ((toGet == null) && imp.getBaseEssenceAmount() >= toRemove) {
+            imp.setBaseEssenceAmount(imp.getBaseEssenceAmount() - toRemove);
+            toGet = imp.getBaseEssence();
+        }
+
+        if (toGet != null) {
+            player.addItem(new ItemStack(toGet.getItemBase()));
+        } else {
+            return;
+        }
+
+        if (imp.getBaseEssenceAmount() <= 0 && imp.getEssenceList().isEmpty()) {
+            node.setImplementation(null);
+            be.setChanged();
+            event.getLevel().sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+        }
+    }
+
 }

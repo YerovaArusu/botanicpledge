@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.Nullable;
+import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.blocks.block_entities.YggdrasilLogBlockEntity;
@@ -70,6 +71,7 @@ public class YggdrasilLog extends BaseEntityBlock {
 
             Essence essence = Essence.getEssence(stack);
 
+            entity.auraData = new AuraImplementation();
             entity.auraData.setBaseEssence(essence,1);
             entity.auraData.setEssenceAmount(essence,10);
             entity.auraData.setType(AuraNodeType.getRandomType());

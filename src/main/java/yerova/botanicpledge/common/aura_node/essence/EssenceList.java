@@ -97,4 +97,12 @@ public class EssenceList {
 
         return list;
     }
+
+    public Essence getFirstEntry() {
+        return essenceMap.keySet().stream().findFirst().orElse(null);
+    }
+
+    public boolean isEmpty() {
+        return essenceMap.isEmpty();
+    }
 }

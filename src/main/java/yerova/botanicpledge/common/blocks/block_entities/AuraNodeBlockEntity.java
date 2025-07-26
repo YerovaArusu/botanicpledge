@@ -36,6 +36,11 @@ public class AuraNodeBlockEntity extends BlockEntityBase implements IAuraNode {
         return auraData;
     }
 
+    @Override
+    public void setImplementation(AuraImplementation implementation) {
+        auraData = implementation;
+    }
+
 
     @Override
     public void load(CompoundTag compound) {

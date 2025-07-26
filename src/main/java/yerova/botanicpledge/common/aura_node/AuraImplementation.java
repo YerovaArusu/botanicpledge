@@ -47,6 +47,7 @@ public class AuraImplementation {
     public int getBaseEssenceAmount() {
         return baseAmount;
     }
+    public void setBaseEssenceAmount(int amount) {baseAmount = amount;}
 
     public int getEssenceAmount(Essence essence) {
         return essenceList.getEssenceAmount(essence);
@@ -94,4 +95,14 @@ public class AuraImplementation {
         this.essenceList.copyFrom(other.essenceList);
     }
 
+    public void removeEssence(Essence essence, int amount) {
+        essenceList.removeEssence(essence, amount);
+    }
+
+    public Essence removeFirstEssence(int amount) {
+        Essence e = essenceList.getFirstEntry();
+
+        removeEssence(e,amount);
+        return e;
+    }
 }
