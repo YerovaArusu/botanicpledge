@@ -16,6 +16,8 @@ import yerova.botanicpledge.client.render.AuraRenderType;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
+import yerova.botanicpledge.integration.curios.ItemHelper;
+import yerova.botanicpledge.setup.BPItems;
 
 public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
     private static final ResourceLocation NODE_TEXTURE = new ResourceLocation("botanicpledge", "textures/misc/nodes.png");
@@ -28,8 +30,12 @@ public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
 
     @Override
     public void render(BlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
+
+        if (Minecraft.getInstance().player == null) return;
+        if (ItemHelper.getCurio(Minecraft.getInstance().player, "charm").stream().noneMatch(i -> i.stack().is(BPItems.YGGDRASIL_MONOCLE.get()))) return;
         if (!(blockEntity instanceof IAuraNode node)) return;
         if (node.getImplementation() == null) return;
+
 
         AuraImplementation imp = node.getImplementation();
         AuraNodeType nodeType = imp.getType();
