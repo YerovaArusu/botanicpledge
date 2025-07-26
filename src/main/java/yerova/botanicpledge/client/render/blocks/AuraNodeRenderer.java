@@ -6,11 +6,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import yerova.botanicpledge.client.render.AuraRenderType;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
@@ -23,38 +24,32 @@ public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
     private static final int TOTAL_FRAMES = 32;
 
     public AuraNodeRenderer(BlockEntityRendererProvider.Context context) {
-        // No additional initialization needed
     }
 
     @Override
     public void render(BlockEntity blockEntity, float partialTicks, PoseStack poseStack, MultiBufferSource bufferSource, int combinedLight, int combinedOverlay) {
         if (!(blockEntity instanceof IAuraNode node)) return;
-        if (node.getImplementation() == null ) return;
+        if (node.getImplementation() == null) return;
 
         AuraImplementation imp = node.getImplementation();
-
         AuraNodeType nodeType = imp.getType();
         if (nodeType == null) return;
 
         int color = imp.getBaseEssence().getColor();
 
-        // Convert HEX color to RGB
-        float red   = (color >> 16 & 255) / 255.0F;
-        float green = (color >> 8  & 255) / 255.0F;
-        float blue  = (color       & 255) / 255.0F;
+        float red = (color >> 16 & 255) / 255.0F;
+        float green = (color >> 8 & 255) / 255.0F;
+        float blue = (color & 255) / 255.0F;
 
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-
-
         RenderSystem.setShaderTexture(0, NODE_TEXTURE);
 
         long gameTime = Minecraft.getInstance().level.getGameTime();
         int frameDuration = 1;
         int currentFrame = (int) ((gameTime / frameDuration) % TOTAL_FRAMES);
-        int nextFrame    = (currentFrame + 1) % TOTAL_FRAMES;
+        int nextFrame = (currentFrame + 1) % TOTAL_FRAMES;
         float blendFactor = (gameTime % frameDuration + partialTicks) / (float) frameDuration;
 
-        // Calculate texture coordinates
         float minV = (nodeType.ordinal() * FRAME_SIZE) / (float) TEXTURE_SIZE;
         float maxV = minV + (FRAME_SIZE / (float) TEXTURE_SIZE);
 
@@ -64,62 +59,46 @@ public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
         float maxUNext = minUNext + (FRAME_SIZE / (float) TEXTURE_SIZE);
 
         poseStack.pushPose();
-        poseStack.translate(0.5, 0.5, 0.5);
+
+        if (isPartOf2x2AuraCluster(blockEntity)) {
+            poseStack.translate(1.0, 0.5, 1.0); // Mitte des 2x2-Bereichs
+        } else {
+            poseStack.translate(0.5, 0.5, 0.5); // Mitte des Blocks
+        }
+
         poseStack.scale(2F, 2F, 2F);
         poseStack.mulPose(Minecraft.getInstance().gameRenderer.getMainCamera().rotation());
 
-        // Use the custom render type
         VertexConsumer vertexConsumer = bufferSource.getBuffer(AuraRenderType.getAuraRenderType());
 
-        float halfSize = 0.25F;
+        float halfSize = 0.4F;
 
-        // Render the current frame with fade-out
         RenderSystem.setShaderColor(red, green, blue, 1.0F - blendFactor);
         renderQuad(poseStack, vertexConsumer, halfSize, minUCurrent, maxUCurrent, minV, maxV, combinedLight, combinedOverlay, red, green, blue);
 
-        // Render the next frame with fade-in
         RenderSystem.setShaderColor(red, green, blue, blendFactor);
         renderQuad(poseStack, vertexConsumer, halfSize, minUNext, maxUNext, minV, maxV, combinedLight, combinedOverlay, red, green, blue);
 
         poseStack.popPose();
-
-        // Restore depth and blending state
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
     }
 
     private void renderQuad(PoseStack poseStack, VertexConsumer vertexConsumer, float halfSize, float minU, float maxU, float minV, float maxV, int combinedLight, int combinedOverlay, float red, float green, float blue) {
-        vertexConsumer.vertex(poseStack.last().pose(), -halfSize, -halfSize, 0.0F)
-                .color(red, green, blue, 1.0F)
-                .uv(minU, maxV)
-                .overlayCoords(combinedOverlay)
-                .uv2(combinedLight)
-                .normal(0, 0, 1)
-                .endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), -halfSize, -halfSize, 0.0F).color(red, green, blue, 1.0F).uv(minU, maxV).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), halfSize, -halfSize, 0.0F).color(red, green, blue, 1.0F).uv(maxU, maxV).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), halfSize, halfSize, 0.0F).color(red, green, blue, 1.0F).uv(maxU, minV).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), -halfSize, halfSize, 0.0F).color(red, green, blue, 1.0F).uv(minU, minV).overlayCoords(combinedOverlay).uv2(combinedLight).normal(0, 0, 1).endVertex();
+    }
 
-        vertexConsumer.vertex(poseStack.last().pose(), halfSize, -halfSize, 0.0F)
-                .color(red, green, blue, 1.0F)
-                .uv(maxU, maxV)
-                .overlayCoords(combinedOverlay)
-                .uv2(combinedLight)
-                .normal(0, 0, 1)
-                .endVertex();
+    private boolean isPartOf2x2AuraCluster(BlockEntity blockEntity) {
+        Level level = blockEntity.getLevel();
+        if (level == null) return false;
 
-        vertexConsumer.vertex(poseStack.last().pose(), halfSize, halfSize, 0.0F)
-                .color(red, green, blue, 1.0F)
-                .uv(maxU, minV)
-                .overlayCoords(combinedOverlay)
-                .uv2(combinedLight)
-                .normal(0, 0, 1)
-                .endVertex();
+        var pos = blockEntity.getBlockPos();
+        BlockState base = level.getBlockState(pos);
 
-        vertexConsumer.vertex(poseStack.last().pose(), -halfSize, halfSize, 0.0F)
-                .color(red, green, blue, 1.0F)
-                .uv(minU, minV)
-                .overlayCoords(combinedOverlay)
-                .uv2(combinedLight)
-                .normal(0, 0, 1)
-                .endVertex();
-
+        return level.getBlockState(pos.east()).getBlock() == base.getBlock()
+                && level.getBlockState(pos.south()).getBlock() == base.getBlock()
+                && level.getBlockState(pos.east().south()).getBlock() == base.getBlock();
     }
 }
