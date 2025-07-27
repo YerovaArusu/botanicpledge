@@ -1,6 +1,7 @@
 package yerova.botanicpledge.common.aura_node;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.setup.BPEssences;
@@ -105,4 +106,27 @@ public class AuraImplementation {
         removeEssence(e,amount);
         return e;
     }
+
+
+    public void randomize(Level level) {
+        if (level == null) return;
+
+        this.setType(AuraNodeType.getRandomType());
+
+        // Beispiel: zufällige Auswahl aus registrierten Essenzen
+        Essence randomEssence = Essence.getRandomEssence();
+        int amount = level.random.nextInt(5, 16); // z. B. 5–15 Base Amount
+        this.setBaseEssence(randomEssence, amount);
+
+        // Optional: zusätzliche zufällige Nebenessenzen setzen
+        int extraEssenceCount = level.random.nextInt(0, 3); // bis zu 2 extra Essenzen
+        for (int i = 0; i < extraEssenceCount; i++) {
+            Essence extra = Essence.getRandomEssence();
+            int extraAmount = level.random.nextInt(1, 8);
+            if (!extra.equals(randomEssence)) {
+                this.setEssenceAmount(extra, extraAmount);
+            }
+        }
+    }
+
 }

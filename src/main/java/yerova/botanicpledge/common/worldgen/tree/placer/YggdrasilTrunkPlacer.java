@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.worldgen.placer;
+package yerova.botanicpledge.common.worldgen.tree.placer;
 
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelSimulatedReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.feature.TreeFeature;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
@@ -52,10 +53,10 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
         List<FoliagePlacer.FoliageAttachment> attachments = Lists.newArrayList();
         // Grunddirt
         BlockPos below = pos.below();
-        setDirtAt(reader, setter, rand, below, config, true);
-        setDirtAt(reader, setter, rand, below.east(), config, false);
-        setDirtAt(reader, setter, rand, below.south(), config, false);
-        setDirtAt(reader, setter, rand, below.east().south(), config, false);
+        setDirtAt(reader, setter, rand, below, config);
+        setDirtAt(reader, setter, rand, below.east(), config);
+        setDirtAt(reader, setter, rand, below.south(), config);
+        setDirtAt(reader, setter, rand, below.east().south(), config);
 
         int x = pos.getX(), y = pos.getY(), z = pos.getZ();
         int crownY = y + freeTreeHeight - 1;
@@ -64,7 +65,6 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
         for (int i = 0; i < freeTreeHeight; i++) {
             int currentY = y + i;
             BlockPos layerOrigin = new BlockPos(x, currentY, z);
-            // Verschobener Ursprung für Boden und Ebene darüber
             BlockPos patternOrigin = layerOrigin;
             if (currentY == y || currentY == y + 1) {
                 patternOrigin = layerOrigin.offset(-2, 0, -2);
@@ -123,8 +123,7 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
                     BlockEntity be = level.getBlockEntity(auraPos);
                     if (be instanceof YggdrasilLogBlockEntity aura) {
                         AuraImplementation data = aura.auraData;
-                        data.setType(AuraNodeType.getRandomType());
-                        data.setBaseEssence(BPEssences.MIDGARD_ESSENCE.get(), 25);
+                        data.randomize(level);
                         aura.setChanged();
                     }
                 }
@@ -135,6 +134,9 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
         attachments.add(new FoliagePlacer.FoliageAttachment(new BlockPos(x, crownY, z), 0, true));
         return attachments;
     }
+
+
+
 
     protected static void setDirtAt(LevelSimulatedReader reader,
                                     BiConsumer<BlockPos, net.minecraft.world.level.block.state.BlockState> setter,
@@ -165,5 +167,20 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
         }
         setter.accept(pos, state);
         return true;
+    }
+
+    public static BlockPos get2x2Origin(Level level, BlockPos triggeredPos, Block saplingBlock) {
+        for (int dx = -1; dx <= 0; dx++) {
+            for (int dz = -1; dz <= 0; dz++) {
+                BlockPos check = triggeredPos.offset(dx, 0, dz);
+                if (level.getBlockState(check).is(saplingBlock) &&
+                        level.getBlockState(check.east()).is(saplingBlock) &&
+                        level.getBlockState(check.south()).is(saplingBlock) &&
+                        level.getBlockState(check.east().south()).is(saplingBlock)) {
+                    return check;
+                }
+            }
+        }
+        return triggeredPos;
     }
 }

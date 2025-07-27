@@ -74,7 +74,7 @@ public class BPBlocks {
 
     //World Ash
     public static final RegistryObject<Block> YGGDRASIL_SAPLING = registerBlock("yggdrasil_sapling", () ->
-            new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)));
+            new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.DARK_OAK_SAPLING)));
 
 
     public static final RegistryObject<Block> YGGDRASIL_LOG = registerBlock("yggdrasil_log", () ->

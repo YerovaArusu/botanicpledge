@@ -12,9 +12,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
-import yerova.botanicpledge.common.worldgen.placer.YggdrasilTrunkPlacer;
 
+
+import yerova.botanicpledge.common.worldgen.tree.placer.YggdrasilTrunkPlacer;
 import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -26,12 +26,12 @@ public class ConfiguredBPFeatures {
 
         register(context, YGGDRASIL_WOOD_KEY, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
                 BlockStateProvider.simple(BPBlocks.YGGDRASIL_LOG.get()),
-                new YggdrasilTrunkPlacer(4, 4, 3),
+                new YggdrasilTrunkPlacer(1, 4, 2),
 
                 BlockStateProvider.simple(BPBlocks.YGGDRASIL_LEAVES.get()),
                 new BlobFoliagePlacer(ConstantInt.of(3), ConstantInt.of(2), 3),
 
-                new TwoLayersFeatureSize(1, 0, 2)).build());
+                new TwoLayersFeatureSize(2, 0, 2)).build());
     }
 
 
