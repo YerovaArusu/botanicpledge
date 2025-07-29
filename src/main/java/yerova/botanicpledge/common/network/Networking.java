@@ -48,6 +48,14 @@ public class Networking {
                 .encoder(SpawnYggdrasilGuardian::encode)
                 .consumerMainThread(SpawnYggdrasilGuardian.Handler::handle)
                 .add();
+
+        net.messageBuilder(SyncSelectedEssenceIndexPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SyncSelectedEssenceIndexPacket::new)
+                .encoder(SyncSelectedEssenceIndexPacket::encode)
+                .consumerMainThread(SyncSelectedEssenceIndexPacket::handle)
+                .add();
+
+
     }
 
 

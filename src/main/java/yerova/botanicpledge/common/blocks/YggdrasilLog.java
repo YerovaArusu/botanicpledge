@@ -10,11 +10,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
+import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.YggdrasilLogBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
@@ -127,5 +127,13 @@ public class YggdrasilLog extends BaseEntityBlock {
         }
 
         return state;
+    }
+
+    @Nullable
+    @Override
+    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+
+        return createTickerHelper(type, BPBlockEntities.YGGDRASIL_LOG.get(),
+                YggdrasilLogBlockEntity::tick);
     }
 }

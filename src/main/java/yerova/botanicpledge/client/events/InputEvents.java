@@ -11,9 +11,13 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 import yerova.botanicpledge.client.KeyBindings;
+import yerova.botanicpledge.common.aura_node.essence.Essence;
+import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.common.items.relic.FirstRelic;
+import yerova.botanicpledge.common.items.relic.NineRealmGlove;
 import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;
 import yerova.botanicpledge.common.network.Networking;
+import yerova.botanicpledge.common.network.SyncSelectedEssenceIndexPacket;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import java.util.ArrayList;
@@ -47,6 +51,45 @@ public class InputEvents {
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onScroll(InputEvent.MouseScrollingEvent event) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.player == null) return;
+
+        boolean isCtrlPressed = GLFW.glfwGetKey(mc.getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_CONTROL) == GLFW.GLFW_PRESS;
+        if (!isCtrlPressed) return;
+
+        ItemStack stack = mc.player.getMainHandItem();
+        if (!(stack.getItem() instanceof NineRealmGlove)) {
+            stack = mc.player.getOffhandItem();
+        }
+
+        if (!(stack.getItem() instanceof NineRealmGlove)) {
+            return;
+        }
+
+
+        double delta = event.getScrollDelta();
+        if (delta != 0) {
+
+            int newIndex = NineRealmGlove.cycleSelected(stack,delta>0);
+
+            if (newIndex >= 0) {
+                Networking.sendToServer(new SyncSelectedEssenceIndexPacket(newIndex));
+            }
+
+
+            event.setCanceled(true);
+
+            Essence selected = NineRealmGlove.getSelectedEssence(stack);
+
+            if (selected != null) {
+                mc.player.displayClientMessage(Component.literal("Selected: " + selected.itemBase().getDefaultInstance().getDisplayName().getString()), true);
+            }
+        }
+    }
+
 
 
 

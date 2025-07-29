@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:item/handheld",
+  "loader": "forge:separate_transforms",
+  "base": {
+    "parent": "botanicpledge:item/nine_realms_gauntlet_3d"
+  },
+  "perspectives": {
+    "gui": {
+      "parent": "botanicpledge:item/nine_realms_gauntlet_2d"
+    },
+
+    "ground": {
+      "parent": "botanicpledge:item/nine_realms_gauntlet_2d"
+    },
+
+    "fixed": {
+      "parent": "botanicpledge:item/nine_realms_gauntlet_2d"
+    }
+  }
+
+}

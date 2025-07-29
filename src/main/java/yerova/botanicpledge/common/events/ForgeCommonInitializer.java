@@ -42,7 +42,8 @@ public class ForgeCommonInitializer {
             BPItems.AESIR_RING.get(), RingOfAesir::makeRelic,
             BPItems.FIRST_RELIC.get(), FirstRelic::makeRelic,
             BPItems.ULL_BOW.get(), UllBow::makeRelic,
-            BPItems.VIOARR_LEAP.get(),VioarrLeap::makeRelic
+            BPItems.VIOARR_LEAP.get(),VioarrLeap::makeRelic,
+            BPItems.NINE_REALMS_GLOVE.get(), NineRealmGlove::makeRelic
     ));
 
 

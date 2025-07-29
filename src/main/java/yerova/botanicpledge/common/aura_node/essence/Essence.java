@@ -6,38 +6,41 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.setup.BPEssences;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static yerova.botanicpledge.setup.BPEssences.ESSENCES;
 
-public class Essence {
-    private final Item itemBase;
-    private final int color; // 0xRRGGBB
+/**
+ * @param color 0xRRGGBB
+ */
+public record Essence(Item itemBase, int color) {
     private static final Random RANDOM = new Random();
 
-    public Essence(Item itemBase, int color) {
-        this.itemBase = itemBase;
-        this.color = color;
-    }
-
-    public Item getItemBase() {
-        return itemBase;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
     public static boolean isEssence(ItemStack stack) {
-        return getRegisteredEssences().stream().anyMatch(essence -> essence.getItemBase().equals(stack.getItem()));
+        return getRegisteredEssences().stream().anyMatch(essence -> essence.itemBase().equals(stack.getItem()));
     }
 
 
     public static Essence getRandomEssence() {
-        List<Essence> essenceList = getRegisteredEssences();
+        List<Essence> essenceList = getRegisteredEssences().stream().filter(essence -> !essence.equals(BPEssences.EMPTY_ESSENCE.get())).toList();
+        if (essenceList.isEmpty()) {
+            return null;
+        }
+        return essenceList.get(RANDOM.nextInt(essenceList.size()));
+    }
+
+    public static Essence getRandomEssence(Essence... essencesToExclude) {
+        Set<Essence> toExclude = Arrays.stream(essencesToExclude).collect(Collectors.toSet());
+        toExclude.add(BPEssences.EMPTY_ESSENCE.get());
+
+        List<Essence> essenceList = getRegisteredEssences().stream().filter(essence -> !toExclude.contains(essence)).toList();
         if (essenceList.isEmpty()) {
             return null;
         }
@@ -53,7 +56,7 @@ public class Essence {
 
     public static Essence getEssence(Item item) {
         Essence e = getRegisteredEssences().stream()
-                .filter(essence -> essence.getItemBase() == item) // use == for identity comparison
+                .filter(essence -> essence.itemBase() == item) // use == for identity comparison
                 .findFirst()
                 .orElse(BPEssences.EMPTY_ESSENCE.get());
 
@@ -90,7 +93,7 @@ public class Essence {
     }
 
     @Override
-    public String toString() {
+    public @NotNull String toString() {
         return "Essence{" +
                 "itemBase=" + itemBase +
                 ", color=" + color +

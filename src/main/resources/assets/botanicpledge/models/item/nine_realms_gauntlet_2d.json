@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "botanicpledge:item/nine_realms_gauntlet_item"
+  }
+}

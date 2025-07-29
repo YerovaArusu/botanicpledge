@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.moddingx.libx.base.tile.BlockEntityBase;
@@ -63,4 +64,11 @@ public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNod
         this.saveAdditional(tag);
         return tag;
     }
+
+    public static void tick(Level level, BlockPos pos, BlockState state, YggdrasilLogBlockEntity entity) {
+        if (entity.getImplementation() != null) {
+            AuraImplementation.regenerateEssences(level, entity);
+        }
+    }
+
 }

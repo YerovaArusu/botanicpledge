@@ -122,8 +122,9 @@ public class YggdrasilTrunkPlacer extends TrunkPlacer {
                 if (reader instanceof Level level) {
                     BlockEntity be = level.getBlockEntity(auraPos);
                     if (be instanceof YggdrasilLogBlockEntity aura) {
-                        AuraImplementation data = aura.auraData;
+                        AuraImplementation data = new AuraImplementation();
                         data.randomize(level);
+                        aura.setImplementation(data);
                         aura.setChanged();
                     }
                 }

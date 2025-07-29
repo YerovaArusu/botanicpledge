@@ -3,7 +3,6 @@ package yerova.botanicpledge.common.aura_node.essence;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import yerova.botanicpledge.common.aura_node.essence.Essence;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -64,8 +63,8 @@ public class EssenceList {
         for (Map.Entry<Essence, Integer> entry : essenceMap.entrySet()) {
             CompoundTag entryTag = new CompoundTag();
             Essence essence = entry.getKey();
-            entryTag.putString("Item", net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(essence.getItemBase()).toString());
-            entryTag.putInt("Color", essence.getColor());
+            entryTag.putString("Item", net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(essence.itemBase()).toString());
+            entryTag.putInt("Color", essence.color());
             entryTag.putInt("Amount", entry.getValue());
             listTag.add(entryTag);
         }
@@ -87,8 +86,8 @@ public class EssenceList {
             int amount = entryTag.getInt("Amount");
 
             for (Essence essence : Essence.getRegisteredEssences()) {
-                if (net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(essence.getItemBase()).toString().equals(itemName)
-                        && essence.getColor() == color) {
+                if (net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(essence.itemBase()).toString().equals(itemName)
+                        && essence.color() == color) {
                     list.addEssence(essence, amount);
                     break;
                 }
@@ -104,5 +103,13 @@ public class EssenceList {
 
     public boolean isEmpty() {
         return essenceMap.isEmpty();
+    }
+
+    public int size() {
+        return essenceMap.size();
+    }
+
+    public Map<Essence, Integer> getEssenceMap() {
+        return essenceMap;
     }
 }

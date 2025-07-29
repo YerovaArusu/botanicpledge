@@ -41,7 +41,7 @@ public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
         AuraNodeType nodeType = imp.getType();
         if (nodeType == null) return;
 
-        int color = imp.getBaseEssence().getColor();
+        int color = imp.getNodeColor();
 
         float red = (color >> 16 & 255) / 255.0F;
         float green = (color >> 8 & 255) / 255.0F;

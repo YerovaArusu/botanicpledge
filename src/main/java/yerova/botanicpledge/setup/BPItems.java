@@ -55,6 +55,8 @@ public class BPItems {
     ));
 
 
+    public static final RegistryObject<Item> NINE_REALMS_GLOVE =  ITEMS.register("nine_realms_gauntlet", () -> new NineRealmGlove(new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
+
     //cores
     public static final RegistryObject<Item> MARIAS_CORE = ITEMS.register("vedrfolnir_core", () -> new VedrfolnirsCore(
             new Item.Properties().fireResistant().rarity(BPItems.UNIQUE).stacksTo(1)));
