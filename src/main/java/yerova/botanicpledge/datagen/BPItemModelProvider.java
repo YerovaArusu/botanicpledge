@@ -43,6 +43,9 @@ public class BPItemModelProvider extends ItemModelProvider {
         simpleItem(BPItems.MUSPELHEIM_ESSENCE);
         simpleItem(BPItems.HELHEIM_ESSENCE);
 
+        simpleItem(BPItems.ASGARDITE_INGOT);
+        simpleItem(BPItems.NIFLAZITE_INGOT);
+
         // Register special cases
         trapdoorItem(BPBlocks.YGGDRASIL_TRAPDOOR);
         fenceItem(BPBlocks.YGGDRASIL_FENCE, BPBlocks.YGGDRASIL_PLANKS);

@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import yerova.botanicpledge.client.render.AuraRenderType;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
-import yerova.botanicpledge.common.aura_node.IAuraNode;
+import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.integration.curios.ItemHelper;
 import yerova.botanicpledge.setup.BPItems;
 
@@ -33,11 +33,10 @@ public class AuraNodeRenderer implements BlockEntityRenderer<BlockEntity> {
 
         if (Minecraft.getInstance().player == null) return;
         if (ItemHelper.getCurio(Minecraft.getInstance().player, "charm").stream().noneMatch(i -> i.stack().is(BPItems.YGGDRASIL_MONOCLE.get()))) return;
-        if (!(blockEntity instanceof IAuraNode node)) return;
-        if (node.getImplementation() == null) return;
+        if (!(blockEntity instanceof IEssenceHolder node)) return;
+        if (node.getImplementation() == null || !(node.getImplementation() instanceof AuraImplementation)) return;
 
-
-        AuraImplementation imp = node.getImplementation();
+        AuraImplementation imp = (AuraImplementation) node.getImplementation();
         AuraNodeType nodeType = imp.getType();
         if (nodeType == null) return;
 

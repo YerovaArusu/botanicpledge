@@ -77,6 +77,12 @@ public class BPBlocks {
             new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.DARK_OAK_SAPLING)));
 
 
+    public static final RegistryObject<Block> ESSENCE_JAR = registerBlock("essence_jar", () ->
+            new EssenceJar(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
+
+    public static final RegistryObject<Block> ESSENCE_CONDENSER = registerBlock("essence_condenser", () ->
+            new EssenceCondenser(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
+
     public static final RegistryObject<Block> YGGDRASIL_LOG = registerBlock("yggdrasil_log", () ->
             new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.OAK_LOG).strength(3f)));
 

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "connected=false": {
+      "model": "botanicpledge:block/essence_jar"
+    },
+    "connected=true": {
+      "model": "botanicpledge:block/essence_jar_connected"
+    }
+  }
+}

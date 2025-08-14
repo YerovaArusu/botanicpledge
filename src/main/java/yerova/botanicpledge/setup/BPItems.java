@@ -125,6 +125,11 @@ public class BPItems {
     public static RegistryObject<Item> WORLD_ASH_BRANCH = ITEMS.register("world_ash_branch", () -> new Item(
             new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
 
+    public static RegistryObject<Item> ASGARDITE_INGOT = ITEMS.register("asgardite_ingot", () -> new Item(
+            new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
+
+    public static RegistryObject<Item> NIFLAZITE_INGOT = ITEMS.register("niflazite_ingot", () -> new Item(
+            new Item.Properties().fireResistant().rarity(Rarity.COMMON)));
 
     public static RegistryObject<Item> SOCKET_GEM = ITEMS.register("rune_gem", () -> new RuneGemItem(
             new Item.Properties().fireResistant().rarity(Rarity.RARE)));

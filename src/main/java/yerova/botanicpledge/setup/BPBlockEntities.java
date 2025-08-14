@@ -52,6 +52,13 @@ public class BPBlockEntities {
                     BlockEntityType.Builder.of(AuraNodeBlockEntity::new, BPBlocks.AURA_NODE.get()).build(null));
 
 
+    public static final RegistryObject<BlockEntityType<EssenceJarBlockEntity>> ESSENCE_JAR =
+            BLOCK_ENTITIES.register("essence_jar", () ->
+                    BlockEntityType.Builder.of(EssenceJarBlockEntity::new, BPBlocks.ESSENCE_JAR.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<EssenceCondenserBlockEntity>> ESSENCE_CONDENSER =
+            BLOCK_ENTITIES.register("essence_condenser", () ->
+                    BlockEntityType.Builder.of(EssenceCondenserBlockEntity::new, BPBlocks.ESSENCE_CONDENSER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> YGGDRASIL_LOG =
             BLOCK_ENTITIES.register("yggdrasil_log", () ->

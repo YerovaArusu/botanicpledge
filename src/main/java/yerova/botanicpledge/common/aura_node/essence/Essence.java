@@ -99,4 +99,8 @@ public record Essence(Item itemBase, int color) {
                 ", color=" + color +
                 '}';
     }
+
+    public int getColor() {
+        return color;
+    }
 }

@@ -2,19 +2,16 @@ package yerova.botanicpledge.common.aura_node;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.DaylightDetectorBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
+import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementation;
 import yerova.botanicpledge.common.aura_node.essence.EssenceList;
+import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.setup.BPEssences;
 
-import java.util.UUID;
+public class AuraImplementation extends EssenceCapacitorImplementation {
 
-public class AuraImplementation {
-
-    private String id;
     private AuraNodeType type;
-    private final EssenceList essenceList = new EssenceList();
     private Essence baseEssence = BPEssences.EMPTY_ESSENCE.get();
     private int baseAmount = 0;
 
@@ -24,13 +21,6 @@ public class AuraImplementation {
     private final int BASE_ESSENCE_MAX = 12;
     private final int ESSENCE_MAX = 6;
 
-    public AuraImplementation() {
-        this.id = UUID.randomUUID().toString();
-    }
-
-    public String getId() {
-        return id;
-    }
 
     public AuraNodeType getType() {
         return type;
@@ -41,7 +31,7 @@ public class AuraImplementation {
     }
 
     public EssenceList getEssenceList() {
-        return essenceList;
+        return super.getEssenceList();
     }
 
     public Essence getBaseEssence() {
@@ -66,7 +56,7 @@ public class AuraImplementation {
     }
 
     public void setEssenceAmount(Essence essence, int amount) {
-        if (essenceList.getEssenceAmount(essence) + amount <= ESSENCE_MAX * nodeRank) {
+        if (essenceList.getEssenceAmount(essence) + amount <= getMaxEssenceAmount()) {
             essenceList.addEssence(essence, amount);
         }
     }
@@ -77,11 +67,11 @@ public class AuraImplementation {
 
     public void setNodeRank(int nodeRank) {
         this.nodeRank = nodeRank;
+        this.setMaxCapacity(nodeRank*ESSENCE_MAX);
     }
 
     public CompoundTag toNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putString("ID", id);
         tag.putInt("NodeRank", nodeRank);
         if (type != null) tag.putString("Type", type.name());
         tag.put("BaseEssence", baseEssence.toNBT());
@@ -92,7 +82,6 @@ public class AuraImplementation {
 
     public static AuraImplementation fromNBT(CompoundTag tag) {
         AuraImplementation impl = new AuraImplementation();
-        if (tag.contains("ID")) impl.id = tag.getString("ID");
         if (tag.contains("NodeRank")) impl.nodeRank = tag.getInt("NodeRank");
         if (tag.contains("Type")) {
             try {
@@ -112,21 +101,17 @@ public class AuraImplementation {
 
     public void copyFrom(AuraImplementation other) {
         if (other == null) return;
-        this.id = other.id;
         this.type = other.type;
         this.baseEssence = other.baseEssence;
         this.baseAmount = other.baseAmount;
         this.nodeRank = other.nodeRank;
-        this.essenceList.copyFrom(other.essenceList);
+        super.copyFrom(other);
     }
 
-    public void removeEssence(Essence essence, int amount) {
-        essenceList.removeEssence(essence, amount);
-    }
-
+    @Override
     public boolean addEssence(Essence essence, int amount) {
         int maxBase = BASE_ESSENCE_MAX * nodeRank;
-        int maxPerEssence = ESSENCE_MAX * nodeRank;
+        int maxPerEssence = getMaxEssenceAmount();
 
         if (baseEssence == BPEssences.EMPTY_ESSENCE.get() || baseEssence == null) {
             baseEssence = essence;
@@ -154,17 +139,6 @@ public class AuraImplementation {
         }
 
         return false;
-    }
-
-
-    public Essence removeFirstEssence(int amount) {
-        Essence e = essenceList.getFirstEntry();
-        removeEssence(e, amount);
-        return e;
-    }
-
-    public Essence getFirstEssence() {
-        return essenceList.getFirstEntry();
     }
 
     public boolean contains(Essence essence) {
@@ -245,9 +219,9 @@ public class AuraImplementation {
     }
 
     public static void regenerateEssences(Level level, BlockEntity blockEntity) {
-        if (level.isClientSide || !(blockEntity instanceof IAuraNode auraNode)) return;
+        if (level.isClientSide || !(blockEntity instanceof IEssenceHolder auraNode) || !(auraNode.getImplementation() instanceof AuraImplementation)) return;
 
-        AuraImplementation impl = auraNode.getImplementation();
+        AuraImplementation impl = (AuraImplementation) auraNode.getImplementation();
 
         if (impl == null || impl.essenceList.size() <= 0 || impl.baseEssence == null || impl.baseAmount <= 0) return;
 

@@ -6,6 +6,7 @@ import net.minecraft.nbt.Tag;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class EssenceList {
     private final LinkedHashMap<Essence, Integer> essenceMap;
@@ -112,4 +113,13 @@ public class EssenceList {
     public Map<Essence, Integer> getEssenceMap() {
         return essenceMap;
     }
+
+    public boolean containsEssence(Essence essence) {
+        return essenceMap.containsKey(essence);
+    }
+
+    public Set<Essence> getEssenceTypes() {
+        return essenceMap.keySet();
+    }
+
 }

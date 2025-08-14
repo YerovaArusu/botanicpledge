@@ -14,8 +14,7 @@ import vazkii.botania.common.item.relic.RelicItem;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
-import yerova.botanicpledge.common.aura_node.essence.Essence;
-import yerova.botanicpledge.common.aura_node.essence.EssenceList;
+import yerova.botanicpledge.common.aura_node.essence.*;
 import yerova.botanicpledge.setup.BPEssences;
 import yerova.botanicpledge.setup.BPItems;
 
@@ -27,6 +26,8 @@ public class NineRealmGlove extends RelicItem {
 
     private static final String ESSENCE_TAG = "BotanicPledgeEssences";
     private static final String SELECTED_ESSENCE_INDEX_TAG = "SelectedEssenceIndex";
+    private static final int ESSENCE_AMOUNT_TO_GET_PER_INTERACTION = 1;
+
 
     public NineRealmGlove(Properties props) {
         super(props);
@@ -109,79 +110,151 @@ public class NineRealmGlove extends RelicItem {
 
         if (stack.is(BPItems.NINE_REALMS_GLOVE.get())) {
 
+            if (player != null && player.isShiftKeyDown()) {
+                return handleShiftRightClickOnBlock(world, blockEntity,stack,player);
+            } else {
+                return rightClickOnBLock(world,blockEntity,stack,player);
+            }
+        }
 
-            if (blockEntity instanceof IAuraNode node) {
+        return super.useOn(pContext);
+    }
 
-                if (player != null && player.isShiftKeyDown()) {
-                    if (node.getImplementation() == null) {
 
-                        AuraImplementation implementation = new AuraImplementation();
-                        implementation.setType(AuraNodeType.getRandomType());
-                        node.setImplementation(implementation);
+    public InteractionResult handleShiftRightClickOnBlock(Level world, BlockEntity be, ItemStack stack, Player player) {
+        if (!(be instanceof IEssenceHolder<?>)) return InteractionResult.FAIL;
+        if (player == null || !player.isShiftKeyDown()) return InteractionResult.FAIL;
 
-                    }
 
-                    AuraImplementation imp = node.getImplementation();
+        Essence essence = getSelectedEssence(stack);
 
-                    int essenceAmount = 1;
-                    Essence essence = getSelectedEssence(stack);
-                    if (essence == null) return InteractionResult.FAIL;
-                    if(imp.addEssence(essence, essenceAmount)) {
-                        removeEssence(stack, essence, essenceAmount);
-                    }
+        if (be instanceof IAuraNode node) {
+            if (node.getImplementation() == null) {
+                AuraImplementation implementation = new AuraImplementation();
+                implementation.setType(AuraNodeType.getRandomType());
+                node.setImplementation(implementation);
+            }
 
-                    blockEntity.setChanged();
-                    world.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
+            AuraImplementation imp = node.getImplementation();
 
-                    return InteractionResult.SUCCESS;
 
-                } else {
-                    if (node.getImplementation() == null) return InteractionResult.PASS;
+            if (essence == null) return InteractionResult.FAIL;
+            if (imp.addEssence(essence, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION)) {
+                removeEssence(stack, essence, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+            }
 
-                    AuraImplementation imp = node.getImplementation();
-                    int amountToGet = 1;
-                    Essence toGet = null;
+            be.setChanged();
+            world.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
 
-                    Essence selected = getSelectedEssence(stack);
-                    if (selected != null) {
-                        int selectedAmount = imp.getEssenceAmount(selected);
-                        if (selected == imp.getBaseEssence() && imp.getBaseEssenceAmount() >= amountToGet) {
-                            imp.setBaseEssenceAmount(imp.getBaseEssenceAmount() - amountToGet);
-                            toGet = selected;
-                        } else if (selectedAmount >= amountToGet) {
-                            imp.removeEssence(selected, amountToGet);
-                            toGet = selected;
-                        }
-                    }
+            return InteractionResult.SUCCESS;
+        }
+        if (be instanceof IEssenceCapacitor node) {
+            if (node.getImplementation() == null) {
+                EssenceCapacitorImplementation implementation = new EssenceCapacitorImplementation();
+                node.setImplementation(implementation);
+            }
 
-                    if (toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) {
-                        toGet = imp.removeFirstEssence(amountToGet);
 
-                        if ((toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) && imp.getBaseEssenceAmount() >= amountToGet) {
-                            imp.setBaseEssenceAmount(imp.getBaseEssenceAmount() - amountToGet);
-                            toGet = imp.getBaseEssence();
-                        }
-                    }
+            EssenceCapacitorImplementation imp = node.getImplementation();
 
-                    if (toGet != null && toGet != BPEssences.EMPTY_ESSENCE.get()) {
-                        if (player != null) {
-                            player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
-                        }
-                        addEssence(stack, toGet, amountToGet);
-                    }
+            if (essence == null) return InteractionResult.FAIL;
+            if (imp.addEssence(essence, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION)) {
+                removeEssence(stack, essence, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+            }
 
-                    if (toGet == BPEssences.EMPTY_ESSENCE.get() || (imp.getBaseEssenceAmount() <= 0 && imp.getEssenceList().isEmpty())) {
-                        node.setImplementation(null);
-                        blockEntity.setChanged();
-                        world.sendBlockUpdated(blockEntity.getBlockPos(), blockEntity.getBlockState(), blockEntity.getBlockState(), 3);
-                    }
+            be.setChanged();
+            world.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+
+            return InteractionResult.SUCCESS;
+
+        }
+        return InteractionResult.FAIL;
+    }
+
+    public InteractionResult rightClickOnBLock(Level world, BlockEntity be, ItemStack stack, Player player) {
+        if (!(be instanceof IEssenceHolder<?>)) return InteractionResult.FAIL;
+        if (player == null || player.isShiftKeyDown()) return InteractionResult.FAIL;
+
+        if (((IEssenceHolder<?>) be).getImplementation() == null) return InteractionResult.FAIL;
+        Essence selected = getSelectedEssence(stack);
+
+
+
+        if (be instanceof IAuraNode node) {
+            AuraImplementation imp = node.getImplementation();
+
+            Essence toGet = null;
+
+            if (selected != null) {
+                int selectedAmount = imp.getEssenceAmount(selected);
+                if (selected == imp.getBaseEssence() && imp.getBaseEssenceAmount() >= ESSENCE_AMOUNT_TO_GET_PER_INTERACTION) {
+                    imp.setBaseEssenceAmount(imp.getBaseEssenceAmount() - ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                    toGet = selected;
+                } else if (selectedAmount >= ESSENCE_AMOUNT_TO_GET_PER_INTERACTION) {
+                    imp.removeEssence(selected, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                    toGet = selected;
+                }
+            }
+
+            if (toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) {
+                toGet = imp.removeFirstEssence(ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+
+                if ((toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) && imp.getBaseEssenceAmount() >= ESSENCE_AMOUNT_TO_GET_PER_INTERACTION) {
+                    imp.setBaseEssenceAmount(imp.getBaseEssenceAmount() - ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                    toGet = imp.getBaseEssence();
+                }
+            }
+
+            if (toGet != null && toGet != BPEssences.EMPTY_ESSENCE.get()) {
+                player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
+                addEssence(stack, toGet, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                return InteractionResult.SUCCESS;
+            }
+
+            if (toGet == BPEssences.EMPTY_ESSENCE.get() || (imp.getBaseEssenceAmount() <= 0 && imp.getEssenceList().isEmpty())) {
+                node.setImplementation(null);
+                be.setChanged();
+                world.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+            }
+
+        } else if (be instanceof IEssenceCapacitor node) {
+            EssenceCapacitorImplementation imp = node.getImplementation();
+
+            Essence toGet = null;
+
+            if (selected != null) {
+                int selectedAmount = imp.getEssenceAmount(selected);
+
+                if (selectedAmount >= ESSENCE_AMOUNT_TO_GET_PER_INTERACTION) {
+                    imp.removeEssence(selected, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                    toGet = selected;
+                }
+            }
+
+            if (toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) {
+                toGet = imp.removeFirstEssence(ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+
+                if ((toGet == null || toGet == BPEssences.EMPTY_ESSENCE.get()) && imp.getEssenceAmount(imp.getFirstEssence()) >= ESSENCE_AMOUNT_TO_GET_PER_INTERACTION) {
+                    imp.removeEssence(imp.getFirstEssence(), ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                    toGet = imp.getFirstEssence();
 
                 }
             }
 
+            if (toGet != null && toGet != BPEssences.EMPTY_ESSENCE.get()) {
+                player.playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F);
+                addEssence(stack, toGet, ESSENCE_AMOUNT_TO_GET_PER_INTERACTION);
+                return InteractionResult.SUCCESS;
+            }
 
+            if (toGet == BPEssences.EMPTY_ESSENCE.get() || (imp.getEssenceCount() <= 0 && imp.getEssenceList().isEmpty())) {
+                node.setImplementation(null);
+                be.setChanged();
+                world.sendBlockUpdated(be.getBlockPos(), be.getBlockState(), be.getBlockState(), 3);
+            }
         }
 
-        return super.useOn(pContext);
+
+        return InteractionResult.FAIL;
     }
 }

@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.moddingx.libx.base.tile.BlockEntityBase;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
+import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 
 import javax.annotation.Nullable;
 

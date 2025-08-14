@@ -5,8 +5,6 @@ import com.google.common.base.Suppliers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
@@ -14,7 +12,6 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -35,7 +32,6 @@ import yerova.botanicpledge.client.render.screen.CoreHUD;
 import yerova.botanicpledge.client.render.screen.YggdrasilBossBar;
 import yerova.botanicpledge.client.render.screen.YggdrasilPowerHUD;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
-import yerova.botanicpledge.common.blocks.block_entities.AuraNodeBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPParticles;
 import yerova.botanicpledge.setup.BotanicPledge;
@@ -108,6 +104,7 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.MODIFICATION_TABLE.get(), ModificationAltarRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRASIL_PYLON.get(), YggdrasilPylonRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.ORE_INFUSION.get(), OreInfusionRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.ESSENCE_JAR.get(), EssenceJarRenderer::new);
 
 
         BPBlockEntities.BLOCK_ENTITIES.getEntries().forEach(entry -> {

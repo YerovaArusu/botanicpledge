@@ -1,3 +1,10 @@
-// 1.20.1	2024-08-17T10:00:06.7256754	Tags for minecraft:block mod id botanicpledge
-def9453894cb018e4b1fb0dff60df0b93507b944 data/minecraft/tags/blocks/mineable/pickaxe.json
-def9453894cb018e4b1fb0dff60df0b93507b944 data/minecraft/tags/blocks/needs_iron_tool.json
+// 1.20.1	2025-08-01T17:13:05.7963256	Tags for minecraft:block mod id botanicpledge
+3b26be7b2667e2ce6bb7ec0eca104916d867e62a data/minecraft/tags/blocks/fences.json
+cfa0f091ec6a9a067e4cf9dbe11358a467710ca2 data/minecraft/tags/blocks/fence_gates.json
+d6711efb4b9e014742bd8a6fa7c5294cdb52229f data/minecraft/tags/blocks/leaves.json
+f63ccb92d5e7e48cd4d31c1e69e0e011fc35e875 data/minecraft/tags/blocks/logs.json
+fa3d4defef9930fe0eba93689eea4bff61acaf4b data/minecraft/tags/blocks/logs_that_burn.json
+da1c9a6e93fcf3390380ec9a60c71dabd936554c data/minecraft/tags/blocks/mineable/pickaxe.json
+da1c9a6e93fcf3390380ec9a60c71dabd936554c data/minecraft/tags/blocks/needs_iron_tool.json
+91c397af6d0bbbfc56f6cc5a2e4be9d2ca6c8b88 data/minecraft/tags/blocks/planks.json
+f48d659165cdf86f888a0048ed02cdb76ed6e76d data/minecraft/tags/blocks/walls.json

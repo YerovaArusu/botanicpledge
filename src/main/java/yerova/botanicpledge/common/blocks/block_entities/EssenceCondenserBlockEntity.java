@@ -4,57 +4,46 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.moddingx.libx.base.tile.BlockEntityBase;
-import yerova.botanicpledge.common.aura_node.AuraImplementation;
-import yerova.botanicpledge.common.aura_node.IAuraNode;
-import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
+import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementation;
+import yerova.botanicpledge.common.aura_node.essence.IEssenceCapacitor;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
-public class AuraNodeBlockEntity extends BlockEntityBase implements IAuraNode {
+public class EssenceCondenserBlockEntity extends BlockEntity implements IEssenceCapacitor {
 
-    public AuraImplementation auraData = new AuraImplementation();
+    EssenceCapacitorImplementation capacitor;
 
-
-
-    public AuraNodeBlockEntity( BlockPos pos, BlockState state) {
-        super(BPBlockEntities.AURA_NODE.get(), pos, state);
+    public EssenceCondenserBlockEntity(BlockPos pPos, BlockState pBlockState) {
+        super(BPBlockEntities.ESSENCE_CONDENSER.get(), pPos, pBlockState);
     }
 
     @Override
-    public AuraImplementation getImplementation() {
-        return auraData;
+    public EssenceCapacitorImplementation getImplementation() {
+        return capacitor;
     }
 
     @Override
-    public void setImplementation(AuraImplementation implementation) {
-        auraData = implementation;
+    public void setImplementation(EssenceCapacitorImplementation impl) {
+        capacitor = impl;
     }
-
 
     @Override
     public void load(CompoundTag compound) {
         super.load(compound);
-        if (compound.contains("Aura")) {
-            auraData.copyFrom(AuraImplementation.fromNBT(compound.getCompound("Aura")));
+        if (compound.contains("essence_capacitor")) {
+            if (capacitor == null) { capacitor = new EssenceCapacitorImplementation(); }
+            capacitor.copyFrom(EssenceCapacitorImplementation.fromNBT(compound.getCompound("essence_capacitor")));
         }
     }
 
-
-
     @Override
     public void saveAdditional(CompoundTag tag) {
-        tag.put("Aura", auraData.toNBT());
+        if (capacitor != null) {tag.put("essence_capacitor", capacitor.toNBT());}
         super.saveAdditional(tag);
     }
-
-    public static void tick(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
-
-    }
-
 
     @Override
     @Nullable
@@ -74,6 +63,4 @@ public class AuraNodeBlockEntity extends BlockEntityBase implements IAuraNode {
         this.saveAdditional(tag);
         return tag;
     }
-
-
 }
