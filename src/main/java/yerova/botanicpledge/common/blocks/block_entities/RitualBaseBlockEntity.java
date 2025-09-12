@@ -21,7 +21,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class RitualBaseBlockEntity extends BlockEntity implements Container {
+public abstract class RitualBaseBlockEntity extends BlockEntity implements Container {
     private final LazyOptional<IItemHandler> itemHandler = LazyOptional.of(() -> new InvWrapper(this));
     public ItemStack heldStack = ItemStack.EMPTY;
     public ItemEntity entity;
@@ -171,4 +171,7 @@ public class RitualBaseBlockEntity extends BlockEntity implements Container {
     }
 
 
+    public float getAnimationProgress(float partialTicks) {
+        return 0;
+    }
 }

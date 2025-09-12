@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "botanicpledge:block/ritual_pedestal"
+      "model": "botanicpledge:block/ritual_pedestal_base"
     }
   }
 }
