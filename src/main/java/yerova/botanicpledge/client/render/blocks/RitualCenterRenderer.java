@@ -3,14 +3,20 @@ package yerova.botanicpledge.client.render.blocks;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.mixin.ItemEntityAccessor;
+import yerova.botanicpledge.client.model.ModelBakery;
+import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
+
+import static yerova.botanicpledge.client.render.blocks.RitualPedestalRenderer.renderItem;
 
 public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlockEntity> {
     private final BlockRenderDispatcher blockRenderDispatcher;
@@ -21,27 +27,26 @@ public class RitualCenterRenderer implements BlockEntityRenderer<RitualCenterBlo
 
     @Override
     public void render(RitualCenterBlockEntity tileEntityIn, float pPartialTick, PoseStack matrixStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
-        double x = tileEntityIn.getBlockPos().getX();
-        double y = tileEntityIn.getBlockPos().getY();
-        double z = tileEntityIn.getBlockPos().getZ();
+        renderItem(tileEntityIn, pPartialTick, matrixStack, pBufferSource, pPackedLight, pPackedOverlay);
+        renderRitualTop(blockRenderDispatcher, ModelBakery.ritualCenterTop ,tileEntityIn, pPartialTick, matrixStack, pBufferSource, pPackedLight, pPackedOverlay);
+    }
+    public static void renderRitualTop(BlockRenderDispatcher blockRenderDispatcher, BakedModel model, RitualBaseBlockEntity pedestal, float partialTicks , PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
+        poseStack.pushPose();
 
-        if (tileEntityIn.getHeldStack() == null)
-            return;
+        float progress = pedestal.getAnimationProgress(partialTicks);
+        float yOffset = 0.3125f + progress*0.6f;
 
-        if (tileEntityIn.entity == null || !ItemStack.matches(tileEntityIn.entity.getItem(), tileEntityIn.getHeldStack())) {
-            tileEntityIn.entity = new ItemEntity(tileEntityIn.getLevel(), x, y, z, tileEntityIn.getHeldStack());
-        }
+        poseStack.translate(0, yOffset, 0);
 
-
-        ItemEntity entityItem = tileEntityIn.entity;
-        matrixStack.pushPose();
-
-        ((ItemEntityAccessor) tileEntityIn.entity).setAge(ClientTickHandler.ticksInGame);
-        entityItem.setItem(tileEntityIn.getHeldStack());
-
-
-        Minecraft.getInstance().getEntityRenderDispatcher().render(entityItem, 0.5, 1, 0.5, pPartialTick, 2.0f, matrixStack, pBufferSource, pPackedLight);
-
-        matrixStack.popPose();
+        blockRenderDispatcher.getModelRenderer().renderModel(
+                poseStack.last(),
+                buffer.getBuffer(Sheets.cutoutBlockSheet()),
+                null,
+                model,
+                1f, 1f, 1f,
+                packedLight,
+                packedOverlay
+        );
+        poseStack.popPose();
     }
 }

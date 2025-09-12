@@ -8,7 +8,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -18,7 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -26,13 +26,13 @@ import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.common.item.WandOfTheForestItem;
 import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPBlocks;
 
 import java.util.HashMap;
 
 public class RitualCenterBlock extends BaseEntityBlock {
+
 
     private static final VoxelShape SHAPE = Block.box(3, 0, 3, 13, 16, 13);
 
@@ -109,6 +109,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
         if (!world.isClientSide && world.getBlockEntity(pos) instanceof RitualCenterBlockEntity tile && !tile.isCrafting) {
 
             if (completedStructure(player, pos, world, handIn)) {
+
                 if (tile.attemptCraft(tile.getHeldStack(), player)) return InteractionResult.SUCCESS;
             }
 
@@ -145,6 +146,19 @@ public class RitualCenterBlock extends BaseEntityBlock {
         return allChecked;
     }
 
+    public static boolean checkCompletedStructure(BlockPos blockPos, Level level) {
+        boolean allChecked = true;
+        for (BlockPos s : ritualBlocks().keySet()) {
+            BlockPos checkPos = blockPos.offset(s);
+            if (!level.getBlockState(checkPos).getBlock().equals(ritualBlocks().get(s))) {
+                allChecked = false;
+                break;
+            }
+        }
+
+        return allChecked;
+    }
+
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
@@ -155,7 +169,7 @@ public class RitualCenterBlock extends BaseEntityBlock {
     @Override
     public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
         super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
-        if (pLevel.getBlockEntity(pPos) instanceof RitualCenterBlockEntity e && e.getHeldStack() != null ) {
+        if (pLevel.getBlockEntity(pPos) instanceof RitualCenterBlockEntity e && e.getHeldStack() != null) {
             pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), e.getHeldStack()));
         }
     }

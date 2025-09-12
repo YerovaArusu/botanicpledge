@@ -18,6 +18,9 @@ public class ModelBakery {
     public static BakedModel yggralSpreaderCore;
     public static BakedModel yggdralSpreaderScaffolding;
 
+    public static BakedModel ritualPedestalTop;
+    public static BakedModel ritualCenterTop;
+
     public static final Material TERRA_SHIELD = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(BotanicPledge.MOD_ID, "entity/shield/terra_shield"));
     public static final Material MANA_SHIELD = new Material(Sheets.SHIELD_SHEET, new ResourceLocation(BotanicPledge.MOD_ID, "entity/shield/mana_shield"));
 
@@ -26,7 +29,8 @@ public class ModelBakery {
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
-
+        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/ritual_pedestal_top"));
+        consumer.accept(new ResourceLocation(BotanicPledge.MOD_ID, "block/ritual_center_top"));
 
     }
 
@@ -35,6 +39,8 @@ public class ModelBakery {
         vedrfolnirWings = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "icon/vedrfolnir_wings"));
         yggralSpreaderCore = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_core"));
         yggdralSpreaderScaffolding = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/yggdral_spreader_scaffolding"));
+        ritualPedestalTop = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/ritual_pedestal_top"));
+        ritualCenterTop = map.get(new ResourceLocation(BotanicPledge.MOD_ID, "block/ritual_center_top"));
     }
 
 }

@@ -20,6 +20,7 @@ import net.minecraftforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
+import vazkii.botania.client.fx.WispParticleData;
 import yerova.botanicpledge.client.particle.ParticleColor;
 import yerova.botanicpledge.client.particle.ParticleUtils;
 import yerova.botanicpledge.client.particle.custom.YggdralParticleData;
@@ -42,6 +43,14 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
     private int counter = 0;
 
     public boolean isCrafting = false;
+    public boolean isActivated = false;
+
+    public static final int ANIMATION_TIME = 40;
+
+    public int animationTick = 0;
+    private int prevAnimationTick = 0;
+
+
 
     public RitualCenterBlockEntity(BlockPos p_155229_, BlockState p_155230_) {
         super(BPBlockEntities.RITUAL_CENTER.get(), p_155229_, p_155230_);
@@ -49,6 +58,54 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
 
 
     public static void tick(Level level, BlockPos pos, BlockState state, RitualCenterBlockEntity entity) {
+        entity.prevAnimationTick = entity.animationTick;
+
+        entity.isActivated = RitualCenterBlock.checkCompletedStructure(pos,level);
+
+        if (entity.isActivated) {
+            RitualCenterBlockEntity.activatePedestals(level, pos);
+            entity.animationTick = Math.min(entity.animationTick + 1, ANIMATION_TIME);
+
+
+            if (entity.isActivated && entity.animationTick > 0 && level instanceof ServerLevel serverLevel) {
+                float progress = entity.animationTick / (float) ANIMATION_TIME;
+
+                // Hex: 0x08e8de
+                float r = 8 / 255f;
+                float g = 232 / 255f;
+                float b = 222 / 255f;
+
+                int particleCount = (int) (1 + progress *2);
+
+                double cx = pos.getX() + 0.5;
+                double cy = pos.getY() + 0.6875; // Height: 11/16
+                double cz = pos.getZ() + 0.5;
+
+                for (int i = 0; i < particleCount; i++) {
+                    double dx = (Math.random() - 0.01) * 0.01; // kleine Streuung
+                    double dy = (Math.random() - 0.01) * 0.01;
+                    double dz = (Math.random() - 0.01) * 0.01;
+
+                    WispParticleData data = WispParticleData.wisp(
+                            0.05F + progress * 0.2F, // Größe nimmt mit progress zu
+                            r, g, b,
+                            true
+                    );
+
+                    serverLevel.sendParticles(
+                            data,
+                            cx, cy, cz,
+                            1, // immer 1 pro Loop
+                            dx, dy, dz,
+                            0.01
+                    );
+                }
+            }
+        } else {
+            entity.animationTick = Math.max(entity.animationTick - 1, 0);
+        }
+
+
         if (level.isClientSide) {
             if (entity.isCrafting) {
 
@@ -160,8 +217,11 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
 
     @Override
     public void load(CompoundTag compound) {
+        isActivated = compound.getBoolean("is_activated");
         heldStack = ItemStack.of((CompoundTag) compound.get("itemStack"));
         isCrafting = compound.getBoolean("is_crafting");
+        animationTick = compound.getInt("animation_tick");
+        prevAnimationTick = animationTick;
         super.load(compound);
     }
 
@@ -173,9 +233,10 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
             heldStack.save(reagentTag);
             tag.put("itemStack", reagentTag);
         }
+        tag.putBoolean("is_activated", isActivated);
+        tag.putInt("animation_tick", animationTick);
+        tag.putBoolean("is_activated", isActivated);
         tag.putBoolean("is_crafting", isCrafting);
-
-
     }
 
     @Override
@@ -184,6 +245,19 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
         tag.putBoolean("is_crafting", this.isCrafting);
         this.saveAdditional(tag);
         return tag;
+    }
+
+    public float getAnimationProgress(float partialTicks) {
+        // falls die Animation vollständig ist, gib exakte Endwerte zurück (kein partialTicks)
+        if (animationTick == 0 && prevAnimationTick == 0) return 0f;
+        if (animationTick == ANIMATION_TIME && prevAnimationTick == ANIMATION_TIME) return 1f;
+
+        float interp = prevAnimationTick + (animationTick - prevAnimationTick) * partialTicks;
+        float progress = interp / (float) ANIMATION_TIME;
+        // clamp extra-sicher
+        if (progress < 0f) return 0f;
+        if (progress > 1f) return 1f;
+        return progress;
     }
 
     @Override
@@ -358,5 +432,14 @@ public class RitualCenterBlockEntity extends RitualBaseBlockEntity implements Wa
         }
     }
 
+    public static void activatePedestals(Level level, BlockPos worldPosition) {
+        for (BlockPos blockPos : RitualCenterBlock.ritualPedestals().keySet()) {
+            BlockPos tmpPos = worldPosition.offset(blockPos);
+            if (level.getBlockEntity(tmpPos) instanceof RitualPedestalBlockEntity tile) {
+                tile.ritualCenterPos = worldPosition;
+                tile.updateBlock();
+            }
+        }
+    }
 
 }
