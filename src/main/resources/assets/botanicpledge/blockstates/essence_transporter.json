@@ -1,0 +1,54 @@
+{
+  "variants": {
+    "extract=false,facing=up": {
+      "model": "botanicpledge:block/essence_transporter"
+    },
+    "extract=false,facing=down": {
+      "model": "botanicpledge:block/essence_transporter",
+      "x": 180
+    },
+    "extract=false,facing=north": {
+      "model": "botanicpledge:block/essence_transporter",
+      "x": 90
+    },
+    "extract=false,facing=south": {
+      "model": "botanicpledge:block/essence_transporter",
+      "x": 270
+    },
+    "extract=false,facing=west": {
+      "model": "botanicpledge:block/essence_transporter",
+      "x": 90,
+      "y": 270
+    },
+    "extract=false,facing=east": {
+      "model": "botanicpledge:block/essence_transporter",
+      "x": 90,
+      "y": 90
+    },
+    "extract=true,facing=up": {
+      "model": "botanicpledge:block/essence_transporter_extract"
+    },
+    "extract=true,facing=down": {
+      "model": "botanicpledge:block/essence_transporter_extract",
+      "x": 180
+    },
+    "extract=true,facing=north": {
+      "model": "botanicpledge:block/essence_transporter_extract",
+      "x": 90
+    },
+    "extract=true,facing=south": {
+      "model": "botanicpledge:block/essence_transporter_extract",
+      "x": 270
+    },
+    "extract=true,facing=west": {
+      "model": "botanicpledge:block/essence_transporter_extract",
+      "x": 90,
+      "y": 270
+    },
+    "extract=true,facing=east": {
+      "model": "botanicpledge:block/essence_transporter_extract",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

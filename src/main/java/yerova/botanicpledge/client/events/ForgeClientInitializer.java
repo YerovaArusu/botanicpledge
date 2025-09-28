@@ -105,6 +105,7 @@ public class ForgeClientInitializer {
         evt.registerBlockEntityRenderer(BPBlockEntities.YGGDRASIL_PYLON.get(), YggdrasilPylonRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.ORE_INFUSION.get(), OreInfusionRenderer::new);
         evt.registerBlockEntityRenderer(BPBlockEntities.ESSENCE_JAR.get(), EssenceJarRenderer::new);
+        evt.registerBlockEntityRenderer(BPBlockEntities.ESSENCE_CONDENSER.get(), EssenceCondenserRenderer::new);
 
 
         BPBlockEntities.BLOCK_ENTITIES.getEntries().forEach(entry -> {

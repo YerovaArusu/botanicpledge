@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.blocks;
+package yerova.botanicpledge.common.blocks.essence;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -15,8 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
-import yerova.botanicpledge.common.blocks.block_entities.AuraNodeBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.essence.AuraNodeBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class AuraNodeBlock extends BaseEntityBlock {

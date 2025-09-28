@@ -19,7 +19,7 @@ import vazkii.botania.common.block.BotaniaBlockSetTypes;
 import vazkii.botania.common.block.BotaniaBlocks;
 import vazkii.botania.forge.block.ForgeSpecialFlowerBlock;
 import yerova.botanicpledge.common.blocks.*;
-import yerova.botanicpledge.common.blocks.AuraNodeBlock;
+import yerova.botanicpledge.common.blocks.essence.*;
 import yerova.botanicpledge.common.worldgen.tree.YggdrasilTreeGrower;
 
 import javax.annotation.Nullable;
@@ -70,18 +70,23 @@ public class BPBlocks {
             new YggdrasilPylon(BlockBehaviour.Properties.copy(BotaniaBlocks.gaiaPylon)));
 
 
+    public static final RegistryObject<Block> ESSENCE_JAR = registerBlock("essence_jar", () ->
+            new EssenceJar(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
+
+    public static final RegistryObject<Block> ESSENCE_CONDENSER = registerBlock("essence_condenser", () ->
+            new EssenceCondenser(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
+
+    public static final RegistryObject<Block> ESSENCE_TRANSPORTER = registerBlock("essence_transporter", () ->
+            new EssenceTransporter(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
+
+    public static final RegistryObject<Block> ESSENCE_EXTRACTOR = registerBlock("essence_extractor", () ->
+            new EssenceExtractor(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
 
 
     //World Ash
     public static final RegistryObject<Block> YGGDRASIL_SAPLING = registerBlock("yggdrasil_sapling", () ->
             new SaplingBlock(new YggdrasilTreeGrower(),BlockBehaviour.Properties.copy(Blocks.DARK_OAK_SAPLING)));
 
-
-    public static final RegistryObject<Block> ESSENCE_JAR = registerBlock("essence_jar", () ->
-            new EssenceJar(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
-
-    public static final RegistryObject<Block> ESSENCE_CONDENSER = registerBlock("essence_condenser", () ->
-            new EssenceCondenser(BlockBehaviour.Properties.copy(Blocks.GLASS).strength(1.5f)));
 
     public static final RegistryObject<Block> YGGDRASIL_LOG = registerBlock("yggdrasil_log", () ->
             new YggdrasilLog(BlockBehaviour.Properties.copy(Blocks.OAK_LOG).strength(3f)));

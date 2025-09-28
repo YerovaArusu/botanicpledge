@@ -15,6 +15,7 @@ import yerova.botanicpledge.client.synched.ClientSyncedValues;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
+import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementation;
 import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
@@ -64,6 +65,7 @@ public class YggdrasilPowerHUD {
             }
 
             renderAuraNodeEssenceDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
+            renderEssenceCapacitorDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
 
         }
 
@@ -253,5 +255,65 @@ public class YggdrasilPowerHUD {
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.disableBlend();
     }
+
+    private static void renderEssenceCapacitorDisplay(
+            GuiGraphics gui,
+            int screenWidth,
+            int screenHeight,
+            Essence selectedEssence
+    ) {
+        Minecraft mc = Minecraft.getInstance();
+
+        if (!(mc.hitResult instanceof BlockHitResult hit)) return;
+        BlockEntity be = mc.level.getBlockEntity(hit.getBlockPos());
+        if (!(be instanceof IEssenceHolder<?> holder)) return;
+
+        EssenceCapacitorImplementation impl = (EssenceCapacitorImplementation) holder.getImplementation();
+        if (impl == null) return;
+
+        EssenceList essenceList = impl.getEssenceList();
+        if (essenceList.isEmpty()) return;
+
+        int iconSize = 20;
+        int spacing = 4;
+        int displayY = screenHeight / 2 - 40;
+        int displayX = screenWidth / 2;
+
+        int totalTypes = essenceList.size();
+        int totalWidth = (iconSize + spacing) * totalTypes - spacing;
+        int startX = displayX - totalWidth / 2;
+
+        // bestimme "aktuelle" Essenz (falls selektiert)
+        Essence actualEssence = null;
+        if (selectedEssence != null && essenceList.hasEssence(selectedEssence)) {
+            actualEssence = selectedEssence;
+        } else if (!essenceList.isEmpty()) {
+            actualEssence = essenceList.getFirstEntry();
+        }
+
+        int i = 0;
+        for (var entry : essenceList.getEssenceMap().entrySet()) {
+            Essence essence = entry.getKey();
+            int amount = entry.getValue();
+
+            int x = startX + i * (iconSize + spacing);
+
+            // Highlight falls ausgewählt
+            if (essence.equals(actualEssence)) {
+                drawSelectionIcon(gui, x, displayY);
+            }
+
+            gui.renderItem(new ItemStack(essence.itemBase()), x, displayY);
+            gui.drawString(mc.font, String.valueOf(amount), x + 10, displayY + 15, 0xFFFFFF, true);
+
+            i++;
+        }
+
+        // optional: Kapazität anzeigen
+        String capText = impl.getEssenceCount() + " / " + impl.getMaxCapacity();
+        int textWidth = mc.font.width(capText);
+        gui.drawString(mc.font, capText, displayX - textWidth / 2, displayY + 72, 0xAAAAAA, false);
+    }
+
 
 }

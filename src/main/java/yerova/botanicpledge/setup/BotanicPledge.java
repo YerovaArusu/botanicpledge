@@ -125,6 +125,7 @@ public class BotanicPledge {
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.ORE_INFUSION.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_TRAPDOOR.get(), RenderType.cutoutMipped());
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.ESSENCE_JAR.get(), RenderType.cutoutMipped());
+        //ItemBlockRenderTypes.setRenderLayer(BPBlocks.ESSENCE_TRANSPORTER.get(), RenderType.translucent());
         //ItemBlockRenderTypes.setRenderLayer(BPBlocks.AURA_NODE.get(), RenderType.cutoutMipped());
 
         ItemBlockRenderTypes.setRenderLayer(BPBlocks.YGGDRASIL_LOG.get(), RenderType.cutoutMipped());

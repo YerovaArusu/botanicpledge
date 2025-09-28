@@ -68,8 +68,6 @@ public class ModificationAltarBlockEntity extends RitualBaseBlockEntity implemen
             tag.put("itemStack", reagentTag);
         }
         tag.putBoolean("alter", alter);
-
-
     }
 
     @Override

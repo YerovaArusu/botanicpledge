@@ -98,12 +98,25 @@ public class ForgeCommonInitializer {
             e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE,
                     (Wandable) blockEntity));
         }
+        if (blockEntity.getType() == BPBlockEntities.ESSENCE_TRANSPORTER.get()) {
+            e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE, (Wandable) blockEntity));
+        }
 
         if (blockEntity.getType() == BPBlockEntities.ORE_INFUSION.get()) {
 
             e.addCapability(prefix("wandable"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.WANDABLE,
                     (Wandable) blockEntity));
 
+            e.addCapability(prefix("mana_receiver"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_RECEIVER,
+                    (ManaReceiver) blockEntity));
+        }
+
+        if (blockEntity.getType() == BPBlockEntities.ESSENCE_CONDENSER.get()) {
+            e.addCapability(prefix("mana_receiver"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_RECEIVER,
+                    (ManaReceiver) blockEntity));
+        }
+
+        if (blockEntity.getType() == BPBlockEntities.ESSENCE_EXTRACTOR.get()) {
             e.addCapability(prefix("mana_receiver"), CapabilityUtil.makeProvider(BotaniaForgeCapabilities.MANA_RECEIVER,
                     (ManaReceiver) blockEntity));
         }

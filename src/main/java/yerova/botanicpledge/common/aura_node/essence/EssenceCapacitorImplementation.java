@@ -24,14 +24,10 @@ public class EssenceCapacitorImplementation {
         if (!alreadyPresent && essenceList.getEssenceTypes().size() >= maxEssenceAmount) {
             return false;
         }
-
         this.essenceList.addEssence(essence, amount);
         return true;
     }
 
-    public boolean extractEssence(Essence essence, int amount) {
-        return this.essenceList.removeEssence(essence, amount);
-    }
 
     public EssenceList getEssenceList() {
         return this.essenceList;
@@ -78,6 +74,14 @@ public class EssenceCapacitorImplementation {
         return tag;
     }
 
+    public boolean hasEssence(Essence essence) {
+        return this.essenceList.hasEssence(essence);
+    }
+
+    public boolean hasEssence(Essence essence, int amount) {
+        return this.essenceList.hasEssence(essence) && essenceList.getEssenceAmount(essence) >= amount;
+    }
+
     public static EssenceCapacitorImplementation fromNBT(CompoundTag tag) {
 
         EssenceCapacitorImplementation result = new EssenceCapacitorImplementation();
@@ -107,8 +111,8 @@ public class EssenceCapacitorImplementation {
         return essenceList.getEssenceAmount(essence);
     }
 
-    public void removeEssence(Essence essence, int amount) {
-        essenceList.removeEssence(essence, amount);
+    public boolean removeEssence(Essence essence, int amount) {
+        return essenceList.removeEssence(essence, amount);
     }
 
     public Essence removeFirstEssence(int amount) {

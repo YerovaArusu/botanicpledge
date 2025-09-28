@@ -1,4 +1,4 @@
-package yerova.botanicpledge.common.blocks;
+package yerova.botanicpledge.common.blocks.essence;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import yerova.botanicpledge.common.blocks.block_entities.EssenceJarBlockEntity;
+import yerova.botanicpledge.common.blocks.block_entities.essence.EssenceJarBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 

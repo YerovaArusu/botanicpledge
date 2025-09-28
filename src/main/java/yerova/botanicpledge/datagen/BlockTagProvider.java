@@ -8,6 +8,7 @@ import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
+import vazkii.botania.common.lib.BotaniaTags;
 import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 
@@ -34,6 +35,7 @@ public class BlockTagProvider extends BlockTagsProvider {
         this.tag(BlockTags.FENCES).add(BPBlocks.YGGDRASIL_FENCE.get());
         this.tag(BlockTags.FENCE_GATES).add(BPBlocks.YGGDRASIL_FENCE_GATE.get());
         this.tag(BlockTags.WALLS).add(BPBlocks.YGGDRASIL_WALL.get());
+        this.tag(BotaniaTags.Blocks.UNWANDABLE).add(BPBlocks.ESSENCE_TRANSPORTER.get());
 
     }
 }

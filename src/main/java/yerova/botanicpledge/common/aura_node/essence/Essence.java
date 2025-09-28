@@ -9,10 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 import yerova.botanicpledge.setup.BPEssences;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static yerova.botanicpledge.setup.BPEssences.ESSENCES;
@@ -103,4 +100,18 @@ public record Essence(Item itemBase, int color) {
     public int getColor() {
         return color;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Essence other)) return false;
+        return this.color == other.color &&
+                this.itemBase.equals(other.itemBase);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemBase, color);
+    }
+
 }

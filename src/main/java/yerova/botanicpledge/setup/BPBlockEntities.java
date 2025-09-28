@@ -8,6 +8,7 @@ import vazkii.botania.api.block.WandHUD;
 import vazkii.botania.api.block_entity.BindableSpecialFlowerBlockEntity;
 import vazkii.botania.common.block.block_entity.BotaniaBlockEntities;
 import yerova.botanicpledge.common.blocks.block_entities.*;
+import yerova.botanicpledge.common.blocks.block_entities.essence.*;
 import yerova.botanicpledge.common.blocks.block_entities.generating.ThunderLilyBLockEntity;
 
 public class BPBlockEntities {
@@ -59,6 +60,14 @@ public class BPBlockEntities {
     public static final RegistryObject<BlockEntityType<EssenceCondenserBlockEntity>> ESSENCE_CONDENSER =
             BLOCK_ENTITIES.register("essence_condenser", () ->
                     BlockEntityType.Builder.of(EssenceCondenserBlockEntity::new, BPBlocks.ESSENCE_CONDENSER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<EssenceTransporterBlockEntity>> ESSENCE_TRANSPORTER =
+            BLOCK_ENTITIES.register("essence_transporter", () ->
+                    BlockEntityType.Builder.of(EssenceTransporterBlockEntity::new, BPBlocks.ESSENCE_TRANSPORTER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<EssenceExtractorBlockEntity>> ESSENCE_EXTRACTOR =
+            BLOCK_ENTITIES.register("essence_extractor", () ->
+                    BlockEntityType.Builder.of(EssenceExtractorBlockEntity::new, BPBlocks.ESSENCE_EXTRACTOR.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<YggdrasilLogBlockEntity>> YGGDRASIL_LOG =
             BLOCK_ENTITIES.register("yggdrasil_log", () ->

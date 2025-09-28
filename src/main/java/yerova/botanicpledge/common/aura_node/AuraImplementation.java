@@ -1,6 +1,7 @@
 package yerova.botanicpledge.common.aura_node;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
@@ -8,6 +9,9 @@ import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementat
 import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.setup.BPEssences;
+
+import java.util.List;
+import java.util.Set;
 
 public class AuraImplementation extends EssenceCapacitorImplementation {
 
@@ -80,8 +84,10 @@ public class AuraImplementation extends EssenceCapacitorImplementation {
         return tag;
     }
 
-    public static AuraImplementation fromNBT(CompoundTag tag) {
-        AuraImplementation impl = new AuraImplementation();
+    public static AuraImplementation fromNBT(AuraImplementation impl,CompoundTag tag) {
+
+        if (impl == null) impl = new AuraImplementation();
+
         if (tag.contains("NodeRank")) impl.nodeRank = tag.getInt("NodeRank");
         if (tag.contains("Type")) {
             try {
@@ -90,14 +96,30 @@ public class AuraImplementation extends EssenceCapacitorImplementation {
         }
         if (tag.contains("BaseEssence")) {
             impl.baseEssence = Essence.fromNBT(tag.getCompound("BaseEssence"));
-        }
+        } else return null;
         impl.baseAmount = tag.getInt("BaseEssenceAmount");
         if (tag.contains("EssenceList")) {
             EssenceList list = EssenceList.fromNBT(tag.getCompound("EssenceList"));
             impl.essenceList.copyFrom(list);
-        }
+        } else return null;
         return impl;
     }
+
+    @Override
+    public boolean removeEssence(Essence essence, int amount) {
+        if (essence == null || amount <= 0) return false;
+
+        // Erst prüfen: Basis-Essenz?
+        if (essence.equals(baseEssence)) {
+            if (baseAmount >= amount) {
+                baseAmount -= amount;
+                return true;
+            }
+            return false;
+        }
+        return super.removeEssence(essence, amount);
+    }
+
 
     public void copyFrom(AuraImplementation other) {
         if (other == null) return;

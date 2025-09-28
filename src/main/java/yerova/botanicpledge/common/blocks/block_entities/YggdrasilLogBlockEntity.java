@@ -16,10 +16,11 @@ import javax.annotation.Nullable;
 
 public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNode {
 
-    public AuraImplementation auraData = new AuraImplementation();
+    public AuraImplementation auraData;
 
     public YggdrasilLogBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+        auraData = new AuraImplementation();
     }
 
 
@@ -35,17 +36,20 @@ public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNod
 
     @Override
     public void load(CompoundTag compound) {
-        super.load(compound);
         if (compound.contains("Aura")) {
-            auraData.copyFrom(AuraImplementation.fromNBT(compound.getCompound("Aura")));
+            auraData = AuraImplementation.fromNBT(auraData,compound.getCompound("Aura"));
         }
+        super.load(compound);
     }
 
     @Override
     public void saveAdditional(CompoundTag tag) {
-        if (auraData != null) {tag.put("Aura", auraData.toNBT());}
+        if (auraData != null) {
+            tag.put("Aura", auraData.toNBT());
+        }
         super.saveAdditional(tag);
     }
+
 
     @Override
     @Nullable
@@ -70,6 +74,18 @@ public class YggdrasilLogBlockEntity extends BlockEntityBase implements IAuraNod
         if (entity.getImplementation() != null) {
             AuraImplementation.regenerateEssences(level, entity);
         }
+        entity.checkEmpty();
     }
+
+    public void checkEmpty() {
+        if (auraData != null && auraData.getBaseEssenceAmount() <= 0 && auraData.getEssenceList().size() == 0) {
+            auraData = null; // komplett leeren
+            setChanged();
+            if (level != null) {
+                level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            }
+        }
+    }
+
 
 }

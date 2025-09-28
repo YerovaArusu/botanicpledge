@@ -36,10 +36,9 @@ public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedesta
                        int packedLight, int packedOverlay) {
 
         renderItem(pedestal, partialTicks, poseStack, buffer, packedLight, packedOverlay);
-        renderRitualTop(blockRenderDispatcher, ModelBakery.ritualPedestalTop ,pedestal, partialTicks, poseStack, buffer, packedLight, packedOverlay);
+        renderRitualTop(blockRenderDispatcher, ModelBakery.ritualPedestalTop, pedestal, partialTicks, poseStack, buffer, packedLight, packedOverlay);
 
     }
-
 
 
     public static void renderItem(RitualBaseBlockEntity tileEntityIn, float pPartialTick, PoseStack matrixStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
@@ -66,57 +65,14 @@ public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedesta
         matrixStack.popPose();
     }
 
-    public static void renderRitualTop(BlockRenderDispatcher blockRenderDispatcher, BakedModel model,
-                                       RitualPedestalBlockEntity pedestal, float partialTicks,
-                                       PoseStack poseStack, MultiBufferSource buffer,
-                                       int packedLight, int packedOverlay) {
+    public static void renderRitualTop(BlockRenderDispatcher blockRenderDispatcher, BakedModel model, RitualBaseBlockEntity pedestal, float partialTicks , PoseStack poseStack, MultiBufferSource buffer, int packedLight, int packedOverlay) {
         poseStack.pushPose();
 
         float progress = pedestal.getAnimationProgress(partialTicks);
-        float yOffset = 0.3125f + progress * 0.6f;
+        float yOffset = 0.3125f + progress*0.6f;
 
-        // Höhe verschieben
         poseStack.translate(0, yOffset, 0);
 
-        // prüfen ob Center craftet -> nur dann soll rotiert/gekipt werden
-        boolean rotate = false;
-        BlockPos centerPos = pedestal.ritualCenterPos;
-        RitualCenterBlockEntity centerEntity = null;
-        if (!centerPos.equals(BlockPos.ZERO) && pedestal.getLevel() != null) {
-            if (pedestal.getLevel().getBlockEntity(centerPos) instanceof RitualCenterBlockEntity c) {
-                centerEntity = c;
-                rotate = c.isCrafting;
-            }
-        }
-
-
-        if (rotate && progress > 0f && centerPos != null) {
-            // Richtung zum Center in Block-Koordinaten
-            double dx = (centerPos.getX() + 0.5) - (pedestal.getBlockPos().getX() + 0.5);
-            double dy = (centerPos.getY() + 0.5) - (pedestal.getBlockPos().getY() + 0.5);
-            double dz = (centerPos.getZ() + 0.5) - (pedestal.getBlockPos().getZ() + 0.5);
-
-            // Länge horizontal und insgesamt
-            double lenHoriz = Math.sqrt(dx*dx + dz*dz);
-            double lenTotal = Math.sqrt(dx*dx + dy*dy + dz*dz);
-
-            if (lenTotal > 1e-6) {
-                // Yaw: drehen um Y, damit +Z des Modells horizontal Richtung Center zeigt
-                float yawDeg = (float)Math.toDegrees(Math.atan2(dz, dx)) - 90f;
-
-                // Pitch: Kippen um X, damit +Y des Modells Richtung Center zeigt
-                // atan2(horizontalDistance, dy)
-                float pitchDeg = (float)Math.toDegrees(Math.atan2(lenHoriz, dy)) - 90f;
-
-                // Transformation um Blockmitte
-                poseStack.translate(0.5, 0.5, 0.5); // +0.5 in Y, damit Y-Achse um Blockmitte zeigt
-                poseStack.mulPose(Axis.YP.rotationDegrees(yawDeg));
-                poseStack.mulPose(Axis.XP.rotationDegrees(pitchDeg));
-                poseStack.translate(-0.5, -0.5, -0.5);
-            }
-        }
-
-        // Rendern
         blockRenderDispatcher.getModelRenderer().renderModel(
                 poseStack.last(),
                 buffer.getBuffer(Sheets.cutoutBlockSheet()),
@@ -126,7 +82,7 @@ public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedesta
                 packedLight,
                 packedOverlay
         );
-
         poseStack.popPose();
     }
+
 }

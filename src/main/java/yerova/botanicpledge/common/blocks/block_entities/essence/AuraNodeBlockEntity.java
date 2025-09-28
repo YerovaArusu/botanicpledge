@@ -1,20 +1,22 @@
-package yerova.botanicpledge.common.blocks.block_entities;
+package yerova.botanicpledge.common.blocks.block_entities.essence;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SandBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.moddingx.libx.base.tile.BlockEntityBase;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
+import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
-import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nullable;
 
-public class AuraNodeBlockEntity extends BlockEntityBase implements IAuraNode {
+public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
 
     public AuraImplementation auraData = new AuraImplementation();
 
@@ -52,6 +54,7 @@ public class AuraNodeBlockEntity extends BlockEntityBase implements IAuraNode {
     }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (!entity.auraData.getType().equals(AuraNodeType.CHAOTIC)) return;
 
     }
 

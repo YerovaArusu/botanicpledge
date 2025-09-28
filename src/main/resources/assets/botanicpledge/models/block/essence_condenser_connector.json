@@ -1,0 +1,23 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "botanicpledge:block/essence_condenser",
+		"particle": "block/netherite_block"
+	},
+	"elements": [
+		{
+			"from": [4, 4, 0],
+			"to": [12, 12, 3],
+			"rotation": {"angle": 0, "axis": "y", "origin": [12, 4, 0]},
+			"faces": {
+				"north": {"uv": [8, 1, 12, 5], "texture": "#0"},
+				"east": {"uv": [5, 8.5, 6, 12.5], "rotation": 180, "texture": "#0"},
+				"south": {"uv": [1, 8.5, 5, 12.5], "texture": "#0"},
+				"west": {"uv": [0, 8.5, 1, 12.5], "rotation": 180, "texture": "#0"},
+				"up": {"uv": [1, 7.5, 5, 8.5], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [1, 12.5, 5, 13.5], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

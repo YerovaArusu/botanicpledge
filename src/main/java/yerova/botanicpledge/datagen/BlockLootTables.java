@@ -39,6 +39,10 @@ public class BlockLootTables extends BlockLootSubProvider {
         this.dropSelf(BPBlocks.AURA_NODE.get());
         this.add(BPBlocks.YGGDRASIL_DOOR.get(),block -> createDoorTable(block));
 
+        this.dropSelf(BPBlocks.ESSENCE_JAR.get());
+        this.dropSelf(BPBlocks.ESSENCE_CONDENSER.get());
+        this.dropSelf(BPBlocks.ESSENCE_TRANSPORTER.get());
+
 
         this.createLeavesDrops(BPBlocks.YGGDRASIL_LEAVES.get(), BPBlocks.YGGDRASIL_SAPLING.get(), 0.05f);
     }
