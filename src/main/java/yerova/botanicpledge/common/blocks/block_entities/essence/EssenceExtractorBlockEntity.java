@@ -82,12 +82,8 @@ public class EssenceExtractorBlockEntity extends EssenceCapableBlockEntityBase i
         if (!entity.isOnCoolDown) {
 
             for (int i = 0; i < EXTRACTION_CHECKS_MAX; i++) {
-                int rX = level.random.nextInt(EXTRACTION_RANGE*2) -  EXTRACTION_RANGE;
-                int rY = level.random.nextInt(EXTRACTION_RANGE*2) - EXTRACTION_RANGE;
-                int rZ = level.random.nextInt(EXTRACTION_RANGE*2) - EXTRACTION_RANGE;
 
-
-                BlockEntity potentialBE = level.getBlockEntity(entity.worldPosition.offset(rX, rY, rZ));
+                BlockEntity potentialBE = level.getBlockEntity(AuraNodeBlockEntity.getRandomSurfaceBlock(level, blockPos,EXTRACTION_RANGE));
                 if (potentialBE instanceof IAuraNode node) {
                     AuraImplementation imp = node.getImplementation();
 

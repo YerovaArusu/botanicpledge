@@ -17,6 +17,7 @@ import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.blocks.block_entities.essence.AuraNodeBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPEssences;
 
 public class AuraNodeBlock extends BaseEntityBlock {
 
@@ -28,7 +29,15 @@ public class AuraNodeBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
-        return new AuraNodeBlockEntity(pPos, pState);
+
+        AuraNodeBlockEntity entity = new AuraNodeBlockEntity(pPos, pState);
+
+        Essence rEssence = Essence.getRandomEssence(BPEssences.EMPTY_ESSENCE.get());
+        entity.auraData.setBaseEssence(rEssence,1);
+        entity.auraData.setEssenceAmount(rEssence,10);
+        entity.auraData.setType(AuraNodeType.CHAOTIC);
+
+        return entity;
     }
 
     @Override
@@ -44,7 +53,7 @@ public class AuraNodeBlock extends BaseEntityBlock {
 
             entity.auraData.setBaseEssence(essence,1);
             entity.auraData.setEssenceAmount(essence,10);
-            entity.auraData.setType(AuraNodeType.getRandomType());
+            entity.auraData.setType(AuraNodeType.CHAOTIC);
 
         }
 
