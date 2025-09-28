@@ -11,6 +11,7 @@ import vazkii.botania.common.item.material.RuneItem;
 import yerova.botanicpledge.common.items.*;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelArmor;
 import yerova.botanicpledge.common.items.armor.YggdrasilsteelHelmet;
+import yerova.botanicpledge.common.items.block_items.AuraNodeBlockItem;
 import yerova.botanicpledge.common.items.block_items.YggdrasilPylonItem;
 import yerova.botanicpledge.common.items.relic.*;
 
@@ -136,6 +137,9 @@ public class BPItems {
 
     public static RegistryObject<Item> YGGDRASIL_PYLON = ITEMS.register("yggdrasil_pylon",
             () -> new YggdrasilPylonItem(new Item.Properties()));
+
+    public static final RegistryObject<Item> AURA_NODE = ITEMS.register("aura_node",
+            () -> new AuraNodeBlockItem(new Item.Properties()));
 
 
     //Runes

@@ -46,6 +46,7 @@ public class YggdrasilPowerHUD {
             float alpha = Math.min(1.0f, yggdrasilPower / (float) maxPower) * 0.44f;
 
             if (alpha > 0) {
+                //TODO: REINTEGRATE or DROP This Feature entirely
                 //renderGreenOverlay(poseStack, screenWidth, screenHeight, alpha);
             }
         }
@@ -56,6 +57,7 @@ public class YggdrasilPowerHUD {
             glove = mc.player.getOffhandItem();
         }
 
+
         if (glove.getItem() instanceof NineRealmGlove) {
             EssenceList essenceList = NineRealmGlove.getEssenceList(glove);
             Essence selectedEssence = NineRealmGlove.getSelectedEssence(glove);
@@ -64,8 +66,12 @@ public class YggdrasilPowerHUD {
                 renderEssenceDisplay(poseStack, screenWidth, screenHeight, essenceList, selectedEssence);
             }
 
-            renderAuraNodeEssenceDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
-            renderEssenceCapacitorDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
+            if (!(mc.hitResult instanceof BlockHitResult hit)) return;
+            BlockEntity be = mc.level.getBlockEntity(hit.getBlockPos());
+
+            if (be instanceof IAuraNode) {
+                renderAuraNodeEssenceDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
+            } else if (be instanceof IEssenceHolder<?>) renderEssenceCapacitorDisplay(poseStack,screenWidth,screenHeight, selectedEssence);
 
         }
 

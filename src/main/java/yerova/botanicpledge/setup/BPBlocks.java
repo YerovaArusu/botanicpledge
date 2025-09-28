@@ -58,7 +58,7 @@ public class BPBlocks {
             () -> new ModificationAltarBlock(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE)));
 
     //Aura Node Block (Test)
-    public static final RegistryObject<Block> AURA_NODE = registerBlock("aura_node",
+    public static final RegistryObject<Block> AURA_NODE = registerBlockWithoutBlockItem("aura_node",
             () -> new AuraNodeBlock(BlockBehaviour.Properties.copy(Blocks.TORCH)));
 
     //Flower

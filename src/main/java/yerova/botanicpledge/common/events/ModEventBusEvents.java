@@ -16,10 +16,6 @@ public class ModEventBusEvents {
     public static void addToBotanicPLedgeTab(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == BPTabs.MAIN_TAB.getKey())
             BPItems.ITEMS.getEntries().forEach(item -> {
-                if (item.get().equals(BPBlocks.AURA_NODE.get().asItem())) {
-                    return;
-                }
-
                 if (item.get() instanceof CustomCreativeTabContents tab) {
                     tab.addToCreativeTab(item.get(), event);
                 } else {

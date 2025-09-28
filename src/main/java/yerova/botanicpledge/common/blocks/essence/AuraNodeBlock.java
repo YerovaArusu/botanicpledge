@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -13,6 +15,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
+import vazkii.botania.common.item.CustomCreativeTabContents;
+import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.blocks.block_entities.essence.AuraNodeBlockEntity;
@@ -29,15 +33,12 @@ public class AuraNodeBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+        return new AuraNodeBlockEntity(pPos, pState);
+    }
 
-        AuraNodeBlockEntity entity = new AuraNodeBlockEntity(pPos, pState);
-
-        Essence rEssence = Essence.getRandomEssence(BPEssences.EMPTY_ESSENCE.get());
-        entity.auraData.setBaseEssence(rEssence,1);
-        entity.auraData.setEssenceAmount(rEssence,10);
-        entity.auraData.setType(AuraNodeType.CHAOTIC);
-
-        return entity;
+    @Override
+    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
+        super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
     }
 
     @Override

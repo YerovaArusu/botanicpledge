@@ -1,26 +1,36 @@
 package yerova.botanicpledge.common.blocks.block_entities.essence;
 
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import vazkii.botania.network.EffectType;
+import vazkii.botania.network.clientbound.BotaniaEffectPacket;
+import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.setup.BPBlockEntities;
+import yerova.botanicpledge.setup.BPEssences;
+import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
 
@@ -29,11 +39,20 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
 
     public static final int CHAOS_INTERVAL = 10;
 
+    public static final int MAX_UNSTABLE_INTERVAL = 1200;
+    public static final int MIN_UNSTABLE_INTERVAL = 10;
+    public static final int MAX_UNSTABLE_LIGHTNING = 16;
+    public static final int MIN_UNSTABLE_LIGHTNING = 4;
+
+
+    public int currentUnstableInterval = 0;
 
 
     public AuraNodeBlockEntity( BlockPos pos, BlockState state) {
         super(BPBlockEntities.AURA_NODE.get(), pos, state);
     }
+
+
 
     @Override
     public AuraImplementation getImplementation() {
@@ -50,26 +69,97 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
     public void load(CompoundTag compound) {
         super.load(compound);
         if (compound.contains("Aura")) {
-            auraData.copyFrom(AuraImplementation.fromNBT(compound.getCompound("Aura")));
+            auraData = AuraImplementation.fromNBT(auraData,compound.getCompound("Aura"));
+        }
+        if (compound.contains("currentUnstableInterval")) {
+            currentUnstableInterval = compound.getInt("currentUnstableInterval");
         }
     }
 
 
 
+
     @Override
     public void saveAdditional(CompoundTag tag) {
-        tag.put("Aura", auraData.toNBT());
         super.saveAdditional(tag);
+        tag.put("Aura", auraData.toNBT());
+        if (auraData.getType() == AuraNodeType.UNSTABLE) {
+            tag.putInt("currentUnstableInterval", currentUnstableInterval);
+        }
     }
+
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
         if (level.isClientSide()) return; // nur Server
         if (entity.auraData == null) return;
         if (entity.auraData.getType() == null) return;
 
+        switch (entity.auraData.getType()) {
+            case NORMAL ->  tickNormalNode(level, blockPos, blockState, entity);
+            case DARK -> tickDarkNode(level, blockPos, blockState, entity);
+            case PURE -> tickPureNode(level, blockPos, blockState, entity);
+            case ANCIENT -> tickAncientNode(level, blockPos, blockState, entity);
+            case DIMINISHED -> tickDiminishedNode(level, blockPos, blockState, entity);
+            case UNSTABLE -> tickUnstableNode(level, blockPos, blockState, entity);
+            case CHAOTIC -> tickChaoticNode(level, blockPos, blockState, entity);
+        }
+
+
+        BlockState state = level.getBlockState(entity.worldPosition);
+        level.sendBlockUpdated(entity.worldPosition, state, state, 3);
+        entity.setChanged();
+    }
+
+    private static void tickNormalNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+    }
+
+    private static void tickDarkNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+    }
+
+    private static void tickPureNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+    }
+
+    private static void tickAncientNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+    }
+
+    private static void tickDiminishedNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+    }
+
+    private static void tickUnstableNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (!entity.auraData.getType().equals(AuraNodeType.UNSTABLE)) return;
+        if (entity.currentUnstableInterval == 0) entity.currentUnstableInterval = level.random.nextInt(MIN_UNSTABLE_INTERVAL,MAX_UNSTABLE_INTERVAL);
+
+        if (level.getGameTime() % entity.currentUnstableInterval == 0) {
+            entity.currentUnstableInterval = level.random.nextInt(MIN_UNSTABLE_INTERVAL,MAX_UNSTABLE_INTERVAL);
+
+            IntList alreadyTargetedEntities = new IntArrayList();
+
+            Predicate<Entity> selector = e -> e instanceof LivingEntity && e instanceof Enemy && !(e instanceof Player) && !alreadyTargetedEntities.contains(e.getId());
+
+            int hops = level.random.nextInt(MIN_UNSTABLE_LIGHTNING, MAX_UNSTABLE_LIGHTNING);
+            int dmg = level.isThundering() ? 2*hops : 4*hops;
+            for (int i = 0; i < hops; i++) {
+                List<Entity> entities = level.getEntities((Entity) null, new AABB(blockPos).inflate(RANGE), selector);
+                if (entities.isEmpty()) {
+                    break;
+                }
+
+                LivingEntity target = (LivingEntity) entities.get(level.getRandom().nextInt(entities.size()));
+                target.hurt(level.damageSources().magic(), dmg);
+
+                alreadyTargetedEntities.add(target.getId());
+                dmg--;
+            }
+
+            if (!alreadyTargetedEntities.isEmpty()) {
+                XplatAbstractions.INSTANCE.sendToNear(level, blockPos, new BotaniaEffectPacket(EffectType.THUNDERCALLER_EFFECT, blockPos.getX()+0.5, blockPos.getY() +0.5,blockPos.getZ()+0.5,alreadyTargetedEntities.toArray(new int[0])));
+            }
+            entity.auraData.addEssence(Essence.getRandomEssence(),level.random.nextInt(1,5));
+        }
+    }
+
+    private static void tickChaoticNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
         if (!entity.auraData.getType().equals(AuraNodeType.CHAOTIC)) return;
-
-
 
         if (level.getGameTime() % CHAOS_INTERVAL == 0) {
             BlockPos randomPos = getRandomSurfaceBlock(level, blockPos, RANGE);
@@ -116,11 +206,12 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
 
                 if (e instanceof FallingBlockEntity fallingBlockEntity) {
                     fallingBlockEntity.kill();
-                    entity.auraData.addEssence(Essence.getRandomEssence(),1);
+                    entity.auraData.addEssence(Essence.getRandomEssence(),1); //TODO: Maybe we should consider implementing some way of map where each absorbable Block is assigned one Essence that will be regenerated. But for now this will suffice
                 }
             }
             e.hurtMarked = true;
         }
+
     }
 
 
