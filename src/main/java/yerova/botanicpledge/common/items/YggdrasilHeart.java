@@ -4,7 +4,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -16,7 +15,6 @@ import yerova.botanicpledge.common.blocks.block_entities.YggdrasilPylonBlockEnti
 import yerova.botanicpledge.setup.BPItems;
 
 import java.util.List;
-import java.util.Optional;
 
 public class YggdrasilHeart extends Item {
     public YggdrasilHeart(Properties pProperties) {

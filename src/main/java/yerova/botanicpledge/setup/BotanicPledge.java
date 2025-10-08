@@ -76,6 +76,7 @@ public class BotanicPledge {
         BPLootModifiers.LOOT_MODIFIERS.register(forgeBus);
         BPEssences.ESSENCES.register(forgeBus);
         BPTrunkPlacerTypes.PLACER_TYPES.register(forgeBus);
+        BPFeatures.FEATURES.register(forgeBus);
 
 
         forgeBus.addListener(this::setup);

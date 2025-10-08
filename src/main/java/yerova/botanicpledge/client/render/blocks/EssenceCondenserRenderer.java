@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.common.blocks.block_entities.essence.EssenceCondenserBlockEntity;
 

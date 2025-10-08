@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.blocks;
 
 import com.google.common.base.Suppliers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -22,7 +21,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import vazkii.botania.common.block.BotaniaBlocks;
-import vazkii.botania.common.lib.BotaniaTags;
 import vazkii.patchouli.api.IMultiblock;
 import vazkii.patchouli.api.PatchouliAPI;
 import yerova.botanicpledge.common.blocks.block_entities.ManaBufferBlockEntity;

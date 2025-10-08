@@ -3,7 +3,6 @@ package yerova.botanicpledge.common.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import yerova.botanicpledge.client.synched.ClientSyncedValues;
-import yerova.botanicpledge.common.capabilities.YggdrasilAura;
 
 import java.util.function.Supplier;
 

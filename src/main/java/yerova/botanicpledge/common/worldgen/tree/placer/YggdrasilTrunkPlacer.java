@@ -15,10 +15,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.TreeConfigurati
 import net.minecraft.world.level.levelgen.feature.foliageplacers.FoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.TrunkPlacerType;
-import yerova.botanicpledge.common.blocks.block_entities.YggdrasilLogBlockEntity;
-import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
-import yerova.botanicpledge.setup.BPEssences;
+import yerova.botanicpledge.common.blocks.block_entities.YggdrasilLogBlockEntity;
 import yerova.botanicpledge.setup.BPTrunkPlacerTypes;
 
 import java.util.List;

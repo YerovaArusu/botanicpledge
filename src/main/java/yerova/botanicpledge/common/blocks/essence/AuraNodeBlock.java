@@ -1,11 +1,11 @@
 package yerova.botanicpledge.common.blocks.essence;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -15,13 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.Nullable;
-import vazkii.botania.common.item.CustomCreativeTabContents;
-import yerova.botanicpledge.common.aura_node.AuraImplementation;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.common.blocks.block_entities.essence.AuraNodeBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
-import yerova.botanicpledge.setup.BPEssences;
 
 public class AuraNodeBlock extends BaseEntityBlock {
 
@@ -35,12 +32,6 @@ public class AuraNodeBlock extends BaseEntityBlock {
     public @Nullable BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
         return new AuraNodeBlockEntity(pPos, pState);
     }
-
-    @Override
-    public void onPlace(BlockState pState, Level pLevel, BlockPos pPos, BlockState pOldState, boolean pMovedByPiston) {
-        super.onPlace(pState, pLevel, pPos, pOldState, pMovedByPiston);
-    }
-
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
         if (pPlayer.getItemInHand(pHand) == ItemStack.EMPTY) return InteractionResult.PASS;
@@ -71,5 +62,7 @@ public class AuraNodeBlock extends BaseEntityBlock {
                 AuraNodeBlockEntity::tick);
     }
 
-
+    @Override
+    protected void spawnDestroyParticles(Level pLevel, Player pPlayer, BlockPos pPos, BlockState pState) {
+    }
 }

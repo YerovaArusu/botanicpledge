@@ -10,7 +10,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import vazkii.botania.api.mana.ManaItemHandler;
 import vazkii.botania.common.annotations.SoftImplement;
 import vazkii.botania.common.item.BotaniaItems;
-import vazkii.botania.common.item.equipment.bauble.ManaseerMonocleItem;
 import yerova.botanicpledge.client.render.entities.ShieldBlockEntityWithoutLevelRenderer;
 
 import java.util.function.Consumer;

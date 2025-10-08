@@ -12,7 +12,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.lwjgl.glfw.GLFW;
 import yerova.botanicpledge.client.KeyBindings;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
-import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.common.items.relic.FirstRelic;
 import yerova.botanicpledge.common.items.relic.NineRealmGlove;
 import yerova.botanicpledge.common.network.ItemButtonInteractionToServer;

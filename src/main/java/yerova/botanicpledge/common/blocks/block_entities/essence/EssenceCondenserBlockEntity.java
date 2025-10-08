@@ -1,6 +1,5 @@
 package yerova.botanicpledge.common.blocks.block_entities.essence;
 
-import com.sun.jna.platform.unix.solaris.LibKstat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,7 +10,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -22,11 +20,8 @@ import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
-import vazkii.botania.common.handler.ManaNetworkHandler;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
-import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementation;
 import yerova.botanicpledge.common.aura_node.essence.EssenceTransportableImplementation;
-import yerova.botanicpledge.common.aura_node.essence.IEssenceCapacitor;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 import javax.annotation.Nonnull;

@@ -6,8 +6,6 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.OptionalDouble;
-
 public class AuraRenderType extends RenderType {
     private static final RenderType AURA_RENDER_TYPE = create(
             "aura_node",

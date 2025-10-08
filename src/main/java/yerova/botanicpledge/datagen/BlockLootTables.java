@@ -42,6 +42,7 @@ public class BlockLootTables extends BlockLootSubProvider {
         this.dropSelf(BPBlocks.ESSENCE_JAR.get());
         this.dropSelf(BPBlocks.ESSENCE_CONDENSER.get());
         this.dropSelf(BPBlocks.ESSENCE_TRANSPORTER.get());
+        this.dropSelf(BPBlocks.ESSENCE_EXTRACTOR.get());
 
 
         this.createLeavesDrops(BPBlocks.YGGDRASIL_LEAVES.get(), BPBlocks.YGGDRASIL_SAPLING.get(), 0.05f);

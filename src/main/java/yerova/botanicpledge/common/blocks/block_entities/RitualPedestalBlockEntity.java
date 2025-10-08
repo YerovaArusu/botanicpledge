@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import vazkii.botania.client.fx.WispParticleData;
-import yerova.botanicpledge.common.blocks.RitualCenterBlock;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class RitualPedestalBlockEntity extends RitualBaseBlockEntity {

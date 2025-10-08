@@ -11,7 +11,6 @@ import net.minecraft.world.item.ItemStack;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.mixin.ItemEntityAccessor;
 import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 
 public class OreInfusionRenderer implements BlockEntityRenderer<OreInfusionBlockEntity> {
     private final BlockRenderDispatcher blockRenderDispatcher;

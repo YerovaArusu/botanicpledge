@@ -6,8 +6,6 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.minecraft.resources.ResourceLocation;
-import vazkii.botania.api.BotaniaAPI;
-import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 @Config(name= BotanicPledge.MOD_ID)

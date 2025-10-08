@@ -11,16 +11,11 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import yerova.botanicpledge.common.recipes.botanic_ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.common.recipes.ore_infusion.OreInfusionRecipe;
 import yerova.botanicpledge.setup.BPBlocks;
 import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class BPOreInfusionCategory implements IRecipeCategory<OreInfusionRecipe> {
 

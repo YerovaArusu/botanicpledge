@@ -1,7 +1,6 @@
 package yerova.botanicpledge.common.aura_node;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
@@ -9,9 +8,6 @@ import yerova.botanicpledge.common.aura_node.essence.EssenceCapacitorImplementat
 import yerova.botanicpledge.common.aura_node.essence.EssenceList;
 import yerova.botanicpledge.common.aura_node.essence.IEssenceHolder;
 import yerova.botanicpledge.setup.BPEssences;
-
-import java.util.List;
-import java.util.Set;
 
 public class AuraImplementation extends EssenceCapacitorImplementation {
 
@@ -174,16 +170,16 @@ public class AuraImplementation extends EssenceCapacitorImplementation {
 
         this.nodeRank = level.random.nextInt(1, 8);
 
-        Essence randomEssence = Essence.getRandomEssence();
+        Essence randomEssence = Essence.getRandomEssence(level.getRandom());
         int amount = level.random.nextInt(Math.min(5, nodeRank), Math.min(16, nodeRank + 1));
         this.setBaseEssence(randomEssence, amount);
 
         int extraEssenceCount = level.random.nextInt(1, this.nodeRank+1);
         for (int i = 0; i < extraEssenceCount; i++) {
-            Essence extra = Essence.getRandomEssence(randomEssence);
+            Essence extra = Essence.getRandomEssence(level.random, randomEssence);
             int extraAmount = level.random.nextInt(1, 8);
             if (!extra.equals(randomEssence)) {
-                this.setEssenceAmount(extra, extraAmount);
+                this.addEssence(extra, extraAmount);
             }
         }
     }

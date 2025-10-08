@@ -1,6 +1,8 @@
 package yerova.botanicpledge.common.events;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
@@ -10,22 +12,23 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.ShieldBlockEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import vazkii.botania.common.entity.PixieEntity;
 import vazkii.botania.common.handler.BotaniaSounds;
 import vazkii.botania.common.helper.PlayerHelper;
+import yerova.botanicpledge.common.aura_node.AuraNodeSavedData;
+import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.capabilities.Attribute;
 import yerova.botanicpledge.common.capabilities.CoreAttribute;
 import yerova.botanicpledge.common.capabilities.provider.CoreAttributeProvider;
@@ -287,5 +290,28 @@ public class BPItemEventHandler {
     private static void playSound(LivingEntity entity) {
         entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BotaniaSounds.holyCloak, SoundSource.PLAYERS, 1F, 1F);
     }
+
+    @SubscribeEvent
+    public static void spawnHardMobsOnDarkNode(MobSpawnEvent.FinalizeSpawn event) {
+        ServerLevel level = event.getLevel().getLevel();
+        AuraNodeSavedData data = AuraNodeSavedData.get(level);
+
+        BlockPos pos = event.getEntity().getOnPos();
+
+        if (data.blockIsNearType(pos, AuraNodeType.DARK, 48)) {
+            System.out.println("We can summon a dark mob");
+            Mob mob = event.getEntity();
+            mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
+                    mob.getAttributeBaseValue(Attributes.MAX_HEALTH) * 1.5
+            );
+            mob.setHealth(mob.getMaxHealth());
+
+            // Optional: mehr Damage
+            if (mob.getAttribute(Attributes.ATTACK_DAMAGE) != null)
+                mob.getAttribute(Attributes.ATTACK_DAMAGE)
+                        .setBaseValue(mob.getAttributeBaseValue(Attributes.ATTACK_DAMAGE) * 2);
+        }
+    }
+
 
 }

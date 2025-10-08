@@ -19,7 +19,6 @@ import vazkii.botania.api.block.Wandable;
 import vazkii.botania.api.internal.VanillaPacketDispatcher;
 import vazkii.botania.api.mana.ManaReceiver;
 import vazkii.botania.client.core.helper.RenderHelper;
-import vazkii.botania.client.fx.WispParticleData;
 import vazkii.botania.client.gui.HUDHandler;
 import vazkii.botania.common.block.block_entity.mana.ThrottledPacket;
 import vazkii.botania.common.item.BotaniaItems;
@@ -31,7 +30,6 @@ import yerova.botanicpledge.setup.BPBlockEntities;
 import javax.annotation.Nullable;
 
 import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticles;
-import static yerova.botanicpledge.common.utils.ParticleUtils.spawnMovingParticlesAbove;
 
 public class OreInfusionBlockEntity extends RitualBaseBlockEntity
         implements ManaReceiver, ThrottledPacket, Wandable {

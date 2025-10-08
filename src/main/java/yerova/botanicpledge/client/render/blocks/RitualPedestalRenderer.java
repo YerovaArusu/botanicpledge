@@ -1,7 +1,6 @@
 package yerova.botanicpledge.client.render.blocks;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -9,17 +8,13 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Vector3f;
 import vazkii.botania.client.core.handler.ClientTickHandler;
 import vazkii.botania.mixin.ItemEntityAccessor;
 import yerova.botanicpledge.client.model.ModelBakery;
 import yerova.botanicpledge.common.blocks.block_entities.RitualBaseBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.RitualCenterBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
-import com.mojang.math.SymmetricGroup3;
 
 
 public class RitualPedestalRenderer implements BlockEntityRenderer<RitualPedestalBlockEntity> {

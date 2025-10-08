@@ -2,7 +2,6 @@ package yerova.botanicpledge.common.recipes.ore_infusion;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,11 +17,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
-import yerova.botanicpledge.common.recipes.botanic_ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.setup.BotanicPledge;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class OreInfusionRecipe implements IOreInfusionRecipe {
 

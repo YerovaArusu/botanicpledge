@@ -8,8 +8,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
 import org.jetbrains.annotations.NotNull;
-import yerova.botanicpledge.client.render.blocks.OreInfusionRenderer;
-import yerova.botanicpledge.common.blocks.block_entities.OreInfusionBlockEntity;
 import yerova.botanicpledge.common.recipes.botanic_ritual.BotanicRitualRecipe;
 import yerova.botanicpledge.common.recipes.ore_infusion.OreInfusionRecipe;
 import yerova.botanicpledge.setup.BotanicPledge;

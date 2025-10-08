@@ -1,32 +1,22 @@
 package yerova.botanicpledge.common.items.relic;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ThrownTrident;
-import net.minecraft.world.item.*;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.TridentItem;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-import vazkii.botania.api.item.Relic;
 import vazkii.botania.common.item.relic.RelicImpl;
-import vazkii.botania.common.item.relic.RelicItem;
 import vazkii.botania.xplat.XplatAbstractions;
-import yerova.botanicpledge.setup.BPItems;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.function.Predicate;
 
 public class GungnirItem extends TridentItem {
 

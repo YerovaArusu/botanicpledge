@@ -183,5 +183,6 @@
   "tooltip.botanicpledge.yggdrasilsteel_template.applies_to": "Terrasteel Equipment",
   "tooltip.botanicpledge.yggdrasilsteel_template.slot_base": "terrasteel armor, weapon or tool",
   "tooltip.botanicpledge.yggdrasilsteel_template.slot_description": "Add %s",
-  "tooltip.botanicpledge.yggdrasilsteel_template.upgrade": "Yggdrasilsteel Upgrade"
+  "tooltip.botanicpledge.yggdrasilsteel_template.upgrade": "Yggdrasilsteel Upgrade",
+  "tooltip.botanicpledge.aura_node.rank": "Node Rank"
 }

@@ -7,6 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -21,12 +22,12 @@ import vazkii.botania.network.EffectType;
 import vazkii.botania.network.clientbound.BotaniaEffectPacket;
 import vazkii.botania.xplat.XplatAbstractions;
 import yerova.botanicpledge.common.aura_node.AuraImplementation;
+import yerova.botanicpledge.common.aura_node.AuraNodeSavedData;
 import yerova.botanicpledge.common.aura_node.AuraNodeType;
 import yerova.botanicpledge.common.aura_node.IAuraNode;
 import yerova.botanicpledge.common.aura_node.essence.Essence;
 import yerova.botanicpledge.setup.BPBlockEntities;
 import yerova.botanicpledge.setup.BPEssences;
-import yerova.botanicpledge.setup.BotanicPledge;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,22 +77,42 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
         }
     }
 
-
-
-
     @Override
     public void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
-        tag.put("Aura", auraData.toNBT());
-        if (auraData.getType() == AuraNodeType.UNSTABLE) {
-            tag.putInt("currentUnstableInterval", currentUnstableInterval);
+        if (auraData != null) {
+            tag.put("Aura", auraData.toNBT());
+            if (auraData.getType() == AuraNodeType.UNSTABLE) {
+                tag.putInt("currentUnstableInterval", currentUnstableInterval);
+            }
         }
     }
 
+    @Override
+    public void onLoad() {
+        if (!level.isClientSide() && auraData != null) {
+            AuraNodeSavedData.get((ServerLevel) level).add(auraData.getType(), worldPosition);
+        }
+    }
+
+    @Override
+    public void setRemoved() {
+        super.setRemoved();
+        if (!level.isClientSide() && auraData != null) {
+            AuraNodeSavedData.get((ServerLevel) level).remove(auraData.getType(), worldPosition);
+        }
+    }
 
     public static void tick(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
-        if (level.isClientSide()) return; // nur Server
-        if (entity.auraData == null) return;
+        if (level.isClientSide()) return;
+        if (entity.auraData == null) {
+            level.removeBlock(blockPos, false);
+
+            BlockState state = level.getBlockState(entity.worldPosition);
+            level.sendBlockUpdated(entity.worldPosition, state, state, 3);
+            entity.setChanged();
+            return;
+        }
         if (entity.auraData.getType() == null) return;
 
         switch (entity.auraData.getType()) {
@@ -111,15 +132,30 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
     }
 
     private static void tickNormalNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (level.getGameTime() % 12000 == 0) {
+            List<Essence> set = entity.auraData.essenceList.getEssenceTypes().stream().toList();
+            if (!set.isEmpty())  entity.auraData.addEssence(set.get(level.random.nextInt(set.size())),1);
+        }
     }
 
     private static void tickDarkNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (level.getGameTime() % 8000 == 0) {
+            List<Essence> set = entity.auraData.essenceList.getEssenceTypes().stream().toList();
+            if (!set.isEmpty()) entity.auraData.addEssence(set.get(level.random.nextInt(set.size())),1);
+        }
     }
 
     private static void tickPureNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (level.getGameTime() % 2000 == 0) {
+            List<Essence> set = entity.auraData.essenceList.getEssenceTypes().stream().toList();
+            if (!set.isEmpty()) entity.auraData.addEssence(set.get(level.random.nextInt(set.size())),1);
+        }
     }
 
     private static void tickAncientNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
+        if (level.getGameTime() % 4000 == 0) {
+            entity.auraData.addEssence(Essence.getRandomEssence(BPEssences.EMPTY_ESSENCE.get()),1);
+        }
     }
 
     private static void tickDiminishedNode(Level level, BlockPos blockPos, BlockState blockState, AuraNodeBlockEntity entity) {
@@ -199,7 +235,7 @@ public class AuraNodeBlockEntity extends BlockEntity implements IAuraNode {
 
             e.setDeltaMovement(e.getDeltaMovement().add(motion));
 
-            if (dist < 0.4) {
+            if (dist < 1.2) {
 
                 e.hurt(level.damageSources().magic(), 1);
 

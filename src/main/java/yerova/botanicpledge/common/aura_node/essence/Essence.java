@@ -2,6 +2,7 @@ package yerova.botanicpledge.common.aura_node.essence;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -33,6 +34,14 @@ public record Essence(Item itemBase, int color) {
         return essenceList.get(RANDOM.nextInt(essenceList.size()));
     }
 
+    public static Essence getRandomEssence(RandomSource source) {
+        List<Essence> essenceList = getRegisteredEssences().stream().filter(essence -> !essence.equals(BPEssences.EMPTY_ESSENCE.get())).toList();
+        if (essenceList.isEmpty()) {
+            return null;
+        }
+        return essenceList.get(source.nextInt(essenceList.size()));
+    }
+
     public static Essence getRandomEssence(Essence... essencesToExclude) {
         Set<Essence> toExclude = Arrays.stream(essencesToExclude).collect(Collectors.toSet());
         toExclude.add(BPEssences.EMPTY_ESSENCE.get());
@@ -42,6 +51,17 @@ public record Essence(Item itemBase, int color) {
             return null;
         }
         return essenceList.get(RANDOM.nextInt(essenceList.size()));
+    }
+
+    public static Essence getRandomEssence(RandomSource source, Essence... essencesToExclude) {
+        Set<Essence> toExclude = Arrays.stream(essencesToExclude).collect(Collectors.toSet());
+        toExclude.add(BPEssences.EMPTY_ESSENCE.get());
+
+        List<Essence> essenceList = getRegisteredEssences().stream().filter(essence -> !toExclude.contains(essence)).toList();
+        if (essenceList.isEmpty()) {
+            return null;
+        }
+        return essenceList.get(source.nextInt(essenceList.size()));
     }
 
     public static Essence getEssence(ItemStack stack) {

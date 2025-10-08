@@ -20,7 +20,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 import yerova.botanicpledge.common.aura_node.essence.EssenceTransportableImplementation;
-import yerova.botanicpledge.common.blocks.block_entities.ModificationAltarBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.essence.EssenceTransporterBlockEntity;
 import yerova.botanicpledge.common.utils.ShapeRotations;
 import yerova.botanicpledge.setup.BPBlockEntities;

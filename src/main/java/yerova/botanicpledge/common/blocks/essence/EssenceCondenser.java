@@ -19,9 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
-import yerova.botanicpledge.common.blocks.block_entities.RitualPedestalBlockEntity;
 import yerova.botanicpledge.common.blocks.block_entities.essence.EssenceCondenserBlockEntity;
-import yerova.botanicpledge.common.blocks.block_entities.essence.EssenceJarBlockEntity;
 import yerova.botanicpledge.setup.BPBlockEntities;
 
 public class EssenceCondenser extends BaseEntityBlock {

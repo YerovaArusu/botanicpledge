@@ -7,16 +7,10 @@ import com.userofbricks.expanded_combat.api.material.MaterialBuilder;
 import com.userofbricks.expanded_combat.api.registry.ECPlugin;
 import com.userofbricks.expanded_combat.api.registry.IExpandedCombatPlugin;
 import com.userofbricks.expanded_combat.api.registry.RegistrationHandler;
-import com.userofbricks.expanded_combat.item.ECGauntletItem;
-import com.userofbricks.expanded_combat.item.ECHammerWeaponItem;
-import com.userofbricks.expanded_combat.item.ECKatanaItem;
-import com.userofbricks.expanded_combat.item.ECWeaponItem;
 import com.userofbricks.expanded_combat.plugins.VanillaECPlugin;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.Toml4jConfigSerializer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.ModList;
-import top.theillusivec4.curios.api.CuriosApi;
 import yerova.botanicpledge.config.BPConfig;
 import yerova.botanicpledge.setup.BotanicPledge;
 
