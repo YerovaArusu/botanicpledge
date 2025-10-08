@@ -299,7 +299,6 @@ public class BPItemEventHandler {
         BlockPos pos = event.getEntity().getOnPos();
 
         if (data.blockIsNearType(pos, AuraNodeType.DARK, 48)) {
-            System.out.println("We can summon a dark mob");
             Mob mob = event.getEntity();
             mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
                     mob.getAttributeBaseValue(Attributes.MAX_HEALTH) * 1.5

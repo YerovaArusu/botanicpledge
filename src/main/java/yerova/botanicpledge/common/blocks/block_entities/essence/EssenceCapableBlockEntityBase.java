@@ -135,17 +135,14 @@ public class EssenceCapableBlockEntityBase extends BlockEntity implements IEssen
     ) {
         // 1. Simulieren, wieviel vom "from" extrahiert werden kann
         int extractable = from.extractEssence(direction, essence, from.getImplementation(), maxAmount, true);
-        System.out.println(extractable);
         if (extractable <= 0) return;
 
         // 2. Simulieren, wieviel "to" aufnehmen kann
         int receivable = to.receiveEssence(direction.getOpposite(), essence, to.getImplementation(),extractable, true);
-        System.out.println(receivable);
         if (receivable <= 0) return;
 
         // 3. Tatsächlich extrahieren und einfüllen
         int actuallyExtracted = from.extractEssence(direction, essence,from.getImplementation(), receivable, false);
-        System.out.println(actuallyExtracted);
         if (actuallyExtracted > 0) {
             to.receiveEssence(direction.getOpposite(), essence,to.getImplementation(), actuallyExtracted, false);
         }
